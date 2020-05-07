@@ -15,7 +15,7 @@ public class ProcessFilter {
 
     /**
      * 添加过滤
-     * @param processName
+     * @param processNames
      */
     public void addFilter(String ...processNames){
         this.filterList.addAll(Arrays.asList(processNames));

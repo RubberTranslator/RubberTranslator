@@ -25,24 +25,23 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread implements
         mediator.register(Module.FILTER_MODULE_ACTIVE_WINDOW_LISTENER,this);
         // 注册需要过滤的进程 TODO: 添加过滤配置文件读取
         processFilter.addFilter("idea64.exe","chrome.exe");
+        // 关闭logg
+        Logger.getLogger(this.getClass().getName()).setLevel(Level.OFF);
     }
 
 
     @Override
     public void run() {
-//        String lastTitle = "none";
         lastProcess = "none";
         long lastChange = System.currentTimeMillis();
 
         while (!stop) {
-//            String currentTitle = getActiveWindowTitle();
             String currentProcess = getActiveWindowProcess();
             if (!lastProcess.equals(currentProcess)) {
                 long change = System.currentTimeMillis();
                 long time = (change - lastChange) / 1000;
                 lastChange = change;
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO," lastProcess: " + lastProcess + " time: " + time + " seconds");
-//                lastTitle = currentTitle;
                 lastProcess = currentProcess;
             }
             try {
@@ -58,12 +57,6 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread implements
         stop = true;
     }
 
-//    private static String getActiveWindowTitle() {
-//        char[] buffer = new char[MAX_TITLE_LENGTH * 2];
-//        HWND foregroundWindow = User32DLL.GetForegroundWindow();
-//        User32DLL.GetWindowTextW(foregroundWindow, buffer, MAX_TITLE_LENGTH);
-//        return Native.toString(buffer);
-//    }
 
     private static String getActiveWindowProcess() {
         char[] buffer = new char[MAX_TITLE_LENGTH * 2];
@@ -89,7 +82,7 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread implements
 
     @Override
     public void receiveMsg(String msg) {
-        Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"拦截器："+msg);
+        Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"拦截器接收到消息");
         // 收到消息，开始做过滤
         doFilter(msg);
     }

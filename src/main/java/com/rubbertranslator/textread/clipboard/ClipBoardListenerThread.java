@@ -31,6 +31,8 @@ public class ClipBoardListenerThread extends Thread implements ClipboardOwner, M
         // 开启剪切板监听
         Transferable trans = sysClip.getContents(this);
         sysClip.setContents(trans, this);
+        // 关闭log
+        Logger.getLogger(ClipBoardListenerThread.class.getName()).setLevel(Level.OFF);
     }
 
     @Override
