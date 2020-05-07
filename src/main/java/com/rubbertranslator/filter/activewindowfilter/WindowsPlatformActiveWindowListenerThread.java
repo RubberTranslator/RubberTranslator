@@ -1,10 +1,12 @@
 package com.rubbertranslator.filter.activewindowfilter;
+
 import com.rubbertranslator.mediator.*;
 import com.rubbertranslator.mediator.Module;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.ptr.PointerByReference;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,13 +22,13 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread implements
     // 进程过滤器
     private ProcessFilter processFilter = new ProcessFilter();
 
-    public WindowsPlatformActiveWindowListenerThread(){
+    public WindowsPlatformActiveWindowListenerThread() {
         // 注册中介
-        mediator.register(Module.FILTER_MODULE_ACTIVE_WINDOW_LISTENER,this);
+        mediator.register(Module.FILTER_MODULE_ACTIVE_WINDOW_LISTENER, this);
         // 注册需要过滤的进程 TODO: 添加过滤配置文件读取
-        processFilter.addFilter("idea64.exe","chrome.exe");
+        processFilter.addFilter("idea64.exe");
         // 关闭logg
-        Logger.getLogger(this.getClass().getName()).setLevel(Level.OFF);
+//        Logger.getLogger(this.getClass().getName()).setLevel(Level.OFF);
     }
 
 
@@ -41,19 +43,19 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread implements
                 long change = System.currentTimeMillis();
                 long time = (change - lastChange) / 1000;
                 lastChange = change;
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO," lastProcess: " + lastProcess + " time: " + time + " seconds");
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, " lastProcess: " + lastProcess + " time: " + time + " seconds");
                 lastProcess = currentProcess;
             }
             try {
                 // TODO:浪费CPU时间
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,ex.getMessage());
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, ex.getMessage());
             }
         }
     }
 
-    public void exit(){
+    public void exit() {
         stop = true;
     }
 
@@ -70,35 +72,30 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread implements
 
     /**
      * 过滤进程
+     *
      * @param msg 传递的消息
      */
-    private void doFilter(String msg){
-        if(processFilter.checkFilter(lastProcess)){
-            sendMsg(null);
-        }else{
+    private void doFilter(String msg) {
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO,lastProcess);
+        if (!processFilter.checkFilter(lastProcess)) {
             sendMsg(msg);
         }
     }
 
     @Override
     public void receiveMsg(String msg) {
-        Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"拦截器接收到消息");
+        Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "拦截器接收到消息:"+msg);
         // 收到消息，开始做过滤
         doFilter(msg);
     }
 
     @Override
     public void sendMsg(String msg) {
-        try{
-            if(msg == null){
-                mediator.passMessage(Module.FILTER_MODULE_ACTIVE_WINDOW_LISTENER,null,null);
-            }else{
-                mediator.passMessage(Module.FILTER_MODULE_ACTIVE_WINDOW_LISTENER,Module.TEXT_PRE_FORMATTER_MODULE,msg);
-            }
+        try {
+            mediator.passMessage(Module.FILTER_MODULE_ACTIVE_WINDOW_LISTENER, Module.TEXT_PRE_FORMATTER_MODULE, msg);
         } catch (UnRegisterException e) {
             e.printStackTrace();
         }
-
     }
 
     static class Psapi {

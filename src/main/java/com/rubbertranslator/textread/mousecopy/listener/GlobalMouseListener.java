@@ -11,7 +11,7 @@ import org.jnativehook.mouse.NativeMouseEvent;
  */
 public class GlobalMouseListener extends NativeMouseAdapter {
 
-    private MouseEventDispatcher mouseEventDispatcher = new MouseEventDispatcher();
+    private final MouseEventDispatcher mouseEventDispatcher = new MouseEventDispatcher();
 
     @Override
     public void nativeMousePressed(NativeMouseEvent nativeEvent) {
