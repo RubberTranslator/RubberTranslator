@@ -1,21 +1,34 @@
 package com.rubbertranslator.textread.clipboard;
 
+import com.rubbertranslator.mediator.Mediator;
+import com.rubbertranslator.mediator.MessageEntity;
+import com.rubbertranslator.mediator.Module;
+import com.rubbertranslator.mediator.ThreadMediator;
+import com.rubbertranslator.mediator.UnRegisterException;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
-public class ClipBoardListenerThread extends Thread implements ClipboardOwner {
+public class ClipBoardListenerThread extends Thread implements ClipboardOwner, MessageEntity<String> {
     // 系统剪切板
     private final Clipboard sysClip = Toolkit.getDefaultToolkit().getSystemClipboard();
     // fence用于线程保活
     private final Fence fence = new Fence();
     // 动态等待时间
     private long waitTime = 50;
+    // 中介依赖
+    private Mediator mediator = ThreadMediator.getInstance();
 
     public ClipBoardListenerThread(){
+        // 注册中介
+        mediator.register(Module.TEXT_READ_MODEL_CLIPBOARD_LISTENER,this);
+        // 开启剪切板监听
         Transferable trans = sysClip.getContents(this);
         sysClip.setContents(trans, this);
     }
@@ -36,6 +49,7 @@ public class ClipBoardListenerThread extends Thread implements ClipboardOwner {
         while(!required){
             try {
                 //waiting e.g for loading huge elements like word's etc.
+                // TODO:浪费CPU时间
                 Thread.sleep(waitTime);
                 contents = sysClip.getContents(null);
                 sysClip.setContents(t, this);
@@ -59,10 +73,24 @@ public class ClipBoardListenerThread extends Thread implements ClipboardOwner {
         try {
             if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 String tempText = (String) t.getTransferData(DataFlavor.stringFlavor);
-                System.out.println(tempText);
+                sendMsg(tempText);
             }
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+
+    @Override
+    public void receiveMsg(String msg) {
+        // empty
+    }
+
+    @Override
+    public void sendMsg(String msg) {
+        try {
+            mediator.passMessage(Module.TEXT_READ_MODEL_CLIPBOARD_LISTENER,Module.FILTER_MODULE_ACTIVE_WINDOW_LISTENER,msg);
+        } catch (UnRegisterException e) {
+            e.printStackTrace();
         }
     }
 
