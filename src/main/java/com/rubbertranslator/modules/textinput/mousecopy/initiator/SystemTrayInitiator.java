@@ -1,6 +1,6 @@
-package com.rubbertranslator.modules.textread.mousecopy.initiator;
+package com.rubbertranslator.modules.textinput.mousecopy.initiator;
 
-import com.rubbertranslator.modules.textread.mousecopy.listener.CopyActionMenuItemListener;
+import com.rubbertranslator.modules.textinput.mousecopy.listener.CopyActionMenuItemListener;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -1,4 +1,4 @@
-package com.rubbertranslator.modules.textread.mousecopy.initiator;
+package com.rubbertranslator.modules.textinput.mousecopy.initiator;
 
 /**
  * @author Raven

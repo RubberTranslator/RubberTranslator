@@ -1,4 +1,4 @@
-package com.rubbertranslator.modules.textread.ocr;
+package com.rubbertranslator.modules.textinput.ocr;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
@@ -30,6 +30,7 @@ public class OCRResult{
 		StringBuilder words = new StringBuilder();
 		for (WordsResultItem item: wordsResult){
 			words.append(item.getWords());
+			words.append("\n");
 		}
 		return words.toString();
 	}

@@ -1,4 +1,4 @@
-package com.rubbertranslator.modules.textread.mousecopy.copymethods;
+package com.rubbertranslator.modules.textinput.mousecopy.copymethods;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

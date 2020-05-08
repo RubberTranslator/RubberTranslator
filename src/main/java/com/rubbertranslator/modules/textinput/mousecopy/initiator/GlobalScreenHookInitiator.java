@@ -1,6 +1,6 @@
-package com.rubbertranslator.modules.textread.mousecopy.initiator;
+package com.rubbertranslator.modules.textinput.mousecopy.initiator;
 
-import com.rubbertranslator.modules.textread.mousecopy.listener.GlobalMouseListener;
+import com.rubbertranslator.modules.textinput.mousecopy.listener.GlobalMouseListener;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 

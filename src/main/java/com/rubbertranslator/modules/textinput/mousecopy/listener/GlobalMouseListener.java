@@ -1,6 +1,6 @@
-package com.rubbertranslator.modules.textread.mousecopy.listener;
+package com.rubbertranslator.modules.textinput.mousecopy.listener;
 
-import com.rubbertranslator.modules.textread.mousecopy.copymethods.MouseEventDispatcher;
+import com.rubbertranslator.modules.textinput.mousecopy.copymethods.MouseEventDispatcher;
 import org.jnativehook.mouse.NativeMouseAdapter;
 import org.jnativehook.mouse.NativeMouseEvent;
 

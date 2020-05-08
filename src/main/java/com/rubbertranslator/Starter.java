@@ -4,9 +4,9 @@ import com.rubbertranslator.manager.LoggerManager;
 import com.rubbertranslator.manager.TranslatorFacade;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerThread;
-import com.rubbertranslator.modules.textread.TextInputCollector;
-import com.rubbertranslator.modules.textread.clipboard.ClipBoardListenerThread;
-import com.rubbertranslator.modules.textread.mousecopy.MouseCopyThread;
+import com.rubbertranslator.modules.textinput.TextInputCollector;
+import com.rubbertranslator.modules.textinput.clipboard.ClipBoardListenerThread;
+import com.rubbertranslator.modules.textinput.mousecopy.MouseCopyThread;
 
 /**
  * @author Raven

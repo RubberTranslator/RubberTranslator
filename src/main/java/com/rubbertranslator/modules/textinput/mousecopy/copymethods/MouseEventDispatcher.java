@@ -1,7 +1,7 @@
-package com.rubbertranslator.modules.textread.mousecopy.copymethods;
+package com.rubbertranslator.modules.textinput.mousecopy.copymethods;
 
 
-import com.rubbertranslator.modules.textread.mousecopy.initiator.SystemTrayInitiator;
+import com.rubbertranslator.modules.textinput.mousecopy.initiator.SystemTrayInitiator;
 import org.jnativehook.mouse.NativeMouseEvent;
 
 import java.util.ArrayList;

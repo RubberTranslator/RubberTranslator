@@ -1,4 +1,4 @@
-package com.rubbertranslator.modules.textread;
+package com.rubbertranslator.modules.textinput;
 
 import java.awt.*;
 

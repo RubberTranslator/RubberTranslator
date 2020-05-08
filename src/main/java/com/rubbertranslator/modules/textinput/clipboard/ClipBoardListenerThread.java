@@ -1,7 +1,7 @@
-package com.rubbertranslator.modules.textread.clipboard;
+package com.rubbertranslator.modules.textinput.clipboard;
 
 
-import com.rubbertranslator.modules.textread.TextInputListener;
+import com.rubbertranslator.modules.textinput.TextInputListener;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.image.BufferedImage;

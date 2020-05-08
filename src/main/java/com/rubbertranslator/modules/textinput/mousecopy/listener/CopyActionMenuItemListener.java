@@ -1,4 +1,4 @@
-package com.rubbertranslator.modules.textread.mousecopy.listener;
+package com.rubbertranslator.modules.textinput.mousecopy.listener;
 
 
 public interface CopyActionMenuItemListener {

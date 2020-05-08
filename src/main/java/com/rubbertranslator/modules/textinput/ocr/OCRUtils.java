@@ -1,4 +1,4 @@
-package com.rubbertranslator.modules.textread.ocr;
+package com.rubbertranslator.modules.textinput.ocr;
 
 import com.rubbertranslator.test.Configuration;
 import com.rubbertranslator.utils.JsonUtils;

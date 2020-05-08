@@ -1,5 +1,5 @@
-package com.rubbertranslator.modules.textread.mousecopy;
-import com.rubbertranslator.modules.textread.mousecopy.initiator.MouseCopyInitiator;
+package com.rubbertranslator.modules.textinput.mousecopy;
+import com.rubbertranslator.modules.textinput.mousecopy.initiator.MouseCopyInitiator;
 
 /**
  * @author Raven

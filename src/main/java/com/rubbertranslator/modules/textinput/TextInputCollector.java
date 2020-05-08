@@ -1,7 +1,7 @@
-package com.rubbertranslator.modules.textread;
+package com.rubbertranslator.modules.textinput;
 
 import com.rubbertranslator.manager.TranslatorFacade;
-import com.rubbertranslator.modules.textread.ocr.OCRUtils;
+import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 
 import java.awt.*;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * 2. 用户从UI输入
  */
 public class TextInputCollector implements TextInputListener{
-    //TODO: 是否需要加入输入队列，然后加入翻译完成判断回调？都采用同步模式，似乎又没有必要
+    //TODO: 是否需要加入输入队列，然后加入翻译完成判断回调？都采用同步请求，似乎又没有必要
     private TranslatorFacade facade;
 
     public TextInputCollector(TranslatorFacade facade) {
@@ -37,8 +37,8 @@ public class TextInputCollector implements TextInputListener{
     @Override
     public void onImageInput(Image image) {
         try {
-            String ocr = OCRUtils.ocr(image);
-            facade.process(ocr);
+            String text = OCRUtils.ocr(image);
+            facade.process(text);
         } catch (IOException e) {
             e.printStackTrace();
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,e.getMessage(),e);
