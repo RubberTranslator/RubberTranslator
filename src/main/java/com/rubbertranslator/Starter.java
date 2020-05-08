@@ -1,14 +1,12 @@
 package com.rubbertranslator;
 
-import com.rubbertranslator.facade.TranslatorFacade;
-import com.rubbertranslator.filter.activewindowfilter.ProcessFilter;
-import com.rubbertranslator.filter.activewindowfilter.WindowsPlatformActiveWindowListenerThread;
-import com.rubbertranslator.textread.TextInputCollector;
-import com.rubbertranslator.textread.clipboard.ClipBoardListenerThread;
-import com.rubbertranslator.textread.mousecopy.MouseCopyThread;
-import com.rubbertranslator.textread.mousecopy.initiator.MouseCopyInitiator;
-
-import java.awt.event.WindowStateListener;
+import com.rubbertranslator.manager.LoggerManager;
+import com.rubbertranslator.manager.TranslatorFacade;
+import com.rubbertranslator.modules.filter.ProcessFilter;
+import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerThread;
+import com.rubbertranslator.modules.textread.TextInputCollector;
+import com.rubbertranslator.modules.textread.clipboard.ClipBoardListenerThread;
+import com.rubbertranslator.modules.textread.mousecopy.MouseCopyThread;
 
 /**
  * @author Raven
@@ -18,6 +16,9 @@ import java.awt.event.WindowStateListener;
  */
 public class Starter {
     public void start(){
+        // 日志
+        LoggerManager.configLog();
+
         TranslatorFacade facade = new TranslatorFacade();
 
         // 1. 活动窗口监听线程 only for windows platform
@@ -37,6 +38,8 @@ public class Starter {
         activeWindowListenerThread.start();
         clipBoardListenerThread.start();
         mouseCopyThread.start();
+
+
     }
 
 }
