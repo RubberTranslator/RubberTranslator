@@ -7,6 +7,7 @@ import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerTh
 import com.rubbertranslator.modules.textinput.TextInputCollector;
 import com.rubbertranslator.modules.textinput.clipboard.ClipBoardListenerThread;
 import com.rubbertranslator.modules.textinput.mousecopy.MouseCopyThread;
+import com.rubbertranslator.modules.textpreprocessor.TextPreProcessor;
 
 /**
  * @author Raven
@@ -33,6 +34,7 @@ public class Starter {
 
         //4. 后续模块注入
         facade.setProcessFilter(processFilter);
+        facade.setTextPreProcessor(new TextPreProcessor());
 
         // 启动所有线程
         activeWindowListenerThread.start();
