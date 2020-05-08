@@ -10,7 +10,10 @@ import java.util.Set;
  * @version 1.0
  * @date 2020/5/7 12:48
  */
-public class ProcessFilter {
+public class ProcessFilter implements ActiveWindowListener{
+    // 当前进程名 TODO:是否违反单一职责？
+    private String currentProcess = "";
+
     // 过滤名单
     private final Set<String> filterList = new HashSet<>();
 
@@ -33,10 +36,15 @@ public class ProcessFilter {
 
     /**
      * 判定是否需要过滤
-     * @param currentProcess 当前进程名
-     * @return 是否需要过滤当前进程
+     * @return 是否需要过滤当前进程 true 过滤
+     *                           false 不过滤
      */
-    public boolean checkFilter(String currentProcess){
+    public boolean check(){
         return filterList.contains(currentProcess);
+    }
+
+    @Override
+    public void onActiveWindowChanged(String processName) {
+        currentProcess = processName;
     }
 }

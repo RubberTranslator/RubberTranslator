@@ -1,4 +1,4 @@
-package com.rubbertranslator.textread.clipboard.ocr;
+package com.rubbertranslator.textread.ocr;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,7 +1,5 @@
 package com.rubbertranslator.filter.activewindowfilter;
 
-import com.rubbertranslator.mediator.*;
-import com.rubbertranslator.mediator.Module;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef.HWND;
@@ -10,33 +8,30 @@ import com.sun.jna.ptr.PointerByReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WindowsPlatformActiveWindowListenerThread extends Thread implements MessageEntity<String> {
+public class WindowsPlatformActiveWindowListenerThread extends Thread{
     // 最长title长度
     private static final int MAX_TITLE_LENGTH = 1024;
-    // 中介
-    private final Mediator mediator = ThreadMediator.getInstance();
-    // 记录当前进程名
-    private String lastProcess;
     // 线程是否需要退出
     private volatile boolean stop = false;
-    // 进程过滤器
-    private ProcessFilter processFilter = new ProcessFilter();
+    // windowChange 监听器
+    private ActiveWindowListener activeWindowListener;
 
-    public WindowsPlatformActiveWindowListenerThread() {
-        // 注册中介
-        mediator.register(Module.FILTER_MODULE_ACTIVE_WINDOW_LISTENER, this);
+    public WindowsPlatformActiveWindowListenerThread(ActiveWindowListener listener) {
+        this.activeWindowListener = listener;
         // 注册需要过滤的进程 TODO: 添加过滤配置文件读取
-        processFilter.addFilter("idea64.exe");
         // 关闭logg
 //        Logger.getLogger(this.getClass().getName()).setLevel(Level.OFF);
+    }
+
+    public void setActiveWindowListener(ActiveWindowListener activeWindowListener) {
+        this.activeWindowListener = activeWindowListener;
     }
 
 
     @Override
     public void run() {
-        lastProcess = "none";
+        String lastProcess = "none";
         long lastChange = System.currentTimeMillis();
-
         while (!stop) {
             String currentProcess = getActiveWindowProcess();
             if (!lastProcess.equals(currentProcess)) {
@@ -44,7 +39,9 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread implements
                 long time = (change - lastChange) / 1000;
                 lastChange = change;
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, " lastProcess: " + lastProcess + " time: " + time + " seconds");
-                lastProcess = currentProcess;
+                if(activeWindowListener!=null){
+                    activeWindowListener.onActiveWindowChanged(lastProcess);
+                }
             }
             try {
                 // TODO:浪费CPU时间
@@ -68,34 +65,6 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread implements
         Pointer process = Kernel32.OpenProcess(Kernel32.PROCESS_QUERY_INFORMATION | Kernel32.PROCESS_VM_READ, false, pointer.getValue());
         Psapi.GetModuleBaseNameW(process, null, buffer, MAX_TITLE_LENGTH);
         return Native.toString(buffer);
-    }
-
-    /**
-     * 过滤进程
-     *
-     * @param msg 传递的消息
-     */
-    private void doFilter(String msg) {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO,lastProcess);
-        if (!processFilter.checkFilter(lastProcess)) {
-            sendMsg(msg);
-        }
-    }
-
-    @Override
-    public void receiveMsg(String msg) {
-        Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "拦截器接收到消息:"+msg);
-        // 收到消息，开始做过滤
-        doFilter(msg);
-    }
-
-    @Override
-    public void sendMsg(String msg) {
-        try {
-            mediator.passMessage(Module.FILTER_MODULE_ACTIVE_WINDOW_LISTENER, Module.TEXT_PRE_FORMATTER_MODULE, msg);
-        } catch (UnRegisterException e) {
-            e.printStackTrace();
-        }
     }
 
     static class Psapi {
