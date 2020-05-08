@@ -10,7 +10,7 @@ import java.io.IOException;
  * @date 2020/5/7 16:11
  * okhttp工具类
  */
-public class OkHttpUtils {
+public class OkHttpUtil {
 
     private static OkHttpClient client = new OkHttpClient.Builder().build();
 

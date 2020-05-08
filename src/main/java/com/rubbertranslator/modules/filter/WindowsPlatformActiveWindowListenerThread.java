@@ -33,8 +33,9 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread{
                 long change = System.currentTimeMillis();
                 long time = (change - lastChange) / 1000;
                 lastChange = change;
-                Logger.getLogger(this.getClass().getName()).info(" lastProcess: " + lastProcess + " time: " + time + " seconds");
+                lastProcess = currentProcess;
                 if(activeWindowListener!=null){
+                    Logger.getLogger(this.getClass().getName()).info(" lastProcess: " + lastProcess + " time: " + time + " seconds");
                     activeWindowListener.onActiveWindowChanged(lastProcess);
                 }
             }

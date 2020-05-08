@@ -6,7 +6,7 @@ import com.google.gson.JsonSyntaxException;
 
 import java.lang.reflect.Type;
 
-public class JsonUtils {
+public class JsonUtil {
 
     private static Gson mGson = new Gson();
 

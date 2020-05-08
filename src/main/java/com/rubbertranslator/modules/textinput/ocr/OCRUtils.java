@@ -1,8 +1,8 @@
 package com.rubbertranslator.modules.textinput.ocr;
 
 import com.rubbertranslator.test.Configuration;
-import com.rubbertranslator.utils.JsonUtils;
-import com.rubbertranslator.utils.OkHttpUtils;
+import com.rubbertranslator.utils.JsonUtil;
+import com.rubbertranslator.utils.OkHttpUtil;
 import okhttp3.*;
 
 import javax.imageio.ImageIO;
@@ -41,9 +41,9 @@ public class OCRUtils {
                 .add("access_token",token)
                 .add("image",convertToBase64Encode(image))
                 .build();
-        result = OkHttpUtils.syncPostRequest(ocrUrl,requestBody);
+        result = OkHttpUtil.syncPostRequest(ocrUrl,requestBody);
         if(result != null){
-            OCRResult ocrResult = JsonUtils.deserialize(result, OCRResult.class);
+            OCRResult ocrResult = JsonUtil.deserialize(result, OCRResult.class);
             if(ocrResult == null) result =null;
             else result = ocrResult.getCombinedWords();
         }
@@ -62,7 +62,7 @@ public class OCRUtils {
             String json = getToken();
             if(json == null) return null;
 
-            OCRTokenEntity tokenEntity = JsonUtils.deserialize(json, OCRTokenEntity.class);
+            OCRTokenEntity tokenEntity = JsonUtil.deserialize(json, OCRTokenEntity.class);
             if(tokenEntity == null) return null;
 
             cache = tokenEntity.getAccessToken();
@@ -79,7 +79,7 @@ public class OCRUtils {
                 .add("client_id",API_KEY)
                 .add("client_secret",SECRET_KEY)
                 .build();
-        result = OkHttpUtils.syncPostRequest(tokenUrl,requestBody);
+        result = OkHttpUtil.syncPostRequest(tokenUrl,requestBody);
         Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO,result);
         return result;
     }

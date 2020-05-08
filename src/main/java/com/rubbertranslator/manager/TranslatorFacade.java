@@ -2,11 +2,12 @@ package com.rubbertranslator.manager;
 
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.textpreprocessor.TextPreProcessor;
+import com.rubbertranslator.modules.translate.Translator;
+import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
+import com.rubbertranslator.modules.translate.TranslatorEngine;
 import org.jetbrains.annotations.NotNull;
-import org.jnativehook.GlobalScreen;
 
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
@@ -20,27 +21,30 @@ public class TranslatorFacade {
     private ProcessFilter processFilter;
     // 文本预处理器
     private TextPreProcessor textPreProcessor;
+    // 翻译模块
+    private Translator translator;
 
     public TranslatorFacade() {
+        textPreProcessor = new TextPreProcessor();
+        translator = new Translator();
     }
-
 
     public void setProcessFilter(@NotNull ProcessFilter processFilter) {
         this.processFilter = processFilter;
     }
 
 
-    public void setTextPreProcessor(@NotNull TextPreProcessor textPreProcessor) {
-        this.textPreProcessor = textPreProcessor;
-    }
-
-
     public void process(String text){
+        if(text == null || "".equals(text)) return;
+
+        String temp = text;
+        String translated;
         // 做一个判断检验
         // do translate works
         if(processFilter.check()) return;
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO,text);
-        text = textPreProcessor.process(text);
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO,"处理后："+text);
+        temp = textPreProcessor.process(text);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO,temp);
+        translated = translator.translate("en","zh",temp);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO,translated);
     }
 }

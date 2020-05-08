@@ -1,9 +1,7 @@
 package com.rubbertranslator.modules.filter;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -19,10 +17,10 @@ public class ProcessFilter implements ActiveWindowListener{
 
     /**
      * 添加过滤
-     * @param processNames 需要过滤的进程名字
+     * @param processName 需要过滤的进程名字
      */
-    public void addFilter(String ...processNames){
-        this.filterList.addAll(Arrays.asList(processNames));
+    public void addFilter(String processName) {
+        this.filterList.add(processName);
     }
 
     /**

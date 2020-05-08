@@ -21,10 +21,10 @@ public class Starter {
         LoggerManager.configLog();
 
         TranslatorFacade facade = new TranslatorFacade();
-
         // 1. 活动窗口监听线程 only for windows platform
 //        if(windows平台)
         ProcessFilter processFilter = new ProcessFilter();
+        processFilter.addFilter("idea64.exe");
         WindowsPlatformActiveWindowListenerThread activeWindowListenerThread = new WindowsPlatformActiveWindowListenerThread(processFilter);
         // 2. 剪切板状态监听线程
         TextInputCollector textInputCollector = new TextInputCollector(facade);
@@ -34,7 +34,6 @@ public class Starter {
 
         //4. 后续模块注入
         facade.setProcessFilter(processFilter);
-        facade.setTextPreProcessor(new TextPreProcessor());
 
         // 启动所有线程
         activeWindowListenerThread.start();
