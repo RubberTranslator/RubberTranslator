@@ -2,6 +2,7 @@ package com.rubbertranslator.modules.translate;
 
 import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.modules.translate.google.GoogleTranslator;
+import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +39,9 @@ public class TranslatorFactory {
             case BAIDU:
                 translatorEngineMap.put(TranslatorType.BAIDU,new BaiduTranslator());break;
             case GOOGLE:
-                //
                 translatorEngineMap.put(TranslatorType.GOOGLE,new GoogleTranslator());break;
+            case YOUDAO:
+                translatorEngineMap.put(TranslatorType.YOUDAO,new YoudaoTranslator());break;
         }
     }
 

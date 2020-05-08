@@ -1,6 +1,7 @@
 package com.rubbertranslator.utils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -10,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  * @author wangjingtao
  * 
  */
-public class MD5Util {
+public class DigestUtil {
     // 首先初始化一个字符数组，用来存放每个16进制字符
     private static final char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
             'e', 'f' };
@@ -30,23 +31,23 @@ public class MD5Util {
             // 拿到一个MD5转换器（如果想要SHA1参数换成”SHA1”）
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             // 输入的字符串转换成字节数组
-            byte[] inputByteArray = input.getBytes("utf-8");
+            byte[] inputByteArray = input.getBytes(StandardCharsets.UTF_8);
             // inputByteArray是输入字符串转换得到的字节数组
             messageDigest.update(inputByteArray);
             // 转换并返回结果，也是字节数组，包含16个元素
             byte[] resultByteArray = messageDigest.digest();
             // 字符数组转换成字符串返回
             return byteArrayToHex(resultByteArray);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException e) {
             return null;
         }
     }
 
     /**
      * 获取文件的MD5值
-     * 
-     * @param file
-     * @return
+     *
+     * @param file 文件
+     * @return md5
      */
     public static String md5(File file) {
         try {
@@ -63,8 +64,6 @@ public class MD5Util {
 
             return result;
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,29 +72,18 @@ public class MD5Util {
     }
 
     public static String md5(InputStream in) {
-
         try {
             MessageDigest messagedigest = MessageDigest.getInstance("MD5");
-
             byte[] buffer = new byte[1024];
-            int read = 0;
+            int read;
             while ((read = in.read(buffer)) != -1) {
                 messagedigest.update(buffer, 0, read);
             }
-
             in.close();
-
-            String result = byteArrayToHex(messagedigest.digest());
-
-            return result;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            return byteArrayToHex(messagedigest.digest());
+        } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -112,6 +100,31 @@ public class MD5Util {
         // 字符数组组合成字符串返回
         return new String(resultCharArray);
 
+    }
+
+    /**
+     * 生成加密字段
+     */
+    public static String sha256(String string) {
+        if (string == null) {
+            return null;
+        }
+        byte[] btInput = string.getBytes(StandardCharsets.UTF_8);
+        try {
+            MessageDigest mdInst = MessageDigest.getInstance("SHA-256");
+            mdInst.update(btInput);
+            byte[] md = mdInst.digest();
+            int j = md.length;
+            char[] str = new char[j * 2];
+            int k = 0;
+            for (byte byte0 : md) {
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(str);
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
     }
 
 }

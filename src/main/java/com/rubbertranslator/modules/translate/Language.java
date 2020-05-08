@@ -1,5 +1,10 @@
 package com.rubbertranslator.modules.translate;
 
+/**
+ * TODO: 下一步，语言映射表：
+ * 由于每种翻译引擎采用的语言映名称不同，所以每个语言单独维护语言表
+ * 然后翻译模块向外提供一个公共的语言类型枚举即可
+ */
 public class Language {
 	public static String AUTO_DETECT = "auto";
 	public static String AFRIKAANS = "af";
@@ -16,7 +21,7 @@ public class Language {
 	public static String CATALAN = "ca";
 	public static String CEBUANO = "ceb";
 	public static String CHICHEWA = "ny";
-	public static String CHINESE_SIMPLIFIED = "zh";
+	public static String CHINESE_SIMPLIFIED = "zh-CHS";
 	public static String CHINESE_TRADITIONAL = "zh-TW";
 	public static String CORSICAN = "co";
 	public static String CROATIAN = "hr";

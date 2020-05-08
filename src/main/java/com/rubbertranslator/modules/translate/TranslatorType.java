@@ -8,5 +8,6 @@ package com.rubbertranslator.modules.translate;
  */
 public enum TranslatorType {
     BAIDU,
-    GOOGLE
+    GOOGLE,
+    YOUDAO
 }

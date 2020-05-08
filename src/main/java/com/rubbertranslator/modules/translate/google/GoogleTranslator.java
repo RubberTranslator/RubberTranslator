@@ -2,7 +2,10 @@ package com.rubbertranslator.modules.translate.google;
 
 import com.rubbertranslator.modules.translate.ITranslator;
 import com.rubbertranslator.utils.OkHttpUtil;
+import okhttp3.FormBody;
 import okhttp3.Request;
+import okhttp3.RequestBody;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;

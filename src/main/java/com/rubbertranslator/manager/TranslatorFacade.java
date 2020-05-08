@@ -28,7 +28,7 @@ public class TranslatorFacade {
     public TranslatorFacade() {
         textPreProcessor = new TextPreProcessor();
         translator = new TranslatorFactory();
-        translator.setEngineType(TranslatorType.GOOGLE);
+        translator.setEngineType(TranslatorType.YOUDAO);
     }
 
     public void setProcessFilter(@NotNull ProcessFilter processFilter) {
