@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class BaiduTranslateResult{
+public class BaiduTranslationResult {
 	@SerializedName("error_code")
 	private Integer errorCode;
 

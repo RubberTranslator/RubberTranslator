@@ -27,10 +27,14 @@ public class OkHttpUtil {
      * @throws IOException
      */
     public static String syncPostRequest(String url, RequestBody requestBody) throws IOException {
-        String result = null;
         Request request = new Request.Builder()
                 .url(url).post(requestBody).build();
         // 同步
+        return syncRequest(request);
+    }
+
+    public static String syncRequest(Request request) throws IOException {
+        String result = null;
         Response response = client.newCall(request).execute();
         ResponseBody responseBody = response.body();
         if(response.isSuccessful() && responseBody!=null){

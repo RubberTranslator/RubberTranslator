@@ -2,9 +2,10 @@ package com.rubbertranslator.manager;
 
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.textpreprocessor.TextPreProcessor;
-import com.rubbertranslator.modules.translate.Translator;
-import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
-import com.rubbertranslator.modules.translate.TranslatorEngine;
+import com.rubbertranslator.modules.translate.Language;
+import com.rubbertranslator.modules.translate.TranslatorFactory;
+import com.rubbertranslator.modules.translate.TranslatorType;
+import org.apache.commons.codec.language.bm.Lang;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
@@ -22,11 +23,12 @@ public class TranslatorFacade {
     // 文本预处理器
     private TextPreProcessor textPreProcessor;
     // 翻译模块
-    private Translator translator;
+    private TranslatorFactory translator;
 
     public TranslatorFacade() {
         textPreProcessor = new TextPreProcessor();
-        translator = new Translator();
+        translator = new TranslatorFactory();
+        translator.setEngineType(TranslatorType.GOOGLE);
     }
 
     public void setProcessFilter(@NotNull ProcessFilter processFilter) {
@@ -44,7 +46,7 @@ public class TranslatorFacade {
         if(processFilter.check()) return;
         temp = textPreProcessor.process(text);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO,temp);
-        translated = translator.translate("en","zh",temp);
+        translated = translator.translate(Language.ENGLISH,Language.CHINESE_SIMPLIFIED,temp);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO,translated);
     }
 }

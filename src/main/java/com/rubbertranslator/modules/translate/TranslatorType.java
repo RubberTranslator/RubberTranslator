@@ -6,7 +6,7 @@ package com.rubbertranslator.modules.translate;
  * @date 2020/5/8 15:25
  * 翻译引擎类型
  */
-public enum TranslatorEngineType {
+public enum TranslatorType {
     BAIDU,
     GOOGLE
 }

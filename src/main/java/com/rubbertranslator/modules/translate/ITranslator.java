@@ -6,7 +6,7 @@ package com.rubbertranslator.modules.translate;
  * @date 2020/5/8 13:52
  * 所有的实际翻译引擎都应该实现这个接口
  */
-public interface TranslatorEngine {
+public interface ITranslator {
     /**
      * 翻译
      * @param source 源语言

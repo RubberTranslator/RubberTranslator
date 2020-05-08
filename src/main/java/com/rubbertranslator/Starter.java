@@ -24,7 +24,6 @@ public class Starter {
         // 1. 活动窗口监听线程 only for windows platform
 //        if(windows平台)
         ProcessFilter processFilter = new ProcessFilter();
-        processFilter.addFilter("idea64.exe");
         WindowsPlatformActiveWindowListenerThread activeWindowListenerThread = new WindowsPlatformActiveWindowListenerThread(processFilter);
         // 2. 剪切板状态监听线程
         TextInputCollector textInputCollector = new TextInputCollector(facade);

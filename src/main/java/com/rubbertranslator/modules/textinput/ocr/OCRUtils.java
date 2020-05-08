@@ -21,8 +21,8 @@ import java.util.logging.Logger;
  */
 public class OCRUtils {
     //TODO: 改用配置文件
-    private static final String API_KEY = Configuration.API_KEY;
-    private static final String SECRET_KEY = Configuration.SECRET_KEY;
+    private static final String API_KEY = Configuration.OCR_API_KEY;
+    private static final String SECRET_KEY = Configuration.OCR_SECRET_KEY;
     private static String token = null;
 
     /**

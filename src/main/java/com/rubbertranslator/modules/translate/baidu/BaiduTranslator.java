@@ -1,6 +1,6 @@
 package com.rubbertranslator.modules.translate.baidu;
 
-import com.rubbertranslator.modules.translate.TranslatorEngine;
+import com.rubbertranslator.modules.translate.ITranslator;
 import com.rubbertranslator.test.Configuration;
 import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.MD5Util;
@@ -9,6 +9,7 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * @date 2020/5/8 14:37
  */
-public class BaiduTranslator implements TranslatorEngine {
+public class BaiduTranslator implements ITranslator {
     private final String URL = "https://fanyi-api.baidu.com/api/trans/vip/translate";
     private final String APP_ID = Configuration.BAIDU_TRANSLATE_API_KEY;
     private final String SECRETE_KEY = Configuration.BAIDU_TRANSLATE_SECRET_KEY;
@@ -31,19 +32,22 @@ public class BaiduTranslator implements TranslatorEngine {
      */
     @Override
     public String translate(String source, String dest, String text) {
+        // 百度中文特殊处理
         String translatedText = null;
         try {
-            BaiduTranslateResult baiduTranslateResult = doTranslate(source,dest,text);
+            BaiduTranslationResult baiduTranslateResult = doTranslate(source,dest,text);
             if(baiduTranslateResult != null){
                 translatedText = formatTranslatedText(baiduTranslateResult);
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,e.getMessage(),e);
         }
+        Logger.getLogger(this.getClass().getName()).info("Baidu："+translatedText);
         return translatedText;
     }
 
-    private BaiduTranslateResult doTranslate(String source, String dest, String text) throws IOException {
+    private BaiduTranslationResult doTranslate(String source, String dest, String text) throws IOException {
         // 随机数
         String salt = String.valueOf(System.currentTimeMillis());
         // 加密前的原文
@@ -60,7 +64,7 @@ public class BaiduTranslator implements TranslatorEngine {
                 .build();
         String json = OkHttpUtil.syncPostRequest(URL,requestBody);
         Logger.getLogger(this.getClass().getName()).info(json);
-        BaiduTranslateResult deserialize = JsonUtil.deserialize(json, BaiduTranslateResult.class);
+        BaiduTranslationResult deserialize = JsonUtil.deserialize(json, BaiduTranslationResult.class);
         if(deserialize.getErrorCode() == null){
             return deserialize;
         }else{
@@ -73,11 +77,21 @@ public class BaiduTranslator implements TranslatorEngine {
      * @param result 最终的翻译文本
      * @return
      */
-    private String formatTranslatedText(BaiduTranslateResult result){
+    private String formatTranslatedText(BaiduTranslationResult result){
         StringBuilder sb = new StringBuilder();
-        for(BaiduTranslateResult.TransResultItem item : result.getTransResult()){
+        for(BaiduTranslationResult.TransResultItem item : result.getTransResult()){
             sb.append(item.getDst()).append("\n");
         }
         return sb.toString();
+    }
+
+
+
+    private String zhCNReplace(String langCode){
+        // 百度翻译中文code和其它的不同，手动替换
+        if("zh-CN".equals(langCode)){
+            langCode = "zh";
+        }
+        return langCode;
     }
 }
