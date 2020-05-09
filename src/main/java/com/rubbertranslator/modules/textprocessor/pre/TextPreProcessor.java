@@ -19,7 +19,7 @@ public class TextPreProcessor {
      * @param tryToKeepParagraph 尽量保持段落？ true 保持
      *                           false 不保持
      */
-    public void tryToKeepParagraph(boolean tryToKeepParagraph) {
+    public void setTryToKeepParagraph(boolean tryToKeepParagraph) {
         this.tryToKeepParagraph = tryToKeepParagraph;
     }
 

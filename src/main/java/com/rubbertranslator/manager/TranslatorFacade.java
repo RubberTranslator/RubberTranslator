@@ -1,6 +1,7 @@
 package com.rubbertranslator.manager;
 
 import com.rubbertranslator.modules.filter.ProcessFilter;
+import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
 import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
@@ -23,11 +24,19 @@ public class TranslatorFacade {
     private TextPreProcessor textPreProcessor;
     // 翻译模块
     private TranslatorFactory translator;
+    // 后置文本处理器
+    private TextPostProcessor textPostProcessor;
 
     public TranslatorFacade() {
         textPreProcessor = new TextPreProcessor();
         translator = new TranslatorFactory();
+        textPostProcessor = new TextPostProcessor();
+
+        textPreProcessor.setTryToKeepParagraph(true);
         translator.setEngineType(TranslatorType.BAIDU);
+        textPostProcessor.setOpen(true);
+
+        textPostProcessor.getReplacer().setCaseInsensitive(false);
     }
 
     public void setProcessFilter(@NotNull ProcessFilter processFilter) {
@@ -44,8 +53,10 @@ public class TranslatorFacade {
         // do translate works
         if (processFilter.check()) return;
         temp = textPreProcessor.process(text);
+        temp = translator.translate(Language.ENGLISH, Language.CHINESE_SIMPLIFIED, temp);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, temp);
-        translated = translator.translate(Language.ENGLISH, Language.CHINESE_SIMPLIFIED, temp);
+        // 后置处理
+        translated = textPostProcessor.process(temp);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, translated);
     }
 }
