@@ -5,7 +5,6 @@ import com.rubbertranslator.modules.textpreprocessor.TextPreProcessor;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
 import com.rubbertranslator.modules.translate.TranslatorType;
-import org.apache.commons.codec.language.bm.Lang;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
@@ -28,7 +27,7 @@ public class TranslatorFacade {
     public TranslatorFacade() {
         textPreProcessor = new TextPreProcessor();
         translator = new TranslatorFactory();
-        translator.setEngineType(TranslatorType.YOUDAO);
+        translator.setEngineType(TranslatorType.BAIDU);
     }
 
     public void setProcessFilter(@NotNull ProcessFilter processFilter) {
@@ -46,7 +45,7 @@ public class TranslatorFacade {
         if(processFilter.check()) return;
         temp = textPreProcessor.process(text);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO,temp);
-        translated = translator.translate(Language.ENGLISH,Language.CHINESE_SIMPLIFIED,temp);
+        translated = translator.translate(Language.ENGLISH,Language.CHINESE_TRADITIONAL,temp);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO,translated);
     }
 }

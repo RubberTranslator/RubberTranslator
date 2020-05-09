@@ -1,6 +1,7 @@
 package com.rubbertranslator.modules.translate.baidu;
 
-import com.rubbertranslator.modules.translate.ITranslator;
+import com.rubbertranslator.modules.translate.AbstractTranslator;
+import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.test.Configuration;
 import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.DigestUtil;
@@ -17,7 +18,19 @@ import java.util.logging.Logger;
  * @version 1.0
  * @date 2020/5/8 14:37
  */
-public class BaiduTranslator implements ITranslator {
+public class BaiduTranslator extends AbstractTranslator {
+
+    // https://gss0.bdstatic.com/70cFfyinKgQIm2_p8IuM_a/daf/pic/item/91ef76c6a7efce1b1fde01aca051f3deb58f65db.jpg
+    @Override
+    public void addLanguageMap() {
+        langMap.put(Language.AUTO,"auto");
+        langMap.put(Language.CHINESE_SIMPLIFIED,"zh");
+        langMap.put(Language.CHINESE_TRADITIONAL,"cht");
+        langMap.put(Language.ENGLISH,"en");
+        langMap.put(Language.FRENCH,"fra");
+        langMap.put(Language.JAPANESE,"jp");
+    }
+
     /**
      * baidu翻译
      * @param source 源语言
@@ -27,11 +40,12 @@ public class BaiduTranslator implements ITranslator {
      *         翻译后的文本
      */
     @Override
-    public String translate(String source, String dest, String text) {
+    public String translate(Language source, Language dest, String text) {
         // 百度中文特殊处理
         String translatedText = null;
         try {
-            BaiduTranslationResult baiduTranslateResult = doTranslate(source,dest,text);
+            BaiduTranslationResult baiduTranslateResult = doTranslate(
+                    langMap.get(source), langMap.get(dest),text);
             if(baiduTranslateResult != null){
                 translatedText = mergeTranslatedText(baiduTranslateResult);
             }

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class TranslatorFactory {
 
-    private final Map<TranslatorType, ITranslator> translatorEngineMap = new HashMap<>();
+    private final Map<TranslatorType, AbstractTranslator> translatorEngineMap = new HashMap<>();
 
     private TranslatorType engineType = TranslatorType.GOOGLE;
 
@@ -24,11 +24,11 @@ public class TranslatorFactory {
         engineType = type;
     }
 
-    public String translate(String source, String dest, String text){
+    public String translate(Language source, Language dest, String text){
         if(!translatorEngineMap.containsKey(engineType)){
             instanceTranslatorEngine(engineType);
         }
-        ITranslator translatorEngine = translatorEngineMap.get(engineType);
+        AbstractTranslator translatorEngine = translatorEngineMap.get(engineType);
         return translatorEngine.translate(source,dest,text);
     }
 

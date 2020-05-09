@@ -1,10 +1,9 @@
 package com.rubbertranslator.modules.translate.google;
 
-import com.rubbertranslator.modules.translate.ITranslator;
+import com.rubbertranslator.modules.translate.AbstractTranslator;
+import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.utils.OkHttpUtil;
-import okhttp3.FormBody;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -19,10 +18,21 @@ import java.util.regex.Pattern;
  * @version 1.0
  * @date 2020/5/8 17:17
  */
-public class GoogleTranslator implements ITranslator {
+public class GoogleTranslator extends AbstractTranslator {
 
     // 采用正则表达式从html中抽取翻译结果--可能会失效
     private final Pattern translationPattern = Pattern.compile("<div dir=\"ltr\" class=\"t0\">(.*?)</div>");
+
+    //https://translate.google.com/m?sl=auto&tl=zh-TW&hl=en&mui=tl
+    @Override
+    public void addLanguageMap() {
+        langMap.put(Language.AUTO,"auto");
+        langMap.put(Language.CHINESE_SIMPLIFIED,"zh-CH");
+        langMap.put(Language.CHINESE_TRADITIONAL,"zh-TW");
+        langMap.put(Language.ENGLISH,"en");
+        langMap.put(Language.FRENCH,"fr");
+        langMap.put(Language.JAPANESE,"ja");
+    }
 
     /**
      *
@@ -32,10 +42,10 @@ public class GoogleTranslator implements ITranslator {
      * @return
      */
     @Override
-    public String translate(String source, String dest, String text) {
+    public String translate(Language source, Language dest, String text) {
         String translatedText = null;
         try {
-            String html = doTranslate(source,dest,text);
+            String html = doTranslate(langMap.get(source), langMap.get(dest),text);
             Logger.getLogger(this.getClass().getName()).info(html);
             if(html != null){
                 translatedText = extractTranslation(html);
