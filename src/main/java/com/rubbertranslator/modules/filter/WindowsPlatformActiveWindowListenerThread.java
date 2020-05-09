@@ -1,4 +1,5 @@
 package com.rubbertranslator.modules.filter;
+
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef.HWND;
@@ -6,7 +7,7 @@ import com.sun.jna.ptr.PointerByReference;
 
 import java.util.logging.Logger;
 
-public class WindowsPlatformActiveWindowListenerThread extends Thread{
+public class WindowsPlatformActiveWindowListenerThread extends Thread {
     // 最长title长度
     private static final int MAX_TITLE_LENGTH = 1024;
     // 线程是否需要退出
@@ -34,13 +35,13 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread{
                 long time = (change - lastChange) / 1000;
                 lastChange = change;
                 lastProcess = currentProcess;
-                if(activeWindowListener!=null){
+                if (activeWindowListener != null) {
                     Logger.getLogger(this.getClass().getName()).info(" lastProcess: " + lastProcess + " time: " + time + " seconds");
                     activeWindowListener.onActiveWindowChanged(lastProcess);
                 }
             }
             try {
-                // TODO:浪费CPU时间
+                // XXX:浪费CPU时间
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());

@@ -1,4 +1,4 @@
-package com.rubbertranslator.modules.textpreprocessor;
+package com.rubbertranslator.modules.textprocessor.pre;
 
 /**
  * @author Raven
@@ -15,8 +15,9 @@ public class TextPreProcessor {
 
     /**
      * 设置是否需要保持段落格式
+     *
      * @param tryToKeepParagraph 尽量保持段落？ true 保持
-     *                                         false 不保持
+     *                           false 不保持
      */
     public void tryToKeepParagraph(boolean tryToKeepParagraph) {
         this.tryToKeepParagraph = tryToKeepParagraph;

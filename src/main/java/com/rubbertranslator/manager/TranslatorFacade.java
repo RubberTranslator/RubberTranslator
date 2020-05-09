@@ -1,7 +1,7 @@
 package com.rubbertranslator.manager;
 
 import com.rubbertranslator.modules.filter.ProcessFilter;
-import com.rubbertranslator.modules.textpreprocessor.TextPreProcessor;
+import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
 import com.rubbertranslator.modules.translate.TranslatorType;
@@ -35,17 +35,17 @@ public class TranslatorFacade {
     }
 
 
-    public void process(String text){
-        if(text == null || "".equals(text)) return;
+    public void process(String text) {
+        if (text == null || "".equals(text)) return;
 
         String temp = text;
         String translated;
         // 做一个判断检验
         // do translate works
-        if(processFilter.check()) return;
+        if (processFilter.check()) return;
         temp = textPreProcessor.process(text);
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO,temp);
-        translated = translator.translate(Language.ENGLISH,Language.CHINESE_TRADITIONAL,temp);
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO,translated);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, temp);
+        translated = translator.translate(Language.ENGLISH, Language.CHINESE_SIMPLIFIED, temp);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, translated);
     }
 }

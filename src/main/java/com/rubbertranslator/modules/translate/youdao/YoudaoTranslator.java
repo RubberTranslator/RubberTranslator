@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author Raven
  * @version 1.0
  * @date 2020/5/8 19:43
- * TODO: 考虑一下公共有道翻译接口（爬虫或者旧式翻译接口）
+ * hack: 考虑一下公共有道翻译接口（爬虫或者旧式翻译接口）
  * 旧式接口：http://fanyi.youdao.com/openapi.do?keyfrom=xinlei&key=759115437&type=data&doctype=json&version=1.1&q=Byte-addressable
  */
 public class YoudaoTranslator extends AbstractTranslator {
@@ -25,12 +25,12 @@ public class YoudaoTranslator extends AbstractTranslator {
     //http://ai.youdao.com/DOCSIRMA/html/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%BF%BB%E8%AF%91/API%E6%96%87%E6%A1%A3/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1-API%E6%96%87%E6%A1%A3.html
     @Override
     public void addLanguageMap() {
-        langMap.put(Language.AUTO,"auto");
-        langMap.put(Language.CHINESE_SIMPLIFIED,"zh-CHS");
-        langMap.put(Language.CHINESE_TRADITIONAL,"zh-CHT");
-        langMap.put(Language.ENGLISH,"en");
-        langMap.put(Language.FRENCH,"fr");
-        langMap.put(Language.JAPANESE,"ja");
+        langMap.put(Language.AUTO, "auto");
+        langMap.put(Language.CHINESE_SIMPLIFIED, "zh-CHS");
+        langMap.put(Language.CHINESE_TRADITIONAL, "zh-CHT");
+        langMap.put(Language.ENGLISH, "en");
+        langMap.put(Language.FRENCH, "fr");
+        langMap.put(Language.JAPANESE, "ja");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class YoudaoTranslator extends AbstractTranslator {
         try {
             YoudaoTranslationResult translationResult = doTranslate(
                     langMap.get(source), langMap.get(dest), text);
-            if(translationResult != null){
+            if (translationResult != null) {
                 translatedText = mergeTranslatedText(translationResult);
             }
         } catch (IOException e) {
@@ -60,40 +60,41 @@ public class YoudaoTranslator extends AbstractTranslator {
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("from", source)
-                .add("to",dest)
-                .add("signType","v3")
-                .add("curtime",curtime)
+                .add("to", dest)
+                .add("signType", "v3")
+                .add("curtime", curtime)
                 .add("appKey", APP_KEY)
                 .add("q", text)
                 .add("salt", salt)
-                .add("sign",sign)
+                .add("sign", sign)
                 .build();
 
         String URL = "https://openapi.youdao.com/api";
-        String json = OkHttpUtil.syncPostRequest(URL,requestBody);
+        String json = OkHttpUtil.syncPostRequest(URL, requestBody);
         Logger.getLogger(this.getClass().getName()).info(json);
         YoudaoTranslationResult deserialize = JsonUtil.deserialize(json, YoudaoTranslationResult.class);
-        if("0".equals(deserialize.getErrorCode())){
+        if ("0".equals(deserialize.getErrorCode())) {
             return deserialize;
-        }else{
+        } else {
             return null;
         }
     }
 
     /**
      * 合并翻译后的文本
+     *
      * @param result 有道翻译结果对应
-     * @return  合并后的文本
+     * @return 合并后的文本
      */
-    private String mergeTranslatedText(YoudaoTranslationResult result){
+    private String mergeTranslatedText(YoudaoTranslationResult result) {
         StringBuilder sb = new StringBuilder();
-        for(String item : result.getTranslation()){
+        for (String item : result.getTranslation()) {
             sb.append(item).append("\n");
         }
         return sb.toString();
     }
 
-    private  String truncate(String q) {
+    private String truncate(String q) {
         if (q == null) {
             return null;
         }

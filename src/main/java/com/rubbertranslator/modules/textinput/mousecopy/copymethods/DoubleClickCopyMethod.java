@@ -8,7 +8,7 @@ import org.jnativehook.mouse.NativeMouseEvent;
  * @date 2020/4/27 17:35
  * 快速双击触发copy
  */
-public class DoubleClickCopyMethod extends CopyMethod{
+public class DoubleClickCopyMethod extends CopyMethod {
 
     /* 时间间隔 单位ms*/
     private long threshold;
@@ -40,28 +40,30 @@ public class DoubleClickCopyMethod extends CopyMethod{
         clickTimeArrIdx = (++clickTimeArrIdx) & 1;
         clickTimeRecord[clickTimeArrIdx] = System.currentTimeMillis();
         // tryCopy
-        if(tryCopy()){
+        if (tryCopy()) {
             isProcessed = true;
         }
     }
 
     /**
      * try to copy
+     *
      * @return true if copy success
-     *         false if copy failed
+     * false if copy failed
      */
-    private boolean tryCopy(){
+    private boolean tryCopy() {
         long interval = getClickInterval();
-        if(interval < threshold){
+        if (interval < threshold) {
             copyerRobot.triggerCopy();
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     /**
      * 计算双击鼠标之间的间隔
+     *
      * @return
      */
     public long getClickInterval() {

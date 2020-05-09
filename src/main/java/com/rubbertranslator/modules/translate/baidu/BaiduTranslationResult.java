@@ -5,72 +5,73 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class BaiduTranslationResult {
-	@SerializedName("error_code")
-	private Integer errorCode;
+    @SerializedName("error_code")
+    private Integer errorCode;
 
-	@SerializedName("Invalid Access Limit")
-	private String errorMsg;
+    @SerializedName("Invalid Access Limit")
+    private String errorMsg;
 
-	@SerializedName("trans_result")
-	private List<TransResultItem> transResult;
+    @SerializedName("trans_result")
+    private List<TransResultItem> transResult;
 
-	@SerializedName("from")
-	private String from;
+    @SerializedName("from")
+    private String from;
 
-	@SerializedName("to")
-	private String to;
-	public List<TransResultItem> getTransResult(){
-		return transResult;
-	}
+    @SerializedName("to")
+    private String to;
 
-	public Integer getErrorCode() {
-		return errorCode;
-	}
+    public List<TransResultItem> getTransResult() {
+        return transResult;
+    }
 
-	public String getErrorMsg() {
-		return errorMsg;
-	}
+    public Integer getErrorCode() {
+        return errorCode;
+    }
 
-	public String getFrom(){
-		return from;
-	}
+    public String getErrorMsg() {
+        return errorMsg;
+    }
 
-	public String getTo(){
-		return to;
-	}
+    public String getFrom() {
+        return from;
+    }
 
-	@Override
-	public String toString() {
-		return "BaiduTranslateResult{" +
-				"transResult=" + transResult +
-				", from='" + from + '\'' +
-				", to='" + to + '\'' +
-				'}';
-	}
+    public String getTo() {
+        return to;
+    }
 
-	public static class TransResultItem{
-		@SerializedName("dst")
-		private String dst;
+    @Override
+    public String toString() {
+        return "BaiduTranslateResult{" +
+                "transResult=" + transResult +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                '}';
+    }
 
-		@SerializedName("src")
-		private String src;
+    public static class TransResultItem {
+        @SerializedName("dst")
+        private String dst;
+
+        @SerializedName("src")
+        private String src;
 
 
-		public String getDst(){
-			return dst;
-		}
+        public String getDst() {
+            return dst;
+        }
 
-		public String getSrc(){
-			return src;
-		}
+        public String getSrc() {
+            return src;
+        }
 
-		@Override
-		public String toString() {
-			return "TransResultItem{" +
-					"dst='" + dst + '\'' +
-					", src='" + src + '\'' +
-					'}';
-		}
-	}
+        @Override
+        public String toString() {
+            return "TransResultItem{" +
+                    "dst='" + dst + '\'' +
+                    ", src='" + src + '\'' +
+                    '}';
+        }
+    }
 
 }

@@ -3,8 +3,8 @@ package com.rubbertranslator.modules.translate.baidu;
 import com.rubbertranslator.modules.translate.AbstractTranslator;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.test.Configuration;
-import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.DigestUtil;
+import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -23,21 +23,22 @@ public class BaiduTranslator extends AbstractTranslator {
     // https://gss0.bdstatic.com/70cFfyinKgQIm2_p8IuM_a/daf/pic/item/91ef76c6a7efce1b1fde01aca051f3deb58f65db.jpg
     @Override
     public void addLanguageMap() {
-        langMap.put(Language.AUTO,"auto");
-        langMap.put(Language.CHINESE_SIMPLIFIED,"zh");
-        langMap.put(Language.CHINESE_TRADITIONAL,"cht");
-        langMap.put(Language.ENGLISH,"en");
-        langMap.put(Language.FRENCH,"fra");
-        langMap.put(Language.JAPANESE,"jp");
+        langMap.put(Language.AUTO, "auto");
+        langMap.put(Language.CHINESE_SIMPLIFIED, "zh");
+        langMap.put(Language.CHINESE_TRADITIONAL, "cht");
+        langMap.put(Language.ENGLISH, "en");
+        langMap.put(Language.FRENCH, "fra");
+        langMap.put(Language.JAPANESE, "jp");
     }
 
     /**
      * baidu翻译
+     *
      * @param source 源语言
-     * @param dest 目标语言
-     * @param text 需要翻译的文本
+     * @param dest   目标语言
+     * @param text   需要翻译的文本
      * @return null，如果翻译不成功
-     *         翻译后的文本
+     * 翻译后的文本
      */
     @Override
     public String translate(Language source, Language dest, String text) {
@@ -45,15 +46,15 @@ public class BaiduTranslator extends AbstractTranslator {
         String translatedText = null;
         try {
             BaiduTranslationResult baiduTranslateResult = doTranslate(
-                    langMap.get(source), langMap.get(dest),text);
-            if(baiduTranslateResult != null){
+                    langMap.get(source), langMap.get(dest), text);
+            if (baiduTranslateResult != null) {
                 translatedText = mergeTranslatedText(baiduTranslateResult);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,e.getMessage(),e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
         }
-        Logger.getLogger(this.getClass().getName()).info("Baidu："+translatedText);
+        Logger.getLogger(this.getClass().getName()).info("Baidu：" + translatedText);
         return translatedText;
     }
 
@@ -69,30 +70,31 @@ public class BaiduTranslator extends AbstractTranslator {
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("q", text)
-                .add("from",source)
-                .add("to",dest)
+                .add("from", source)
+                .add("to", dest)
                 .add("appid", APP_ID)
-                .add("salt",salt)
-                .add("sign",sign)
+                .add("salt", salt)
+                .add("sign", sign)
                 .build();
-        String json = OkHttpUtil.syncPostRequest(URL,requestBody);
+        String json = OkHttpUtil.syncPostRequest(URL, requestBody);
         Logger.getLogger(this.getClass().getName()).info(json);
         BaiduTranslationResult deserialize = JsonUtil.deserialize(json, BaiduTranslationResult.class);
-        if(deserialize != null && deserialize.getErrorCode() == null){
+        if (deserialize != null && deserialize.getErrorCode() == null) {
             return deserialize;
-        }else{
+        } else {
             return null;
         }
     }
 
     /**
      * 合并翻译后的文本
+     *
      * @param result 百度翻译结果对应
-     * @return  合并后的文本
+     * @return 合并后的文本
      */
-    private String mergeTranslatedText(BaiduTranslationResult result){
+    private String mergeTranslatedText(BaiduTranslationResult result) {
         StringBuilder sb = new StringBuilder();
-        for(BaiduTranslationResult.TransResultItem item : result.getTransResult()){
+        for (BaiduTranslationResult.TransResultItem item : result.getTransResult()) {
             sb.append(item.getDst()).append("\n");
         }
         return sb.toString();

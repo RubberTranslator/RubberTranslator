@@ -7,7 +7,6 @@ import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerTh
 import com.rubbertranslator.modules.textinput.TextInputCollector;
 import com.rubbertranslator.modules.textinput.clipboard.ClipBoardListenerThread;
 import com.rubbertranslator.modules.textinput.mousecopy.MouseCopyThread;
-import com.rubbertranslator.modules.textpreprocessor.TextPreProcessor;
 
 /**
  * @author Raven
@@ -16,7 +15,7 @@ import com.rubbertranslator.modules.textpreprocessor.TextPreProcessor;
  * 启动所有线程，初始化所有组件
  */
 public class Starter {
-    public void start(){
+    public void start() {
         // 日志
         LoggerManager.configLog();
 

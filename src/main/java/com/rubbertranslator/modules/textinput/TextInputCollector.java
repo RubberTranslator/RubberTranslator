@@ -16,8 +16,8 @@ import java.util.logging.Logger;
  * 1. 监听剪切板新内容
  * 2. 用户从UI输入
  */
-public class TextInputCollector implements TextInputListener{
-    //TODO: 是否需要加入输入队列，然后加入翻译完成判断回调？都采用同步请求，似乎又没有必要
+public class TextInputCollector implements TextInputListener {
+    //xxx: 是否需要加入输入队列，然后加入翻译完成判断回调？都采用同步请求，似乎又没有必要
     private TranslatorFacade facade;
 
     public TextInputCollector(TranslatorFacade facade) {
@@ -30,7 +30,7 @@ public class TextInputCollector implements TextInputListener{
 
     @Override
     public void onTextInput(String text) {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO,text);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, text);
         facade.process(text);
     }
 
@@ -41,7 +41,7 @@ public class TextInputCollector implements TextInputListener{
             facade.process(text);
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,e.getMessage(),e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
         }
     }
 }

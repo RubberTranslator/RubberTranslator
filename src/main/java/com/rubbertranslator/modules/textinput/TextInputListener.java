@@ -10,12 +10,14 @@ import java.awt.*;
 public interface TextInputListener {
     /**
      * 文本输入时
+     *
      * @param text 输入的文本
      */
     void onTextInput(String text);
 
     /**
      * 图片输入时
+     *
      * @param image 输入的图像
      */
     void onImageInput(Image image);

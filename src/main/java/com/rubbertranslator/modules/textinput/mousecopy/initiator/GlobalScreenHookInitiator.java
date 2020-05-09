@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * @date 2020/5/6 13:01
  */
 public class GlobalScreenHookInitiator {
-    public static void initialize(){
+    public static void initialize() {
         /* turn off the console output */
         // Get the logger for "org.jnativehook" and set the level to off.
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
@@ -24,8 +24,7 @@ public class GlobalScreenHookInitiator {
 
         try {
             GlobalScreen.registerNativeHook();
-        }
-        catch (NativeHookException ex) {
+        } catch (NativeHookException ex) {
             System.err.println("There was a problem registering the native hook.");
             System.err.println(ex.getMessage());
             System.exit(1);

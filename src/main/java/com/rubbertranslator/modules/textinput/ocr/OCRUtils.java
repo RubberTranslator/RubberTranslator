@@ -3,7 +3,8 @@ package com.rubbertranslator.modules.textinput.ocr;
 import com.rubbertranslator.test.Configuration;
 import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
-import okhttp3.*;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,16 +21,17 @@ import java.util.logging.Logger;
  * @date 2020/5/7 16:04
  */
 public class OCRUtils {
-    //TODO: 改用配置文件
+    //xxx: 改用配置文件
     private static final String API_KEY = Configuration.OCR_API_KEY;
     private static final String SECRET_KEY = Configuration.OCR_SECRET_KEY;
     private static String token = null;
 
     /**
      * ocr
+     *
      * @param image ocr图片输入
      * @return 成功，返回ocr结果
-     *         失败，返回null
+     * 失败，返回null
      */
     public static String ocr(Image image) throws IOException {
         if (image == null) return null;
@@ -38,35 +40,36 @@ public class OCRUtils {
         final String ocrUrl = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic";
         String result;
         RequestBody requestBody = new FormBody.Builder()
-                .add("access_token",token)
-                .add("image",convertToBase64Encode(image))
+                .add("access_token", token)
+                .add("image", convertToBase64Encode(image))
                 .build();
-        result = OkHttpUtil.syncPostRequest(ocrUrl,requestBody);
-        if(result != null){
+        result = OkHttpUtil.syncPostRequest(ocrUrl, requestBody);
+        if (result != null) {
             OCRResult ocrResult = JsonUtil.deserialize(result, OCRResult.class);
-            if(ocrResult == null) result =null;
+            if (ocrResult == null) result = null;
             else result = ocrResult.getCombinedWords();
         }
-        Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO,result);
+        Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, result);
         return result;
     }
 
     /**
      * 如果用户常年不重启进程，这里由bug，不过bug出现的机率比较小，更好的做法是比较expiredTime
+     *
      * @return 当前可用token
      */
     private static String updateToken() throws IOException {
         String cache = token;
         // 如果用户常年不重启进程，这里由bug，不过bug出现的机率比较小，更好的做法是比较expiredTime
-        if(cache == null){
+        if (cache == null) {
             String json = getToken();
-            if(json == null) return null;
+            if (json == null) return null;
 
             OCRTokenEntity tokenEntity = JsonUtil.deserialize(json, OCRTokenEntity.class);
-            if(tokenEntity == null) return null;
+            if (tokenEntity == null) return null;
 
             cache = tokenEntity.getAccessToken();
-            Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO,"OCR Token:"+cache);
+            Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, "OCR Token:" + cache);
         }
         return cache;
     }
@@ -75,21 +78,20 @@ public class OCRUtils {
         String result;
         final String tokenUrl = "https://aip.baidubce.com/oauth/2.0/token";
         RequestBody requestBody = new FormBody.Builder()
-                .add("grant_type","client_credentials")
-                .add("client_id",API_KEY)
-                .add("client_secret",SECRET_KEY)
+                .add("grant_type", "client_credentials")
+                .add("client_id", API_KEY)
+                .add("client_secret", SECRET_KEY)
                 .build();
-        result = OkHttpUtil.syncPostRequest(tokenUrl,requestBody);
-        Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO,result);
+        result = OkHttpUtil.syncPostRequest(tokenUrl, requestBody);
+        Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, result);
         return result;
     }
-
 
 
     private static String convertToBase64Encode(Image image) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         // 怎么判断图片是jpg还是png
-        ImageIO.write((RenderedImage) image,"png",bos);
+        ImageIO.write((RenderedImage) image, "png", bos);
         byte[] imgData = bos.toByteArray();
         return Base64.getEncoder().encodeToString(imgData);
     }

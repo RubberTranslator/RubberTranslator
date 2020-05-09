@@ -1,7 +1,8 @@
 package com.rubbertranslator.modules.translate.youdao;
 
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 /**
  * 有道APi请求参数：
@@ -18,7 +19,7 @@ import com.google.gson.annotations.SerializedName;
  * strict	text	是否严格按照指定from和to进行翻译：true/false	false	如果为false，则会自动中译英，英译中。默认为false
  * -------------------------------------------------------------------------------
  * 响应
- *
+ * <p>
  * errorCode	text	错误返回码	一定存在
  * query	text	源语言	查询正确时，一定存在
  * translation	Array	翻译结果	查询正确时，一定存在
@@ -32,7 +33,7 @@ import com.google.gson.annotations.SerializedName;
  * speakUrl	text	源语言发音地址	翻译成功一定存在，需要应用绑定语音合成实例才能正常播放
  * 否则返回110错误码
  * returnPhrase	Array	单词校验后的结果	主要校验字母大小写、单词前含符号、中文简繁体
- *
+ * <p>
  * 英文查词
  * us-phonetic	美式音标，英文查词成功，一定存在
  * phonetic	默认音标，默认是英式音标，英文查词成功，一定存在
@@ -42,284 +43,282 @@ import com.google.gson.annotations.SerializedName;
  * explains	基本释义
  */
 
-public class YoudaoTranslationResult{
+public class YoudaoTranslationResult {
 
-	@SerializedName("returnPhrase")
-	private List<String> returnPhrase;
+    @SerializedName("returnPhrase")
+    private List<String> returnPhrase;
 
-	@SerializedName("web")
-	private List<WebItem> web;
-	
-	@SerializedName("basic")
-	private Basic basic;
-	
-	@SerializedName("tSpeakUrl")
-	private String tSpeakUrl;
-
-	@SerializedName("RequestId")
-	private String requestId;
-
-	@SerializedName("query")
-	private String query;
-
-	@SerializedName("translation")
-	private List<String> translation;
-
-	@SerializedName("errorCode")
-	private String errorCode;
-
-	@SerializedName("dict")
-	private Dict dict;
-
-	@SerializedName("webdict")
-	private Webdict webdict;
-
-	@SerializedName("l")
-	private String L;
-
-	@SerializedName("speakUrl")
-	private String speakUrl;
-
-
-	public String getTSpeakUrl(){
-		return tSpeakUrl;
-	}
-
-	public String getRequestId(){
-		return requestId;
-	}
-
-	public String getQuery(){
-		return query;
-	}
+    @SerializedName("web")
+    private List<WebItem> web;
 
-	public List<String> getTranslation(){
-		return translation;
-	}
+    @SerializedName("basic")
+    private Basic basic;
 
-	public String getErrorCode(){
-		return errorCode;
-	}
+    @SerializedName("tSpeakUrl")
+    private String tSpeakUrl;
 
-	public Dict getDict(){
-		return dict;
-	}
+    @SerializedName("RequestId")
+    private String requestId;
 
-	public Webdict getWebdict(){
-		return webdict;
-	}
+    @SerializedName("query")
+    private String query;
 
-	public String getL(){
-		return L;
-	}
+    @SerializedName("translation")
+    private List<String> translation;
 
-	public String getSpeakUrl(){
-		return speakUrl;
-	}
+    @SerializedName("errorCode")
+    private String errorCode;
 
-	public List<WebItem> getWeb(){
-		return web;
-	}
-	
-	public List<String> getReturnPhrase(){
-		return returnPhrase;
-	}
-	
+    @SerializedName("dict")
+    private Dict dict;
 
-	public Basic getBasic() {
-		return basic;
-	}
+    @SerializedName("webdict")
+    private Webdict webdict;
 
-	public String gettSpeakUrl() {
-		return tSpeakUrl;
-	}
+    @SerializedName("l")
+    private String L;
 
+    @SerializedName("speakUrl")
+    private String speakUrl;
 
 
-	@Override
-	public String toString() {
-		return "YoudaoTranslationResult{" +
-				"returnPhrase=" + returnPhrase +
-				", web=" + web +
-				", basic=" + basic +
-				", tSpeakUrl='" + tSpeakUrl + '\'' +
-				", requestId='" + requestId + '\'' +
-				", query='" + query + '\'' +
-				", translation=" + translation +
-				", errorCode='" + errorCode + '\'' +
-				", dict=" + dict +
-				", webdict=" + webdict +
-				", L='" + L + '\'' +
-				", speakUrl='" + speakUrl + '\'' +
-				'}';
-	}
-
-	public class Webdict{
-
-		@SerializedName("url")
-		private String url;
+    public String getTSpeakUrl() {
+        return tSpeakUrl;
+    }
 
-		public String getUrl(){
-			return url;
-		}
+    public String getRequestId() {
+        return requestId;
+    }
 
-		@Override
-		public String toString() {
-			return "Webdict{" +
-					"url='" + url + '\'' +
-					'}';
-		}
-	}
+    public String getQuery() {
+        return query;
+    }
 
-	public class Dict{
+    public List<String> getTranslation() {
+        return translation;
+    }
 
-		@SerializedName("url")
-		private String url;
-
-		public String getUrl(){
-			return url;
-		}
-	}
-
-	public class Basic{
-
-		@SerializedName("exam_type")
-		private List<String> examType;
-
-		@SerializedName("us-phonetic")
-		private String usPhonetic;
-
-		@SerializedName("phonetic")
-		private String phonetic;
-
-		@SerializedName("uk-phonetic")
-		private String ukPhonetic;
+    public String getErrorCode() {
+        return errorCode;
+    }
 
-		@SerializedName("wfs")
-		private List<WfsItem> wfs;
+    public Dict getDict() {
+        return dict;
+    }
 
-		@SerializedName("uk-speech")
-		private String ukSpeech;
-
-		@SerializedName("explains")
-		private List<String> explains;
-
-		@SerializedName("us-speech")
-		private String usSpeech;
-
-		public List<String> getExamType(){
-			return examType;
-		}
-
-		public String getUsPhonetic(){
-			return usPhonetic;
-		}
-
-		public String getPhonetic(){
-			return phonetic;
-		}
-
-		public String getUkPhonetic(){
-			return ukPhonetic;
-		}
-
-		public List<WfsItem> getWfs(){
-			return wfs;
-		}
-
-		public String getUkSpeech(){
-			return ukSpeech;
-		}
-
-		public List<String> getExplains(){
-			return explains;
-		}
-
-		public String getUsSpeech(){
-			return usSpeech;
-		}
-
-		@Override
-		public String toString() {
-			return "Basic{" +
-					"examType=" + examType +
-					", usPhonetic='" + usPhonetic + '\'' +
-					", phonetic='" + phonetic + '\'' +
-					", ukPhonetic='" + ukPhonetic + '\'' +
-					", wfs=" + wfs +
-					", ukSpeech='" + ukSpeech + '\'' +
-					", explains=" + explains +
-					", usSpeech='" + usSpeech + '\'' +
-					'}';
-		}
-	}
-
-
-
-	public  class WebItem{
-
-		@SerializedName("value")
-		private List<String> value;
-
-		@SerializedName("key")
-		private String key;
-
-		public List<String> getValue(){
-			return value;
-		}
-
-		public String getKey(){
-			return key;
-		}
-
-		@Override
-		public String toString() {
-			return "WebItem{" +
-					"value=" + value +
-					", key='" + key + '\'' +
-					'}';
-		}
-	}
-
-	public class Wf{
-
-		@SerializedName("name")
-		private String name;
-
-		@SerializedName("value")
-		private String value;
-
-		public String getName(){
-			return name;
-		}
-
-		public String getValue(){
-			return value;
-		}
-
-		@Override
-		public String toString() {
-			return "Wf{" +
-					"name='" + name + '\'' +
-					", value='" + value + '\'' +
-					'}';
-		}
-	}
-
-	public class WfsItem{
-
-		@SerializedName("wf")
-		private Wf wf;
-
-		public Wf getWf(){
-			return wf;
-		}
-
-		@Override
-		public String toString() {
-			return "WfsItem{" +
-					"wf=" + wf +
-					'}';
-		}
-	}
+    public Webdict getWebdict() {
+        return webdict;
+    }
+
+    public String getL() {
+        return L;
+    }
+
+    public String getSpeakUrl() {
+        return speakUrl;
+    }
+
+    public List<WebItem> getWeb() {
+        return web;
+    }
+
+    public List<String> getReturnPhrase() {
+        return returnPhrase;
+    }
+
+
+    public Basic getBasic() {
+        return basic;
+    }
+
+    public String gettSpeakUrl() {
+        return tSpeakUrl;
+    }
+
+
+    @Override
+    public String toString() {
+        return "YoudaoTranslationResult{" +
+                "returnPhrase=" + returnPhrase +
+                ", web=" + web +
+                ", basic=" + basic +
+                ", tSpeakUrl='" + tSpeakUrl + '\'' +
+                ", requestId='" + requestId + '\'' +
+                ", query='" + query + '\'' +
+                ", translation=" + translation +
+                ", errorCode='" + errorCode + '\'' +
+                ", dict=" + dict +
+                ", webdict=" + webdict +
+                ", L='" + L + '\'' +
+                ", speakUrl='" + speakUrl + '\'' +
+                '}';
+    }
+
+    public class Webdict {
+
+        @SerializedName("url")
+        private String url;
+
+        public String getUrl() {
+            return url;
+        }
+
+        @Override
+        public String toString() {
+            return "Webdict{" +
+                    "url='" + url + '\'' +
+                    '}';
+        }
+    }
+
+    public class Dict {
+
+        @SerializedName("url")
+        private String url;
+
+        public String getUrl() {
+            return url;
+        }
+    }
+
+    public class Basic {
+
+        @SerializedName("exam_type")
+        private List<String> examType;
+
+        @SerializedName("us-phonetic")
+        private String usPhonetic;
+
+        @SerializedName("phonetic")
+        private String phonetic;
+
+        @SerializedName("uk-phonetic")
+        private String ukPhonetic;
+
+        @SerializedName("wfs")
+        private List<WfsItem> wfs;
+
+        @SerializedName("uk-speech")
+        private String ukSpeech;
+
+        @SerializedName("explains")
+        private List<String> explains;
+
+        @SerializedName("us-speech")
+        private String usSpeech;
+
+        public List<String> getExamType() {
+            return examType;
+        }
+
+        public String getUsPhonetic() {
+            return usPhonetic;
+        }
+
+        public String getPhonetic() {
+            return phonetic;
+        }
+
+        public String getUkPhonetic() {
+            return ukPhonetic;
+        }
+
+        public List<WfsItem> getWfs() {
+            return wfs;
+        }
+
+        public String getUkSpeech() {
+            return ukSpeech;
+        }
+
+        public List<String> getExplains() {
+            return explains;
+        }
+
+        public String getUsSpeech() {
+            return usSpeech;
+        }
+
+        @Override
+        public String toString() {
+            return "Basic{" +
+                    "examType=" + examType +
+                    ", usPhonetic='" + usPhonetic + '\'' +
+                    ", phonetic='" + phonetic + '\'' +
+                    ", ukPhonetic='" + ukPhonetic + '\'' +
+                    ", wfs=" + wfs +
+                    ", ukSpeech='" + ukSpeech + '\'' +
+                    ", explains=" + explains +
+                    ", usSpeech='" + usSpeech + '\'' +
+                    '}';
+        }
+    }
+
+
+    public class WebItem {
+
+        @SerializedName("value")
+        private List<String> value;
+
+        @SerializedName("key")
+        private String key;
+
+        public List<String> getValue() {
+            return value;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        @Override
+        public String toString() {
+            return "WebItem{" +
+                    "value=" + value +
+                    ", key='" + key + '\'' +
+                    '}';
+        }
+    }
+
+    public class Wf {
+
+        @SerializedName("name")
+        private String name;
+
+        @SerializedName("value")
+        private String value;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return "Wf{" +
+                    "name='" + name + '\'' +
+                    ", value='" + value + '\'' +
+                    '}';
+        }
+    }
+
+    public class WfsItem {
+
+        @SerializedName("wf")
+        private Wf wf;
+
+        public Wf getWf() {
+            return wf;
+        }
+
+        @Override
+        public String toString() {
+            return "WfsItem{" +
+                    "wf=" + wf +
+                    '}';
+        }
+    }
 }

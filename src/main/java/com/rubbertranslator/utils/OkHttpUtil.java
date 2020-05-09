@@ -14,16 +14,17 @@ public class OkHttpUtil {
 
     private static OkHttpClient client = new OkHttpClient.Builder().build();
 
-    public static OkHttpClient getInstance(){
+    public static OkHttpClient getInstance() {
         return client;
     }
 
     /**
      * 同步请求
+     *
      * @param url
      * @param requestBody
      * @return 如果请求成功（状态码在[200-300)之间)，则返回相应结果字符串
-     *          如果请求失败，返回null
+     * 如果请求失败，返回null
      * @throws IOException
      */
     public static String syncPostRequest(String url, RequestBody requestBody) throws IOException {
@@ -37,7 +38,7 @@ public class OkHttpUtil {
         String result = null;
         Response response = client.newCall(request).execute();
         ResponseBody responseBody = response.body();
-        if(response.isSuccessful() && responseBody!=null){
+        if (response.isSuccessful() && responseBody != null) {
             result = responseBody.string();
             responseBody.close();
         }
