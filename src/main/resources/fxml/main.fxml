@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.controller.MainController">
+   <children>
+      <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="功能开关">
+                  <items>
+                        <Menu mnemonicParsing="false" text="翻译引擎">
+                          <items>
+                            <RadioMenuItem mnemonicParsing="false" selected="true" text="谷歌翻译">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="translatorGroup" />
+                                 </toggleGroup>
+                              </RadioMenuItem>
+                              <RadioMenuItem mnemonicParsing="false" text="百度翻译" toggleGroup="$translatorGroup" />
+                              <RadioMenuItem mnemonicParsing="false" text="有道翻译" toggleGroup="$translatorGroup" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="源语言">
+                          <items>
+                              <RadioMenuItem mnemonicParsing="false" selected="true" text="简体中文">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="sourceLanguageGroup" />
+                                 </toggleGroup>
+                              </RadioMenuItem>
+                              <RadioMenuItem mnemonicParsing="false" text="繁體中文" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem mnemonicParsing="false" text="English" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem mnemonicParsing="false" text="日本語" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem mnemonicParsing="false" text="Français" toggleGroup="$sourceLanguageGroup" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="目标语言">
+                           <items>
+                              <RadioMenuItem mnemonicParsing="false" text="简体中文">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="destLanguageGroup" />
+                                 </toggleGroup>
+                              </RadioMenuItem>
+                              <RadioMenuItem mnemonicParsing="false" text="繁體中文" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem mnemonicParsing="false" selected="true" text="English" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem mnemonicParsing="false" text="日本語" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem mnemonicParsing="false" text="Français" toggleGroup="$destLanguageGroup" />
+                           </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <RadioMenuItem mnemonicParsing="false" selected="true" text="监听剪切板" />
+                        <RadioMenuItem mnemonicParsing="false" selected="true" text="拖拽复制" />
+                        <RadioMenuItem mnemonicParsing="false" selected="true" text="增量复制" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <RadioMenuItem mnemonicParsing="false" selected="true" text="保持段落格式" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="高级设置">
+                  <items>
+                        <MenuItem mnemonicParsing="false" text="OCR" />
+                    <MenuItem mnemonicParsing="false" text="过滤器" />
+                        <MenuItem mnemonicParsing="false" text="翻译文本替换" />
+                        <Menu mnemonicParsing="false" text="翻译历史数量">
+                           <items>
+                              <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
+                                 <content>
+                                    <TextField promptText="翻译历史条数" />
+                                 </content>
+                              </CustomMenuItem>
+                           </items>
+                        </Menu>
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="帮助">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="使用方法" />
+                        <MenuItem mnemonicParsing="false" text="关于" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="专注模式" />
+                  <Menu mnemonicParsing="false" text="上一条" />
+                  <Menu mnemonicParsing="false" text="下一条" />
+              </menus>
+            </MenuBar>
+            <TextArea fx:id="originTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" promptText="原文" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextArea>
+            <TextArea fx:id="translatedTextAre" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="译文" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextArea>
+            <Button fx:id="translateBt" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBtnTranslateClick" text="翻译" />
+         </children>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </VBox>
+   </children>
+</AnchorPane>

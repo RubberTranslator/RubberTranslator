@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 public class LoggerManager {
     public static void configLog() {
         try {
-            InputStream input = ClassLoader.getSystemClassLoader()
-                    .getResourceAsStream("log/log.properties");
+            InputStream input = LoggerManager.class
+                    .getResourceAsStream("/log/log.properties");
             LogManager.getLogManager().readConfiguration(input);
         } catch (IOException e) {
             e.printStackTrace();

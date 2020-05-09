@@ -26,6 +26,8 @@ public class RedundantLineBreakProcessor {
         String[] splitText = text.split("\n");
         StringBuilder sb = new StringBuilder();
         for (String tempStr : splitText) {
+            // 有些空行
+            if(tempStr == null || tempStr.equals("")) continue;
             char lastChar = tempStr.charAt(tempStr.length() - 1);
             if (lastChar == '.' || lastChar == '。') {  // 最后字符是. 也就是说.后又是换行，大概率是分段
                 sb.append(tempStr).append("\n");

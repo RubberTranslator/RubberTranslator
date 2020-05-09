@@ -15,7 +15,7 @@ import com.rubbertranslator.modules.textinput.mousecopy.MouseCopyThread;
  * 启动所有线程，初始化所有组件
  */
 public class Starter {
-    public void start() {
+    public TranslatorFacade start() {
         // 日志
         LoggerManager.configLog();
 
@@ -37,7 +37,7 @@ public class Starter {
         activeWindowListenerThread.start();
         clipBoardListenerThread.start();
         mouseCopyThread.start();
-
+        return facade;
 
     }
 

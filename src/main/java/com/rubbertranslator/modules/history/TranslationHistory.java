@@ -14,7 +14,7 @@ public class TranslationHistory {
     private LimitedLinkedList<HistoryEntry> historyList ;
 
     public TranslationHistory() {
-        this(2);
+        this(10);
     }
 
     public TranslationHistory(int capacity) {

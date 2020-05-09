@@ -42,7 +42,7 @@ public class SystemTrayInitiator {
             SystemTray tray = SystemTray.getSystemTray();
             // 加载一个图片用于托盘图标的显示
             Image image = Toolkit.getDefaultToolkit().getImage(
-                    SystemTrayInitiator.class.getClassLoader().getResource("image/tray-icon.png"));
+                    SystemTrayInitiator.class.getResource("/image/tray-icon.png"));
             PopupMenu popupMenu = createPopupMenuItems();
             TrayIcon trayIcon = new TrayIcon(image, "CopyActionDaemon", popupMenu);
             // 托盘图标自适应尺寸

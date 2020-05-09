@@ -7,9 +7,7 @@ import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
 import com.rubbertranslator.modules.translate.TranslatorType;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,19 +42,24 @@ public class TranslatorFacade {
         textPostProcessor.getReplacer().setCaseInsensitive(false);
     }
 
-    public void setProcessFilter(@NotNull ProcessFilter processFilter) {
+    public void setProcessFilter(ProcessFilter processFilter) {
         this.processFilter = processFilter;
     }
 
 
-    public void process(String text) {
-        if (text == null || "".equals(text)) return;
+    /**
+     * 处理整个翻译过程
+     * @param text 原文
+     * @return 成功 译文
+     *          失败 null
+     */
+    public String process(String text) {
+        if (text == null || "".equals(text)) return null;
 
         String temp = text;
-        String translated;
         // 做一个判断检验
         // do translate works
-        if (processFilter.check()) return;
+        if (processFilter.check()) return null;
         temp = textPreProcessor.process(text);
         temp = translator.translate(Language.ENGLISH, Language.CHINESE_SIMPLIFIED, temp);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, temp);
@@ -64,10 +67,6 @@ public class TranslatorFacade {
         temp = textPostProcessor.process(temp);
         // 记录翻译历史
         history.addHistory(text,temp);
-        Logger.getLogger(this.getClass().getName()).info(Arrays.toString(history.getHistoryList().toArray()));
-        Logger.getLogger(this.getClass().getName()).info("pre:"+history.previous().toString());
-        Logger.getLogger(this.getClass().getName()).info("next:"+history.next().toString());
-
-
+        return temp;
     }
 }

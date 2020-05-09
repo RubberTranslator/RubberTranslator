@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.SettingFilter">
+   <children>
+      <ListView prefHeight="200.0" prefWidth="200.0" />
+      <HBox nodeOrientation="LEFT_TO_RIGHT" spacing="5.0">
+         <children>
+            <Button mnemonicParsing="false" text="添加" />
+            <Button mnemonicParsing="false" text="删除" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
