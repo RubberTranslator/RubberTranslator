@@ -22,6 +22,7 @@ public class App extends Application {
 
         scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.setAlwaysOnTop(true);
         stage.show();
     }
 

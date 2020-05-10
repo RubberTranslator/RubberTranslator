@@ -1,7 +1,7 @@
 package com.rubbertranslator;
 
-import com.rubbertranslator.manager.LoggerManager;
-import com.rubbertranslator.manager.TranslatorFacade;
+import com.rubbertranslator.modules.log.LoggerManager;
+import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.modules.textinput.TextInputCollector;

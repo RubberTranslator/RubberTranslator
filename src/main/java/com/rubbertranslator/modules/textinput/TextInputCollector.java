@@ -1,6 +1,6 @@
 package com.rubbertranslator.modules.textinput;
 
-import com.rubbertranslator.manager.TranslatorFacade;
+import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 
 import java.awt.*;
