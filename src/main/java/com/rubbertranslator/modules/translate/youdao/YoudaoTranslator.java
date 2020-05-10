@@ -22,6 +22,17 @@ import java.util.logging.Logger;
  */
 public class YoudaoTranslator extends AbstractTranslator {
 
+    private String APP_KEY;
+    private String SECRET_KEY;
+
+    public void setAPP_KEY(String APP_KEY) {
+        this.APP_KEY = APP_KEY;
+    }
+
+    public void setSECRET_KEY(String SECRET_KEY) {
+        this.SECRET_KEY = SECRET_KEY;
+    }
+
     //http://ai.youdao.com/DOCSIRMA/html/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%BF%BB%E8%AF%91/API%E6%96%87%E6%A1%A3/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1/%E6%96%87%E6%9C%AC%E7%BF%BB%E8%AF%91%E6%9C%8D%E5%8A%A1-API%E6%96%87%E6%A1%A3.html
     @Override
     public void addLanguageMap() {
@@ -51,10 +62,9 @@ public class YoudaoTranslator extends AbstractTranslator {
     }
 
     private YoudaoTranslationResult doTranslate(String source, String dest, String text) throws IOException {
+        if(APP_KEY == null || SECRET_KEY == null) return null;
         String curtime = String.valueOf(System.currentTimeMillis() / 1000);
         String salt = String.valueOf(System.currentTimeMillis());
-        String APP_KEY = Configuration.YOUDAO_TRANSLATE_API_KEY;
-        String SECRET_KEY = Configuration.YOUDAO_TRANSLATE_SECRET_KEY;
         String signStr = APP_KEY + truncate(text) + salt + curtime + SECRET_KEY;
         String sign = DigestUtil.sha256(signStr);
 

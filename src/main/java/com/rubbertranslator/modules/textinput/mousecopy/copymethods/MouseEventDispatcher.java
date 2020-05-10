@@ -15,13 +15,10 @@ import java.util.List;
  */
 public class MouseEventDispatcher {
     private List<CopyMethod> copyMethods = new ArrayList<>();
-    private boolean needDispatch = true;
 
     public MouseEventDispatcher() {
         // 初始化处理链
         initializeCopyMethodsChain();
-        // 初始化监听器
-        initializeListeners();
     }
 
     /**
@@ -34,21 +31,14 @@ public class MouseEventDispatcher {
         copyMethods.add(new MouseMoveCopyMethod());
     }
 
-    private void initializeListeners() {
-        SystemTrayInitiator.setCopyActionMenuItemListener((selected -> {
-            needDispatch = selected;
-        }));
-    }
 
     public void pressEventDispatch(NativeMouseEvent event) {
-        if (!needDispatch) return;
         for (CopyMethod copyMethod : copyMethods) {
             copyMethod.onPressed(event);
         }
     }
 
     public void releaseEventDispatch(NativeMouseEvent event) {
-        if (!needDispatch) return;
         for (CopyMethod copyMethod : copyMethods) {
             copyMethod.onRelease(event);
             if (copyMethod.isProcessed()) {

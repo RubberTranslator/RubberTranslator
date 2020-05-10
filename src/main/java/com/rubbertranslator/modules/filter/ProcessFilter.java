@@ -12,6 +12,16 @@ import java.util.Set;
 public class ProcessFilter implements ActiveWindowListener {
     // 当前进程名 XXX:是否违反单一职责？
     private String currentProcess = "";
+    // 是否打开过滤器
+    private boolean open = true;
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
 
     // 过滤名单
     private final Set<String> filterList = new HashSet<>();
@@ -42,6 +52,7 @@ public class ProcessFilter implements ActiveWindowListener {
      * false 不过滤
      */
     public boolean check() {
+        if(!open) return false; // 没打开，不需要过滤
         return filterList.contains(currentProcess);
     }
 

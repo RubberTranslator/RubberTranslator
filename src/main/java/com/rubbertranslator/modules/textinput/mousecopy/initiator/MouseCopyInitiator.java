@@ -1,5 +1,12 @@
 package com.rubbertranslator.modules.textinput.mousecopy.initiator;
 
+import com.rubbertranslator.modules.textinput.mousecopy.listener.GlobalMouseListener;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * @author Raven
  * @version 1.0
@@ -7,8 +14,6 @@ package com.rubbertranslator.modules.textinput.mousecopy.initiator;
  */
 public class MouseCopyInitiator {
     public static void initialize() {
-        GlobalScreenHookInitiator.initialize();
-        // xxx：功能多了以后，系统托盘初始化不应该在这里
-        SystemTrayInitiator.initialize();
+
     }
 }

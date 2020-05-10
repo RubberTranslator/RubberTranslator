@@ -1,12 +1,12 @@
 package com.rubbertranslator;
 
-import com.rubbertranslator.modules.system.LoggerManager;
+import com.rubbertranslator.modules.log.LoggerManager;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.modules.textinput.TextInputCollector;
 import com.rubbertranslator.modules.textinput.clipboard.ClipBoardListenerThread;
-import com.rubbertranslator.modules.textinput.mousecopy.MouseCopyThread;
+import com.rubbertranslator.modules.textinput.mousecopy.DragCopyThread;
 
 /**
  * @author Raven
@@ -28,7 +28,7 @@ public class Starter {
         TextInputCollector textInputCollector = new TextInputCollector(facade);
         ClipBoardListenerThread clipBoardListenerThread = new ClipBoardListenerThread(textInputCollector);
         // 3. 鼠标复制线程
-        MouseCopyThread mouseCopyThread = new MouseCopyThread();
+        DragCopyThread dragCopyThread = new DragCopyThread();
 
         //4. 后续模块注入
         facade.setProcessFilter(processFilter);
@@ -36,7 +36,7 @@ public class Starter {
         // 启动所有线程
         activeWindowListenerThread.start();
         clipBoardListenerThread.start();
-        mouseCopyThread.start();
+        dragCopyThread.start();
         return facade;
 
     }

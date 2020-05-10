@@ -19,6 +19,25 @@ public class TranslatorFactory {
 
     private TranslatorType engineType = TranslatorType.GOOGLE;
 
+    private Language sourceLanguage;
+
+    private Language destLanguage;
+
+    public Language getSourceLanguage() {
+        return sourceLanguage;
+    }
+
+    public void setSourceLanguage(Language sourceLanguage) {
+        this.sourceLanguage = sourceLanguage;
+    }
+
+    public Language getDestLanguage() {
+        return destLanguage;
+    }
+
+    public void setDestLanguage(Language destLanguage) {
+        this.destLanguage = destLanguage;
+    }
 
     public void setEngineType(TranslatorType type){
         engineType = type;

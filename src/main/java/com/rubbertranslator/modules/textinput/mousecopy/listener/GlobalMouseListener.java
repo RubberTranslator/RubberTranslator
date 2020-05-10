@@ -12,14 +12,27 @@ import org.jnativehook.mouse.NativeMouseEvent;
 public class GlobalMouseListener extends NativeMouseAdapter {
 
     private final MouseEventDispatcher mouseEventDispatcher = new MouseEventDispatcher();
+    private boolean needDispatch = true;
+
+    public boolean isNeedDispatch() {
+        return needDispatch;
+    }
+
+    public void setNeedDispatch(boolean needDispatch) {
+        this.needDispatch = needDispatch;
+    }
 
     @Override
     public void nativeMousePressed(NativeMouseEvent nativeEvent) {
-        mouseEventDispatcher.pressEventDispatch(nativeEvent);
+        if(needDispatch){
+            mouseEventDispatcher.pressEventDispatch(nativeEvent);
+        }
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent nativeEvent) {
-        mouseEventDispatcher.releaseEventDispatch(nativeEvent);
+        if(needDispatch){
+            mouseEventDispatcher.releaseEventDispatch(nativeEvent);
+        }
     }
 }

@@ -2,8 +2,8 @@
   "text_input": {
     "open_clipboard_listener": true,
     "drag_copy": true,
-    "baidu_ocr_api_key": "11",
-    "baidu_ocr_secret_key": "22"
+    "baidu_ocr_api_key": null,
+    "baidu_ocr_secret_key": null
   },
   "process_filter": {
     "open_process_filter": true,
@@ -26,9 +26,9 @@
     "current_translator": "GOOGLE",
     "source_language": "ENGLISH",
     "dest_language": "CHINESE_SIMPLIFIED",
-    "baidu_translator_api_key": "baidu_api_key",
-    "baidu_translator_secret_key": "baidu_secret_key",
-    "you_dao_translator_api_key": "youdao_api_key",
-    "you_dao_transltor_api_key": "youdao_secret_key"
+    "baidu_translator_api_key": null,
+    "baidu_translator_secret_key": null,
+    "you_dao_translator_api_key": null,
+    "you_dao_translator_api_key": null
   }
 }

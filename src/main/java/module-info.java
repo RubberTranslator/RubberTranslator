@@ -21,6 +21,9 @@ module RubberTranslator {
     exports com.rubbertranslator.modules.translate.baidu;
     exports com.rubbertranslator.modules.translate.youdao;
     exports com.rubbertranslator.modules.translate.google;
+    exports com.rubbertranslator.modules.textinput;
+    exports com.rubbertranslator.modules.textinput.mousecopy;
+    exports com.rubbertranslator.modules.textinput.clipboard;
     exports com.rubbertranslator.modules.textinput.ocr;
     exports com.rubbertranslator.modules.system;
 

@@ -22,9 +22,17 @@ import java.util.logging.Logger;
  */
 public class OCRUtils {
     //xxx: 改用配置文件
-    private static final String API_KEY = Configuration.OCR_API_KEY;
-    private static final String SECRET_KEY = Configuration.OCR_SECRET_KEY;
+    private static String API_KEY;
+    private static String SECRET_KEY;
     private static String token = null;
+
+    public static void setApiKey(String apiKey) {
+        API_KEY = apiKey;
+    }
+
+    public static void setSecretKey(String secretKey) {
+        SECRET_KEY = secretKey;
+    }
 
     /**
      * ocr
@@ -35,6 +43,7 @@ public class OCRUtils {
      */
     public static String ocr(Image image) throws IOException {
         if (image == null) return null;
+        if(API_KEY == null || SECRET_KEY == null) return null;
         token = updateToken();
 
         final String ocrUrl = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic";

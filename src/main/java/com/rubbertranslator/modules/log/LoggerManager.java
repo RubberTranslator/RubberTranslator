@@ -1,4 +1,4 @@
-package com.rubbertranslator.modules.system;
+package com.rubbertranslator.modules.log;
 
 
 import java.io.IOException;

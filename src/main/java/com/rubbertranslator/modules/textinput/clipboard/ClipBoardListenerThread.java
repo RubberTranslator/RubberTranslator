@@ -34,6 +34,9 @@ public class ClipBoardListenerThread extends Thread {
         this.textInputListener = textInputListener;
     }
 
+    public ClipBoardListenerThread() {
+    }
+
     public ClipBoardListenerThread(TextInputListener listener) {
         this.textInputListener = listener;
     }
@@ -83,16 +86,24 @@ public class ClipBoardListenerThread extends Thread {
         }
     }
 
-//    public void pause() {
-//        running = false;
-//    }
-//
-//    public void resumeRun() {
-//        running = true;
-//        blocker.notify();
-//    }
-//
-//    public void exit() {
-//        exit = true;
-//    }
+    public void setRun(boolean run){
+        if(run){
+            resumeRun();
+        }else{
+            pause();
+        }
+    }
+
+    private void pause() {
+        running = false;
+    }
+
+    private void resumeRun() {
+        running = true;
+        blocker.notify();
+    }
+
+    public void exit() {
+        exit = true;
+    }
 }

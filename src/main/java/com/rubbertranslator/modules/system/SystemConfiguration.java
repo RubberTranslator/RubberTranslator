@@ -224,13 +224,25 @@ public class SystemConfiguration {
          * 后置处理
          */
         public static class TextPostProcessConfig{
+            @SerializedName("open_post_process")
+            private boolean openPostProcess;
+
             @SerializedName("words_replacer")
             private WordsReplacerConfig wordsReplacerConfig;
+
+            public boolean isOpenPostProcess() {
+                return openPostProcess;
+            }
+
+            public void setOpenPostProcess(boolean openPostProcess) {
+                this.openPostProcess = openPostProcess;
+            }
 
             @Override
             public String toString() {
                 return "TextPostProcessConfig{" +
-                        "wordsReplacerConfig=" + wordsReplacerConfig +
+                        "openPostProcess=" + openPostProcess +
+                        ", wordsReplacerConfig=" + wordsReplacerConfig +
                         '}';
             }
 
@@ -293,8 +305,8 @@ public class SystemConfiguration {
         // 有道key&value
         @SerializedName("you_dao_translator_api_key")
         private String youDaoTranslatorApiKey;
-        @SerializedName("you_dao_transltor_api_key")
-        private String youdaoTranslatorSecretKey;
+        @SerializedName("you_dao_translator_api_key")
+        private String youDaoTranslatorSecretKey;
 
         @Override
         public String toString() {
@@ -305,7 +317,7 @@ public class SystemConfiguration {
                     ", baiduTranslatorApiKey='" + baiduTranslatorApiKey + '\'' +
                     ", baiduTranslatorSecretKey='" + baiduTranslatorSecretKey + '\'' +
                     ", youDaoTranslatorApiKey='" + youDaoTranslatorApiKey + '\'' +
-                    ", youdaoTranslatorSecretKey='" + youdaoTranslatorSecretKey + '\'' +
+                    ", youdaoTranslatorSecretKey='" + youDaoTranslatorSecretKey + '\'' +
                     '}';
         }
 
@@ -357,12 +369,12 @@ public class SystemConfiguration {
             this.youDaoTranslatorApiKey = youDaoTranslatorApiKey;
         }
 
-        public String getYoudaoTranslatorSecretKey() {
-            return youdaoTranslatorSecretKey;
+        public String getYouDaoTranslatorSecretKey() {
+            return youDaoTranslatorSecretKey;
         }
 
-        public void setYoudaoTranslatorSecretKey(String youdaoTranslatorSecretKey) {
-            this.youdaoTranslatorSecretKey = youdaoTranslatorSecretKey;
+        public void setYouDaoTranslatorSecretKey(String youDaoTranslatorSecretKey) {
+            this.youDaoTranslatorSecretKey = youDaoTranslatorSecretKey;
         }
     }
 
