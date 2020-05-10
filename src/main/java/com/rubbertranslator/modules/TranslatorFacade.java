@@ -108,7 +108,7 @@ public class TranslatorFacade {
         public String call() throws Exception {
             if (text == null || "".equals(text)) return null;
 
-            String temp = text;
+            String temp;
             // 做一个判断检验
             // do translate works
             if (processFilter.check()) return null;

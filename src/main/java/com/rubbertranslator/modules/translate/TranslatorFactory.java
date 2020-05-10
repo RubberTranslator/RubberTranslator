@@ -32,6 +32,15 @@ public class TranslatorFactory {
         return translatorEngine.translate(source,dest,text);
     }
 
+
+    public void addTranslator(TranslatorType type, AbstractTranslator translator){
+        translatorEngineMap.put(type,translator);
+    }
+
+    /**
+     * 用户没有主动添加翻译引擎，则采用默认设置
+     * @param type
+     */
     private void instanceTranslatorEngine(TranslatorType type){
         // 翻译接口多的话，可以改用反射+映射关系表
         // 但是不多，直接用switch判断即可

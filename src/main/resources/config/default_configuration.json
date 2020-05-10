@@ -1,0 +1,34 @@
+{
+  "text_input": {
+    "open_clipboard_listener": true,
+    "drag_copy": true,
+    "baidu_ocr_api_key": "11",
+    "baidu_ocr_secret_key": "22"
+  },
+  "process_filter": {
+    "open_process_filter": true,
+    "process_list": ["a.exe", "b.exe"]
+  },
+  "text_process": {
+    "text_pre_process": {
+      "keep_paragraph_format": true
+    },
+    "text_post_process": {
+      "words_replacer": {
+        "open_words_replacer": true,
+        "words_map": {
+          "I": "我"
+        }
+      }
+    }
+  },
+  "translator": {
+    "current_translator": "GOOGLE",
+    "source_language": "ENGLISH",
+    "dest_language": "CHINESE_SIMPLIFIED",
+    "baidu_translator_api_key": "baidu_api_key",
+    "baidu_translator_secret_key": "baidu_secret_key",
+    "you_dao_translator_api_key": "youdao_api_key",
+    "you_dao_transltor_api_key": "youdao_secret_key"
+  }
+}

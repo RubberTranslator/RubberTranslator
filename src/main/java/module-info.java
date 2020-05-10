@@ -17,14 +17,17 @@ module RubberTranslator {
 
     exports com.rubbertranslator;
     exports com.rubbertranslator.controller;
-    opens com.rubbertranslator.controller;
+    exports com.rubbertranslator.modules.translate;
     exports com.rubbertranslator.modules.translate.baidu;
     exports com.rubbertranslator.modules.translate.youdao;
     exports com.rubbertranslator.modules.translate.google;
     exports com.rubbertranslator.modules.textinput.ocr;
+    exports com.rubbertranslator.modules.system;
 
+    opens com.rubbertranslator.controller;
     opens com.rubbertranslator.modules.translate.baidu;
     opens com.rubbertranslator.modules.translate.youdao;
     opens com.rubbertranslator.modules.translate.google;
     opens com.rubbertranslator.modules.textinput.ocr;
+    opens com.rubbertranslator.modules.system;
 }
