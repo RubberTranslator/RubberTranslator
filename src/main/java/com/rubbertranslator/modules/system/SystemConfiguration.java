@@ -3,8 +3,6 @@ package com.rubbertranslator.modules.system;
 import com.google.gson.annotations.SerializedName;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
-
-import javax.annotation.processing.SupportedSourceVersion;
 import java.util.List;
 import java.util.Map;
 

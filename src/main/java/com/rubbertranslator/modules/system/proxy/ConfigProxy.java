@@ -5,11 +5,12 @@ import com.rubbertranslator.modules.system.SystemResourceManager;
 import com.rubbertranslator.utils.JsonUtil;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Raven
@@ -31,7 +32,7 @@ public class ConfigProxy implements MethodInterceptor {
             SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
             String json = JsonUtil.serialize(extractOriginConfig(configurationProxy));
             // TODO: 考虑加载单线程池来写
-            Files.writeString(Paths.get(SystemResourceManager.configJsonPath),json);
+            FileUtils.writeStringToFile(new File(SystemResourceManager.configJsonPath),json, StandardCharsets.UTF_8);
             return ret;
         }
         return method.invoke(target, args);

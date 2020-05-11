@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.history.TranslationHistory;
+import com.rubbertranslator.modules.log.LoggerManager;
 import com.rubbertranslator.modules.system.proxy.*;
 import com.rubbertranslator.modules.textinput.clipboard.ClipBoardListenerThread;
 import com.rubbertranslator.modules.textinput.mousecopy.DragCopyThread;
@@ -15,13 +16,12 @@ import com.rubbertranslator.modules.translate.TranslatorType;
 import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
 import net.sf.cglib.proxy.Enhancer;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 /**
@@ -73,6 +73,8 @@ public class SystemResourceManager {
      * false 初始化失败
      */
     public static boolean init() {
+        // 0. 设置log
+        LoggerManager.configLog();
         // 1. 加载配置文件
         configurationProxy = loadSystemConfig();
         Logger.getLogger(SystemResourceManager.class.getName()).info(configurationProxy.toString());
@@ -108,20 +110,16 @@ public class SystemResourceManager {
      * 配置类 加载成功
      */
     private static SystemConfiguration loadSystemConfig() {
-        // 加载本地目录
+        // 加载本地配置
         File file = new File(configJsonPath);
-        Path path;
         String configJson;
         try {
-            if (file.exists()) {
-                path = Paths.get(file.toURI());
-            } else {
-                // 不存在加载默认配置文件
-                path = Paths.get(SystemConfiguration.class.getResource("/config/default_configuration.json").toURI());
-
+            if (!file.exists()) {
+                InputStream resourceAsStream = SystemResourceManager.class.getResourceAsStream("/config/default_configuration.json");
+                FileUtils.copyInputStreamToFile(resourceAsStream,file);
             }
-            configJson = Files.readString(path);
-        } catch (URISyntaxException | IOException e) {
+            configJson = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }

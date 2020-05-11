@@ -3,7 +3,7 @@
  * @date 2020/5/9 11:12
  * @version 1.0
  */
-module RubberTranslator {
+module rubbertranslator {
     requires javafx.controls;
     requires javafx.graphics;
     requires javafx.fxml;
@@ -14,6 +14,8 @@ module RubberTranslator {
     requires jnativehook;
     requires com.google.gson;
     requires okhttp3;
+    requires cglib;
+    requires org.objectweb.asm;
 
     exports com.rubbertranslator;
     exports com.rubbertranslator.controller;
