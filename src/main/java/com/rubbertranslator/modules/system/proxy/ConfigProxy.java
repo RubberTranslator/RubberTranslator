@@ -30,7 +30,6 @@ public class ConfigProxy implements MethodInterceptor {
             Object ret = method.invoke(target, args);
             SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
             String json = JsonUtil.serialize(extractOriginConfig(configurationProxy));
-            System.out.println(json);
             // TODO: 考虑加载单线程池来写
             Files.writeString(Paths.get(SystemResourceManager.configJsonPath),json);
             return ret;
@@ -44,7 +43,6 @@ public class ConfigProxy implements MethodInterceptor {
     private SystemConfiguration extractOriginConfig(SystemConfiguration configuration){
         SystemConfiguration newConfiguration = new SystemConfiguration();
             try {
-
                  newConfiguration.setUiConfig((SystemConfiguration.UIConfig) doExtract(configuration.getUiConfig()));
 
                  newConfiguration.setTextInputConfig(

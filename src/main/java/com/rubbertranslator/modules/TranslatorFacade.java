@@ -8,7 +8,6 @@ import com.rubbertranslator.modules.translate.TranslatorFactory;
 
 import java.util.Objects;
 import java.util.concurrent.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -58,14 +57,6 @@ public class TranslatorFacade {
         return textPostProcessor;
     }
 
-    public ExecutorService getExecutor() {
-        return executor;
-    }
-
-    public TranslatorFacadeListener getFacadeListener() {
-        return facadeListener;
-    }
-
     public TranslationHistory getHistory() {
         return history;
     }
@@ -102,13 +93,15 @@ public class TranslatorFacade {
 
 
     public interface TranslatorFacadeListener{
-        void onComplete(String text);
+        void onComplete(String origin ,String translation);
     }
 
     private class FacadeFutureTask extends FutureTask<String>{
+        private final FacadeCallable callable;
 
         public FacadeFutureTask(Callable<String> callable) {
             super(callable);
+            this.callable = (FacadeCallable) callable;
         }
 
         @Override
@@ -116,10 +109,9 @@ public class TranslatorFacade {
             if(facadeListener != null){
                 try {
                     String result = get();
+                    String origin = callable.getText();
                     //XXX: 失败回调，硬编码为中文
-                    Logger.getLogger(this.getClass().getName()).info(result);
-                    Logger.getLogger(this.getClass().getName()).info(Thread.currentThread().getName());
-                    facadeListener.onComplete(Objects.requireNonNullElse(result, "翻译失败"));
+                    facadeListener.onComplete(origin, Objects.requireNonNullElse(result, "翻译失败"));
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
@@ -128,8 +120,12 @@ public class TranslatorFacade {
     }
 
     private class FacadeCallable implements Callable<String>{
+        // text保存处理后的文本
+        private String text;
 
-        private final String text;
+        public String getText() {
+            return text;
+        }
 
         public FacadeCallable(String text) {
             this.text = text;
@@ -138,22 +134,22 @@ public class TranslatorFacade {
         @Override
         public String call() throws Exception {
             if (text == null || "".equals(text)) return null;
-            String temp = null;
+            String origin = text;
+            String translation = null;
             try{
-                // 做一个判断检验
-                // do translate works
+                // 过滤
                 if (processFilter.check()) return null;
-                temp = textPreProcessor.process(text);
-                temp = translatorFactory.translate( temp);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, temp);
+                // text保存处理后的文本
+                text = textPreProcessor.process(text);
+                translation = translatorFactory.translate( text);
                 // 后置处理
-                temp = textPostProcessor.process(temp);
+                translation = textPostProcessor.process(translation);
                 // 记录翻译历史
-                history.addHistory(text,temp);
+                history.addHistory(origin,translation);
             }catch (NullPointerException e){
                 Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
             }
-            return temp;
+            return translation;
         }
     }
 }

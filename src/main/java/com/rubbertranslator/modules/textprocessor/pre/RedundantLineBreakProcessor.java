@@ -13,6 +13,7 @@ public class RedundantLineBreakProcessor {
         String[] splitText = text.split("\n");
         StringBuilder sb = new StringBuilder();
         for (String tempStr : splitText) {
+            if(tempStr == null || tempStr.equals("")) continue;
             if (tempStr.charAt(tempStr.length() - 1) == '-') {  // 英文末尾的连接符
                 sb.append(tempStr, 0, tempStr.length() - 1);
             } else {

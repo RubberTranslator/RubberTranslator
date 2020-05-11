@@ -2,6 +2,7 @@ package com.rubbertranslator.controller;
 
 import com.rubbertranslator.App;
 import com.rubbertranslator.modules.TranslatorFacade;
+import com.rubbertranslator.modules.history.HistoryEntry;
 import com.rubbertranslator.modules.system.SystemConfiguration;
 import com.rubbertranslator.modules.system.SystemResourceManager;
 import com.rubbertranslator.modules.textinput.TextInputListener;
@@ -11,6 +12,7 @@ import com.rubbertranslator.modules.translate.TranslatorType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TextArea;
@@ -32,7 +34,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     @FXML
     private TextArea originTextArea;
     @FXML
-    private TextArea translatedTextAre;
+    private TextArea translatedTextArea;
 
     // menuBar区
     // " 功能开关 "
@@ -88,6 +90,13 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     @FXML
     private Menu focusMenu;
 
+    // 历史记录
+    @FXML
+    private Menu preHistoryMenu;
+    @FXML
+    private Menu nextHistoryMenu;
+
+
     /**
      * 组件初始化完成后，会调用这个方法
      */
@@ -107,32 +116,40 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private void initViews() {
         // 加载配置
         SystemConfiguration configuration = SystemResourceManager.getConfigurationProxy();
-        initFeatureSwitcherMenu(configuration);
+        // 基础设置
+        initBasicSettingMenu(configuration);
+        // 高级设置
+        initAdvancedSettingMenu(configuration);
+        // 帮助
+        initHelpingMenu();
+        // 专注模式
+        initFocusModeMenu();
+        // 历史
+        initHistoryMenu();
     }
 
-    private void initFeatureSwitcherMenu(SystemConfiguration configuration) {
+
+    /**
+     * 基础设置
+     * @param configuration 系统配置
+     */
+    private void initBasicSettingMenu(SystemConfiguration configuration) {
         initTranslatorType(configuration.getTranslatorConfig().getCurrentTranslator());
         initSrcDestLanguage(configuration.getTranslatorConfig().getSourceLanguage(), configuration.getTranslatorConfig().getDestLanguage());
-        initFeatureSwitcherOthers(configuration);
+        initBasicSettingOthers(configuration);
         Logger.getLogger(this.getClass().getName()).info("初始化功能开关成功");
     }
 
-    private void initFeatureSwitcherOthers(SystemConfiguration configuration) {
+    private void initBasicSettingOthers(SystemConfiguration configuration) {
         // 设置onActionListener
-        clipboardListenerMenu.setOnAction((actionEvent -> {
-            SystemResourceManager.getClipBoardListenerThread().setRun(clipboardListenerMenu.isSelected());
-        }));
-        dragCopyMenu.setOnAction((actionEvent -> {
-            SystemResourceManager.getDragCopyThread().setRun(dragCopyMenu.isSelected());
-        }));
-        incrementalCopyMenu.setOnAction((actionEvent -> {
-            Logger.getLogger(this.getClass().getName()).warning("暂不支持增量复制");
-        }));
-        keepParagraphMenu.setOnAction((actionEvent -> {
-            SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected());
-        }));
+        clipboardListenerMenu.setOnAction((actionEvent -> SystemResourceManager.getClipBoardListenerThread().setRun(clipboardListenerMenu.isSelected())));
+        dragCopyMenu.setOnAction((actionEvent -> SystemResourceManager.getDragCopyThread().setRun(dragCopyMenu.isSelected())));
+        incrementalCopyMenu.setOnAction((actionEvent -> Logger.getLogger(this.getClass().getName()).warning("暂不支持增量复制")));
+        keepParagraphMenu.setOnAction((actionEvent -> SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected())));
         keepTopMenu.setOnAction((actionEvent -> {
             App.setKeepTop(keepTopMenu.isSelected());
+            // XXX: UI模块的相关功能，需要手动实现保存
+            SystemResourceManager.getConfigurationProxy().getUiConfig().setKeepTop(keepTopMenu.isSelected());
         }));
 
 
@@ -182,8 +199,11 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private void initSrcDestLanguage(Language src, Language dest) {
         // src
         initLanguage(src, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
+        srcDestLanguageChooseEvent(true, sourceLanguageGroup, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
         // dest
         initLanguage(dest, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
+        srcDestLanguageChooseEvent(false, destLanguageGroup, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
+
     }
 
     private void initLanguage(Language type, RadioMenuItem simpleChinese, RadioMenuItem traditional,
@@ -207,20 +227,88 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         }
     }
 
+    private void srcDestLanguageChooseEvent(boolean isSrc, ToggleGroup languageGroup, RadioMenuItem simpleChinese, RadioMenuItem traditional,
+                                            RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
+        languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
+            SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
+            Language language = Language.AUTO;
+            if (newValue == simpleChinese) {
+                language = Language.CHINESE_SIMPLIFIED;
+            } else if (newValue == traditional) {
+                language = Language.CHINESE_TRADITIONAL;
+            } else if (newValue == english) {
+                language = Language.ENGLISH;
+            } else if (newValue == french) {
+                language = Language.FRENCH;
+            } else if (newValue == japanese) {
+                language = Language.JAPANESE;
+            }
 
-    @FXML
-    public void onBtnTranslateClick(ActionEvent actionEvent) {
-        String originText = originTextArea.getText();
-        processTranslate(originText);
+            if (isSrc) {
+                translatorConfig.setSourceLanguage(language);
+            } else {
+                translatorConfig.setDestLanguage(language);
+            }
+        });
     }
 
-    public static void switchToFocusMode(MouseEvent event) {
+
+    /**
+     * 高级设置
+     * @param configuration 配置
+     */
+    private void initAdvancedSettingMenu(SystemConfiguration configuration){
+        //
+    }
+
+    private void initHelpingMenu(){
+        //
+    }
+
+    private void initFocusModeMenu(){
+        Label label = new Label("专注模式");
+        label.setOnMouseClicked((this::switchToFocusMode));
+        focusMenu.setText("");
+        focusMenu.setGraphic(label);
+    }
+
+    private  void switchToFocusMode(MouseEvent event) {
         try {
             App.setRoot(ControllerConstant.FOCUS_CONTROLLER_FXML);
         } catch (IOException e) {
             e.printStackTrace();
             Logger.getLogger(MainController.class.getName()).warning(e.getMessage());
         }
+    }
+
+    private void initHistoryMenu(){
+        Label pre = new Label("上一条");
+        Label next = new Label("下一条");
+        pre.setOnMouseClicked((event -> {
+            HistoryEntry entry = SystemResourceManager.getFacade().getHistory().previous();
+            updateTextArea(entry.getOrigin(),entry.getTranslation());
+        }));
+        next.setOnMouseClicked(event -> {
+            HistoryEntry entry = SystemResourceManager.getFacade().getHistory().next();
+            updateTextArea(entry.getOrigin(),entry.getTranslation());
+        });
+        preHistoryMenu.setText("");
+        nextHistoryMenu.setText("");
+        preHistoryMenu.setGraphic(pre);
+        nextHistoryMenu.setGraphic(next);
+    }
+
+
+    private void updateTextArea(String origin, String translation){
+        originTextArea.setText(origin);
+        translatedTextArea.setText(translation);
+    }
+
+
+    @FXML
+    public void onBtnTranslateClick(ActionEvent actionEvent) {
+        String originText = originTextArea.getText();
+        processTranslate(originText);
     }
 
 
@@ -249,9 +337,13 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     }
 
     @Override
-    public void onComplete(String text) {
+    public void onComplete(String origin, String translation) {
         // 不管从哪里会回调，回到UI线程
-        Platform.runLater(() -> translatedTextAre.setText(text));
+        Platform.runLater(() ->{
+            updateTextArea(origin,translation);
+        });
     }
+
+
 
 }

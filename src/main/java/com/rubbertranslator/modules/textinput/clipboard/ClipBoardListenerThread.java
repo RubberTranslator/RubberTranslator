@@ -54,7 +54,11 @@ public class ClipBoardListenerThread extends Thread {
             try {
                 // xxx:怎么避免浪费CPU时间？
                 Thread.sleep(waitTime);
-                if (!running) blocker.wait();
+                if (!running){  // 暂停
+                    synchronized (blocker){
+                        blocker.wait();
+                    }
+                }
 
                 Transferable t = clipboard.getContents(null);
                 // XXX: 下面的代码判断重复多余，但是尚未找到好的方法来区别不同的Transferable

@@ -21,7 +21,7 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu fx:id="featureSwitcher" mnemonicParsing="false" text="功能开关">
+                <Menu fx:id="featureSwitcher" mnemonicParsing="false" text="基本设置">
                   <items>
                         <Menu mnemonicParsing="false" text="翻译引擎">
                           <items>
@@ -92,8 +92,8 @@
                   </items>
                 </Menu>
                   <Menu fx:id="focusMenu" mnemonicParsing="false" text="专注模式" />
-                  <Menu mnemonicParsing="false" text="上一条" />
-                  <Menu mnemonicParsing="false" text="下一条" />
+                  <Menu fx:id="preHistoryMenu" mnemonicParsing="false" text="上一条" />
+                  <Menu fx:id="nextHistoryMenu" mnemonicParsing="false" text="下一条" />
               </menus>
             </MenuBar>
             <TextArea fx:id="originTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="原文" wrapText="true">
@@ -101,7 +101,7 @@
                   <Font size="20.0" />
                </font>
             </TextArea>
-            <TextArea fx:id="translatedTextAre" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="译文" wrapText="true">
+            <TextArea fx:id="translatedTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="译文" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font>

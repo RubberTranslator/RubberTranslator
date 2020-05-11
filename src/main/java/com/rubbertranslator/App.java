@@ -1,5 +1,6 @@
 package com.rubbertranslator;
 
+import com.rubbertranslator.controller.ControllerConstant;
 import com.rubbertranslator.modules.system.SystemResourceManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ public class App extends Application {
 
     private static Scene scene;
     private static Stage appStage;
+    private static String currentContentRoot;
 
     @Override
     public void init() throws Exception {
@@ -33,7 +35,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         appStage = stage;
-        scene = new Scene(loadFXML("/fxml/main.fxml"));
+        scene = new Scene(loadFXML(ControllerConstant.MAIN_CONTROLLER_FXML),800,600);
         stage.setScene(scene);
         stage.show();
     }
@@ -45,11 +47,26 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
+        Object controller = fxmlLoader.getController();
+        System.out.println(controller);
         return fxmlLoader.load();
     }
 
+    public static void resizeStage(){
+        if(ControllerConstant.FOCUS_CONTROLLER_FXML.equals(currentContentRoot)){
+            appStage.setWidth(600);
+            appStage.setHeight(400);
+        }else if(ControllerConstant.MAIN_CONTROLLER_FXML.equals(currentContentRoot)){
+            appStage.setWidth(800);
+            appStage.setHeight(600);
+        }
+    }
+
+
     public static void setRoot(String fxml) throws IOException {
+        currentContentRoot = fxml;
         scene.setRoot(loadFXML(fxml));
+        resizeStage();
     }
 
 
