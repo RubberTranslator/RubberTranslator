@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
 
+import javax.annotation.processing.SupportedSourceVersion;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,8 @@ import java.util.Map;
  * 系统配置类
  */
 public class SystemConfiguration {
+    @SerializedName("ui_config")
+    private UIConfig uiConfig;
     // 文本输入
     @SerializedName("text_input")
     private TextInputConfig textInputConfig;
@@ -26,18 +29,28 @@ public class SystemConfiguration {
     // 翻译模块
     @SerializedName("translator")
     private TranslatorConfig translatorConfig;
+    
     @SerializedName("history")
     private HistoryConfig historyConfig;
 
     @Override
     public String toString() {
         return "SystemConfiguration{" +
-                "textInputConfig=" + textInputConfig +
+                "uiConfig=" + uiConfig +
+                ", textInputConfig=" + textInputConfig +
                 ", processFilterConfig=" + processFilterConfig +
                 ", textProcessConfig=" + textProcessConfig +
                 ", translatorConfig=" + translatorConfig +
                 ", historyConfig=" + historyConfig +
                 '}';
+    }
+
+    public UIConfig getUiConfig() {
+        return uiConfig;
+    }
+
+    public void setUiConfig(UIConfig uiConfig) {
+        this.uiConfig = uiConfig;
     }
 
     public ProcessFilterConfig getProcessFilterConfig() {
@@ -86,10 +99,10 @@ public class SystemConfiguration {
     public static class TextInputConfig {
         // 是否开启监听剪切板
         @SerializedName("open_clipboard_listener")
-        private boolean openClipboardListener;
+        private Boolean openClipboardListener;
         // 是否开启拖拽复制
         @SerializedName("drag_copy")
-        private boolean dragCopy;
+        private Boolean dragCopy;
         // ocr
         @SerializedName("baidu_ocr_api_key")
         private String baiduOcrApiKey;
@@ -106,19 +119,19 @@ public class SystemConfiguration {
                     '}';
         }
 
-        public boolean isOpenClipboardListener() {
+        public Boolean isOpenClipboardListener() {
             return openClipboardListener;
         }
 
-        public void setOpenClipboardListener(boolean openClipboardListener) {
+        public void setOpenClipboardListener(Boolean openClipboardListener) {
             this.openClipboardListener = openClipboardListener;
         }
 
-        public boolean isDragCopy() {
+        public Boolean isDragCopy() {
             return dragCopy;
         }
 
-        public void setDragCopy(boolean dragCopy) {
+        public void setDragCopy(Boolean dragCopy) {
             this.dragCopy = dragCopy;
         }
 
@@ -142,17 +155,17 @@ public class SystemConfiguration {
     public static class ProcessFilterConfig {
         // 是否打开进程过滤器
         @SerializedName("open_process_filter")
-        private boolean openProcessFilter;
+        private Boolean openProcessFilter;
         // TODO: 考虑加入黑白名单模式
         // 过滤进程集合 TODO:如果有黑白名单，则用两个进程list来表示，如whiteProcessList
         @SerializedName("process_list")
         private List<String> processList;
 
-        public boolean isOpenProcessFilter() {
+        public Boolean isOpenProcessFilter() {
             return openProcessFilter;
         }
 
-        public void setOpenProcessFilter(boolean openProcessFilter) {
+        public void setOpenProcessFilter(Boolean openProcessFilter) {
             this.openProcessFilter = openProcessFilter;
         }
 
@@ -213,13 +226,13 @@ public class SystemConfiguration {
          */
         public static class TextPreProcessConfig{
             @SerializedName("keep_paragraph_format")
-            private boolean tryKeepParagraphFormat;
+            private Boolean tryKeepParagraphFormat;
 
-            public boolean isTryKeepParagraphFormat() {
+            public Boolean isTryKeepParagraphFormat() {
                 return tryKeepParagraphFormat;
             }
 
-            public void setTryKeepParagraphFormat(boolean tryKeepParagraphFormat) {
+            public void setTryKeepParagraphFormat(Boolean tryKeepParagraphFormat) {
                 this.tryKeepParagraphFormat = tryKeepParagraphFormat;
             }
 
@@ -236,16 +249,16 @@ public class SystemConfiguration {
          */
         public static class TextPostProcessConfig{
             @SerializedName("open_post_process")
-            private boolean openPostProcess;
+            private Boolean openPostProcess;
 
             @SerializedName("words_replacer")
             private WordsReplacerConfig wordsReplacerConfig;
 
-            public boolean isOpenPostProcess() {
+            public Boolean isOpenPostProcess() {
                 return openPostProcess;
             }
 
-            public void setOpenPostProcess(boolean openPostProcess) {
+            public void setOpenPostProcess(Boolean openPostProcess) {
                 this.openPostProcess = openPostProcess;
             }
 
@@ -268,27 +281,27 @@ public class SystemConfiguration {
             public static class WordsReplacerConfig{
                 // 是否打开词组替换
                 @SerializedName("open_words_replacer")
-                private boolean openWordsReplacer;
+                private Boolean openWordsReplacer;
                 // 是否大小写敏感
                 @SerializedName("case_insensitive")
-                private boolean caseInsensitive;
+                private Boolean caseInsensitive;
                 // 词组替换集合
                 @SerializedName("words_map")
                 private Map<String, String> wordsMap;
 
-                public boolean isCaseInsensitive() {
+                public Boolean isCaseInsensitive() {
                     return caseInsensitive;
                 }
 
-                public void setCaseInsensitive(boolean caseInsensitive) {
+                public void setCaseInsensitive(Boolean caseInsensitive) {
                     this.caseInsensitive = caseInsensitive;
                 }
 
-                public boolean isOpenWordsReplacer() {
+                public Boolean isOpenWordsReplacer() {
                     return openWordsReplacer;
                 }
 
-                public void setOpenWordsReplacer(boolean openWordsReplacer) {
+                public void setOpenWordsReplacer(Boolean openWordsReplacer) {
                     this.openWordsReplacer = openWordsReplacer;
                 }
 
@@ -426,6 +439,26 @@ public class SystemConfiguration {
         public String toString() {
             return "HistoryConfig{" +
                     "historyNum=" + historyNum +
+                    '}';
+        }
+    }
+    
+    public static class UIConfig{
+        @SerializedName("keep_top")
+        private Boolean keepTop;
+
+        public Boolean getKeepTop() {
+            return keepTop;
+        }
+
+        public void setKeepTop(Boolean keepTop) {
+            this.keepTop = keepTop;
+        }
+
+        @Override
+        public String toString() {
+            return "UIConfig{" +
+                    "keepTop=" + keepTop +
                     '}';
         }
     }

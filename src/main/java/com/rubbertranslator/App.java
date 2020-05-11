@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * JavaFX App
@@ -15,6 +16,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    private static Stage appStage;
 
     @Override
     public void init() throws Exception {
@@ -30,11 +32,17 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        appStage = stage;
         scene = new Scene(loadFXML("/fxml/main.fxml"));
         stage.setScene(scene);
-        stage.setAlwaysOnTop(true);
         stage.show();
     }
+
+    public static void setKeepTop(boolean keepTop){
+        Logger.getLogger(App.class.getName()).info("App stage keep top:"+keepTop);
+        appStage.setAlwaysOnTop(keepTop);
+    }
+
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
         return fxmlLoader.load();

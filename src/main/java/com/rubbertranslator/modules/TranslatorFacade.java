@@ -42,6 +42,30 @@ public class TranslatorFacade {
         executor = Executors.newSingleThreadExecutor();;
     }
 
+    public ProcessFilter getProcessFilter() {
+        return processFilter;
+    }
+
+    public TextPreProcessor getTextPreProcessor() {
+        return textPreProcessor;
+    }
+
+    public TranslatorFactory getTranslatorFactory() {
+        return translatorFactory;
+    }
+
+    public TextPostProcessor getTextPostProcessor() {
+        return textPostProcessor;
+    }
+
+    public ExecutorService getExecutor() {
+        return executor;
+    }
+
+    public TranslatorFacadeListener getFacadeListener() {
+        return facadeListener;
+    }
+
     public TranslationHistory getHistory() {
         return history;
     }

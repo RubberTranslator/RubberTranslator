@@ -77,6 +77,7 @@ public class SystemResourceManager {
         // 2.初始化facade
         facade = new TranslatorFacade();
         // 3. 启动各组件
+        // ui配置在controller进行应用
         return textInputInit(configuration.getTextInputConfig()) &&
                 filterInit(configuration.getProcessFilterConfig()) &&
                 preTextProcessInit(configuration.getTextProcessConfig().getTextPreProcessConfig()) &&

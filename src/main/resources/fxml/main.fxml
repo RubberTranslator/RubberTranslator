@@ -25,47 +25,48 @@
                   <items>
                         <Menu mnemonicParsing="false" text="翻译引擎">
                           <items>
-                            <RadioMenuItem id="google_translator" mnemonicParsing="false" selected="true" text="谷歌翻译">
+                            <RadioMenuItem fx:id="googleTranslator" mnemonicParsing="false" selected="true" text="谷歌翻译">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="translatorGroup" />
                                  </toggleGroup>
                               </RadioMenuItem>
-                              <RadioMenuItem id="baidu_translator" mnemonicParsing="false" text="百度翻译" toggleGroup="$translatorGroup" />
-                              <RadioMenuItem id="youdao_translator" mnemonicParsing="false" text="有道翻译" toggleGroup="$translatorGroup" />
+                              <RadioMenuItem id="baidu_translator" fx:id="baiduTranslator" mnemonicParsing="false" text="百度翻译" toggleGroup="$translatorGroup" />
+                              <RadioMenuItem id="youdao_translator" fx:id="youdaoTranslator" mnemonicParsing="false" text="有道翻译" toggleGroup="$translatorGroup" />
                           </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="源语言">
                           <items>
-                              <RadioMenuItem mnemonicParsing="false" selected="true" text="简体中文">
+                              <RadioMenuItem fx:id="srcSimpleChinese" mnemonicParsing="false" selected="true" text="简体中文">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="sourceLanguageGroup" />
                                  </toggleGroup>
                               </RadioMenuItem>
-                              <RadioMenuItem mnemonicParsing="false" text="繁體中文" toggleGroup="$sourceLanguageGroup" />
-                              <RadioMenuItem mnemonicParsing="false" text="English" toggleGroup="$sourceLanguageGroup" />
-                              <RadioMenuItem mnemonicParsing="false" text="日本語" toggleGroup="$sourceLanguageGroup" />
-                              <RadioMenuItem mnemonicParsing="false" text="Français" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcTraditionalChinese" mnemonicParsing="false" text="繁體中文" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcEnglish" mnemonicParsing="false" text="English" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcJapanese" mnemonicParsing="false" text="日本語" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcFrench" mnemonicParsing="false" text="Français" toggleGroup="$sourceLanguageGroup" />
                           </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="目标语言">
                            <items>
-                              <RadioMenuItem mnemonicParsing="false" text="简体中文">
+                              <RadioMenuItem fx:id="destSimpleChinese" mnemonicParsing="false" text="简体中文">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="destLanguageGroup" />
                                  </toggleGroup>
                               </RadioMenuItem>
-                              <RadioMenuItem mnemonicParsing="false" text="繁體中文" toggleGroup="$destLanguageGroup" />
-                              <RadioMenuItem mnemonicParsing="false" selected="true" text="English" toggleGroup="$destLanguageGroup" />
-                              <RadioMenuItem mnemonicParsing="false" text="日本語" toggleGroup="$destLanguageGroup" />
-                              <RadioMenuItem mnemonicParsing="false" text="Français" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destTraditionalChinese" mnemonicParsing="false" text="繁體中文" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destEnglish" mnemonicParsing="false" selected="true" text="English" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destJapanese" mnemonicParsing="false" text="日本語" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destFrench" mnemonicParsing="false" text="Français" toggleGroup="$destLanguageGroup" />
                            </items>
                         </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <RadioMenuItem mnemonicParsing="false" selected="true" text="监听剪切板" />
-                        <RadioMenuItem mnemonicParsing="false" selected="true" text="拖拽复制" />
-                        <RadioMenuItem mnemonicParsing="false" selected="true" text="增量复制" />
+                        <RadioMenuItem fx:id="clipboardListenerMenu" mnemonicParsing="false" selected="true" text="监听剪切板" />
+                        <RadioMenuItem fx:id="dragCopyMenu" mnemonicParsing="false" selected="true" text="拖拽复制" />
+                        <RadioMenuItem fx:id="incrementalCopyMenu" mnemonicParsing="false" selected="true" text="增量复制" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <RadioMenuItem mnemonicParsing="false" selected="true" text="保持段落格式" />
+                        <RadioMenuItem fx:id="keepParagraphMenu" mnemonicParsing="false" selected="true" text="保持段落格式" />
+                        <RadioMenuItem fx:id="keepTopMenu" mnemonicParsing="false" text="置顶" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="高级设置">
