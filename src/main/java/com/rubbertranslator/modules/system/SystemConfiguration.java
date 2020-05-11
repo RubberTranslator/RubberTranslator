@@ -26,6 +26,8 @@ public class SystemConfiguration {
     // 翻译模块
     @SerializedName("translator")
     private TranslatorConfig translatorConfig;
+    @SerializedName("history")
+    private HistoryConfig historyConfig;
 
     @Override
     public String toString() {
@@ -34,8 +36,10 @@ public class SystemConfiguration {
                 ", processFilterConfig=" + processFilterConfig +
                 ", textProcessConfig=" + textProcessConfig +
                 ", translatorConfig=" + translatorConfig +
+                ", historyConfig=" + historyConfig +
                 '}';
     }
+
     public ProcessFilterConfig getProcessFilterConfig() {
         return processFilterConfig;
     }
@@ -44,6 +48,13 @@ public class SystemConfiguration {
         this.processFilterConfig = processFilterConfig;
     }
 
+    public HistoryConfig getHistoryConfig() {
+        return historyConfig;
+    }
+
+    public void setHistoryConfig(HistoryConfig historyConfig) {
+        this.historyConfig = historyConfig;
+    }
 
     public TextProcessConfig getTextProcessConfig() {
         return textProcessConfig;
@@ -395,6 +406,27 @@ public class SystemConfiguration {
 
         public void setYouDaoTranslatorSecretKey(String youDaoTranslatorSecretKey) {
             this.youDaoTranslatorSecretKey = youDaoTranslatorSecretKey;
+        }
+    }
+
+    public static class HistoryConfig{
+        // 翻译历史记录条数
+        @SerializedName("history_num")
+        private Integer historyNum;
+
+        public Integer getHistoryNum() {
+            return historyNum;
+        }
+
+        public void setHistoryNum(Integer historyNum) {
+            this.historyNum = historyNum;
+        }
+
+        @Override
+        public String toString() {
+            return "HistoryConfig{" +
+                    "historyNum=" + historyNum +
+                    '}';
         }
     }
 

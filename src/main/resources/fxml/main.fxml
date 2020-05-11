@@ -21,17 +21,17 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu mnemonicParsing="false" text="功能开关">
+                <Menu fx:id="featureSwitcher" mnemonicParsing="false" text="功能开关">
                   <items>
                         <Menu mnemonicParsing="false" text="翻译引擎">
                           <items>
-                            <RadioMenuItem mnemonicParsing="false" selected="true" text="谷歌翻译">
+                            <RadioMenuItem id="google_translator" mnemonicParsing="false" selected="true" text="谷歌翻译">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="translatorGroup" />
                                  </toggleGroup>
                               </RadioMenuItem>
-                              <RadioMenuItem mnemonicParsing="false" text="百度翻译" toggleGroup="$translatorGroup" />
-                              <RadioMenuItem mnemonicParsing="false" text="有道翻译" toggleGroup="$translatorGroup" />
+                              <RadioMenuItem id="baidu_translator" mnemonicParsing="false" text="百度翻译" toggleGroup="$translatorGroup" />
+                              <RadioMenuItem id="youdao_translator" mnemonicParsing="false" text="有道翻译" toggleGroup="$translatorGroup" />
                           </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="源语言">
@@ -95,7 +95,7 @@
                   <Menu mnemonicParsing="false" text="下一条" />
               </menus>
             </MenuBar>
-            <TextArea fx:id="originTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" promptText="原文" wrapText="true">
+            <TextArea fx:id="originTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="原文" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font>

@@ -2,15 +2,18 @@ package com.rubbertranslator.controller;
 
 import com.rubbertranslator.App;
 import com.rubbertranslator.modules.TranslatorFacade;
+import com.rubbertranslator.modules.system.SystemConfiguration;
 import com.rubbertranslator.modules.system.SystemResourceManager;
 import com.rubbertranslator.modules.textinput.TextInputListener;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
+import com.rubbertranslator.modules.translate.TranslatorType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -36,7 +39,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     // menuBar区
     // " 功能开关 "
-    @FXML
+    @FXML   // 翻译引擎类型
     private ToggleGroup translatorGroup;
     @FXML
     private ToggleGroup sourceLanguageGroup;
@@ -52,16 +55,46 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
      */
     @FXML
     public void initialize() {
+        initListeners();
+        initViews();
+    }
+
+    private void initListeners(){
         // 注册文本变化监听
         SystemResourceManager.getClipBoardListenerThread().setTextInputListener(this);
         // 注册翻译完成监听
         SystemResourceManager.getFacade().setFacadeListener(this);
+    }
 
-        // 专注模式menu初始化
+    private void initViews(){
+        // 加载配置
+        SystemConfiguration configuration = SystemResourceManager.getConfiguration();
+        initFeatureSwitcherMenu(configuration);
+
+        // 点击事件分配
         Label focusMode = new Label("专注模式");
         focusMode.setOnMouseClicked(MainController::switchToFocusMode);
         focusMenu.setText("");  // 清空
         focusMenu.setGraphic(focusMode);
+    }
+
+    private void initFeatureSwitcherMenu(SystemConfiguration configuration){
+        translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            // TODO: fxml中如何引用枚举？ 这里暂时采用硬编码
+            // google_translator
+            // baidu_translator
+            // youdao_translator
+            SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfiguration().getTranslatorConfig();
+            MenuItem newMenu = (MenuItem) newValue;
+            String id = newMenu.getId();
+            if("google_translator".equals(id)){
+                translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
+            }else if("baidu_translator".equals(id)){
+                translatorConfig.setCurrentTranslator(TranslatorType.BAIDU);
+            }else if("youdao_translator".equals(id)){
+                translatorConfig.setCurrentTranslator(TranslatorType.YOUDAO);
+            }
+        });
     }
 
 

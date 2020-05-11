@@ -20,8 +20,12 @@ public class LimitedLinkedList<T> extends LinkedList<T> {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setCapacity(int newCapacity) {
+        if(newCapacity < this.size()){
+            // remove前  this.size() - newCapacity各元素
+            removeRange(0,this.size()-newCapacity);
+        }
+        this.capacity = newCapacity;
     }
 
     // 只能追加
@@ -31,5 +35,6 @@ public class LimitedLinkedList<T> extends LinkedList<T> {
         }
         this.add(t);
     }
+
 
 }
