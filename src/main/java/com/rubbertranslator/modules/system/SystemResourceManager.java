@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.history.TranslationHistory;
-import com.rubbertranslator.modules.system.proxy.ConfigProxy;
+import com.rubbertranslator.modules.system.proxy.*;
 import com.rubbertranslator.modules.textinput.clipboard.ClipBoardListenerThread;
 import com.rubbertranslator.modules.textinput.mousecopy.DragCopyThread;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
@@ -36,12 +36,15 @@ public class SystemResourceManager {
     private static ClipBoardListenerThread clipBoardListenerThread;
     private static DragCopyThread dragCopyThread;
     private static TranslatorFacade facade;
-    private static SystemConfiguration configuration;
+
+    // 所有用户得操作，都应该通过configurationProxy来操作
+    private static SystemConfiguration configurationProxy;
 
 
     // 只能通过静态方法调用此类
     private SystemResourceManager() {
     }
+
 
     public static ClipBoardListenerThread getClipBoardListenerThread() {
         assert clipBoardListenerThread != null : "请先执行SystemResourceManager.init";
@@ -58,8 +61,8 @@ public class SystemResourceManager {
         return facade;
     }
 
-    public static SystemConfiguration getConfiguration() {
-        return configuration;
+    public static SystemConfiguration getConfigurationProxy() {
+        return configurationProxy;
     }
 
 
@@ -71,19 +74,19 @@ public class SystemResourceManager {
      */
     public static boolean init() {
         // 1. 加载配置文件
-        configuration = loadSystemConfig();
-        Logger.getLogger(SystemResourceManager.class.getName()).info(configuration.toString());
-        if (configuration == null) return false;
+        configurationProxy = loadSystemConfig();
+        Logger.getLogger(SystemResourceManager.class.getName()).info(configurationProxy.toString());
+        if (configurationProxy == null) return false;
         // 2.初始化facade
         facade = new TranslatorFacade();
         // 3. 启动各组件
         // ui配置在controller进行应用
-        return textInputInit(configuration.getTextInputConfig()) &&
-                filterInit(configuration.getProcessFilterConfig()) &&
-                preTextProcessInit(configuration.getTextProcessConfig().getTextPreProcessConfig()) &&
-                postTextProcessInit(configuration.getTextProcessConfig().getTextPostProcessConfig()) &&
-                translatorInit(configuration.getTranslatorConfig()) &&
-                historyInit(configuration.getHistoryConfig());
+        return textInputInit(configurationProxy.getTextInputConfig()) &&
+                filterInit(configurationProxy.getProcessFilterConfig()) &&
+                preTextProcessInit(configurationProxy.getTextProcessConfig().getTextPreProcessConfig()) &&
+                postTextProcessInit(configurationProxy.getTextProcessConfig().getTextPostProcessConfig()) &&
+                translatorInit(configurationProxy.getTranslatorConfig()) &&
+                historyInit(configurationProxy.getHistoryConfig());
     }
 
 
@@ -124,6 +127,7 @@ public class SystemResourceManager {
         }
         // json --> object
         Gson gson = new Gson();
+        // 原始配置记录 TODO：这种方式耦合度很高，下面得wrapper中引用了configuration中的对象。
         SystemConfiguration configuration = gson.fromJson(configJson, SystemConfiguration.class);
         if (configJson == null) {
             return null;
@@ -135,30 +139,44 @@ public class SystemResourceManager {
     /**
      * 为所有系统配置包装代理
      * 每当用户修改任何系统配置，都将配置持久化
-     *
+     *  两层代理：
+     *  1. 静态代理： 设置更改后，通知后续处理模块，立马更改
+     *  2. 动态代理： 设置更改后，持久化所有设置
      * @param configuration
      */
     private static SystemConfiguration wrapProxy(SystemConfiguration configuration) {
         // 文本输入配置
+        SystemConfiguration.TextInputConfig textInputConfigStaticProxy = new TextInputConfigStaticProxy(configuration.getTextInputConfig());
         SystemConfiguration.TextInputConfig textInputConfigProxy = (SystemConfiguration.TextInputConfig)
-                Enhancer.create(SystemConfiguration.TextInputConfig.class, new ConfigProxy(configuration.getTextInputConfig()));
-        // 过滤器
-        SystemConfiguration.ProcessFilterConfig processFilterConfigProxy = (SystemConfiguration.ProcessFilterConfig)
-                Enhancer.create(SystemConfiguration.ProcessFilterConfig.class, new ConfigProxy(configuration.getProcessFilterConfig()));
+                Enhancer.create(SystemConfiguration.TextInputConfig.class, new ConfigProxy(textInputConfigStaticProxy));
 
-        // 文本处理
+        // 过滤器
+        SystemConfiguration.ProcessFilterConfig processFilterStaticConfig = new ProcessFilterStaticConfig(configuration.getProcessFilterConfig());
+        SystemConfiguration.ProcessFilterConfig processFilterConfigProxy = (SystemConfiguration.ProcessFilterConfig)
+                Enhancer.create(SystemConfiguration.ProcessFilterConfig.class, new ConfigProxy(processFilterStaticConfig));
+
+        // 前置处理
+        SystemConfiguration.TextProcessConfig.TextPreProcessConfig textPreProcessStaticConfig = new TextPreProcessStaticConfig(configuration.getTextProcessConfig().getTextPreProcessConfig());
         SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfigProxy = (SystemConfiguration.TextProcessConfig.TextPreProcessConfig)
-                Enhancer.create(SystemConfiguration.TextProcessConfig.TextPreProcessConfig.class, new ConfigProxy(configuration.getTextProcessConfig().getTextPreProcessConfig()));
+                Enhancer.create(SystemConfiguration.TextProcessConfig.TextPreProcessConfig.class, new ConfigProxy(textPreProcessStaticConfig));
+        // 后置处理
+        SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessStaticConfig = new TextPostProcessStaticConfig(configuration.getTextProcessConfig().getTextPostProcessConfig());
         SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessConfig = (SystemConfiguration.TextProcessConfig.TextPostProcessConfig)
-                Enhancer.create(SystemConfiguration.TextProcessConfig.TextPostProcessConfig.class, new ConfigProxy(configuration.getTextProcessConfig().getTextPostProcessConfig()));
+                Enhancer.create(SystemConfiguration.TextProcessConfig.TextPostProcessConfig.class, new ConfigProxy(textPostProcessStaticConfig));
 
         // 翻译配置
+        SystemConfiguration.TranslatorConfig translatorStaticConfig = new TranslatorStaticConfig(configuration.getTranslatorConfig());
         SystemConfiguration.TranslatorConfig translatorConfigProxy = (SystemConfiguration.TranslatorConfig)
-                Enhancer.create(SystemConfiguration.TranslatorConfig.class, new ConfigProxy(configuration.getTranslatorConfig()));
+                Enhancer.create(SystemConfiguration.TranslatorConfig.class, new ConfigProxy(translatorStaticConfig));
 
         // 历史配置
+        HistoryStaticConfig historyStaticConfig = new HistoryStaticConfig(configuration.getHistoryConfig());
         SystemConfiguration.HistoryConfig historyConfigProxy = (SystemConfiguration.HistoryConfig)
-                Enhancer.create(SystemConfiguration.HistoryConfig.class, new ConfigProxy(configuration.getHistoryConfig()));
+                Enhancer.create(SystemConfiguration.HistoryConfig.class, new ConfigProxy(historyStaticConfig));
+
+        // ui配置
+        SystemConfiguration.UIConfig uiConfigProxy = (SystemConfiguration.UIConfig)
+                Enhancer.create(SystemConfiguration.UIConfig.class,new ConfigProxy(configuration.getUiConfig()));
 
         // 注入
         configuration.setTextInputConfig(textInputConfigProxy);
@@ -167,6 +185,8 @@ public class SystemResourceManager {
         configuration.getTextProcessConfig().setTextPostProcessConfig(textPostProcessConfig);
         configuration.setTranslatorConfig(translatorConfigProxy);
         configuration.setHistoryConfig(historyConfigProxy);
+        configuration.setUiConfig(uiConfigProxy);
+        Logger.getLogger(SystemConfiguration.class.getName()).info("wrap代理完成");
         return configuration;
     }
 

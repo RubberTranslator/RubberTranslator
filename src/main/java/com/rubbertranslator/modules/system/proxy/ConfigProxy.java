@@ -1,10 +1,12 @@
 package com.rubbertranslator.modules.system.proxy;
 
+import com.rubbertranslator.modules.system.SystemConfiguration;
 import com.rubbertranslator.modules.system.SystemResourceManager;
 import com.rubbertranslator.utils.JsonUtil;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,11 +28,61 @@ public class ConfigProxy implements MethodInterceptor {
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
         if (method.getName().startsWith("set")) {
             Object ret = method.invoke(target, args);
-            String json = JsonUtil.serialize(target);
+            SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
+            String json = JsonUtil.serialize(extractOriginConfig(configurationProxy));
+            System.out.println(json);
             // TODO: 考虑加载单线程池来写
             Files.writeString(Paths.get(SystemResourceManager.configJsonPath),json);
             return ret;
         }
         return method.invoke(target, args);
+    }
+
+    /**
+     * 由于采用了两级代理：静态+动态，所以在序列化时，需要去掉静态代理的部分
+     */
+    private SystemConfiguration extractOriginConfig(SystemConfiguration configuration){
+        SystemConfiguration newConfiguration = new SystemConfiguration();
+            try {
+
+                 newConfiguration.setUiConfig((SystemConfiguration.UIConfig) doExtract(configuration.getUiConfig()));
+
+                 newConfiguration.setTextInputConfig(
+                         ((TextInputConfigStaticProxy) doExtract(configuration.getTextInputConfig())).getTextInputConfig()
+                 );
+
+                 newConfiguration.setProcessFilterConfig(
+                         ((ProcessFilterStaticConfig) doExtract(configuration.getProcessFilterConfig())).getProcessFilterConfig()
+                 );
+
+                 SystemConfiguration.TextProcessConfig textProcessConfig =  new SystemConfiguration.TextProcessConfig();
+                 textProcessConfig.setTextPreProcessConfig(
+                         ((TextPreProcessStaticConfig) doExtract(configuration.getTextProcessConfig().getTextPreProcessConfig())).getPreProcessConfig()
+                 );
+                 textProcessConfig.setTextPostProcessConfig(
+                         ((TextPostProcessStaticConfig) doExtract(configuration.getTextProcessConfig().getTextPostProcessConfig())).getTextPostProcessConfig()
+                 );
+                 newConfiguration.setTextProcessConfig(textProcessConfig);
+
+                 newConfiguration.setTranslatorConfig(
+                         ((TranslatorStaticConfig) doExtract(configuration.getTranslatorConfig())).getTranslatorConfig()
+                 );
+                 newConfiguration.setHistoryConfig(
+                         ((HistoryStaticConfig) doExtract(configuration.getHistoryConfig())).getHistoryConfig()
+                 );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        return newConfiguration;
+    }
+
+    private Object doExtract(Object obj) throws NoSuchFieldException, IllegalAccessException {
+        // 通过反射获取
+        Field h1 = obj.getClass().getDeclaredField("CGLIB$CALLBACK_0");
+        h1.setAccessible(true);
+        Object temp = h1.get(obj);
+        Field h2 = temp.getClass().getDeclaredField("target");
+        h2.setAccessible(true);
+        return h2.get(temp);
     }
 }

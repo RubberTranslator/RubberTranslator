@@ -14,9 +14,27 @@ public class WordsReplacer {
     private Map<String, String> map = new HashMap<>();
     // 区分大小写与否
     private boolean caseInsensitive = true;
+    // 是否开启替换
+    private boolean openWordsReplacer = true;
 
     public boolean isCaseInsensitive() {
         return caseInsensitive;
+    }
+
+    public Map<String, String> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, String> map) {
+        this.map = map;
+    }
+
+    public boolean isOpenWordsReplacer() {
+        return openWordsReplacer;
+    }
+
+    public void setOpenWordsReplacer(boolean openWordsReplacer) {
+        this.openWordsReplacer = openWordsReplacer;
     }
 
     public void setCaseInsensitive(boolean caseInsensitive) {
@@ -32,6 +50,7 @@ public class WordsReplacer {
     }
 
     public String replace(String text) {
+        if(!openWordsReplacer) return text;
         String src, dest;
         for (Map.Entry<String, String> entry : map.entrySet()) {
             src = entry.getKey();

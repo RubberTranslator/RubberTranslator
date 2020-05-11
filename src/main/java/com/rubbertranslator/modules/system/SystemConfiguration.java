@@ -93,6 +93,7 @@ public class SystemConfiguration {
         this.translatorConfig = translatorConfig;
     }
 
+
     /**
      * 文本输入模块配置
      */

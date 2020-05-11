@@ -106,7 +106,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     private void initViews() {
         // 加载配置
-        SystemConfiguration configuration = SystemResourceManager.getConfiguration();
+        SystemConfiguration configuration = SystemResourceManager.getConfigurationProxy();
         initFeatureSwitcherMenu(configuration);
     }
 
@@ -168,7 +168,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         // 监听
         translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             // TODO: fxml中如何引用枚举？ 这里暂时采用硬编码
-            SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfiguration().getTranslatorConfig();
+            SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
             if (newValue == googleTranslator) {
                 translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
             } else if (newValue == baiduTranslator) {
