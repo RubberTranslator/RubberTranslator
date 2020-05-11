@@ -19,9 +19,9 @@ public class TranslatorFactory {
 
     private TranslatorType engineType = TranslatorType.GOOGLE;
 
-    private Language sourceLanguage;
+    private Language sourceLanguage = Language.AUTO;
 
-    private Language destLanguage;
+    private Language destLanguage = Language.CHINESE_SIMPLIFIED;
 
     public Language getSourceLanguage() {
         return sourceLanguage;
@@ -43,12 +43,12 @@ public class TranslatorFactory {
         engineType = type;
     }
 
-    public String translate(Language source, Language dest, String text){
+    public String translate(String text){
         if(!translatorEngineMap.containsKey(engineType)){
             instanceTranslatorEngine(engineType);
         }
         AbstractTranslator translatorEngine = translatorEngineMap.get(engineType);
-        return translatorEngine.translate(source,dest,text);
+        return translatorEngine.translate(sourceLanguage,destLanguage,text);
     }
 
 

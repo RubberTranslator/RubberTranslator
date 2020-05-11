@@ -17,6 +17,11 @@ module RubberTranslator {
 
     exports com.rubbertranslator;
     exports com.rubbertranslator.controller;
+    exports com.rubbertranslator.modules;
+    exports com.rubbertranslator.modules.filter;
+    exports com.rubbertranslator.modules.history;
+    exports com.rubbertranslator.modules.textprocessor.post;
+    exports com.rubbertranslator.modules.textprocessor.pre;
     exports com.rubbertranslator.modules.translate;
     exports com.rubbertranslator.modules.translate.baidu;
     exports com.rubbertranslator.modules.translate.youdao;

@@ -1,6 +1,7 @@
 package com.rubbertranslator.modules.system;
 
 import com.google.gson.Gson;
+import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.textinput.clipboard.ClipBoardListenerThread;
 import com.rubbertranslator.modules.textinput.mousecopy.DragCopyThread;
@@ -11,6 +12,7 @@ import com.rubbertranslator.modules.translate.TranslatorFactory;
 import com.rubbertranslator.modules.translate.TranslatorType;
 import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -30,6 +32,25 @@ public class SystemResourceManager {
 
     private static DragCopyThread dragCopyThread;
 
+    private static TranslatorFacade facade;
+
+
+    // 只能通过静态方法调用此类
+    private SystemResourceManager() {
+    }
+
+    public static ClipBoardListenerThread getClipBoardListenerThread() {
+        return clipBoardListenerThread;
+    }
+
+    public static DragCopyThread getDragCopyThread() {
+        return dragCopyThread;
+    }
+
+    public static TranslatorFacade getFacade() {
+        return facade;
+    }
+
     /**
      * 初始化系统资源
      *
@@ -40,17 +61,24 @@ public class SystemResourceManager {
         // 1. 加载配置文件
         SystemConfiguration configuration = loadSystemConfig();
         if(configuration == null) return false;
-        // 2. 启动各组件
+        // 2.初始化facade
+         facade = new TranslatorFacade();
+        // 3. 启动各组件
         return  textInputInit(configuration.getTextInputConfig()) &&
                 filterInit(configuration.getProcessFilterConfig()) &&
                 preTextProcessInit(configuration.getTextProcessConfig().getTextPreProcessConfig()) &&
                 postTextProcessInit(configuration.getTextProcessConfig().getTextPostProcessConfig()) &&
-                postTextProcessInit(configuration.getTextProcessConfig().getTextPostProcessConfig());
+                translatorInit(configuration.getTranslatorConfig());
     }
 
-    public static void destory(){
-        clipBoardListenerThread.exit();
-        dragCopyThread.exit();
+    /**
+     * 释放资源
+     */
+    public static void destroy(){
+        textInputDestroy();
+        // 其余模块没有资源需要手动释放
+        System.runFinalization();
+        System.exit(0);
     }
 
 
@@ -66,7 +94,7 @@ public class SystemResourceManager {
         Path path;
         String configJson;
         try {
-            if (!file.exists()) {
+            if (file.exists()) {
                 path = Paths.get(file.toURI());
             } else {
                 // 不存在加载默认配置文件
@@ -95,29 +123,38 @@ public class SystemResourceManager {
         dragCopyThread.setRun(configuration.isDragCopy());
         OCRUtils.setApiKey(configuration.getBaiduOcrApiKey());
         OCRUtils.setSecretKey(configuration.getBaiduOcrSecretKey());
+
+        clipBoardListenerThread.start();
+        dragCopyThread.start();
         return true;
+    }
+
+    private static void textInputDestroy(){
+        clipBoardListenerThread.exit();
+        dragCopyThread.exit();
     }
 
     private static boolean filterInit(SystemConfiguration.ProcessFilterConfig configuration){
         ProcessFilter processFilter = new ProcessFilter();
         processFilter.setOpen(configuration.isOpenProcessFilter());
         processFilter.addFilterList(configuration.getProcessList());
-        //TODO:注入facade
+        facade.setProcessFilter(processFilter);
         return true;
     }
 
     private static boolean preTextProcessInit(SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfig){
         TextPreProcessor textPreProcessor = new TextPreProcessor();
         textPreProcessor.setTryToKeepParagraph(preProcessConfig.isTryKeepParagraphFormat());
-        //TODO: 注入facade
+        facade.setTextPreProcessor(textPreProcessor);
         return true;
     }
 
     private static boolean postTextProcessInit(SystemConfiguration.TextProcessConfig.TextPostProcessConfig postProcessConfig){
         TextPostProcessor textPostProcessor = new TextPostProcessor();
         textPostProcessor.setOpen(postProcessConfig.isOpenPostProcess());
+        textPostProcessor.getReplacer().setCaseInsensitive(postProcessConfig.getWordsReplacerConfig().isCaseInsensitive());
         textPostProcessor.getReplacer().addWords(postProcessConfig.getWordsReplacerConfig().getWordsMap());
-        //TODO: 注入facade
+        facade.setTextPostProcessor(textPostProcessor);
         return true;
     }
 
@@ -138,6 +175,7 @@ public class SystemResourceManager {
             youdaoTranslator.setSECRET_KEY(configuration.getYouDaoTranslatorSecretKey());
             translatorFactory.addTranslator(TranslatorType.YOUDAO,youdaoTranslator);
         }
+        facade.setTranslatorFactory(translatorFactory);
         return true;
     }
 

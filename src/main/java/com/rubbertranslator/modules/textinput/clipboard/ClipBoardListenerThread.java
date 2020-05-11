@@ -84,6 +84,7 @@ public class ClipBoardListenerThread extends Thread {
                 }
             }
         }
+        Logger.getLogger(this.getClass().getName()).info("ClipBoard线程结束");
     }
 
     public void setRun(boolean run){
@@ -100,7 +101,9 @@ public class ClipBoardListenerThread extends Thread {
 
     private void resumeRun() {
         running = true;
-        blocker.notify();
+        synchronized (blocker){
+            blocker.notify();
+        }
     }
 
     public void exit() {

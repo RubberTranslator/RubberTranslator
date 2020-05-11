@@ -1,7 +1,10 @@
 package com.rubbertranslator.controller;
 
+import com.rubbertranslator.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleGroup;
+
+import java.io.IOException;
 
 /**
  * @author Raven
@@ -11,4 +14,9 @@ import javafx.scene.control.ToggleGroup;
 public class FocusModeController {
     @FXML
     private ToggleGroup translatorGroup;
+
+    @FXML
+    public void switchToMainMode() throws IOException {
+        App.setRoot(ControllerConstant.MAIN_CONTROLLER_FXML);
+    }
 }

@@ -90,7 +90,7 @@
                         <MenuItem mnemonicParsing="false" text="关于" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="专注模式" />
+                  <Menu fx:id="focusMenu" mnemonicParsing="false" text="专注模式" />
                   <Menu mnemonicParsing="false" text="上一条" />
                   <Menu mnemonicParsing="false" text="下一条" />
               </menus>

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.controller.FocusModeController">
    <children>
       <TextArea maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10000.0" prefWidth="10000.0" />
       <ToolBar prefHeight="40.0" prefWidth="200.0">
          <items>
+            <Button mnemonicParsing="false" onAction="#switchToMainMode" text="返回" />
             <ToggleButton mnemonicParsing="false" text="谷歌" textAlignment="CENTER">
                <toggleGroup>
                   <ToggleGroup fx:id="translatorGroup" />

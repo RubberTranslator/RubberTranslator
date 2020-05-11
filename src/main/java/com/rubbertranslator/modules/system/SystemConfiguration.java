@@ -258,9 +258,20 @@ public class SystemConfiguration {
                 // 是否打开词组替换
                 @SerializedName("open_words_replacer")
                 private boolean openWordsReplacer;
+                // 是否大小写敏感
+                @SerializedName("case_insensitive")
+                private boolean caseInsensitive;
                 // 词组替换集合
                 @SerializedName("words_map")
                 private Map<String, String> wordsMap;
+
+                public boolean isCaseInsensitive() {
+                    return caseInsensitive;
+                }
+
+                public void setCaseInsensitive(boolean caseInsensitive) {
+                    this.caseInsensitive = caseInsensitive;
+                }
 
                 public boolean isOpenWordsReplacer() {
                     return openWordsReplacer;
@@ -276,6 +287,15 @@ public class SystemConfiguration {
 
                 public void setWordsMap(Map<String, String> wordsMap) {
                     this.wordsMap = wordsMap;
+                }
+
+                @Override
+                public String toString() {
+                    return "WordsReplacerConfig{" +
+                            "openWordsReplacer=" + openWordsReplacer +
+                            ", caseInsensitive=" + caseInsensitive +
+                            ", wordsMap=" + wordsMap +
+                            '}';
                 }
             }
         }
@@ -305,7 +325,7 @@ public class SystemConfiguration {
         // 有道key&value
         @SerializedName("you_dao_translator_api_key")
         private String youDaoTranslatorApiKey;
-        @SerializedName("you_dao_translator_api_key")
+        @SerializedName("you_dao_translator_secret_key")
         private String youDaoTranslatorSecretKey;
 
         @Override

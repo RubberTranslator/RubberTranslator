@@ -7,15 +7,20 @@
   },
   "process_filter": {
     "open_process_filter": true,
-    "process_list": ["a.exe", "b.exe"]
+    "process_list": [
+      "a.exe",
+      "b.exe"
+    ]
   },
   "text_process": {
     "text_pre_process": {
       "keep_paragraph_format": true
     },
     "text_post_process": {
+      "open_post_process": false,
       "words_replacer": {
         "open_words_replacer": true,
+        "case_insensitive": false,
         "words_map": {
           "I": "我"
         }
@@ -29,6 +34,6 @@
     "baidu_translator_api_key": null,
     "baidu_translator_secret_key": null,
     "you_dao_translator_api_key": null,
-    "you_dao_translator_api_key": null
+    "you_dao_translator_secret_key": null
   }
 }

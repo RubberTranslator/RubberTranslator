@@ -4,9 +4,7 @@ import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
 import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
-import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
-import com.rubbertranslator.modules.translate.TranslatorType;
 
 import java.util.Objects;
 import java.util.concurrent.*;
@@ -25,13 +23,13 @@ public class TranslatorFacade {
     // 文本预处理器
     private TextPreProcessor textPreProcessor;
     // 翻译模块
-    private TranslatorFactory translator;
+    private TranslatorFactory translatorFactory;
     // 后置文本处理器
     private TextPostProcessor textPostProcessor;
     // 翻译历史记录
-    private TranslationHistory history;
+    private final TranslationHistory history;
     // 创建线程池（使用了预定义的配置）
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor;
     // facade回调
     private TranslatorFacadeListener facadeListener;
 
@@ -40,17 +38,26 @@ public class TranslatorFacade {
     }
 
     public TranslatorFacade() {
-        textPreProcessor = new TextPreProcessor();
-        translator = new TranslatorFactory();
-        textPostProcessor = new TextPostProcessor();
         history = new TranslationHistory();
-
-        textPreProcessor.setTryToKeepParagraph(true);
-        translator.setEngineType(TranslatorType.BAIDU);
-        textPostProcessor.setOpen(true);
-
-        textPostProcessor.getReplacer().setCaseInsensitive(false);
+        executor = Executors.newSingleThreadExecutor();;
     }
+
+    public TranslationHistory getHistory() {
+        return history;
+    }
+
+    public void setTextPreProcessor(TextPreProcessor textPreProcessor) {
+        this.textPreProcessor = textPreProcessor;
+    }
+
+    public void setTranslatorFactory(TranslatorFactory translatorFactory) {
+        this.translatorFactory = translatorFactory;
+    }
+
+    public void setTextPostProcessor(TextPostProcessor textPostProcessor) {
+        this.textPostProcessor = textPostProcessor;
+    }
+
 
     public void setProcessFilter(ProcessFilter processFilter) {
         this.processFilter = processFilter;
@@ -107,18 +114,21 @@ public class TranslatorFacade {
         @Override
         public String call() throws Exception {
             if (text == null || "".equals(text)) return null;
-
-            String temp;
-            // 做一个判断检验
-            // do translate works
-            if (processFilter.check()) return null;
-            temp = textPreProcessor.process(text);
-            temp = translator.translate(Language.ENGLISH, Language.CHINESE_SIMPLIFIED, temp);
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, temp);
-            // 后置处理
-            temp = textPostProcessor.process(temp);
-            // 记录翻译历史
-            history.addHistory(text,temp);
+            String temp = null;
+            try{
+                // 做一个判断检验
+                // do translate works
+                if (processFilter.check()) return null;
+                temp = textPreProcessor.process(text);
+                temp = translatorFactory.translate( temp);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, temp);
+                // 后置处理
+                temp = textPostProcessor.process(temp);
+                // 记录翻译历史
+                history.addHistory(text,temp);
+            }catch (NullPointerException e){
+                Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+            }
             return temp;
         }
     }

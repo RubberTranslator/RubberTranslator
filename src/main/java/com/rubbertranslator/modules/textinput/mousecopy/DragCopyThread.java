@@ -39,6 +39,7 @@ public class DragCopyThread extends Thread{
     public void exit(){
         try {
             GlobalScreen.unregisterNativeHook();
+            Logger.getLogger(this.getClass().getName()).info("DragCopy线程结束");
         } catch (NativeHookException e) {
             e.printStackTrace();
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"There was a problem unregistering the native hook.",e);
