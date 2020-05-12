@@ -39,6 +39,6 @@ public class ProcessFilterStaticConfig extends SystemConfiguration.ProcessFilter
     }
     public void setProcessList(List<String> processList) {
         processFilterConfig.setProcessList(processList);
-        SystemResourceManager.getFacade().getProcessFilter().addFilterList(processList);
+        SystemResourceManager.getFacade().getProcessFilter().setFilterList(processList);
     }
 }

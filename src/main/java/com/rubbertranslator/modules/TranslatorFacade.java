@@ -7,7 +7,6 @@ import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
 import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
 
-import java.util.Objects;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
@@ -141,7 +140,9 @@ public class TranslatorFacade {
                     String result = get();
                     String origin = callable.getText();
                     //XXX: 失败回调，硬编码为中文
-                    facadeListener.onComplete(origin, Objects.requireNonNullElse(result, "翻译失败"));
+                    if(result != null && facadeListener != null){
+                        facadeListener.onComplete(origin, result);
+                    }
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }

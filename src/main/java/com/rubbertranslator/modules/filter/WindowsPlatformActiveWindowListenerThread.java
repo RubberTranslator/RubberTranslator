@@ -47,6 +47,7 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread {
                 Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             }
         }
+        Logger.getLogger(this.getClass().getName()).info("ActiveWindowListenerThread结束");
     }
 
     public void exit() {

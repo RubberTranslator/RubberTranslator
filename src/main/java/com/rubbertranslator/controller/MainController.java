@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -24,6 +25,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
@@ -327,6 +329,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     /**
      * 高级设置
+     * TODO 高级设置中用到了dialog，使得controller臃肿度大大提高，但是丢给view做，又过于累赘
      */
     private class AdvancedSettingMenu {
         public void init() {
@@ -336,6 +339,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         private void initAdvancedSettingMenu(SystemConfiguration configuration) {
             initOCR(configuration);
             initTranslationHistoryNumMenu(configuration);
+            initProcessFilter();
         }
 
         private void initOCR(SystemConfiguration configuration){
@@ -405,8 +409,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             }));
         }
 
-
-
         private void initTranslationHistoryNumMenu(SystemConfiguration configuration){
             historyNumMenu.setOnAction((actionEvent ->{
                 TextInputDialog dialog = new TextInputDialog(""+configuration.getHistoryConfig().getHistoryNum());
@@ -428,6 +430,20 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                         originTextArea.setText("翻译历史数仅限数字且大于0");
                     }
                 });
+            }));
+        }
+
+        private void initProcessFilter() {
+            filterMenu.setOnAction((actionEvent -> {
+                try {
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(App.loadFXML(ControllerConstant.FILTER_CONTROLLER_FXML));
+                    stage.initOwner(anchorPane.getScene().getWindow());
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }));
         }
     }

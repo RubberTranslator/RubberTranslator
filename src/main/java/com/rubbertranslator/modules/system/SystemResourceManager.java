@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
 import com.rubbertranslator.modules.filter.ProcessFilter;
+import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.log.LoggerManager;
 import com.rubbertranslator.modules.system.proxy.*;
@@ -36,6 +37,7 @@ public class SystemResourceManager {
     public static String configJsonPath = "./configuration.json";
     private static ClipBoardListenerThread clipBoardListenerThread;
     private static DragCopyThread dragCopyThread;
+    private static WindowsPlatformActiveWindowListenerThread activeWindowListenerThread;
     private static TranslatorFacade facade;
 
     // 所有用户得操作，都应该通过configurationProxy来操作
@@ -212,13 +214,17 @@ public class SystemResourceManager {
     private static void textInputDestroy() {
         clipBoardListenerThread.exit();
         dragCopyThread.exit();
+        activeWindowListenerThread.exit();
     }
 
     private static boolean filterInit(SystemConfiguration.ProcessFilterConfig configuration) {
         ProcessFilter processFilter = new ProcessFilter();
         processFilter.setOpen(configuration.isOpenProcessFilter());
         processFilter.addFilterList(configuration.getProcessList());
+        activeWindowListenerThread = new WindowsPlatformActiveWindowListenerThread(processFilter);
         facade.setProcessFilter(processFilter);
+
+        activeWindowListenerThread.start();
         return true;
     }
 

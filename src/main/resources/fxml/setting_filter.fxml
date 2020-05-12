@@ -5,14 +5,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.SettingFilter">
+<VBox fx:id="vBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.controller.FilterController">
    <children>
-      <ListView prefHeight="200.0" prefWidth="200.0" />
-      <HBox nodeOrientation="LEFT_TO_RIGHT" spacing="5.0">
+      <ListView fx:id="processList" editable="true" />
+      <HBox alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" spacing="10.0">
          <children>
-            <Button mnemonicParsing="false" text="添加" />
-            <Button mnemonicParsing="false" text="删除" />
+            <Button fx:id="addBt" mnemonicParsing="false" onAction="#onAddButtonClick" text="添加" />
+            <Button fx:id="removeBt" mnemonicParsing="false" onAction="#onRemoveButtonClick" text="删除" />
          </children>
       </HBox>
    </children>

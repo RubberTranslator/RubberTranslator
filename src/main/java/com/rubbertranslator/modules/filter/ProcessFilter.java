@@ -3,6 +3,7 @@ package com.rubbertranslator.modules.filter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -44,6 +45,14 @@ public class ProcessFilter implements ActiveWindowListener {
         this.filterList.addAll(list);
     }
 
+    public void setFilterList(Collection<String> list){
+        // xxx: 暴力清除，性能降低
+        filterList.clear();
+        addFilterList(list);
+        Logger.getLogger(this.getClass().getName()).info("set filter list");
+        Logger.getLogger(this.getClass().getName()).info("过滤器打开："+open);
+    }
+
 
     /**
      * 判定是否需要过滤
@@ -53,6 +62,7 @@ public class ProcessFilter implements ActiveWindowListener {
      */
     public boolean check() {
         if(!open) return false; // 没打开，不需要过滤
+        Logger.getLogger(this.getClass().getName()).info("current process "+currentProcess);
         return filterList.contains(currentProcess);
     }
 

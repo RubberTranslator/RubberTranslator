@@ -9,5 +9,5 @@ package com.rubbertranslator.controller;
 public class ControllerConstant {
     public static final String MAIN_CONTROLLER_FXML = "/fxml/main.fxml";
     public static final String FOCUS_CONTROLLER_FXML= "/fxml/focus.fxml";
-    public static final String SETTING_OCR_FXML = "/fxml/setting_ocr.fxml";
+    public static final String FILTER_CONTROLLER_FXML = "/fxml/setting_filter.fxml";
 }
