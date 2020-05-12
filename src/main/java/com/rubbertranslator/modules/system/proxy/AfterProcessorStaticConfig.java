@@ -1,0 +1,44 @@
+package com.rubbertranslator.modules.system.proxy;
+
+import com.rubbertranslator.modules.system.SystemConfiguration;
+import com.rubbertranslator.modules.system.SystemResourceManager;
+
+/**
+ * @author Raven
+ * @version 1.0
+ * @date 2020/5/12 11:05
+ */
+public class AfterProcessorStaticConfig extends SystemConfiguration.AfterProcessorConfig {
+
+    private final SystemConfiguration.AfterProcessorConfig afterProcessorConfig;
+
+    public SystemConfiguration.AfterProcessorConfig getAfterProcessorConfig() {
+        return afterProcessorConfig;
+    }
+
+    public AfterProcessorStaticConfig(SystemConfiguration.AfterProcessorConfig afterProcessorConfig) {
+        this.afterProcessorConfig = afterProcessorConfig;
+    }
+
+    @Override
+    public Boolean isAutoCopy() {
+        return afterProcessorConfig.isAutoCopy();
+    }
+
+    @Override
+    public void setAutoCopy(Boolean autoCopy) {
+        afterProcessorConfig.setAutoCopy(autoCopy);
+        SystemResourceManager.getFacade().getAfterProcessor().setAutoCopy(autoCopy);
+    }
+
+    @Override
+    public Boolean isAutoPaste() {
+        return afterProcessorConfig.isAutoPaste();
+    }
+
+    @Override
+    public void setAutoPaste(Boolean autoPaste) {
+        afterProcessorConfig.setAutoPaste(autoPaste);
+        SystemResourceManager.getFacade().getAfterProcessor().setAutoPaste(autoPaste);
+    }
+}

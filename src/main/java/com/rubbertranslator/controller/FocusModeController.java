@@ -48,6 +48,12 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
     @FXML // 增量复制
     private ToggleButton incrementalCopyMenu;
 
+    @FXML   // 自动复制
+    private ToggleButton autoCopyMenu;
+    @FXML   // 自动粘贴
+    private ToggleButton autoPasteMenu;
+
+
     @FXML // 监听剪切板
     private ToggleButton clipboardListenerMenu;
 
@@ -97,6 +103,10 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
         }
         // 增量
         incrementalCopyMenu.setSelected(configurationProxy.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
+        // 自动复制
+        autoCopyMenu.setSelected(configurationProxy.getAfterProcessorConfig().isAutoCopy());
+        // 自动粘贴
+        autoPasteMenu.setSelected(configurationProxy.getAfterProcessorConfig().isAutoPaste());
         // 开关
         clipboardListenerMenu.setSelected(configurationProxy.getTextInputConfig().isOpenClipboardListener());
     }
@@ -113,6 +123,8 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
         preHistoryBt.setOnAction(this);
         nextHistoryBt.setOnAction(this);
         clearBt.setOnAction(this);
+        autoCopyMenu.setOnAction(this);
+        autoPasteMenu.setOnAction(this);
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue){
@@ -151,6 +163,19 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
         }else if(source == nextHistoryBt){
             HistoryEntry next = SystemResourceManager.getFacade().getHistory().next();
             updateTextArea(next.getTranslation());
+        }else if(source == autoCopyMenu){
+            if(!autoCopyMenu.isSelected()){
+                autoPasteMenu.setSelected(false);
+                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(false);
+            }
+            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(autoCopyMenu.isSelected());
+        }else if(source == autoPasteMenu){
+            // 自动粘贴依赖于自动复制
+            if(autoPasteMenu.isSelected()){
+                autoCopyMenu.setSelected(true);
+                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
+            }
+            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
         }
     }
 
@@ -165,7 +190,6 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
 
     @Override
     public void onTextInput(String text) {
-        translationArea.setText(text);
         processTranslate(text);
     }
 

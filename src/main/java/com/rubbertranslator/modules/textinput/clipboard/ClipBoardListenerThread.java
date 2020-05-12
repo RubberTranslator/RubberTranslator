@@ -56,7 +56,9 @@ public class ClipBoardListenerThread extends Thread {
                 Thread.sleep(waitTime);
                 if (!running){  // 暂停
                     synchronized (blocker){
+                        Logger.getLogger(this.getClass().getName()).info("ClipboardListener pause");
                         blocker.wait();
+                        Logger.getLogger(this.getClass().getName()).info("ClipboardListener resume");
                     }
                 }
 

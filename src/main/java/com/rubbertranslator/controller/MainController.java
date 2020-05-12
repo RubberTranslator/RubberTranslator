@@ -81,6 +81,12 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private RadioMenuItem dragCopyMenu;
     @FXML // 增量复制
     private RadioMenuItem incrementalCopyMenu;
+
+    @FXML   // 自动复制
+    private RadioMenuItem autoCopyMenu;
+    @FXML   // 自动粘贴
+    private RadioMenuItem autoPasteMenu;
+
     @FXML // 保持段落格式
     private RadioMenuItem keepParagraphMenu;
     @FXML // 置顶
@@ -136,6 +142,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     /**
      * 基础设置
+     *
      * @param configuration 系统配置
      */
     private void initBasicSettingMenu(SystemConfiguration configuration) {
@@ -153,6 +160,21 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 SystemResourceManager.getDragCopyThread().setRun(dragCopyMenu.isSelected())));
         incrementalCopyMenu.setOnAction((actionEvent ->
                 SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected())));
+        autoCopyMenu.setOnAction((actionEvent -> {
+            if(!autoCopyMenu.isSelected()){
+                autoPasteMenu.setSelected(false);
+                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(false);
+            }
+            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(autoCopyMenu.isSelected());
+        }));
+        autoPasteMenu.setOnAction((actionEvent -> {
+            // 自动粘贴依赖于自动复制
+            if(autoPasteMenu.isSelected()){
+                autoCopyMenu.setSelected(true);
+                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
+            }
+            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
+        }));
         keepParagraphMenu.setOnAction((actionEvent ->
                 SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected())));
         keepTopMenu.setOnAction((actionEvent -> {
@@ -171,9 +193,16 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         // 增量复制
         incrementalCopyMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
         incrementalCopyMenu.fire();
+        // 自动复制
+        autoCopyMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
+        autoCopyMenu.fire();
+        // 自动粘贴
+        autoPasteMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
+        autoPasteMenu.fire();
         // 保持段落格式
         keepParagraphMenu.setSelected(configuration.getUiConfig().getKeepTop());
         keepParagraphMenu.fire();
+        // 置顶
         keepTopMenu.setSelected(configuration.getUiConfig().getKeepTop());
         keepTopMenu.fire();
     }
@@ -264,24 +293,25 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     /**
      * 高级设置
+     *
      * @param configuration 配置
      */
-    private void initAdvancedSettingMenu(SystemConfiguration configuration){
+    private void initAdvancedSettingMenu(SystemConfiguration configuration) {
         //
     }
 
-    private void initHelpingMenu(){
+    private void initHelpingMenu() {
         //
     }
 
-    private void initFocusModeMenu(){
+    private void initFocusModeMenu() {
         Label label = new Label("专注模式");
         label.setOnMouseClicked((this::switchToFocusMode));
         focusMenu.setText("");
         focusMenu.setGraphic(label);
     }
 
-    private  void switchToFocusMode(MouseEvent event) {
+    private void switchToFocusMode(MouseEvent event) {
         try {
             App.setRoot(ControllerConstant.FOCUS_CONTROLLER_FXML);
         } catch (IOException e) {
@@ -290,16 +320,16 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         }
     }
 
-    private void initHistoryMenu(){
+    private void initHistoryMenu() {
         Label pre = new Label("上一条");
         Label next = new Label("下一条");
         pre.setOnMouseClicked((event -> {
             HistoryEntry entry = SystemResourceManager.getFacade().getHistory().previous();
-            updateTextArea(entry.getOrigin(),entry.getTranslation());
+            updateTextArea(entry.getOrigin(), entry.getTranslation());
         }));
         next.setOnMouseClicked(event -> {
             HistoryEntry entry = SystemResourceManager.getFacade().getHistory().next();
-            updateTextArea(entry.getOrigin(),entry.getTranslation());
+            updateTextArea(entry.getOrigin(), entry.getTranslation());
         });
         preHistoryMenu.setText("");
         nextHistoryMenu.setText("");
@@ -309,8 +339,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     private void initClearMenu() {
         Label label = new Label("清空");
-        label.setOnMouseClicked((event ->{
-            updateTextArea("","");
+        label.setOnMouseClicked((event -> {
+            updateTextArea("", "");
             // 通知facade清空后续模块
             SystemResourceManager.getFacade().clear();
         }));
@@ -319,8 +349,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     }
 
 
-
-    private void updateTextArea(String origin, String translation){
+    private void updateTextArea(String origin, String translation) {
         originTextArea.setText(origin);
         translatedTextArea.setText(translation);
     }
@@ -339,8 +368,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     @Override
     public void onTextInput(String text) {
-        Platform.runLater(() -> originTextArea.setText(text));
-        // 翻译
+        Logger.getLogger(this.getClass().getName()).info("Controller执行翻译");
         processTranslate(text);
     }
 
@@ -360,11 +388,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     @Override
     public void onComplete(String origin, String translation) {
         // 不管从哪里会回调，回到UI线程
-        Platform.runLater(() ->{
-            updateTextArea(origin,translation);
+        Platform.runLater(() -> {
+            updateTextArea(origin, translation);
         });
     }
-
-
-
 }

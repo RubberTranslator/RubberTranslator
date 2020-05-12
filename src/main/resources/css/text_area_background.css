@@ -1,0 +1,8 @@
+.text-area {
+    /* user set this value to customize text-area-background color*/
+    text-area-background: rgb(199, 237, 204) ;
+}
+
+.text-area .content {
+    -fx-background-color: text-area-background ;
+}

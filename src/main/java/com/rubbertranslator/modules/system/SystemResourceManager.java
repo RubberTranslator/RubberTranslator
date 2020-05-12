@@ -2,6 +2,7 @@ package com.rubbertranslator.modules.system;
 
 import com.google.gson.Gson;
 import com.rubbertranslator.modules.TranslatorFacade;
+import com.rubbertranslator.modules.afterprocess.AfterProcessor;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.log.LoggerManager;
@@ -87,8 +88,10 @@ public class SystemResourceManager {
                 preTextProcessInit(configurationProxy.getTextProcessConfig().getTextPreProcessConfig()) &&
                 postTextProcessInit(configurationProxy.getTextProcessConfig().getTextPostProcessConfig()) &&
                 translatorInit(configurationProxy.getTranslatorConfig()) &&
-                historyInit(configurationProxy.getHistoryConfig());
+                historyInit(configurationProxy.getHistoryConfig()) &&
+                afterProcessorInit(configurationProxy.getAfterProcessorConfig());
     }
+
 
 
     /**
@@ -143,26 +146,26 @@ public class SystemResourceManager {
      */
     private static SystemConfiguration wrapProxy(SystemConfiguration configuration) {
         // 文本输入配置
-        SystemConfiguration.TextInputConfig textInputConfigStaticProxy = new TextInputConfigStaticProxy(configuration.getTextInputConfig());
+        TextInputConfigStaticProxy textInputConfigStaticProxy = new TextInputConfigStaticProxy(configuration.getTextInputConfig());
         SystemConfiguration.TextInputConfig textInputConfigProxy = (SystemConfiguration.TextInputConfig)
                 Enhancer.create(SystemConfiguration.TextInputConfig.class, new ConfigProxy(textInputConfigStaticProxy));
 
         // 过滤器
-        SystemConfiguration.ProcessFilterConfig processFilterStaticConfig = new ProcessFilterStaticConfig(configuration.getProcessFilterConfig());
+        ProcessFilterStaticConfig processFilterStaticConfig = new ProcessFilterStaticConfig(configuration.getProcessFilterConfig());
         SystemConfiguration.ProcessFilterConfig processFilterConfigProxy = (SystemConfiguration.ProcessFilterConfig)
                 Enhancer.create(SystemConfiguration.ProcessFilterConfig.class, new ConfigProxy(processFilterStaticConfig));
 
         // 前置处理
-        SystemConfiguration.TextProcessConfig.TextPreProcessConfig textPreProcessStaticConfig = new TextPreProcessStaticConfig(configuration.getTextProcessConfig().getTextPreProcessConfig());
+        TextPreProcessStaticConfig textPreProcessStaticConfig = new TextPreProcessStaticConfig(configuration.getTextProcessConfig().getTextPreProcessConfig());
         SystemConfiguration.TextProcessConfig.TextPreProcessConfig textPreProcessConfigProxy = (SystemConfiguration.TextProcessConfig.TextPreProcessConfig)
                 Enhancer.create(SystemConfiguration.TextProcessConfig.TextPreProcessConfig.class, new ConfigProxy(textPreProcessStaticConfig));
         // 后置处理
-        SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessStaticConfig = new TextPostProcessStaticConfig(configuration.getTextProcessConfig().getTextPostProcessConfig());
+        TextPostProcessStaticConfig textPostProcessStaticConfig = new TextPostProcessStaticConfig(configuration.getTextProcessConfig().getTextPostProcessConfig());
         SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessConfig = (SystemConfiguration.TextProcessConfig.TextPostProcessConfig)
                 Enhancer.create(SystemConfiguration.TextProcessConfig.TextPostProcessConfig.class, new ConfigProxy(textPostProcessStaticConfig));
 
         // 翻译配置
-        SystemConfiguration.TranslatorConfig translatorStaticConfig = new TranslatorStaticConfig(configuration.getTranslatorConfig());
+        TranslatorStaticConfig translatorStaticConfig = new TranslatorStaticConfig(configuration.getTranslatorConfig());
         SystemConfiguration.TranslatorConfig translatorConfigProxy = (SystemConfiguration.TranslatorConfig)
                 Enhancer.create(SystemConfiguration.TranslatorConfig.class, new ConfigProxy(translatorStaticConfig));
 
@@ -170,6 +173,10 @@ public class SystemResourceManager {
         HistoryStaticConfig historyStaticConfig = new HistoryStaticConfig(configuration.getHistoryConfig());
         SystemConfiguration.HistoryConfig historyConfigProxy = (SystemConfiguration.HistoryConfig)
                 Enhancer.create(SystemConfiguration.HistoryConfig.class, new ConfigProxy(historyStaticConfig));
+
+        // 后置处理配置
+        AfterProcessorStaticConfig afterProcessorStaticConfig = new AfterProcessorStaticConfig(configuration.getAfterProcessorConfig());
+        SystemConfiguration.AfterProcessorConfig afterProcessorConfig = (SystemConfiguration.AfterProcessorConfig) Enhancer.create(SystemConfiguration.AfterProcessorConfig.class, new ConfigProxy(afterProcessorStaticConfig));
 
         // ui配置
         SystemConfiguration.UIConfig uiConfigProxy = (SystemConfiguration.UIConfig)
@@ -182,6 +189,7 @@ public class SystemResourceManager {
         configuration.getTextProcessConfig().setTextPostProcessConfig(textPostProcessConfig);
         configuration.setTranslatorConfig(translatorConfigProxy);
         configuration.setHistoryConfig(historyConfigProxy);
+        configuration.setAfterProcessorConfig(afterProcessorConfig);
         configuration.setUiConfig(uiConfigProxy);
         Logger.getLogger(SystemConfiguration.class.getName()).info("wrap代理完成");
         return configuration;
@@ -251,11 +259,20 @@ public class SystemResourceManager {
         return true;
     }
 
-    public static boolean historyInit(SystemConfiguration.HistoryConfig configuration){
+    private static boolean historyInit(SystemConfiguration.HistoryConfig configuration){
         TranslationHistory history = new TranslationHistory();
         history.setHistoryCapacity(configuration.getHistoryNum());
         return true;
     }
+
+    private static boolean afterProcessorInit(SystemConfiguration.AfterProcessorConfig configuration) {
+        AfterProcessor afterProcessor = new AfterProcessor();
+        afterProcessor.setAutoCopy(configuration.isAutoCopy());
+        afterProcessor.setAutoPaste(configuration.isAutoPaste());
+        facade.setAfterProcessor(afterProcessor);
+        return  true;
+    }
+
 
 
 }

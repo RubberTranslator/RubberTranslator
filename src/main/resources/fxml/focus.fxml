@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.controller.FocusModeController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.controller.FocusModeController">
    <children>
-      <TextArea fx:id="translationArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10000.0" prefWidth="10000.0" wrapText="true">
+      <TextArea fx:id="translationArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10000.0" prefWidth="10000.0" stylesheets="@../css/text_area_background.css" wrapText="true">
          <font>
             <Font size="20.0" />
          </font></TextArea>
@@ -26,10 +26,12 @@
             <ToggleButton fx:id="baiduTranslator" mnemonicParsing="false" text="百度" toggleGroup="$translatorGroup" />
             <ToggleButton fx:id="youdaoTranslator" mnemonicParsing="false" text="有道" toggleGroup="$translatorGroup" />
             <ToggleButton fx:id="incrementalCopyMenu" mnemonicParsing="false" text="增量" />
-            <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="开关" />
             <Button fx:id="preHistoryBt" mnemonicParsing="false" text="上一条" />
             <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条" />
             <Button fx:id="clearBt" mnemonicParsing="false" text="清空" />
+            <ToggleButton fx:id="autoCopyMenu" mnemonicParsing="false" text="自动复制" />
+            <ToggleButton fx:id="autoPasteMenu" mnemonicParsing="false" text="自动粘贴" />
+            <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="开关" />
          </items>
       </ToolBar>
    </children>

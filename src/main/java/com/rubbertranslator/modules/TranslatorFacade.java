@@ -1,5 +1,6 @@
 package com.rubbertranslator.modules;
 
+import com.rubbertranslator.modules.afterprocess.AfterProcessor;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
@@ -27,10 +28,17 @@ public class TranslatorFacade {
     private TextPostProcessor textPostProcessor;
     // 翻译历史记录
     private final TranslationHistory history;
+    // 后置处理器
+    private AfterProcessor afterProcessor;
     // 创建线程池（使用了预定义的配置）
     private final ExecutorService executor;
     // facade回调
     private TranslatorFacadeListener facadeListener;
+
+    // lastOrigin
+    private String lastOrigin = "";
+    // lastTranlsation
+    private String lastTranslation = "";
 
     public void setFacadeListener(TranslatorFacadeListener facadeListener) {
         this.facadeListener = facadeListener;
@@ -38,11 +46,24 @@ public class TranslatorFacade {
 
     public TranslatorFacade() {
         history = new TranslationHistory();
-        executor = Executors.newSingleThreadExecutor();;
+        executor = Executors.newSingleThreadExecutor();
+        ;
     }
 
-    public void clear(){
+
+    /**
+     * 后置所有模块清理
+     */
+    public void clear() {
         this.textPreProcessor.cleanBuffer();
+    }
+
+    public AfterProcessor getAfterProcessor() {
+        return afterProcessor;
+    }
+
+    public void setAfterProcessor(AfterProcessor afterProcessor) {
+        this.afterProcessor = afterProcessor;
     }
 
     public ProcessFilter getProcessFilter() {
@@ -85,22 +106,27 @@ public class TranslatorFacade {
 
     /**
      * 处理整个翻译过程
+     *
      * @param text 原文
      * @return 成功 译文
-     *          失败 null
+     * 失败 null
      */
     public void process(String text) {
+        if ((lastOrigin != null && lastOrigin.equals(text)) ||
+                (lastTranslation != null && lastTranslation.equals(text))) {
+            return;
+        }
         Callable<String> callable = new FacadeCallable(text);
         FutureTask<String> task = new FacadeFutureTask(callable);
         executor.execute(task);
     }
 
 
-    public interface TranslatorFacadeListener{
-        void onComplete(String origin ,String translation);
+    public interface TranslatorFacadeListener {
+        void onComplete(String origin, String translation);
     }
 
-    private class FacadeFutureTask extends FutureTask<String>{
+    private class FacadeFutureTask extends FutureTask<String> {
         private final FacadeCallable callable;
 
         public FacadeFutureTask(Callable<String> callable) {
@@ -110,7 +136,7 @@ public class TranslatorFacade {
 
         @Override
         protected void done() {
-            if(facadeListener != null){
+            if (facadeListener != null) {
                 try {
                     String result = get();
                     String origin = callable.getText();
@@ -123,8 +149,8 @@ public class TranslatorFacade {
         }
     }
 
-    private class FacadeCallable implements Callable<String>{
-        // text保存处理后的文本
+    private class FacadeCallable implements Callable<String> {
+        // text保存textProProcessor处理后的文本
         private String text;
 
         public String getText() {
@@ -138,19 +164,26 @@ public class TranslatorFacade {
         @Override
         public String call() throws Exception {
             if (text == null || "".equals(text)) return null;
+
+            // lastOrigin 重新初始化
+            lastOrigin = text;
+
             String origin = text;
             String translation = null;
-            try{
+            try {
                 // 过滤
                 if (processFilter.check()) return null;
                 // text保存处理后的文本
                 text = textPreProcessor.process(text);
-                translation = translatorFactory.translate( text);
+                translation = translatorFactory.translate(text);
                 // 后置处理
                 translation = textPostProcessor.process(translation);
+                // lastTranslation 重新初始化
+                lastTranslation = translation;
                 // 记录翻译历史
-                history.addHistory(origin,translation);
-            }catch (NullPointerException e){
+                history.addHistory(origin, translation);
+                translation = afterProcessor.process(translation);
+            } catch (NullPointerException e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
             }
             return translation;

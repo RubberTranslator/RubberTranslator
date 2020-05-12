@@ -32,8 +32,8 @@ public class ConfigProxy implements MethodInterceptor {
             Object ret = method.invoke(target, args);
             SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
             String json = JsonUtil.serialize(extractOriginConfig(configurationProxy));
-            // TODO: 考虑加载单线程池来写
-            Logger.getLogger(this.getClass().getName()).info("setting changed:"+json);
+            // XXX: 考虑加载单线程池来写
+//            Logger.getLogger(this.getClass().getName()).info("setting changed:"+json);
             FileUtils.writeStringToFile(new File(SystemResourceManager.configJsonPath),json, StandardCharsets.UTF_8);
             return ret;
         }
@@ -70,6 +70,10 @@ public class ConfigProxy implements MethodInterceptor {
                  );
                  newConfiguration.setHistoryConfig(
                          ((HistoryStaticConfig) doExtract(configuration.getHistoryConfig())).getHistoryConfig()
+                 );
+
+                 newConfiguration.setAfterProcessorConfig(
+                         ((AfterProcessorStaticConfig)doExtract(configuration.getAfterProcessorConfig())).getAfterProcessorConfig()
                  );
             } catch (Exception e) {
                 e.printStackTrace();

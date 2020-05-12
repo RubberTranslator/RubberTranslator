@@ -65,6 +65,9 @@
                         <RadioMenuItem fx:id="dragCopyMenu" mnemonicParsing="false" selected="true" text="拖拽复制" />
                         <RadioMenuItem fx:id="incrementalCopyMenu" mnemonicParsing="false" selected="true" text="增量复制" />
                         <SeparatorMenuItem mnemonicParsing="false" />
+                        <RadioMenuItem fx:id="autoCopyMenu" mnemonicParsing="false" text="自动复制" />
+                        <RadioMenuItem fx:id="autoPasteMenu" mnemonicParsing="false" text="自动粘贴" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <RadioMenuItem fx:id="keepParagraphMenu" mnemonicParsing="false" selected="true" text="保持段落格式" />
                         <RadioMenuItem fx:id="keepTopMenu" mnemonicParsing="false" text="置顶" />
                   </items>
@@ -97,12 +100,12 @@
                   <Menu fx:id="clearMenu" mnemonicParsing="false" text="清空" />
               </menus>
             </MenuBar>
-            <TextArea fx:id="originTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="原文" wrapText="true">
+            <TextArea fx:id="originTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="原文" stylesheets="@../css/text_area_background.css" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font>
             </TextArea>
-            <TextArea fx:id="translatedTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="译文" wrapText="true">
+            <TextArea fx:id="translatedTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="译文" stylesheets="@../css/text_area_background.css" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font>

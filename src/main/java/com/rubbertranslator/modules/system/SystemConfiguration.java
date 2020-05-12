@@ -3,6 +3,7 @@ package com.rubbertranslator.modules.system;
 import com.google.gson.annotations.SerializedName;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
+
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,10 @@ public class SystemConfiguration {
     @SerializedName("history")
     private HistoryConfig historyConfig;
 
+    @SerializedName("after_processor_config")
+    private AfterProcessorConfig afterProcessorConfig;
+
+
     @Override
     public String toString() {
         return "SystemConfiguration{" +
@@ -40,7 +45,16 @@ public class SystemConfiguration {
                 ", textProcessConfig=" + textProcessConfig +
                 ", translatorConfig=" + translatorConfig +
                 ", historyConfig=" + historyConfig +
+                ", afterProcessorConfig=" + afterProcessorConfig +
                 '}';
+    }
+
+    public AfterProcessorConfig getAfterProcessorConfig() {
+        return afterProcessorConfig;
+    }
+
+    public void setAfterProcessorConfig(AfterProcessorConfig afterProcessorConfig) {
+        this.afterProcessorConfig = afterProcessorConfig;
     }
 
     public UIConfig getUiConfig() {
@@ -470,6 +484,37 @@ public class SystemConfiguration {
         public String toString() {
             return "UIConfig{" +
                     "keepTop=" + keepTop +
+                    '}';
+        }
+    }
+
+    public static class AfterProcessorConfig{
+        @SerializedName("auto_copy")
+        private Boolean autoCopy;
+        @SerializedName("auto_paste")
+        private Boolean autoPaste;
+
+        public Boolean isAutoCopy() {
+            return autoCopy;
+        }
+
+        public void setAutoCopy(Boolean autoCopy) {
+            this.autoCopy = autoCopy;
+        }
+
+        public Boolean isAutoPaste() {
+            return autoPaste;
+        }
+
+        public void setAutoPaste(Boolean autoPaste) {
+            this.autoPaste = autoPaste;
+        }
+
+        @Override
+        public String toString() {
+            return "AfterProcessorConfig{" +
+                    "autoCopy=" + autoCopy +
+                    ", autoPaste=" + autoPaste +
                     '}';
         }
     }

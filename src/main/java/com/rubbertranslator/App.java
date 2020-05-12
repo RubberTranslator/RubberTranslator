@@ -56,7 +56,7 @@ public class App extends Application {
 
     public static void resizeStage(){
         if(ControllerConstant.FOCUS_CONTROLLER_FXML.equals(currentContentRoot)){
-            appStage.setWidth(600);
+            appStage.setWidth(650);
             appStage.setHeight(400);
         }else if(ControllerConstant.MAIN_CONTROLLER_FXML.equals(currentContentRoot)){
             appStage.setWidth(800);

@@ -33,9 +33,6 @@ public class CopyRobot {
 
     /**
      * 触发copy action
-     * @return 触发是时候成功
-     *          true 成功
-     *          false 失败
      */
     public synchronized void triggerCopy(){
         // do copy action
@@ -43,6 +40,17 @@ public class CopyRobot {
         robot.keyPress(KeyEvent.VK_C);
         robot.delay(robot.getAutoDelay());
         robot.keyRelease(KeyEvent.VK_C);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+    }
+
+    /**
+     * 触发粘贴
+     */
+    public synchronized void triggerPaste(){
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.delay(robot.getAutoDelay());
+        robot.keyRelease(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_CONTROL);
     }
 }
