@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,9 +18,13 @@ import java.util.logging.Logger;
  */
 public class App extends Application {
 
-    private static Scene scene;
+    // 主界面
+    private static Scene appScene;
     private static Stage appStage;
     private static String currentContentRoot;
+    // ocr
+    private static Stage ocrStage;
+
 
     @Override
     public void init() throws Exception {
@@ -39,8 +44,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         appStage = stage;
-        scene = new Scene(loadFXML(ControllerConstant.MAIN_CONTROLLER_FXML),800,600);
-        stage.setScene(scene);
+        appScene = new Scene(loadFXML(ControllerConstant.MAIN_CONTROLLER_FXML),800,600);
+        stage.setScene(appScene);
         stage.show();
     }
 
@@ -54,7 +59,24 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
+
+    public static void openOCRDialog() throws IOException {
+        ocrStage = new Stage();
+        ocrStage.initOwner(appStage);
+        ocrStage.initModality(Modality.WINDOW_MODAL);
+        ocrStage.setAlwaysOnTop(true);
+
+        Scene ocrScene = new Scene(loadFXML(ControllerConstant.SETTING_OCR_FXML));
+        ocrStage.setScene(ocrScene);
+        ocrStage.show();
+    }
+
+    public static void closeOCRDialog(){
+        ocrStage.close();
+    }
+
     public static void resizeStage(){
+        // xxx:写得不太好，可进行优化
         if(ControllerConstant.FOCUS_CONTROLLER_FXML.equals(currentContentRoot)){
             appStage.setWidth(660);
             appStage.setHeight(400);
@@ -67,7 +89,7 @@ public class App extends Application {
 
     public static void setRoot(String fxml) throws IOException {
         currentContentRoot = fxml;
-        scene.setRoot(loadFXML(fxml));
+        appScene.setRoot(loadFXML(fxml));
         resizeStage();
     }
 

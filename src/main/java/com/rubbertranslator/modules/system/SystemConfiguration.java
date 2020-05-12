@@ -472,7 +472,7 @@ public class SystemConfiguration {
         @SerializedName("keep_top")
         private Boolean keepTop;
 
-        public Boolean getKeepTop() {
+        public Boolean isKeepTop() {
             return keepTop;
         }
 

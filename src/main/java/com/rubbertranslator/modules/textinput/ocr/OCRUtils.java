@@ -1,6 +1,5 @@
 package com.rubbertranslator.modules.textinput.ocr;
 
-import com.rubbertranslator.test.Configuration;
 import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
 import okhttp3.FormBody;
@@ -21,7 +20,6 @@ import java.util.logging.Logger;
  * @date 2020/5/7 16:04
  */
 public class OCRUtils {
-    //xxx: 改用配置文件
     private static String API_KEY;
     private static String SECRET_KEY;
     private static String token = null;
@@ -42,10 +40,13 @@ public class OCRUtils {
      * 失败，返回null
      */
     public static String ocr(Image image) throws IOException {
+        //
         if (image == null) return null;
         if(API_KEY == null || SECRET_KEY == null) return null;
+        // 更新token
         token = updateToken();
-
+        if(token == null) return null;
+        // 请求
         final String ocrUrl = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic";
         String result;
         RequestBody requestBody = new FormBody.Builder()
@@ -66,10 +67,12 @@ public class OCRUtils {
      * 如果用户常年不重启进程，这里由bug，不过bug出现的机率比较小，更好的做法是比较expiredTime
      *
      * @return 当前可用token
+     *         成功：有效token
+     *         失败：null
      */
     private static String updateToken() throws IOException {
         String cache = token;
-        // 如果用户常年不重启进程，这里由bug，不过bug出现的机率比较小，更好的做法是比较expiredTime
+        // 如果用户常年不重启进程，这里有bug，不过bug出现的机率比较小，更好的做法是比较expiredTime
         if (cache == null) {
             String json = getToken();
             if (json == null) return null;

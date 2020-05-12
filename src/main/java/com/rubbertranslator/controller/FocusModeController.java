@@ -88,7 +88,7 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
     private void initViewsDisplay(){
         SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
         // 置顶
-        keepStageTopBt.setSelected(configurationProxy.getUiConfig().getKeepTop());
+        keepStageTopBt.setSelected(configurationProxy.getUiConfig().isKeepTop());
         // 翻译引擎
         switch (configurationProxy.getTranslatorConfig().getCurrentTranslator()) {
             case GOOGLE:

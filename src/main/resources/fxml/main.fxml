@@ -74,9 +74,9 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="高级设置">
                   <items>
-                        <MenuItem mnemonicParsing="false" text="OCR" />
-                    <MenuItem mnemonicParsing="false" text="过滤器" />
-                        <MenuItem mnemonicParsing="false" text="翻译文本替换" />
+                        <MenuItem fx:id="ocrMenu" mnemonicParsing="false" text="OCR" />
+                    <MenuItem fx:id="filterMenu" mnemonicParsing="false" text="过滤器" />
+                        <MenuItem fx:id="translationWordsReplacerMenu" mnemonicParsing="false" text="翻译文本替换" />
                         <Menu mnemonicParsing="false" text="翻译历史数量">
                            <items>
                               <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">

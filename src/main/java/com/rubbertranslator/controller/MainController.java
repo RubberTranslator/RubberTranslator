@@ -14,9 +14,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.awt.*;
@@ -112,6 +112,12 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     /**
      * --------------------------高级设置-------------------------
      */
+    @FXML   // ocr
+    private MenuItem ocrMenu;
+    @FXML // 过滤器
+    private MenuItem filterMenu;
+    @FXML // 词组替换
+    private MenuItem translationWordsReplacerMenu;
 
 
     /**
@@ -131,12 +137,10 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     }
 
     private void initViews() {
-        // 加载配置
-        SystemConfiguration configuration = SystemResourceManager.getConfigurationProxy();
         // 基础设置
-        initBasicSettingMenu(configuration);
+        new BasicSettingMenu().init();
         // 高级设置
-        initAdvancedSettingMenu(configuration);
+        new AdvancedSettingMenu().init();
         // 帮助
         initHelpingMenu();
         // 专注模式
@@ -147,168 +151,198 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         initClearMenu();
     }
 
+
     /**
      * 基础设置
-     *
-     * @param configuration 系统配置
      */
-    private void initBasicSettingMenu(SystemConfiguration configuration) {
-        initTranslatorType(configuration.getTranslatorConfig().getCurrentTranslator());
-        initSrcDestLanguage(configuration.getTranslatorConfig().getSourceLanguage(), configuration.getTranslatorConfig().getDestLanguage());
-        initBasicSettingOthers(configuration);
-        Logger.getLogger(this.getClass().getName()).info("初始化功能开关成功");
-    }
+    private class BasicSettingMenu {
 
-    private void initBasicSettingOthers(SystemConfiguration configuration) {
-        // 设置onActionListener
-        clipboardListenerMenu.setOnAction((actionEvent) ->
-                SystemResourceManager.getConfigurationProxy().getTextInputConfig().setOpenClipboardListener(clipboardListenerMenu.isSelected())
-        );
-
-        dragCopyMenu.setOnAction((actionEvent) ->{
-            SystemResourceManager.getConfigurationProxy().getTextInputConfig().setDragCopy(dragCopyMenu.isSelected());
-        });
-        incrementalCopyMenu.setOnAction((actionEvent ->
-                SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected())));
-        autoCopyMenu.setOnAction((actionEvent -> {
-            if(!autoCopyMenu.isSelected()){
-                autoPasteMenu.setSelected(false);
-                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(false);
-            }
-            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(autoCopyMenu.isSelected());
-        }));
-        autoPasteMenu.setOnAction((actionEvent -> {
-            // 自动粘贴依赖于自动复制
-            if(autoPasteMenu.isSelected()){
-                autoCopyMenu.setSelected(true);
-                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
-            }
-            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
-        }));
-        keepParagraphMenu.setOnAction((actionEvent ->
-                SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected())));
-        keepTopMenu.setOnAction((actionEvent -> {
-            App.setKeepTop(keepTopMenu.isSelected());
-            // XXX: UI模块的相关功能，需要手动实现保存
-            SystemResourceManager.getConfigurationProxy().getUiConfig().setKeepTop(keepTopMenu.isSelected());
-        }));
-
-
-        // 监听剪切板
-        clipboardListenerMenu.setSelected(configuration.getTextInputConfig().isOpenClipboardListener());
-        clipboardListenerMenu.fire();
-        // 拖拽复制
-        dragCopyMenu.setSelected(configuration.getTextInputConfig().isDragCopy());
-        dragCopyMenu.fire();
-        // 增量复制
-        incrementalCopyMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
-        incrementalCopyMenu.fire();
-        // 自动复制
-        autoCopyMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
-        autoCopyMenu.fire();
-        // 自动粘贴
-        autoPasteMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
-        autoPasteMenu.fire();
-        // 保持段落格式
-        keepParagraphMenu.setSelected(configuration.getUiConfig().getKeepTop());
-        keepParagraphMenu.fire();
-        // 置顶
-        keepTopMenu.setSelected(configuration.getUiConfig().getKeepTop());
-        keepTopMenu.fire();
-    }
-
-    private void initTranslatorType(TranslatorType type) {
-        // view
-        switch (type) {
-            case GOOGLE:
-                googleTranslator.setSelected(true);
-                break;
-            case BAIDU:
-                baiduTranslator.setSelected(true);
-                break;
-            case YOUDAO:
-                youdaoTranslator.setSelected(true);
-                break;
+        public void init() {
+            initBasicSettingMenu(SystemResourceManager.getConfigurationProxy());
         }
-        // 监听
-        translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            // TODO: fxml中如何引用枚举？ 这里暂时采用硬编码
-            SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
-            if (newValue == googleTranslator) {
-                translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
-            } else if (newValue == baiduTranslator) {
-                translatorConfig.setCurrentTranslator(TranslatorType.BAIDU);
-            } else if (newValue == youdaoTranslator) {
-                translatorConfig.setCurrentTranslator(TranslatorType.YOUDAO);
+
+        /**
+         * 基础设置
+         *
+         * @param configuration 系统配置
+         */
+        private void initBasicSettingMenu(SystemConfiguration configuration) {
+            initTranslatorType(configuration.getTranslatorConfig().getCurrentTranslator());
+            initSrcDestLanguage(configuration.getTranslatorConfig().getSourceLanguage(), configuration.getTranslatorConfig().getDestLanguage());
+            initBasicSettingOthers(configuration);
+            Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化功能开关成功");
+        }
+
+        private void initBasicSettingOthers(SystemConfiguration configuration) {
+            // 设置onActionListener
+            clipboardListenerMenu.setOnAction((actionEvent) ->
+                    SystemResourceManager.getConfigurationProxy().getTextInputConfig().setOpenClipboardListener(clipboardListenerMenu.isSelected())
+            );
+
+            dragCopyMenu.setOnAction((actionEvent) ->
+                    SystemResourceManager.getConfigurationProxy().getTextInputConfig().setDragCopy(dragCopyMenu.isSelected()));
+            incrementalCopyMenu.setOnAction((actionEvent ->
+                    SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected())));
+            autoCopyMenu.setOnAction((actionEvent -> {
+                if (!autoCopyMenu.isSelected()) {
+                    autoPasteMenu.setSelected(false);
+                    SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(false);
+                }
+                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(autoCopyMenu.isSelected());
+            }));
+            autoPasteMenu.setOnAction((actionEvent -> {
+                // 自动粘贴依赖于自动复制
+                if (autoPasteMenu.isSelected()) {
+                    autoCopyMenu.setSelected(true);
+                    SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
+                }
+                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
+            }));
+            keepParagraphMenu.setOnAction((actionEvent ->
+                    SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected())));
+            keepTopMenu.setOnAction((actionEvent -> {
+                App.setKeepTop(keepTopMenu.isSelected());
+                // XXX: UI模块的相关功能，需要手动实现保存
+                SystemResourceManager.getConfigurationProxy().getUiConfig().setKeepTop(keepTopMenu.isSelected());
+            }));
+
+
+            // 监听剪切板
+            clipboardListenerMenu.setSelected(configuration.getTextInputConfig().isOpenClipboardListener());
+            clipboardListenerMenu.fire();
+            // 拖拽复制
+            dragCopyMenu.setSelected(configuration.getTextInputConfig().isDragCopy());
+            dragCopyMenu.fire();
+            // 增量复制
+            incrementalCopyMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
+            incrementalCopyMenu.fire();
+            // 自动复制
+            autoCopyMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
+            autoCopyMenu.fire();
+            // 自动粘贴
+            autoPasteMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
+            autoPasteMenu.fire();
+            // 保持段落格式
+            keepParagraphMenu.setSelected(configuration.getUiConfig().isKeepTop());
+            keepParagraphMenu.fire();
+            // 置顶
+            keepTopMenu.setSelected(configuration.getUiConfig().isKeepTop());
+            keepTopMenu.fire();
+        }
+
+        private void initTranslatorType(TranslatorType type) {
+            // view
+            switch (type) {
+                case GOOGLE:
+                    googleTranslator.setSelected(true);
+                    break;
+                case BAIDU:
+                    baiduTranslator.setSelected(true);
+                    break;
+                case YOUDAO:
+                    youdaoTranslator.setSelected(true);
+                    break;
             }
-        });
-    }
+            // 监听
+            translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+                // TODO: fxml中如何引用枚举？ 这里暂时采用硬编码
+                SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
+                if (newValue == googleTranslator) {
+                    translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
+                } else if (newValue == baiduTranslator) {
+                    translatorConfig.setCurrentTranslator(TranslatorType.BAIDU);
+                } else if (newValue == youdaoTranslator) {
+                    translatorConfig.setCurrentTranslator(TranslatorType.YOUDAO);
+                }
+            });
+        }
 
-    private void initSrcDestLanguage(Language src, Language dest) {
-        // src
-        initLanguage(src, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
-        srcDestLanguageChooseEvent(true, sourceLanguageGroup, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
-        // dest
-        initLanguage(dest, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
-        srcDestLanguageChooseEvent(false, destLanguageGroup, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
+        private void initSrcDestLanguage(Language src, Language dest) {
+            // src
+            initLanguage(src, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
+            srcDestLanguageChooseEvent(true, sourceLanguageGroup, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
+            // dest
+            initLanguage(dest, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
+            srcDestLanguageChooseEvent(false, destLanguageGroup, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
 
-    }
+        }
 
-    private void initLanguage(Language type, RadioMenuItem simpleChinese, RadioMenuItem traditional,
-                              RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
-        switch (type) {
-            case CHINESE_SIMPLIFIED:
-                simpleChinese.setSelected(true);
-                break;
-            case CHINESE_TRADITIONAL:
-                traditional.setSelected(true);
-                break;
-            case ENGLISH:
-                english.setSelected(true);
-                break;
-            case FRENCH:
-                french.setSelected(true);
-                break;
-            case JAPANESE:
-                japanese.setSelected(true);
-                break;
+        private void initLanguage(Language type, RadioMenuItem simpleChinese, RadioMenuItem traditional,
+                                  RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
+            switch (type) {
+                case CHINESE_SIMPLIFIED:
+                    simpleChinese.setSelected(true);
+                    break;
+                case CHINESE_TRADITIONAL:
+                    traditional.setSelected(true);
+                    break;
+                case ENGLISH:
+                    english.setSelected(true);
+                    break;
+                case FRENCH:
+                    french.setSelected(true);
+                    break;
+                case JAPANESE:
+                    japanese.setSelected(true);
+                    break;
+            }
+        }
+
+        private void srcDestLanguageChooseEvent(boolean isSrc, ToggleGroup languageGroup, RadioMenuItem simpleChinese, RadioMenuItem traditional,
+                                                RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
+            languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
+                SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
+                Language language = Language.AUTO;
+                if (newValue == simpleChinese) {
+                    language = Language.CHINESE_SIMPLIFIED;
+                } else if (newValue == traditional) {
+                    language = Language.CHINESE_TRADITIONAL;
+                } else if (newValue == english) {
+                    language = Language.ENGLISH;
+                } else if (newValue == french) {
+                    language = Language.FRENCH;
+                } else if (newValue == japanese) {
+                    language = Language.JAPANESE;
+                }
+
+                if (isSrc) {
+                    translatorConfig.setSourceLanguage(language);
+                } else {
+                    translatorConfig.setDestLanguage(language);
+                }
+            });
         }
     }
-
-    private void srcDestLanguageChooseEvent(boolean isSrc, ToggleGroup languageGroup, RadioMenuItem simpleChinese, RadioMenuItem traditional,
-                                            RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
-        languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
-            SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
-            Language language = Language.AUTO;
-            if (newValue == simpleChinese) {
-                language = Language.CHINESE_SIMPLIFIED;
-            } else if (newValue == traditional) {
-                language = Language.CHINESE_TRADITIONAL;
-            } else if (newValue == english) {
-                language = Language.ENGLISH;
-            } else if (newValue == french) {
-                language = Language.FRENCH;
-            } else if (newValue == japanese) {
-                language = Language.JAPANESE;
-            }
-
-            if (isSrc) {
-                translatorConfig.setSourceLanguage(language);
-            } else {
-                translatorConfig.setDestLanguage(language);
-            }
-        });
-    }
-
 
     /**
      * 高级设置
-     *
-     * @param configuration 配置
      */
-    private void initAdvancedSettingMenu(SystemConfiguration configuration) {
-        //
+    private class AdvancedSettingMenu {
+        public void init() {
+            initAdvancedSettingMenu(SystemResourceManager.getConfigurationProxy());
+        }
+
+        private void initAdvancedSettingMenu(SystemConfiguration configuration) {
+            initOCR();
+        }
+
+        private void initOCR(){
+            ocrMenu.setOnAction((actionEvent -> {
+                try {
+                    App.openOCRDialog();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+                }
+
+            }));
+        }
     }
+
+    /**
+     * 帮助设置
+     */
+
 
     private void initHelpingMenu() {
         //
@@ -359,6 +393,12 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     }
 
 
+    /**
+     * 翻译文本控制区域
+     *
+     * @param origin 原文
+     * @param translation 译文
+     */
     private void updateTextArea(String origin, String translation) {
         originTextArea.setText(origin);
         translatedTextArea.setText(translation);
