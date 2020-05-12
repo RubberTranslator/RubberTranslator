@@ -12,15 +12,22 @@ import com.rubbertranslator.modules.translate.TranslatorType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -29,6 +36,9 @@ import java.util.logging.Logger;
  * @date 2020/5/6 20:49
  */
 public class MainController implements TranslatorFacade.TranslatorFacadeListener, TextInputListener {
+
+    @FXML
+    private AnchorPane anchorPane;
 
     /**
      * --------------------主功能区-----------------------------
@@ -118,7 +128,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private MenuItem filterMenu;
     @FXML // 词组替换
     private MenuItem translationWordsReplacerMenu;
-
+    @FXML   // 翻译历史数量菜单
+    private MenuItem historyNumMenu;
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -323,18 +334,100 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         }
 
         private void initAdvancedSettingMenu(SystemConfiguration configuration) {
-            initOCR();
+            initOCR(configuration);
+            initTranslationHistoryNumMenu(configuration);
         }
 
-        private void initOCR(){
-            ocrMenu.setOnAction((actionEvent -> {
-                try {
-                    App.openOCRDialog();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
-                }
+        private void initOCR(SystemConfiguration configuration){
 
+            class OCRInfo{
+                public String apiKey;
+                public String secretKey;
+
+                public OCRInfo(String apiKey, String secretKey) {
+                    this.apiKey = apiKey;
+                    this.secretKey = secretKey;
+                }
+            }
+
+            class OCRDialogContent{
+                public TextField apiKeyTf;
+                public TextField secretKeyTf;
+                public Node create(){
+                    // 主内容
+                    VBox vBox = new VBox();
+                    vBox.setAlignment(Pos.CENTER);
+                    vBox.setSpacing(10);
+                    Label baiduOCRLabel = new Label("BaiduOCR");
+                    // TODO baiduocrlabel 点击跳转到baidu ocr key界面
+                    Label apiKeyLabel = new Label("API_KEY");
+                    apiKeyTf = new TextField();
+                    apiKeyTf.setText(configuration.getTextInputConfig().getBaiduOcrApiKey());
+                    Label secretLabel = new Label("SECRET_KEY");
+                    secretKeyTf = new TextField();
+                    secretKeyTf.setText(configuration.getTextInputConfig().getBaiduOcrSecretKey());
+                    vBox.getChildren().addAll(baiduOCRLabel,apiKeyLabel,apiKeyTf,secretLabel,secretKeyTf);
+                    return vBox;
+                }
+            }
+
+            ocrMenu.setOnAction((actionEvent -> {
+                Dialog<OCRInfo> dialog = new Dialog<>();
+                // 确定和取消
+                ButtonType confirmBt = new ButtonType("确定", ButtonBar.ButtonData.OK_DONE);
+                ButtonType cancelBt = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
+                dialog.getDialogPane().getButtonTypes().addAll(confirmBt,cancelBt);
+                // 设置界面
+                OCRDialogContent dialogContent = new OCRDialogContent();
+                dialog.getDialogPane().setContent(dialogContent.create());
+                dialog.initOwner(anchorPane.getScene().getWindow());
+
+                // 结果转换器
+                dialog.setResultConverter(dialogButton -> {
+                    if (dialogButton == confirmBt) {
+                        return new OCRInfo(dialogContent.apiKeyTf.getText(),dialogContent.secretKeyTf.getText());
+                    }
+                    return null;
+                });
+                // 处理结果
+                Optional<OCRInfo> result = dialog.showAndWait();
+                result.ifPresent(ocrInfo -> {
+                    // 获取更新
+                    String apiKey = ocrInfo.apiKey;
+                    String secretKey = ocrInfo.secretKey;
+                    if("".equals(apiKey) || "".equals(secretKey)){
+                        originTextArea.setText("OCR信息不完整,请填写所有字段");
+                    }else{
+                        SystemResourceManager.getConfigurationProxy().getTextInputConfig().setBaiduOcrApiKey(apiKey);
+                        SystemResourceManager.getConfigurationProxy().getTextInputConfig().setBaiduOcrSecretKey(secretKey);
+                    }
+                });
+            }));
+        }
+
+
+
+        private void initTranslationHistoryNumMenu(SystemConfiguration configuration){
+            historyNumMenu.setOnAction((actionEvent ->{
+                TextInputDialog dialog = new TextInputDialog(""+configuration.getHistoryConfig().getHistoryNum());
+                dialog.setTitle("设置");
+                dialog.setHeaderText("翻译历史数量设置");
+                dialog.setContentText("输入保存历史数量(不超过100):");
+                dialog.initOwner(anchorPane.getScene().getWindow());
+                // Traditional way to get the response value.
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(s -> {
+                    try{
+                        int value = Integer.parseInt(s);
+                        if(value<0){
+                            throw new NumberFormatException();
+                        }
+                        // 更新设置
+                        configuration.getHistoryConfig().setHistoryNum(value);
+                    }catch (NumberFormatException e){
+                        originTextArea.setText("翻译历史数仅限数字且大于0");
+                    }
+                });
             }));
         }
     }

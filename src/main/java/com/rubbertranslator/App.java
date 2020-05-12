@@ -22,8 +22,6 @@ public class App extends Application {
     private static Scene appScene;
     private static Stage appStage;
     private static String currentContentRoot;
-    // ocr
-    private static Stage ocrStage;
 
 
     @Override
@@ -59,21 +57,6 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-
-    public static void openOCRDialog() throws IOException {
-        ocrStage = new Stage();
-        ocrStage.initOwner(appStage);
-        ocrStage.initModality(Modality.WINDOW_MODAL);
-        ocrStage.setAlwaysOnTop(true);
-
-        Scene ocrScene = new Scene(loadFXML(ControllerConstant.SETTING_OCR_FXML));
-        ocrStage.setScene(ocrScene);
-        ocrStage.show();
-    }
-
-    public static void closeOCRDialog(){
-        ocrStage.close();
-    }
 
     public static void resizeStage(){
         // xxx:写得不太好，可进行优化
