@@ -94,6 +94,7 @@
                   <Menu fx:id="focusMenu" mnemonicParsing="false" text="专注模式" />
                   <Menu fx:id="preHistoryMenu" mnemonicParsing="false" text="上一条" />
                   <Menu fx:id="nextHistoryMenu" mnemonicParsing="false" text="下一条" />
+                  <Menu fx:id="clearMenu" mnemonicParsing="false" text="清空" />
               </menus>
             </MenuBar>
             <TextArea fx:id="originTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="原文" wrapText="true">

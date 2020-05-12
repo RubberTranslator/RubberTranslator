@@ -21,6 +21,17 @@ public class TextPreProcessStaticConfig extends SystemConfiguration.TextProcessC
         return preProcessConfig.isTryKeepParagraphFormat();
     }
 
+    @Override
+    public Boolean isIncrementalCopy() {
+        return preProcessConfig.isIncrementalCopy();
+    }
+
+    @Override
+    public void setIncrementalCopy(Boolean incrementalCopy) {
+        preProcessConfig.setIncrementalCopy(incrementalCopy);
+        SystemResourceManager.getFacade().getTextPreProcessor().setIncrementalCopy(incrementalCopy);
+    }
+
     public TextPreProcessStaticConfig(SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfig) {
         this.preProcessConfig = preProcessConfig;
     }

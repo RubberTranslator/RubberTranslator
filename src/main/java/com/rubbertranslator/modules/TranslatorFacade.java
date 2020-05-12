@@ -41,6 +41,10 @@ public class TranslatorFacade {
         executor = Executors.newSingleThreadExecutor();;
     }
 
+    public void clear(){
+        this.textPreProcessor.cleanBuffer();
+    }
+
     public ProcessFilter getProcessFilter() {
         return processFilter;
     }

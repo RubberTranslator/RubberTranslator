@@ -227,6 +227,9 @@ public class SystemConfiguration {
             @SerializedName("keep_paragraph_format")
             private Boolean tryKeepParagraphFormat;
 
+            private Boolean incrementalCopy;
+
+
             public Boolean isTryKeepParagraphFormat() {
                 return tryKeepParagraphFormat;
             }
@@ -235,10 +238,19 @@ public class SystemConfiguration {
                 this.tryKeepParagraphFormat = tryKeepParagraphFormat;
             }
 
+            public Boolean isIncrementalCopy() {
+                return incrementalCopy;
+            }
+
+            public void setIncrementalCopy(Boolean incrementalCopy) {
+                this.incrementalCopy = incrementalCopy;
+            }
+
             @Override
             public String toString() {
                 return "TextPreProcessConfig{" +
                         "tryKeepParagraphFormat=" + tryKeepParagraphFormat +
+                        ", incrementalCopy=" + incrementalCopy +
                         '}';
             }
         }

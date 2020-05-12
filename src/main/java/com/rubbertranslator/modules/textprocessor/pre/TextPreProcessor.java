@@ -1,5 +1,7 @@
 package com.rubbertranslator.modules.textprocessor.pre;
 
+import com.rubbertranslator.modules.textprocessor.WordType;
+
 /**
  * @author Raven
  * @version 1.0
@@ -11,6 +13,18 @@ package com.rubbertranslator.modules.textprocessor.pre;
 public class TextPreProcessor {
 
     private volatile boolean tryToKeepParagraph = true;
+    private volatile boolean incrementalCopy = true;
+    private StringBuffer lastText = new StringBuffer();
+
+    public void setIncrementalCopy(boolean incrementalCopy) {
+        this.incrementalCopy = incrementalCopy;
+        lastText.delete(0,lastText.length());
+    }
+
+    public void cleanBuffer(){
+        lastText.delete(0,lastText.length());
+    }
+
     private final RedundantLineBreakProcessor redundantLineBreakProcessor = new RedundantLineBreakProcessor();
 
     /**
@@ -24,9 +38,24 @@ public class TextPreProcessor {
     }
 
     public String process(String text) {
-        return tryToKeepParagraph ?
+        if(text == null || "".equals(text)) return text;
+
+        // 格式化
+        text = tryToKeepParagraph ?
                 redundantLineBreakProcessor.keepParagraphProcess(text) :
                 redundantLineBreakProcessor.nonKeepParagraphProcess(text);
+        // 增量复制
+        if(incrementalCopy){
+            if(WordType.checkType(text) ==WordType.SPACE){  // 空格系别语言
+                lastText.append(text).append(" ");
+            }else{
+                lastText.append(text);
+            }
+            text = lastText.toString();
+        }
+        return text;
     }
+
+
 
 }

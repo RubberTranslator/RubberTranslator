@@ -56,6 +56,9 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
     @FXML
     private Button nextHistoryBt;
 
+    @FXML   // 清空
+    private Button clearBt;
+
     /**
      * 组件初始化完成后，会调用这个方法
      */
@@ -93,7 +96,7 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
                 break;
         }
         // 增量
-        incrementalCopyMenu.setSelected(false);
+        incrementalCopyMenu.setSelected(configurationProxy.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
         // 开关
         clipboardListenerMenu.setSelected(configurationProxy.getTextInputConfig().isOpenClipboardListener());
     }
@@ -109,6 +112,7 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
         clipboardListenerMenu.setOnAction(this);
         preHistoryBt.setOnAction(this);
         nextHistoryBt.setOnAction(this);
+        clearBt.setOnAction(this);
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue){
@@ -132,10 +136,13 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else if(source == keepStageTopBt){
+        }else if(source == clearBt){
+            updateTextArea("");
+            SystemResourceManager.getFacade().clear();
+        } else if(source == keepStageTopBt){
             App.setKeepTop(keepStageTopBt.isSelected());
         }else if(source == incrementalCopyMenu){
-            // TODO 待做
+             SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected());
         }else if(source == clipboardListenerMenu){
             SystemResourceManager.getClipBoardListenerThread().setRun(clipboardListenerMenu.isSelected());
         }else if(source == preHistoryBt){
@@ -180,8 +187,6 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
     @Override
     public void onComplete(String origin, String translation) {
         // 不管从哪里会回调，回到UI线程
-        Platform.runLater(() ->{
-            translationArea.setText(translation);
-        });
+        Platform.runLater(() -> updateTextArea(translation));
     }
 }

@@ -77,7 +77,6 @@ public class SystemResourceManager {
         LoggerManager.configLog();
         // 1. 加载配置文件
         configurationProxy = loadSystemConfig();
-        Logger.getLogger(SystemResourceManager.class.getName()).info(configurationProxy.toString());
         if (configurationProxy == null) return false;
         // 2.初始化facade
         facade = new TranslatorFacade();
@@ -125,7 +124,7 @@ public class SystemResourceManager {
         }
         // json --> object
         Gson gson = new Gson();
-        // 原始配置记录 TODO：这种方式耦合度很高，下面得wrapper中引用了configuration中的对象。
+        // 原始配置记录
         SystemConfiguration configuration = gson.fromJson(configJson, SystemConfiguration.class);
         if (configJson == null) {
             return null;
@@ -155,7 +154,7 @@ public class SystemResourceManager {
 
         // 前置处理
         SystemConfiguration.TextProcessConfig.TextPreProcessConfig textPreProcessStaticConfig = new TextPreProcessStaticConfig(configuration.getTextProcessConfig().getTextPreProcessConfig());
-        SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfigProxy = (SystemConfiguration.TextProcessConfig.TextPreProcessConfig)
+        SystemConfiguration.TextProcessConfig.TextPreProcessConfig textPreProcessConfigProxy = (SystemConfiguration.TextProcessConfig.TextPreProcessConfig)
                 Enhancer.create(SystemConfiguration.TextProcessConfig.TextPreProcessConfig.class, new ConfigProxy(textPreProcessStaticConfig));
         // 后置处理
         SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessStaticConfig = new TextPostProcessStaticConfig(configuration.getTextProcessConfig().getTextPostProcessConfig());
@@ -179,7 +178,7 @@ public class SystemResourceManager {
         // 注入
         configuration.setTextInputConfig(textInputConfigProxy);
         configuration.setProcessFilterConfig(processFilterConfigProxy);
-        configuration.getTextProcessConfig().setTextPreProcessConfig(preProcessConfigProxy);
+        configuration.getTextProcessConfig().setTextPreProcessConfig(textPreProcessConfigProxy);
         configuration.getTextProcessConfig().setTextPostProcessConfig(textPostProcessConfig);
         configuration.setTranslatorConfig(translatorConfigProxy);
         configuration.setHistoryConfig(historyConfigProxy);

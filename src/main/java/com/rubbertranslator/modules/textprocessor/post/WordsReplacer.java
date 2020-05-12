@@ -1,5 +1,7 @@
 package com.rubbertranslator.modules.textprocessor.post;
 
+import com.rubbertranslator.modules.textprocessor.WordType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +65,7 @@ public class WordsReplacer {
     private String doReplace(String src, String dest, String text) {
         // 检查时哪种类型的词组
         String result = text;
-        WordType wordType = checkWordType(text);
+        WordType wordType = WordType.checkType(text);
         if (wordType == WordType.SPACE) {
             src = "\b"+src + "\b";
         }
@@ -75,13 +77,4 @@ public class WordsReplacer {
         return result;
     }
 
-    // XXX: 目前仅支译文为非空格类型的语言词组，如中文、日文等
-    private WordType checkWordType(String text) {
-        return WordType.UNSPACE;
-    }
-
-    private enum WordType {
-        SPACE,  // 单词与单词之间有空格，如英语
-        UNSPACE // 单词与单词之间没有空格，如中文
-    }
 }

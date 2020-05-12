@@ -29,6 +29,7 @@
             <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="开关" />
             <Button fx:id="preHistoryBt" mnemonicParsing="false" text="上一条" />
             <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条" />
+            <Button fx:id="clearBt" mnemonicParsing="false" text="清空" />
          </items>
       </ToolBar>
    </children>

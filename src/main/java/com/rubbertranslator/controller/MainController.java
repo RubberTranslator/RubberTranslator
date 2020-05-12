@@ -96,6 +96,10 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     @FXML
     private Menu nextHistoryMenu;
 
+    // 清空
+    @FXML
+    private Menu clearMenu;
+
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -126,8 +130,9 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         initFocusModeMenu();
         // 历史
         initHistoryMenu();
+        // 清空
+        initClearMenu();
     }
-
 
     /**
      * 基础设置
@@ -142,10 +147,14 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     private void initBasicSettingOthers(SystemConfiguration configuration) {
         // 设置onActionListener
-        clipboardListenerMenu.setOnAction((actionEvent -> SystemResourceManager.getClipBoardListenerThread().setRun(clipboardListenerMenu.isSelected())));
-        dragCopyMenu.setOnAction((actionEvent -> SystemResourceManager.getDragCopyThread().setRun(dragCopyMenu.isSelected())));
-        incrementalCopyMenu.setOnAction((actionEvent -> Logger.getLogger(this.getClass().getName()).warning("暂不支持增量复制")));
-        keepParagraphMenu.setOnAction((actionEvent -> SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected())));
+        clipboardListenerMenu.setOnAction((actionEvent ->
+                SystemResourceManager.getClipBoardListenerThread().setRun(clipboardListenerMenu.isSelected())));
+        dragCopyMenu.setOnAction((actionEvent ->
+                SystemResourceManager.getDragCopyThread().setRun(dragCopyMenu.isSelected())));
+        incrementalCopyMenu.setOnAction((actionEvent ->
+                SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected())));
+        keepParagraphMenu.setOnAction((actionEvent ->
+                SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected())));
         keepTopMenu.setOnAction((actionEvent -> {
             App.setKeepTop(keepTopMenu.isSelected());
             // XXX: UI模块的相关功能，需要手动实现保存
@@ -159,8 +168,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         // 拖拽复制
         dragCopyMenu.setSelected(configuration.getTextInputConfig().isDragCopy());
         dragCopyMenu.fire();
-        // 增量复制 TODO:暂不支持增量复制
-        incrementalCopyMenu.setSelected(false);
+        // 增量复制
+        incrementalCopyMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
         incrementalCopyMenu.fire();
         // 保持段落格式
         keepParagraphMenu.setSelected(configuration.getUiConfig().getKeepTop());
@@ -297,6 +306,18 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         preHistoryMenu.setGraphic(pre);
         nextHistoryMenu.setGraphic(next);
     }
+
+    private void initClearMenu() {
+        Label label = new Label("清空");
+        label.setOnMouseClicked((event ->{
+            updateTextArea("","");
+            // 通知facade清空后续模块
+            SystemResourceManager.getFacade().clear();
+        }));
+        clearMenu.setText("");
+        clearMenu.setGraphic(label);
+    }
+
 
 
     private void updateTextArea(String origin, String translation){

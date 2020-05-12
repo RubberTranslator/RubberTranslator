@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -23,7 +24,10 @@ public class App extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        SystemResourceManager.init();
+        if(!SystemResourceManager.init()){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"系统启动失败");
+            System.exit(-1);
+        }
     }
 
     @Override
@@ -47,8 +51,6 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
-        Object controller = fxmlLoader.getController();
-        System.out.println(controller);
         return fxmlLoader.load();
     }
 
