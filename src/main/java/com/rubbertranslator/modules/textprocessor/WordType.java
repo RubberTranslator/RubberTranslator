@@ -10,6 +10,6 @@ public enum WordType {
      * @return
      */
     public static WordType checkType(String text){
-            return SPACE;
+            return UNSPACE;
     }
 }

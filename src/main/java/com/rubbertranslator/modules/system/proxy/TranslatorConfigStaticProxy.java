@@ -10,7 +10,7 @@ import com.rubbertranslator.modules.translate.TranslatorType;
  * @version 1.0
  * @date 2020/5/11 16:16
  */
-public class TranslatorStaticConfig extends SystemConfiguration.TranslatorConfig {
+public class TranslatorConfigStaticProxy extends SystemConfiguration.TranslatorConfig {
     private SystemConfiguration.TranslatorConfig translatorConfig;
 
 
@@ -49,7 +49,7 @@ public class TranslatorStaticConfig extends SystemConfiguration.TranslatorConfig
         return translatorConfig.getYouDaoTranslatorSecretKey();
     }
 
-    public TranslatorStaticConfig(SystemConfiguration.TranslatorConfig translatorConfig) {
+    public TranslatorConfigStaticProxy(SystemConfiguration.TranslatorConfig translatorConfig) {
         this.translatorConfig = translatorConfig;
     }
 

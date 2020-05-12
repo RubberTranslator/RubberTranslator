@@ -14,18 +14,19 @@ public class TextPreProcessor {
 
     private volatile boolean tryToKeepParagraph = true;
     private volatile boolean incrementalCopy = true;
-    private StringBuffer lastText = new StringBuffer();
+    private final StringBuffer lastText = new StringBuffer();
+    private final RedundantLineBreakProcessor redundantLineBreakProcessor = new RedundantLineBreakProcessor();
+
+
+    public void cleanBuffer(){
+        lastText.delete(0,lastText.length());
+    }
 
     public void setIncrementalCopy(boolean incrementalCopy) {
         this.incrementalCopy = incrementalCopy;
         lastText.delete(0,lastText.length());
     }
 
-    public void cleanBuffer(){
-        lastText.delete(0,lastText.length());
-    }
-
-    private final RedundantLineBreakProcessor redundantLineBreakProcessor = new RedundantLineBreakProcessor();
 
     /**
      * 设置是否需要保持段落格式

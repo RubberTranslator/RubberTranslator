@@ -8,14 +8,14 @@ import com.rubbertranslator.modules.system.SystemResourceManager;
  * @version 1.0
  * @date 2020/5/11 16:22
  */
-public class HistoryStaticConfig extends SystemConfiguration.HistoryConfig {
+public class HistoryConfigStaticProxy extends SystemConfiguration.HistoryConfig {
     private SystemConfiguration.HistoryConfig historyConfig;
 
     public SystemConfiguration.HistoryConfig getHistoryConfig() {
         return historyConfig;
     }
 
-    public HistoryStaticConfig(SystemConfiguration.HistoryConfig historyConfig) {
+    public HistoryConfigStaticProxy(SystemConfiguration.HistoryConfig historyConfig) {
         this.historyConfig = historyConfig;
     }
 

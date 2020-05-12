@@ -101,11 +101,11 @@ public class SystemResourceManager {
      */
     public static void destroy() {
         textInputDestroy();
+        processFilterDestroy();
         // 其余模块没有资源需要手动释放
         System.runFinalization();
         System.exit(0);
     }
-
 
     /**
      * 加载配置文件
@@ -131,6 +131,7 @@ public class SystemResourceManager {
         Gson gson = new Gson();
         // 原始配置记录
         SystemConfiguration configuration = gson.fromJson(configJson, SystemConfiguration.class);
+        Logger.getLogger(SystemResourceManager.class.getName()).info("加载配置"+configJson);
         if (configJson == null) {
             return null;
         } else {
@@ -153,31 +154,41 @@ public class SystemResourceManager {
                 Enhancer.create(SystemConfiguration.TextInputConfig.class, new ConfigProxy(textInputConfigStaticProxy));
 
         // 过滤器
-        ProcessFilterStaticConfig processFilterStaticConfig = new ProcessFilterStaticConfig(configuration.getProcessFilterConfig());
+        ProcessFilterConfigStaticProxy processFilterStaticConfig = new ProcessFilterConfigStaticProxy(configuration.getProcessFilterConfig());
         SystemConfiguration.ProcessFilterConfig processFilterConfigProxy = (SystemConfiguration.ProcessFilterConfig)
                 Enhancer.create(SystemConfiguration.ProcessFilterConfig.class, new ConfigProxy(processFilterStaticConfig));
 
         // 前置处理
-        TextPreProcessStaticConfig textPreProcessStaticConfig = new TextPreProcessStaticConfig(configuration.getTextProcessConfig().getTextPreProcessConfig());
+        TextPreProcessConfigStaticProxy textPreProcessStaticConfig = new TextPreProcessConfigStaticProxy(configuration.getTextProcessConfig().getTextPreProcessConfig());
         SystemConfiguration.TextProcessConfig.TextPreProcessConfig textPreProcessConfigProxy = (SystemConfiguration.TextProcessConfig.TextPreProcessConfig)
                 Enhancer.create(SystemConfiguration.TextProcessConfig.TextPreProcessConfig.class, new ConfigProxy(textPreProcessStaticConfig));
-        // 后置处理
-        TextPostProcessStaticConfig textPostProcessStaticConfig = new TextPostProcessStaticConfig(configuration.getTextProcessConfig().getTextPostProcessConfig());
+        // 后置文本处理
+        /**
+         * FIXME: 降低文本处理的嵌套层级！！！！当前：总->TextProcess->TextPostProcess->WordReplacer
+         * FIXME：改为 总->WordReplacer
+         */
+        // 文本替换处理
+        WordsReplacerConfigStaticProxy wordsReplacerStaticConfig =
+                new WordsReplacerConfigStaticProxy(configuration.getTextProcessConfig().getTextPostProcessConfig().getWordsReplacerConfig());
+        SystemConfiguration.TextProcessConfig.TextPostProcessConfig.WordsReplacerConfig wordsReplacerConfig = (SystemConfiguration.TextProcessConfig.TextPostProcessConfig.WordsReplacerConfig) Enhancer.create(SystemConfiguration.TextProcessConfig.TextPostProcessConfig.WordsReplacerConfig.class,new ConfigProxy(wordsReplacerStaticConfig));
+
+        configuration.getTextProcessConfig().getTextPostProcessConfig().setWordsReplacerConfig(wordsReplacerConfig);
+        TextPostProcessConfigStaticProxy textPostProcessStaticConfig = new TextPostProcessConfigStaticProxy(configuration.getTextProcessConfig().getTextPostProcessConfig());
         SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessConfig = (SystemConfiguration.TextProcessConfig.TextPostProcessConfig)
                 Enhancer.create(SystemConfiguration.TextProcessConfig.TextPostProcessConfig.class, new ConfigProxy(textPostProcessStaticConfig));
 
         // 翻译配置
-        TranslatorStaticConfig translatorStaticConfig = new TranslatorStaticConfig(configuration.getTranslatorConfig());
+        TranslatorConfigStaticProxy translatorStaticConfig = new TranslatorConfigStaticProxy(configuration.getTranslatorConfig());
         SystemConfiguration.TranslatorConfig translatorConfigProxy = (SystemConfiguration.TranslatorConfig)
                 Enhancer.create(SystemConfiguration.TranslatorConfig.class, new ConfigProxy(translatorStaticConfig));
 
         // 历史配置
-        HistoryStaticConfig historyStaticConfig = new HistoryStaticConfig(configuration.getHistoryConfig());
+        HistoryConfigStaticProxy historyStaticConfig = new HistoryConfigStaticProxy(configuration.getHistoryConfig());
         SystemConfiguration.HistoryConfig historyConfigProxy = (SystemConfiguration.HistoryConfig)
                 Enhancer.create(SystemConfiguration.HistoryConfig.class, new ConfigProxy(historyStaticConfig));
 
         // 后置处理配置
-        AfterProcessorStaticConfig afterProcessorStaticConfig = new AfterProcessorStaticConfig(configuration.getAfterProcessorConfig());
+        AfterProcessorConfigStaticProxy afterProcessorStaticConfig = new AfterProcessorConfigStaticProxy(configuration.getAfterProcessorConfig());
         SystemConfiguration.AfterProcessorConfig afterProcessorConfig = (SystemConfiguration.AfterProcessorConfig) Enhancer.create(SystemConfiguration.AfterProcessorConfig.class, new ConfigProxy(afterProcessorStaticConfig));
 
         // ui配置
@@ -214,6 +225,9 @@ public class SystemResourceManager {
     private static void textInputDestroy() {
         clipBoardListenerThread.exit();
         dragCopyThread.exit();
+    }
+
+    private static void processFilterDestroy() {
         activeWindowListenerThread.exit();
     }
 
@@ -239,7 +253,7 @@ public class SystemResourceManager {
         TextPostProcessor textPostProcessor = new TextPostProcessor();
         textPostProcessor.setOpen(postProcessConfig.isOpenPostProcess());
         textPostProcessor.getReplacer().setCaseInsensitive(postProcessConfig.getWordsReplacerConfig().isCaseInsensitive());
-        textPostProcessor.getReplacer().addWords(postProcessConfig.getWordsReplacerConfig().getWordsMap());
+        textPostProcessor.getReplacer().addWords(postProcessConfig.getWordsReplacerConfig().getWordsPairs());
         facade.setTextPostProcessor(textPostProcessor);
         return true;
     }

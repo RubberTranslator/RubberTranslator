@@ -8,7 +8,7 @@ import com.rubbertranslator.modules.system.SystemResourceManager;
  * @version 1.0
  * @date 2020/5/11 16:06
  */
-public class TextPreProcessStaticConfig extends SystemConfiguration.TextProcessConfig.TextPreProcessConfig {
+public class TextPreProcessConfigStaticProxy extends SystemConfiguration.TextProcessConfig.TextPreProcessConfig {
     private SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfig;
 
 
@@ -32,7 +32,7 @@ public class TextPreProcessStaticConfig extends SystemConfiguration.TextProcessC
         SystemResourceManager.getFacade().getTextPreProcessor().setIncrementalCopy(incrementalCopy);
     }
 
-    public TextPreProcessStaticConfig(SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfig) {
+    public TextPreProcessConfigStaticProxy(SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfig) {
         this.preProcessConfig = preProcessConfig;
     }
 

@@ -8,7 +8,7 @@ import com.rubbertranslator.modules.system.SystemResourceManager;
  * @version 1.0
  * @date 2020/5/12 11:05
  */
-public class AfterProcessorStaticConfig extends SystemConfiguration.AfterProcessorConfig {
+public class AfterProcessorConfigStaticProxy extends SystemConfiguration.AfterProcessorConfig {
 
     private final SystemConfiguration.AfterProcessorConfig afterProcessorConfig;
 
@@ -16,7 +16,7 @@ public class AfterProcessorStaticConfig extends SystemConfiguration.AfterProcess
         return afterProcessorConfig;
     }
 
-    public AfterProcessorStaticConfig(SystemConfiguration.AfterProcessorConfig afterProcessorConfig) {
+    public AfterProcessorConfigStaticProxy(SystemConfiguration.AfterProcessorConfig afterProcessorConfig) {
         this.afterProcessorConfig = afterProcessorConfig;
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
  * @version 1.0
  * @date 2020/5/11 16:03
  */
-public class ProcessFilterStaticConfig extends SystemConfiguration.ProcessFilterConfig {
+public class ProcessFilterConfigStaticProxy extends SystemConfiguration.ProcessFilterConfig {
     private SystemConfiguration.ProcessFilterConfig processFilterConfig;
 
 
@@ -29,7 +29,7 @@ public class ProcessFilterStaticConfig extends SystemConfiguration.ProcessFilter
         return processFilterConfig.getProcessList();
     }
 
-    public ProcessFilterStaticConfig(SystemConfiguration.ProcessFilterConfig processFilterConfig) {
+    public ProcessFilterConfigStaticProxy(SystemConfiguration.ProcessFilterConfig processFilterConfig) {
         this.processFilterConfig = processFilterConfig;
     }
 

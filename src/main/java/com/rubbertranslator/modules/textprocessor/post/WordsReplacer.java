@@ -2,8 +2,8 @@ package com.rubbertranslator.modules.textprocessor.post;
 
 import com.rubbertranslator.modules.textprocessor.WordType;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -12,23 +12,31 @@ import java.util.Map;
  * 词组替换器
  */
 public class WordsReplacer {
-    // TODO: 添加词组替换开关（如果有多个后置文本处理器的话）
-    private Map<String, String> map = new HashMap<>();
+    private Set<WordsPair> wordsPairs = new HashSet<>();
     // 区分大小写与否
     private boolean caseInsensitive = true;
     // 是否开启替换
     private boolean openWordsReplacer = true;
 
+    public WordsReplacer() {
+    }
+
+    public WordsReplacer(Set<WordsPair> wordsPairs, boolean caseInsensitive, boolean openWordsReplacer) {
+        this.wordsPairs = wordsPairs;
+        this.caseInsensitive = caseInsensitive;
+        this.openWordsReplacer = openWordsReplacer;
+    }
+
     public boolean isCaseInsensitive() {
         return caseInsensitive;
     }
 
-    public Map<String, String> getMap() {
-        return map;
+    public Set<WordsPair> getWordsPairs() {
+        return wordsPairs;
     }
 
-    public void setMap(Map<String, String> map) {
-        this.map = map;
+    public void setWordsPairs(Set<WordsPair> wordsPairs) {
+        this.wordsPairs = wordsPairs;
     }
 
     public boolean isOpenWordsReplacer() {
@@ -43,36 +51,41 @@ public class WordsReplacer {
         this.caseInsensitive = caseInsensitive;
     }
 
-    public void addWord(String src, String dest) {
-        map.put(src, dest);
+    public void addWord(WordsPair wordsPair) {
+        wordsPairs.add(wordsPair);
     }
 
-    public void addWords(Map<String, String> words) {
-        map.putAll(words);
+    public void addWords(Collection<WordsPair> words) {
+        if (words == null) return;
+        words.removeIf(Objects::isNull);
+        wordsPairs.addAll(words);
     }
 
     public String replace(String text) {
-        if(!openWordsReplacer) return text;
+        if (!openWordsReplacer) return text;
         String src, dest;
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            src = entry.getKey();
-            dest = entry.getValue();
+        for (WordsPair wordsPair : wordsPairs) {
+            src = wordsPair.getSrc();
+            dest = wordsPair.getDest();
             text = doReplace(src, dest, text);
+            Logger.getLogger(this.getClass().getName()).info("替换词组:"+wordsPair);
+            Logger.getLogger(this.getClass().getName()).info("替换结果:"+text);
+
         }
         return text;
     }
 
     private String doReplace(String src, String dest, String text) {
         // 检查时哪种类型的词组
-        String result = text;
+        String result;
         WordType wordType = WordType.checkType(text);
         if (wordType == WordType.SPACE) {
-            src = "\b"+src + "\b";
+            src = "\b" + src + "\b";
         }
         if (!caseInsensitive) {
-            result = text.replaceAll("(?i)" + src , dest);
+            result = text.replaceAll("(?i)" + src, dest);
         } else {
-            result = text.replaceAll( src , dest);
+            result = text.replaceAll(src, dest);
         }
         return result;
     }

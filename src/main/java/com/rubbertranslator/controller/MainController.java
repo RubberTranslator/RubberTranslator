@@ -10,7 +10,6 @@ import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -338,9 +337,11 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
         private void initAdvancedSettingMenu(SystemConfiguration configuration) {
             initOCR(configuration);
-            initTranslationHistoryNumMenu(configuration);
             initProcessFilter();
+            initWordsReplacer();
+            initTranslationHistoryNumMenu(configuration);
         }
+
 
         private void initOCR(SystemConfiguration configuration){
 
@@ -409,6 +410,36 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             }));
         }
 
+
+        private void initProcessFilter() {
+            filterMenu.setOnAction((actionEvent -> {
+                try {
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(App.loadFXML(ControllerConstant.FILTER_CONTROLLER_FXML));
+                    stage.initOwner(anchorPane.getScene().getWindow());
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }));
+        }
+
+        private void initWordsReplacer() {
+            translationWordsReplacerMenu.setOnAction((actionEvent -> {
+                try {
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(App.loadFXML(ControllerConstant.WORDS_REPLACER_CONTROLLER_FXML));
+                    stage.initOwner(anchorPane.getScene().getWindow());
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }));
+        }
+
+
         private void initTranslationHistoryNumMenu(SystemConfiguration configuration){
             historyNumMenu.setOnAction((actionEvent ->{
                 TextInputDialog dialog = new TextInputDialog(""+configuration.getHistoryConfig().getHistoryNum());
@@ -433,19 +464,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             }));
         }
 
-        private void initProcessFilter() {
-            filterMenu.setOnAction((actionEvent -> {
-                try {
-                    Stage stage = new Stage();
-                    Scene scene = new Scene(App.loadFXML(ControllerConstant.FILTER_CONTROLLER_FXML));
-                    stage.initOwner(anchorPane.getScene().getWindow());
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }));
-        }
     }
 
     /**
@@ -515,7 +533,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
 
     @FXML
-    public void onBtnTranslateClick(ActionEvent actionEvent) {
+    public void onBtnTranslateClick() {
         String originText = originTextArea.getText();
         processTranslate(originText);
     }

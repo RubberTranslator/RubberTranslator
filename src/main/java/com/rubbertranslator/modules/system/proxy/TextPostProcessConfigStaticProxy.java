@@ -2,13 +2,14 @@ package com.rubbertranslator.modules.system.proxy;
 
 import com.rubbertranslator.modules.system.SystemConfiguration;
 import com.rubbertranslator.modules.system.SystemResourceManager;
+import com.rubbertranslator.modules.textprocessor.post.WordsReplacer;
 
 /**
  * @author Raven
  * @version 1.0
  * @date 2020/5/11 16:08
  */
-public class TextPostProcessStaticConfig extends SystemConfiguration.TextProcessConfig.TextPostProcessConfig {
+public class TextPostProcessConfigStaticProxy extends SystemConfiguration.TextProcessConfig.TextPostProcessConfig {
     private SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessConfig;
 
     @Override
@@ -25,7 +26,7 @@ public class TextPostProcessStaticConfig extends SystemConfiguration.TextProcess
         return textPostProcessConfig.getWordsReplacerConfig();
     }
 
-    public TextPostProcessStaticConfig(SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessConfig) {
+    public TextPostProcessConfigStaticProxy(SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessConfig) {
         this.textPostProcessConfig = textPostProcessConfig;
     }
 
@@ -33,13 +34,11 @@ public class TextPostProcessStaticConfig extends SystemConfiguration.TextProcess
         textPostProcessConfig.setOpenPostProcess(openPostProcess);
         SystemResourceManager.getFacade().getTextPostProcessor().setOpen(openPostProcess);
     }
+
     public void setWordsReplacerConfig(WordsReplacerConfig wordsReplacerConfig) {
         textPostProcessConfig.setWordsReplacerConfig(wordsReplacerConfig);
-        SystemResourceManager.getFacade().getTextPostProcessor().getReplacer()
-                .setCaseInsensitive(wordsReplacerConfig.isCaseInsensitive());
-        SystemResourceManager.getFacade().getTextPostProcessor().getReplacer()
-                .setOpenWordsReplacer(wordsReplacerConfig.isOpenWordsReplacer());
-        SystemResourceManager.getFacade().getTextPostProcessor().getReplacer()
-                .setMap(wordsReplacerConfig.getWordsMap());
+        SystemResourceManager.getFacade().getTextPostProcessor().setReplacer(
+                new WordsReplacer(wordsReplacerConfig.getWordsPairs(), wordsReplacerConfig.isCaseInsensitive(), wordsReplacerConfig.isOpenWordsReplacer())
+        );
     }
 }

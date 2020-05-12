@@ -1,11 +1,13 @@
 package com.rubbertranslator.modules.system;
 
 import com.google.gson.annotations.SerializedName;
+import com.rubbertranslator.modules.textprocessor.post.WordsPair;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Raven
@@ -13,7 +15,7 @@ import java.util.Map;
  * @date 2020/5/10 21:02
  * 系统配置类
  */
-public class SystemConfiguration {
+public class SystemConfiguration implements Serializable {
     @SerializedName("ui_config")
     private UIConfig uiConfig;
     // 文本输入
@@ -109,7 +111,7 @@ public class SystemConfiguration {
     /**
      * 文本输入模块配置
      */
-    public static class TextInputConfig {
+    public static class TextInputConfig implements Serializable{
         // 是否开启监听剪切板
         @SerializedName("open_clipboard_listener")
         private Boolean openClipboardListener;
@@ -165,7 +167,7 @@ public class SystemConfiguration {
         }
     }
 
-    public static class ProcessFilterConfig {
+    public static class ProcessFilterConfig implements Serializable{
         // 是否打开进程过滤器
         @SerializedName("open_process_filter")
         private Boolean openProcessFilter;
@@ -202,7 +204,7 @@ public class SystemConfiguration {
     /**
      * 文本处理模块配置
      */
-    public static class TextProcessConfig{
+    public static class TextProcessConfig implements Serializable{
         // 前置处理
         @SerializedName("text_pre_process")
         private TextPreProcessConfig textPreProcessConfig;
@@ -237,7 +239,7 @@ public class SystemConfiguration {
         /**
          * 前置处理
          */
-        public static class TextPreProcessConfig{
+        public static class TextPreProcessConfig implements Serializable{
             @SerializedName("keep_paragraph_format")
             private Boolean tryKeepParagraphFormat;
 
@@ -303,7 +305,7 @@ public class SystemConfiguration {
                 this.wordsReplacerConfig = wordsReplacerConfig;
             }
 
-            public static class WordsReplacerConfig{
+            public static class WordsReplacerConfig implements Serializable{
                 // 是否打开词组替换
                 @SerializedName("open_words_replacer")
                 private Boolean openWordsReplacer;
@@ -311,8 +313,8 @@ public class SystemConfiguration {
                 @SerializedName("case_insensitive")
                 private Boolean caseInsensitive;
                 // 词组替换集合
-                @SerializedName("words_map")
-                private Map<String, String> wordsMap;
+                @SerializedName("words_pairs")
+                private Set<WordsPair> wordsPairs;
 
                 public Boolean isCaseInsensitive() {
                     return caseInsensitive;
@@ -330,12 +332,12 @@ public class SystemConfiguration {
                     this.openWordsReplacer = openWordsReplacer;
                 }
 
-                public Map<String, String> getWordsMap() {
-                    return wordsMap;
+                public Set<WordsPair> getWordsPairs() {
+                    return wordsPairs;
                 }
 
-                public void setWordsMap(Map<String, String> wordsMap) {
-                    this.wordsMap = wordsMap;
+                public void setWordsPairs(Set<WordsPair> wordsPairs) {
+                    this.wordsPairs = wordsPairs;
                 }
 
                 @Override
@@ -343,7 +345,7 @@ public class SystemConfiguration {
                     return "WordsReplacerConfig{" +
                             "openWordsReplacer=" + openWordsReplacer +
                             ", caseInsensitive=" + caseInsensitive +
-                            ", wordsMap=" + wordsMap +
+                            ", wordsPairs=" + wordsPairs +
                             '}';
                 }
             }
@@ -355,7 +357,7 @@ public class SystemConfiguration {
     /**
      * 翻译模块配置
      */
-    public static class TranslatorConfig{
+    public static class TranslatorConfig implements Serializable{
 
         // 当前翻译类型
         @SerializedName("current_translator")
@@ -447,7 +449,7 @@ public class SystemConfiguration {
         }
     }
 
-    public static class HistoryConfig{
+    public static class HistoryConfig implements Serializable{
         // 翻译历史记录条数
         @SerializedName("history_num")
         private Integer historyNum;
@@ -468,7 +470,7 @@ public class SystemConfiguration {
         }
     }
     
-    public static class UIConfig{
+    public static class UIConfig implements Serializable{
         @SerializedName("keep_top")
         private Boolean keepTop;
 
@@ -488,7 +490,7 @@ public class SystemConfiguration {
         }
     }
 
-    public static class AfterProcessorConfig{
+    public static class AfterProcessorConfig implements Serializable{
         @SerializedName("auto_copy")
         private Boolean autoCopy;
         @SerializedName("auto_paste")
