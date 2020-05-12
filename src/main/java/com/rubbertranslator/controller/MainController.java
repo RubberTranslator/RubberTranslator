@@ -30,14 +30,17 @@ import java.util.logging.Logger;
  */
 public class MainController implements TranslatorFacade.TranslatorFacadeListener, TextInputListener {
 
-    // 主功能区
+    /**
+     * --------------------主功能区-----------------------------
+     */
     @FXML
     private TextArea originTextArea;
     @FXML
     private TextArea translatedTextArea;
 
-    // menuBar区
-    // " 功能开关 "
+    /**
+     * -------------------基本设置------------------------------
+     */
     @FXML   // 翻译引擎类型
     private ToggleGroup translatorGroup;
     @FXML
@@ -106,6 +109,10 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     @FXML
     private Menu clearMenu;
 
+    /**
+     * --------------------------高级设置-------------------------
+     */
+
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -154,10 +161,13 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     private void initBasicSettingOthers(SystemConfiguration configuration) {
         // 设置onActionListener
-        clipboardListenerMenu.setOnAction((actionEvent ->
-                SystemResourceManager.getClipBoardListenerThread().setRun(clipboardListenerMenu.isSelected())));
-        dragCopyMenu.setOnAction((actionEvent ->
-                SystemResourceManager.getDragCopyThread().setRun(dragCopyMenu.isSelected())));
+        clipboardListenerMenu.setOnAction((actionEvent) ->
+                SystemResourceManager.getConfigurationProxy().getTextInputConfig().setOpenClipboardListener(clipboardListenerMenu.isSelected())
+        );
+
+        dragCopyMenu.setOnAction((actionEvent) ->{
+            SystemResourceManager.getConfigurationProxy().getTextInputConfig().setDragCopy(dragCopyMenu.isSelected());
+        });
         incrementalCopyMenu.setOnAction((actionEvent ->
                 SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected())));
         autoCopyMenu.setOnAction((actionEvent -> {
