@@ -28,6 +28,8 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -131,6 +133,15 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private MenuItem translationWordsReplacerMenu;
     @FXML   // 翻译历史数量菜单
     private MenuItem historyNumMenu;
+
+    /**
+     * -------------------------帮助-----------------------------
+     */
+    @FXML
+    private MenuItem homePage;
+    @FXML
+    private MenuItem wiki;
+
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -473,6 +484,22 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     private void initHelpingMenu() {
         //
+        homePage.setOnAction((actionEvent) ->
+        {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator"));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
+        // wiki
+        wiki.setOnAction((actionEvent) ->{
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/wiki"));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void initFocusModeMenu() {

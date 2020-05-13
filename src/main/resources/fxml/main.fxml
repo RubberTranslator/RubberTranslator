@@ -80,8 +80,8 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="帮助">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="使用方法" />
-                        <MenuItem mnemonicParsing="false" text="关于" />
+                        <MenuItem fx:id="homePage" mnemonicParsing="false" text="项目主页" />
+                    <MenuItem fx:id="wiki" mnemonicParsing="false" text="使用方法" />
                   </items>
                 </Menu>
                   <Menu fx:id="focusMenu" mnemonicParsing="false" text="专注模式" />
