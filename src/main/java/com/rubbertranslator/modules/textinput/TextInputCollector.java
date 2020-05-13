@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 9:51
+ * date 2020/5/8 9:51
  * 汇集所有输入文本，包含：
  * 1. 监听剪切板新内容
  * 2. 用户从UI输入

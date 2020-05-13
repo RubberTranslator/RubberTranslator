@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 10:49
+ * date 2020/5/8 10:49
  */
 public class LoggerManager {
     public static void configLog() {

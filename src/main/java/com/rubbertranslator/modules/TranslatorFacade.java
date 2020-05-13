@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 10:00
+ * date 2020/5/8 10:00
  */
 public class TranslatorFacade {
 

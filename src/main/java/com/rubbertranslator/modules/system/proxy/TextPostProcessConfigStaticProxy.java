@@ -7,7 +7,7 @@ import com.rubbertranslator.modules.textprocessor.post.WordsReplacer;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/11 16:08
+ * date 2020/5/11 16:08
  */
 public class TextPostProcessConfigStaticProxy extends SystemConfiguration.TextProcessConfig.TextPostProcessConfig {
     private SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessConfig;

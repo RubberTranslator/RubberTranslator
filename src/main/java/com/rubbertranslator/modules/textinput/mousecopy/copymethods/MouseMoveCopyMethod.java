@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/4/27 17:37
+ * date 2020/4/27 17:37
  * 鼠标移动较长距离来触发copy
  */
 public class MouseMoveCopyMethod extends CopyMethod {

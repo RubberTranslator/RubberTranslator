@@ -3,7 +3,7 @@ package com.rubbertranslator.modules.history;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/9 10:28
+ * date 2020/5/9 10:28
  * 翻译历史记录
  */
 public class TranslationHistory {

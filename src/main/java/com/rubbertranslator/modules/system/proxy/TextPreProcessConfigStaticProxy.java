@@ -6,7 +6,7 @@ import com.rubbertranslator.modules.system.SystemResourceManager;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/11 16:06
+ * date 2020/5/11 16:06
  */
 public class TextPreProcessConfigStaticProxy extends SystemConfiguration.TextProcessConfig.TextPreProcessConfig {
     private SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfig;

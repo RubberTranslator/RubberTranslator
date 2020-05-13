@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/11 13:50
+ * date 2020/5/11 13:50
  */
 public class ConfigProxy implements MethodInterceptor {
 

@@ -5,7 +5,7 @@ import org.jnativehook.mouse.NativeMouseEvent;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/4/27 17:31
+ * date 2020/4/27 17:31
  */
 public abstract class CopyMethod {
     protected CopyRobot copyerRobot = CopyRobot.getInstance();

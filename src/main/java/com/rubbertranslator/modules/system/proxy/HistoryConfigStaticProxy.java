@@ -6,7 +6,7 @@ import com.rubbertranslator.modules.system.SystemResourceManager;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/11 16:22
+ * date 2020/5/11 16:22
  */
 public class HistoryConfigStaticProxy extends SystemConfiguration.HistoryConfig {
     private SystemConfiguration.HistoryConfig historyConfig;

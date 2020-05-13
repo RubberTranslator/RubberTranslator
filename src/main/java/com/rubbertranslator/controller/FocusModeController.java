@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/9 21:51
+ * date 2020/5/9 21:51
  */
 public class FocusModeController implements EventHandler<ActionEvent>, TextInputListener, TranslatorFacade.TranslatorFacadeListener {
 

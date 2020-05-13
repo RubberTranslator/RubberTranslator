@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/11 16:03
+ * date 2020/5/11 16:03
  */
 public class ProcessFilterConfigStaticProxy extends SystemConfiguration.ProcessFilterConfig {
     private SystemConfiguration.ProcessFilterConfig processFilterConfig;

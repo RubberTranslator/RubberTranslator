@@ -7,7 +7,7 @@ import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/11 15:55
+ * date 2020/5/11 15:55
  * 静态代理
  */
 public class TextInputConfigStaticProxy extends SystemConfiguration.TextInputConfig {

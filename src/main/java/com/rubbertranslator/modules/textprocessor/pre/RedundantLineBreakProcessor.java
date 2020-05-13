@@ -3,7 +3,7 @@ package com.rubbertranslator.modules.textprocessor.pre;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 13:08
+ * date 2020/5/8 13:08
  * 多余空行处理
  */
 public class RedundantLineBreakProcessor {

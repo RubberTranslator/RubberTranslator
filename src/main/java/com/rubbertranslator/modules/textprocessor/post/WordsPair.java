@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/13 8:54
+ * date 2020/5/13 8:54
  */
 public class WordsPair implements Comparable<WordsPair>{
     @SerializedName("src")

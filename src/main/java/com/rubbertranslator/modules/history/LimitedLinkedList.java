@@ -5,7 +5,7 @@ import java.util.LinkedList;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/9 10:32
+ * date 2020/5/9 10:32
  * XXX: 可以自己手写一个数据结构，加入cache机制，加快查询速度
  */
 public class LimitedLinkedList<T> extends LinkedList<T> {

@@ -3,7 +3,7 @@ package com.rubbertranslator.modules.history;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/9 10:44
+ * date 2020/5/9 10:44
  */
 public class HistoryEntry {
     private String origin;

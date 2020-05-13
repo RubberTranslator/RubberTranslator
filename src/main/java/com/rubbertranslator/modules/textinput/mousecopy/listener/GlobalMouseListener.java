@@ -7,7 +7,7 @@ import org.jnativehook.mouse.NativeMouseEvent;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/4/27 15:43
+ * date 2020/4/27 15:43
  */
 public class GlobalMouseListener extends NativeMouseAdapter {
 

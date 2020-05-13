@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/10 21:02
+ * date 2020/5/10 21:02
  * 系统配置类
  */
 public class SystemConfiguration implements Serializable {

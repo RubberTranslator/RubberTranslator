@@ -6,7 +6,7 @@ import com.rubbertranslator.modules.system.SystemResourceManager;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/12 11:05
+ * date 2020/5/12 11:05
  */
 public class AfterProcessorConfigStaticProxy extends SystemConfiguration.AfterProcessorConfig {
 

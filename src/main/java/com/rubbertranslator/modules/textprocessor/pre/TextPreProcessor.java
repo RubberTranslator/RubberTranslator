@@ -5,7 +5,7 @@ import com.rubbertranslator.modules.textprocessor.WordType;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 13:06
+ * date 2020/5/8 13:06
  * 输入给翻译引擎前的文本处理，现在的功能：
  * 1. 处理pdf复制引用的多余换行
  * 2. 给与”尽量保持分段”接口

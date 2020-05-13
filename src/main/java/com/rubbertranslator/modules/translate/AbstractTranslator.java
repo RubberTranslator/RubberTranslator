@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 13:52
+ * date 2020/5/8 13:52
  * 所有的实际翻译引擎都应该实现
  */
 public abstract class AbstractTranslator {

@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/7 16:11
+ * date 2020/5/7 16:11
  * okhttp工具类
  */
 public class OkHttpUtil {

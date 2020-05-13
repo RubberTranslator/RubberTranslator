@@ -3,7 +3,7 @@ package com.rubbertranslator.controller;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/11 10:03
+ * date 2020/5/11 10:03
  * Controller常量，目前用于存放各Controller对应的fxml路径
  */
 public class ControllerConstant {

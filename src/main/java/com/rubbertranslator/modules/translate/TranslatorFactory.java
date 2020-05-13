@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 15:26
+ * date 2020/5/8 15:26
  * 翻译模块向外提供的接口
  */
 public class TranslatorFactory {

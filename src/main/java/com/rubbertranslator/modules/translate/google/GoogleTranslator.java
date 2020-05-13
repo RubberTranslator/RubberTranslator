@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 17:17
+ * date 2020/5/8 17:17
  */
 public class GoogleTranslator extends AbstractTranslator {
 

@@ -5,7 +5,7 @@ import org.jnativehook.mouse.NativeMouseEvent;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/4/27 17:35
+ * date 2020/4/27 17:35
  * 快速双击触发copy
  */
 public class DoubleClickCopyMethod extends CopyMethod {

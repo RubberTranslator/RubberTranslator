@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/7 16:04
+ * date 2020/5/7 16:04
  */
 public class OCRUtils {
     private static String API_KEY;

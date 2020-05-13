@@ -8,7 +8,7 @@ import com.rubbertranslator.modules.translate.TranslatorType;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/11 16:16
+ * date 2020/5/11 16:16
  */
 public class TranslatorConfigStaticProxy extends SystemConfiguration.TranslatorConfig {
     private SystemConfiguration.TranslatorConfig translatorConfig;

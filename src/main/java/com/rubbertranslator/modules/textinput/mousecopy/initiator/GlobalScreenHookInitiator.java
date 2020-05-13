@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/6 13:01
+ * date 2020/5/6 13:01
  */
 public class GlobalScreenHookInitiator {
     public static void initialize() {

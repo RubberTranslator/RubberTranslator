@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 9:52
+ * date 2020/5/8 9:52
  */
 public interface TextInputListener {
     /**

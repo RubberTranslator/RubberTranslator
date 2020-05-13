@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/8 19:43
+ * date 2020/5/8 19:43
  * hack: 考虑一下公共有道翻译接口（爬虫或者旧式翻译接口）
  * 旧式接口：http://fanyi.youdao.com/openapi.do?keyfrom=xinlei&key=759115437&type=data&doctype=json&version=1.1&q=Byte-addressable
  */

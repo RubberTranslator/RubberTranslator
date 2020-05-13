@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/6 13:02
+ * date 2020/5/6 13:02
  */
 public class SystemTrayInitiator {
     /**

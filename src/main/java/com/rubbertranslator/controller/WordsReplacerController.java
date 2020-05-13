@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * @author Raven
  * @version 1.0
- * @date 2020/5/13 8:53
+ * date 2020/5/13 8:53
  */
 public class WordsReplacerController implements Initializable {
     @FXML
