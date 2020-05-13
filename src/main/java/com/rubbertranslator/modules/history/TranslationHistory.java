@@ -35,6 +35,11 @@ public class TranslationHistory {
         this.historyList.setCapacity(capacity);
     }
 
+    public HistoryEntry current(){
+        return historyCursor >= 0 && historyCursor<historyList.size()?
+                historyList.get(historyCursor) : null;
+    }
+
     public HistoryEntry previous(){
         historyCursor = Math.max(historyCursor - 1, 0);
         return historyList.get(historyCursor);

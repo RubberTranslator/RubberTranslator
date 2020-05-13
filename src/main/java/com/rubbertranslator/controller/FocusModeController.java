@@ -6,6 +6,7 @@ import com.rubbertranslator.modules.history.HistoryEntry;
 import com.rubbertranslator.modules.system.SystemConfiguration;
 import com.rubbertranslator.modules.system.SystemResourceManager;
 import com.rubbertranslator.modules.textinput.TextInputListener;
+import com.rubbertranslator.modules.textinput.mousecopy.copymethods.CopyRobot;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.TranslatorType;
 import javafx.application.Platform;
@@ -34,8 +35,6 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
     @FXML // 退回到主界面
     private Button backBt;
 
-    @FXML   // 保持置顶
-    private ToggleButton keepStageTopBt;
     @FXML   // 翻译组
     private ToggleGroup translatorGroup;
     @FXML
@@ -56,14 +55,24 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
 
     @FXML // 监听剪切板
     private ToggleButton clipboardListenerMenu;
+    @FXML
+    private ToggleButton dragCopyMenu;
 
     @FXML // 历史记录
     private Button preHistoryBt;
     @FXML
     private Button nextHistoryBt;
 
+    @FXML   // 保持置顶
+    private ToggleButton keepStageTopBt;
+
     @FXML   // 清空
     private Button clearBt;
+
+    @FXML
+    private Button copyOriginBt;
+    @FXML
+    private Button copyTranslationBt;
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -107,8 +116,10 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
         autoCopyMenu.setSelected(configurationProxy.getAfterProcessorConfig().isAutoCopy());
         // 自动粘贴
         autoPasteMenu.setSelected(configurationProxy.getAfterProcessorConfig().isAutoPaste());
-        // 开关
+        // 监听版
         clipboardListenerMenu.setSelected(configurationProxy.getTextInputConfig().isOpenClipboardListener());
+        // 拖拽
+        dragCopyMenu.setSelected(configurationProxy.getTextInputConfig().isDragCopy());
     }
 
     /**
@@ -116,15 +127,18 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
      */
     private void initClickEvents() {
         backBt.setOnAction(this);
-        keepStageTopBt.setOnAction(this);
         translatorGroup.selectedToggleProperty().addListener(this::onTranslatorTypeChanged);
         incrementalCopyMenu.setOnAction(this);
-        clipboardListenerMenu.setOnAction(this);
         preHistoryBt.setOnAction(this);
         nextHistoryBt.setOnAction(this);
         clearBt.setOnAction(this);
+        keepStageTopBt.setOnAction(this);
         autoCopyMenu.setOnAction(this);
         autoPasteMenu.setOnAction(this);
+        copyOriginBt.setOnAction(this);
+        copyTranslationBt.setOnAction(this);
+        clipboardListenerMenu.setOnAction(this);
+        dragCopyMenu.setOnAction(this);
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue){
@@ -155,8 +169,6 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
             App.setKeepTop(keepStageTopBt.isSelected());
         }else if(source == incrementalCopyMenu){
              SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected());
-        }else if(source == clipboardListenerMenu){
-            SystemResourceManager.getClipBoardListenerThread().setRun(clipboardListenerMenu.isSelected());
         }else if(source == preHistoryBt){
             HistoryEntry previous = SystemResourceManager.getFacade().getHistory().previous();
             updateTextArea(previous.getTranslation());
@@ -176,7 +188,25 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
                 SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
             }
             SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
+        }else if(source == copyOriginBt){
+            copyOriginText();
+        }else if(source == copyTranslationBt){
+            copyTranslationText();
+        } else if(source == clipboardListenerMenu){
+            SystemResourceManager.getConfigurationProxy().getTextInputConfig().setOpenClipboardListener(clipboardListenerMenu.isSelected());
+        }else if(source == dragCopyMenu){
+            SystemResourceManager.getConfigurationProxy().getTextInputConfig().setDragCopy(dragCopyMenu.isSelected());
         }
+    }
+
+    private void copyOriginText(){
+        HistoryEntry current = SystemResourceManager.getFacade().getHistory().current();
+        CopyRobot.getInstance().copyText(current.getOrigin());
+    }
+
+    private void copyTranslationText(){
+        HistoryEntry current = SystemResourceManager.getFacade().getHistory().current();
+        CopyRobot.getInstance().copyText(current.getTranslation());
     }
 
     private void processTranslate(String text) {

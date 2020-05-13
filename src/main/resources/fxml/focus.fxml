@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -14,10 +15,9 @@
          <font>
             <Font size="20.0" />
          </font></TextArea>
-      <ToolBar prefHeight="40.0" prefWidth="200.0">
-         <items>
+      <FlowPane columnHalignment="CENTER" hgap="5.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0">
+         <children>
             <Button fx:id="backBt" mnemonicParsing="false" text="返回" />
-            <ToggleButton fx:id="keepStageTopBt" mnemonicParsing="false" text="置顶" />
             <ToggleButton fx:id="googleTranslator" mnemonicParsing="false" text="谷歌" textAlignment="CENTER">
                <toggleGroup>
                   <ToggleGroup fx:id="translatorGroup" />
@@ -29,10 +29,17 @@
             <Button fx:id="preHistoryBt" mnemonicParsing="false" text="上一条" />
             <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条" />
             <Button fx:id="clearBt" mnemonicParsing="false" text="清空" />
+            <ToggleButton fx:id="keepStageTopBt" mnemonicParsing="false" text="置顶" />
+            <Button fx:id="copyOriginBt" mnemonicParsing="false" text="复制原文" />
+            <Button fx:id="copyTranslationBt" mnemonicParsing="false" text="复制译文" />
             <ToggleButton fx:id="autoCopyMenu" mnemonicParsing="false" text="自动复制" />
             <ToggleButton fx:id="autoPasteMenu" mnemonicParsing="false" text="自动粘贴" />
-            <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="开关" />
-         </items>
-      </ToolBar>
+            <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="剪切板" />
+            <ToggleButton fx:id="dragCopyMenu" mnemonicParsing="false" text="拖拽" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </FlowPane>
    </children>
 </VBox>

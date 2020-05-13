@@ -34,9 +34,9 @@ public class TranslatorFacade {
     // facade回调
     private TranslatorFacadeListener facadeListener;
 
-    // lastOrigin
+    // lastOrigin 保存最后格式化后的原文
     private String lastOrigin = "";
-    // lastTranlsation
+    // lastTranslation 保存最后的译文
     private String lastTranslation = "";
 
     public void setFacadeListener(TranslatorFacadeListener facadeListener) {
@@ -46,7 +46,6 @@ public class TranslatorFacade {
     public TranslatorFacade() {
         history = new TranslationHistory();
         executor = Executors.newSingleThreadExecutor();
-        ;
     }
 
 
@@ -138,10 +137,10 @@ public class TranslatorFacade {
             if (facadeListener != null) {
                 try {
                     String result = get();
-                    String origin = callable.getText();
+                    String processedOrigin = callable.getProcessedOrigin();
                     //XXX: 失败回调，硬编码为中文
                     if(result != null && facadeListener != null){
-                        facadeListener.onComplete(origin, result);
+                        facadeListener.onComplete(processedOrigin, result);
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -151,38 +150,44 @@ public class TranslatorFacade {
     }
 
     private class FacadeCallable implements Callable<String> {
-        // text保存textProProcessor处理后的文本
-        private String text;
+        // 原文
+        private String origin = "";
+        // 格式处理后的原文
+        private String processedOrigin = "";
 
-        public String getText() {
-            return text;
+        public String getProcessedOrigin() {
+            return processedOrigin;
+        }
+
+        public String getOrigin() {
+            return origin;
         }
 
         public FacadeCallable(String text) {
-            this.text = text;
+            this.origin = text;
         }
 
         @Override
-        public String call() throws Exception {
-            if (text == null || "".equals(text)) return null;
+        public String call() {
+            if (origin == null || "".equals(origin)) return null;
 
-            // lastOrigin 重新初始化
-            lastOrigin = text;
 
-            String origin = text;
+
             String translation = null;
             try {
                 // 过滤
                 if (processFilter.check()) return null;
                 // text保存处理后的文本
-                text = textPreProcessor.process(text);
-                translation = translatorFactory.translate(text);
+                processedOrigin = textPreProcessor.process(origin);
+                // 重新初始化lastOrigin
+                lastOrigin = processedOrigin;
+                translation = translatorFactory.translate(processedOrigin);
                 // 后置处理
                 translation = textPostProcessor.process(translation);
                 // lastTranslation 重新初始化
                 lastTranslation = translation;
                 // 记录翻译历史
-                history.addHistory(origin, translation);
+                history.addHistory(processedOrigin, translation);
                 translation = afterProcessor.process(translation);
             } catch (NullPointerException e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getMessage());

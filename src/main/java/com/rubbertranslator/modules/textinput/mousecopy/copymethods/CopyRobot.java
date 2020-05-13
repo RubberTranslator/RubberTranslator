@@ -1,18 +1,24 @@
 package com.rubbertranslator.modules.textinput.mousecopy.copymethods;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 复制器
  */
 public class CopyRobot {
+    private static CopyRobot copyRobot;
     private Robot robot;
-    private static CopyRobot copyerRobot;
+    private Clipboard clipboard;
 
     private CopyRobot(){
         try {
             robot = new Robot();
+            clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         } catch (AWTException e) {
             e.printStackTrace();
         }
@@ -20,14 +26,30 @@ public class CopyRobot {
 
     public static CopyRobot getInstance(){
         // double check singleton
-        if(copyerRobot == null){
+        if(copyRobot == null){
             synchronized (CopyRobot.class){
-                if(copyerRobot == null){
-                    copyerRobot = new CopyRobot();
+                if(copyRobot == null){
+                    copyRobot = new CopyRobot();
                 }
             }
         }
-        return copyerRobot;
+        return copyRobot;
+    }
+
+
+    public synchronized void copyText(String text){
+        if(text == null || "".equals(text)) return;
+        boolean required = false;
+        while(!required){
+            try {
+                //waiting e.g for loading huge elements like word's etc.
+                Thread.sleep(100);
+                clipboard.setContents(new StringSelection(text),null);
+                required = true;
+            } catch (InterruptedException | IllegalStateException e) {
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getMessage(),e);
+            }
+        }
     }
 
 

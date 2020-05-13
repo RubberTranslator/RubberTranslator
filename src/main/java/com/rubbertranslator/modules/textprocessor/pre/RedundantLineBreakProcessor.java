@@ -17,7 +17,7 @@ public class RedundantLineBreakProcessor {
             if (tempStr.charAt(tempStr.length() - 1) == '-') {  // 英文末尾的连接符
                 sb.append(tempStr, 0, tempStr.length() - 1);
             } else {
-                sb.append(tempStr);
+                sb.append(tempStr).append(" "); // 非-结尾单词，是完整单词，需要添加空格，和后文单词分割开
             }
         }
         return sb.toString();
@@ -35,7 +35,7 @@ public class RedundantLineBreakProcessor {
             } else if (tempStr.charAt(tempStr.length() - 1) == '-') {  // 英文末尾的连接符
                 sb.append(tempStr, 0, tempStr.length() - 1);
             } else {
-                sb.append(tempStr);
+                sb.append(tempStr).append(" ");
             }
         }
         return sb.toString();
