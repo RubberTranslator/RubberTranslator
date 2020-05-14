@@ -41,12 +41,12 @@ public class TranslationHistory {
     }
 
     public HistoryEntry previous(){
-        historyCursor = Math.max(historyCursor - 1, 0);
+        historyCursor = Math.min(historyList.size()-1,Math.max(historyCursor - 1, 0));
         return historyList.get(historyCursor);
     }
 
     public HistoryEntry next(){
-        historyCursor = Math.min(historyCursor+1,historyList.size()-1);
+        historyCursor = Math.max(0,Math.min(historyCursor+1,historyList.size()-1));
         return historyList.get(historyCursor);
     }
 
