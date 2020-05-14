@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 
 public class JsonUtil {
 
-    private static Gson mGson = new Gson();
+    private static final Gson mGson = new Gson();
 
     /**
      * 将对象准换为json字符串

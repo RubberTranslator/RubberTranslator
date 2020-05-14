@@ -1,5 +1,4 @@
 package com.rubbertranslator.controller;
-
 import com.rubbertranslator.App;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.history.HistoryEntry;
@@ -133,6 +132,10 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private MenuItem translationWordsReplacerMenu;
     @FXML   // 翻译历史数量菜单
     private MenuItem historyNumMenu;
+    @FXML // 百度&有道api 设置
+    private MenuItem baiduApiMenu;
+    @FXML
+    private MenuItem youdaoApiMenu;
 
     /**
      * -------------------------帮助-----------------------------
@@ -141,6 +144,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private MenuItem homePage;
     @FXML
     private MenuItem wiki;
+    @FXML
+    private MenuItem issues;
 
 
     /**
@@ -341,86 +346,149 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
      * 高级设置
      * TODO 高级设置中用到了dialog，使得controller臃肿度大大提高，但是丢给view做，又过于累赘
      */
+
+    private interface ApiInfoChangedListener {
+        void onApiChanged(ApiInfo newValue);
+    }
+
+    private static class ApiInfo {
+        public String apiKey;
+        public String secretKey;
+
+        public ApiInfo(String apiKey, String secretKey) {
+            this.apiKey = apiKey;
+            this.secretKey = secretKey;
+        }
+
+        public String getApiKey() {
+            return apiKey;
+        }
+
+        public String getSecretKey() {
+            return secretKey;
+        }
+    }
+
+
+    private class ApiDialog {
+
+        private final String dialogTitle;
+        private final ApiInfo apiInfo;
+        private final String titleClickUrl;
+        private final ApiInfoChangedListener listener;
+
+        public ApiDialog(String dialogTitle, String titleClickUrl,ApiInfo apiInfo, ApiInfoChangedListener listener) {
+            this.dialogTitle = dialogTitle;
+            this.titleClickUrl = titleClickUrl;
+            this.apiInfo = apiInfo;
+            this.listener = listener;
+        }
+
+        public TextField apiKeyTf;
+        public TextField secretKeyTf;
+
+        private Node create() {
+            // 主内容
+            VBox vBox = new VBox();
+            vBox.setAlignment(Pos.CENTER);
+            vBox.setSpacing(10);
+            // 26、13、171
+            Label title = new Label(dialogTitle);
+            title.setStyle("-fx-text-fill: #2196f3;" +
+                    "-fx-font-weight: bold");
+            title.setOnMouseClicked((event -> {
+                try {
+                    Desktop.getDesktop().browse(new URI(titleClickUrl));
+                } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }));
+            Label apiKeyLabel = new Label("API_KEY");
+            apiKeyTf = new TextField();
+            apiKeyTf.setText(apiInfo.getApiKey());
+            Label secretLabel = new Label("SECRET_KEY");
+            secretKeyTf = new TextField();
+            secretKeyTf.setText(apiInfo.getSecretKey());
+            vBox.getChildren().addAll(title, apiKeyLabel, apiKeyTf, secretLabel, secretKeyTf);
+            return vBox;
+        }
+
+        public void showDialog() {
+            Dialog<ApiInfo> dialog = new Dialog<>();
+            // 确定和取消
+            ButtonType confirmBt = new ButtonType("确定", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelBt = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
+            dialog.getDialogPane().getButtonTypes().addAll(confirmBt, cancelBt);
+            dialog.getDialogPane().setContent(create());
+            dialog.initOwner(anchorPane.getScene().getWindow());
+
+            // 结果转换器
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == confirmBt) {
+                    return new ApiInfo(apiKeyTf.getText(), secretKeyTf.getText());
+                }
+                return null;
+            });
+            // 处理结果
+            Optional<ApiInfo> result = dialog.showAndWait();
+            result.ifPresent(ocrInfo -> {
+                // 获取更新
+                String apiKey = ocrInfo.apiKey;
+                String secretKey = ocrInfo.secretKey;
+                if ("".equals(apiKey) || "".equals(secretKey)) {
+                    originTextArea.setText("Api信息不完整,请填写所有字段");
+                } else {
+                    listener.onApiChanged(new ApiInfo(apiKey, secretKey));
+                }
+            });
+        }
+    }
+
     private class AdvancedSettingMenu {
         public void init() {
             initAdvancedSettingMenu(SystemResourceManager.getConfigurationProxy());
         }
 
         private void initAdvancedSettingMenu(SystemConfiguration configuration) {
-            initOCR(configuration);
+            initOCR(configuration.getTextInputConfig());
             initProcessFilter();
             initWordsReplacer();
-            initTranslationHistoryNumMenu(configuration);
+            initTranslationHistoryNumMenu(configuration.getHistoryConfig());
+            initApiMenu(configuration.getTranslatorConfig());
         }
 
-
-        private void initOCR(SystemConfiguration configuration){
-
-            class OCRInfo{
-                public String apiKey;
-                public String secretKey;
-
-                public OCRInfo(String apiKey, String secretKey) {
-                    this.apiKey = apiKey;
-                    this.secretKey = secretKey;
-                }
-            }
-
-            class OCRDialogContent{
-                public TextField apiKeyTf;
-                public TextField secretKeyTf;
-                public Node create(){
-                    // 主内容
-                    VBox vBox = new VBox();
-                    vBox.setAlignment(Pos.CENTER);
-                    vBox.setSpacing(10);
-                    Label baiduOCRLabel = new Label("BaiduOCR");
-                    // TODO baiduocrlabel 点击跳转到baidu ocr key界面
-                    Label apiKeyLabel = new Label("API_KEY");
-                    apiKeyTf = new TextField();
-                    apiKeyTf.setText(configuration.getTextInputConfig().getBaiduOcrApiKey());
-                    Label secretLabel = new Label("SECRET_KEY");
-                    secretKeyTf = new TextField();
-                    secretKeyTf.setText(configuration.getTextInputConfig().getBaiduOcrSecretKey());
-                    vBox.getChildren().addAll(baiduOCRLabel,apiKeyLabel,apiKeyTf,secretLabel,secretKeyTf);
-                    return vBox;
-                }
-            }
-
-            ocrMenu.setOnAction((actionEvent -> {
-                Dialog<OCRInfo> dialog = new Dialog<>();
-                // 确定和取消
-                ButtonType confirmBt = new ButtonType("确定", ButtonBar.ButtonData.OK_DONE);
-                ButtonType cancelBt = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
-                dialog.getDialogPane().getButtonTypes().addAll(confirmBt,cancelBt);
-                // 设置界面
-                OCRDialogContent dialogContent = new OCRDialogContent();
-                dialog.getDialogPane().setContent(dialogContent.create());
-                dialog.initOwner(anchorPane.getScene().getWindow());
-
-                // 结果转换器
-                dialog.setResultConverter(dialogButton -> {
-                    if (dialogButton == confirmBt) {
-                        return new OCRInfo(dialogContent.apiKeyTf.getText(),dialogContent.secretKeyTf.getText());
-                    }
-                    return null;
-                });
-                // 处理结果
-                Optional<OCRInfo> result = dialog.showAndWait();
-                result.ifPresent(ocrInfo -> {
-                    // 获取更新
-                    String apiKey = ocrInfo.apiKey;
-                    String secretKey = ocrInfo.secretKey;
-                    if("".equals(apiKey) || "".equals(secretKey)){
-                        originTextArea.setText("OCR信息不完整,请填写所有字段");
-                    }else{
-                        SystemResourceManager.getConfigurationProxy().getTextInputConfig().setBaiduOcrApiKey(apiKey);
-                        SystemResourceManager.getConfigurationProxy().getTextInputConfig().setBaiduOcrSecretKey(secretKey);
-                    }
-                });
-            }));
+        private void initOCR(SystemConfiguration.TextInputConfig configuration) {
+            ocrMenu.setOnAction((actionEvent -> new ApiDialog("百度OCR",  // 标题
+                    "https://ai.baidu.com/tech/ocr",
+                    new ApiInfo(configuration.getBaiduOcrApiKey(), configuration.getBaiduOcrSecretKey()),   // 回显所需信息
+                    (newValue) -> {   // 用户确定后的回调
+                        configuration.setBaiduOcrApiKey(newValue.getApiKey());
+                        configuration.setBaiduOcrSecretKey(newValue.getSecretKey());
+                    })
+                    .showDialog()));
         }
 
+        /**
+         * 百度和有道的api secret key menu
+         */
+        private void initApiMenu(SystemConfiguration.TranslatorConfig configuration) {
+            baiduApiMenu.setOnAction((actionEvent -> new ApiDialog("百度翻译",  // 标题
+                    "http://api.fanyi.baidu.com/",
+                    new ApiInfo(configuration.getBaiduTranslatorApiKey(), configuration.getYouDaoTranslatorSecretKey()),   // 回显所需信息
+                    (newValue) -> {   // 用户确定后的回调
+                        configuration.setBaiduTranslatorApiKey(newValue.getApiKey());
+                        configuration.setBaiduTranslatorSecretKey(newValue.getSecretKey());
+                    })
+                    .showDialog()));
+            youdaoApiMenu.setOnAction((actionEvent -> new ApiDialog("有道翻译", // 标题
+                    "https://ai.youdao.com/?keyfrom=old-openapi",
+                    new ApiInfo(configuration.getYouDaoTranslatorApiKey(), configuration.getYouDaoTranslatorSecretKey()),   // 回显所需信息
+                    (newValue) -> {   // 用户确定后的回调
+                        configuration.setYouDaoTranslatorApiKey(newValue.getApiKey());
+                        configuration.setYouDaoTranslatorSecretKey(newValue.getSecretKey());
+                    })
+                    .showDialog()));
+        }
 
         private void initProcessFilter() {
             filterMenu.setOnAction((actionEvent -> {
@@ -451,9 +519,9 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         }
 
 
-        private void initTranslationHistoryNumMenu(SystemConfiguration configuration){
-            historyNumMenu.setOnAction((actionEvent ->{
-                TextInputDialog dialog = new TextInputDialog(""+configuration.getHistoryConfig().getHistoryNum());
+        private void initTranslationHistoryNumMenu(SystemConfiguration.HistoryConfig configuration) {
+            historyNumMenu.setOnAction((actionEvent -> {
+                TextInputDialog dialog = new TextInputDialog("" + configuration.getHistoryNum());
                 dialog.setTitle("设置");
                 dialog.setHeaderText("翻译历史数量设置");
                 dialog.setContentText("输入保存历史数量(不超过100):");
@@ -461,14 +529,14 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 // Traditional way to get the response value.
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(s -> {
-                    try{
+                    try {
                         int value = Integer.parseInt(s);
-                        if(value<0){
+                        if (value < 0) {
                             throw new NumberFormatException();
                         }
                         // 更新设置
-                        configuration.getHistoryConfig().setHistoryNum(value);
-                    }catch (NumberFormatException e){
+                        configuration.setHistoryNum(value);
+                    } catch (NumberFormatException e) {
                         originTextArea.setText("翻译历史数仅限数字且大于0");
                     }
                 });
@@ -493,13 +561,21 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             }
         });
         // wiki
-        wiki.setOnAction((actionEvent) ->{
+        wiki.setOnAction((actionEvent) -> {
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/wiki"));
             } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         });
+        // issue
+        issues.setOnAction((actionEvent -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/issues"));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }));
     }
 
     private void initFocusModeMenu() {
@@ -550,7 +626,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     /**
      * 翻译文本控制区域
      *
-     * @param origin 原文
+     * @param origin      原文
      * @param translation 译文
      */
     private void updateTextArea(String origin, String translation) {
@@ -592,8 +668,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     @Override
     public void onComplete(String origin, String translation) {
         // 不管从哪里会回调，回到UI线程
-        Platform.runLater(() -> {
-            updateTextArea(origin, translation);
-        });
+        Platform.runLater(() -> updateTextArea(origin, translation));
     }
 }

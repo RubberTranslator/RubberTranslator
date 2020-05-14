@@ -76,12 +76,19 @@
                     <MenuItem fx:id="filterMenu" mnemonicParsing="false" text="过滤器" />
                         <MenuItem fx:id="translationWordsReplacerMenu" mnemonicParsing="false" text="翻译文本替换" />
                         <MenuItem fx:id="historyNumMenu" mnemonicParsing="false" text="翻译历史数量" />
+                        <Menu mnemonicParsing="false" text="Key&amp;Secret设置">
+                          <items>
+                            <MenuItem fx:id="baiduApiMenu" mnemonicParsing="false" text="百度" />
+                              <MenuItem fx:id="youdaoApiMenu" mnemonicParsing="false" text="有道" />
+                          </items>
+                        </Menu>
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="帮助">
                   <items>
                         <MenuItem fx:id="homePage" mnemonicParsing="false" text="项目主页" />
                     <MenuItem fx:id="wiki" mnemonicParsing="false" text="使用方法" />
+                        <MenuItem fx:id="issues" mnemonicParsing="false" text="反馈" />
                   </items>
                 </Menu>
                   <Menu fx:id="focusMenu" mnemonicParsing="false" text="专注模式" />
