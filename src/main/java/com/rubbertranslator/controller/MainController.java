@@ -208,40 +208,40 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化功能开关成功");
         }
 
-        private void initBasicSettingOthers(SystemConfiguration configuration) {
+        private void initBasicSettingOthers(final SystemConfiguration configuration) {
             // 设置onActionListener
             clipboardListenerMenu.setOnAction((actionEvent) ->
-                    SystemResourceManager.getConfigurationProxy().getTextInputConfig().setOpenClipboardListener(clipboardListenerMenu.isSelected())
+                    configuration.getTextInputConfig().setOpenClipboardListener(clipboardListenerMenu.isSelected())
             );
 
             dragCopyMenu.setOnAction((actionEvent) ->
-                    SystemResourceManager.getConfigurationProxy().getTextInputConfig().setDragCopy(dragCopyMenu.isSelected()));
+                    configuration.getTextInputConfig().setDragCopy(dragCopyMenu.isSelected()));
             incrementalCopyMenu.setOnAction((actionEvent ->
-                    SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected())));
+                    configuration.getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected())));
             autoCopyMenu.setOnAction((actionEvent -> {
                 if (!autoCopyMenu.isSelected()) {
                     autoPasteMenu.setSelected(false);
-                    SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(false);
+                    configuration.getAfterProcessorConfig().setAutoPaste(false);
                 }
-                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(autoCopyMenu.isSelected());
+                configuration.getAfterProcessorConfig().setAutoCopy(autoCopyMenu.isSelected());
             }));
             autoPasteMenu.setOnAction((actionEvent -> {
                 // 自动粘贴依赖于自动复制
                 if (autoPasteMenu.isSelected()) {
                     autoCopyMenu.setSelected(true);
-                    SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
+                    configuration.getAfterProcessorConfig().setAutoCopy(true);
                 }
-                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
+                configuration.getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
             }));
             keepParagraphMenu.setOnAction((actionEvent ->
                     SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> {
                 App.setKeepTop(keepTopMenu.isSelected());
                 // XXX: UI模块的相关功能，需要手动实现保存
-                SystemResourceManager.getConfigurationProxy().getUiConfig().setKeepTop(keepTopMenu.isSelected());
+                configuration.getUiConfig().setKeepTop(keepTopMenu.isSelected());
             }));
 
-
+            // ui回显
             // 监听剪切板
             clipboardListenerMenu.setSelected(configuration.getTextInputConfig().isOpenClipboardListener());
             // 拖拽复制
@@ -253,9 +253,19 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             // 自动粘贴
             autoPasteMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
             // 保持段落格式
-            keepParagraphMenu.setSelected(configuration.getUiConfig().isKeepTop());
+            keepParagraphMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isTryKeepParagraphFormat());
             // 置顶
             keepTopMenu.setSelected(configuration.getUiConfig().isKeepTop());
+
+            // 设置生效
+            SystemResourceManager.getClipBoardListenerThread().setRun(configuration.getTextInputConfig().isOpenClipboardListener());
+            SystemResourceManager.getDragCopyThread().setRun(configuration.getTextInputConfig().isDragCopy());
+            SystemResourceManager.getFacade().getTextPreProcessor().setIncrementalCopy(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
+            SystemResourceManager.getFacade().getAfterProcessor().setAutoCopy(configuration.getAfterProcessorConfig().isAutoPaste());
+            SystemResourceManager.getFacade().getAfterProcessor().setAutoPaste(configuration.getAfterProcessorConfig().isAutoPaste());
+            SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(configuration.getTextProcessConfig().getTextPreProcessConfig().isTryKeepParagraphFormat());
+            // 置顶在UI模块，UI模块不在系统资源管理范围内，xxx:考虑重构
+            App.setKeepTop(keepTopMenu.isSelected());
         }
 
         private void initTranslatorType(TranslatorType type) {
@@ -631,11 +641,15 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         Label next = new Label("下一条");
         pre.setOnMouseClicked((event -> {
             HistoryEntry entry = SystemResourceManager.getFacade().getHistory().previous();
-            updateTextArea(entry.getOrigin(), entry.getTranslation());
+            if(entry!=null){
+                updateTextArea(entry.getOrigin(), entry.getTranslation());
+            }
         }));
         next.setOnMouseClicked(event -> {
             HistoryEntry entry = SystemResourceManager.getFacade().getHistory().next();
-            updateTextArea(entry.getOrigin(), entry.getTranslation());
+            if(entry != null){
+                updateTextArea(entry.getOrigin(), entry.getTranslation());
+            }
         });
         preHistoryMenu.setText("");
         nextHistoryMenu.setText("");

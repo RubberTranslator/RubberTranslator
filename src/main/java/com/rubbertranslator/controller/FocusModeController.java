@@ -193,10 +193,14 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
              SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected());
         }else if(source == preHistoryBt){
             HistoryEntry previous = SystemResourceManager.getFacade().getHistory().previous();
-            updateTextArea(previous.getTranslation());
+            if(previous!=null){
+                updateTextArea(previous.getTranslation());
+            }
         }else if(source == nextHistoryBt){
             HistoryEntry next = SystemResourceManager.getFacade().getHistory().next();
-            updateTextArea(next.getTranslation());
+            if(next != null){
+                updateTextArea(next.getTranslation());
+            }
         }else if(source == autoCopyMenu){
             if(!autoCopyMenu.isSelected()){
                 autoPasteMenu.setSelected(false);

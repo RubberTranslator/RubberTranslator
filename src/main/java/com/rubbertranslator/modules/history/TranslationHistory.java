@@ -17,8 +17,8 @@ public class TranslationHistory {
         this(10);
     }
 
-    public TranslationHistory(int capacity) {
-      historyList = new LimitedLinkedList<>(capacity);
+    public TranslationHistory(int maxCapacity) {
+      historyList = new LimitedLinkedList<>(maxCapacity);
     }
 
     public LimitedLinkedList<HistoryEntry> getHistoryList() {
@@ -32,7 +32,7 @@ public class TranslationHistory {
 
     public void setHistoryCapacity(int capacity){
         capacity = Math.min(capacity,MAX_NUM);
-        this.historyList.setCapacity(capacity);
+        this.historyList.setMaxCapacity(capacity);
     }
 
     public HistoryEntry current(){
@@ -41,11 +41,13 @@ public class TranslationHistory {
     }
 
     public HistoryEntry previous(){
+        if(historyList.size() == 0) return null;
         historyCursor = Math.min(historyList.size()-1,Math.max(historyCursor - 1, 0));
         return historyList.get(historyCursor);
     }
 
     public HistoryEntry next(){
+        if(historyList.size() == 0) return null;
         historyCursor = Math.max(0,Math.min(historyCursor+1,historyList.size()-1));
         return historyList.get(historyCursor);
     }

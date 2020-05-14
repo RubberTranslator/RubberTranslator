@@ -13,7 +13,7 @@ import com.rubbertranslator.modules.textprocessor.WordType;
 public class TextPreProcessor {
 
     private volatile boolean tryToKeepParagraph = true;
-    private volatile boolean incrementalCopy = true;
+    private volatile boolean incrementalCopy = false;
     private final StringBuffer lastText = new StringBuffer();
     private final RedundantLineBreakProcessor redundantLineBreakProcessor = new RedundantLineBreakProcessor();
 
