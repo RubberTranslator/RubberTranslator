@@ -1,4 +1,5 @@
 package com.rubbertranslator.controller;
+
 import com.rubbertranslator.App;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.history.HistoryEntry;
@@ -23,13 +24,17 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -40,7 +45,7 @@ import java.util.logging.Logger;
 public class MainController implements TranslatorFacade.TranslatorFacadeListener, TextInputListener {
 
     @FXML
-    private AnchorPane anchorPane;
+    private AnchorPane rootPane;
 
     /**
      * --------------------主功能区-----------------------------
@@ -132,6 +137,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private MenuItem translationWordsReplacerMenu;
     @FXML   // 翻译历史数量菜单
     private MenuItem historyNumMenu;
+    @FXML
+    private MenuItem customCssMenu;
     @FXML // 百度&有道api 设置
     private MenuItem baiduApiMenu;
     @FXML
@@ -237,25 +244,18 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
             // 监听剪切板
             clipboardListenerMenu.setSelected(configuration.getTextInputConfig().isOpenClipboardListener());
-            clipboardListenerMenu.fire();
             // 拖拽复制
             dragCopyMenu.setSelected(configuration.getTextInputConfig().isDragCopy());
-            dragCopyMenu.fire();
             // 增量复制
             incrementalCopyMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
-            incrementalCopyMenu.fire();
             // 自动复制
             autoCopyMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
-            autoCopyMenu.fire();
             // 自动粘贴
             autoPasteMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
-            autoPasteMenu.fire();
             // 保持段落格式
             keepParagraphMenu.setSelected(configuration.getUiConfig().isKeepTop());
-            keepParagraphMenu.fire();
             // 置顶
             keepTopMenu.setSelected(configuration.getUiConfig().isKeepTop());
-            keepTopMenu.fire();
         }
 
         private void initTranslatorType(TranslatorType type) {
@@ -377,7 +377,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         private final String titleClickUrl;
         private final ApiInfoChangedListener listener;
 
-        public ApiDialog(String dialogTitle, String titleClickUrl,ApiInfo apiInfo, ApiInfoChangedListener listener) {
+        public ApiDialog(String dialogTitle, String titleClickUrl, ApiInfo apiInfo, ApiInfoChangedListener listener) {
             this.dialogTitle = dialogTitle;
             this.titleClickUrl = titleClickUrl;
             this.apiInfo = apiInfo;
@@ -420,7 +420,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             ButtonType cancelBt = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmBt, cancelBt);
             dialog.getDialogPane().setContent(create());
-            dialog.initOwner(anchorPane.getScene().getWindow());
+            dialog.initOwner(rootPane.getScene().getWindow());
 
             // 结果转换器
             dialog.setResultConverter(dialogButton -> {
@@ -454,7 +454,39 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             initProcessFilter();
             initWordsReplacer();
             initTranslationHistoryNumMenu(configuration.getHistoryConfig());
+            initCustomCss(configuration.getUiConfig());
             initApiMenu(configuration.getTranslatorConfig());
+        }
+
+        private void initCustomCss(SystemConfiguration.UIConfig configuration) {
+            try{
+                // 回显
+                String path = configuration.getStyleCssPath();
+                if (path != null) {
+                    File file = new File(path);
+                    if (file.exists()) {
+                        rootPane.getStylesheets().setAll(file.toURI().toURL().toString());
+                    }
+                }
+            }catch (MalformedURLException e) {
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getMessage(),e);
+            }
+
+            // 点击事件
+            customCssMenu.setOnAction((actionEvent -> {
+                try{
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.getExtensionFilters().add(
+                            new FileChooser.ExtensionFilter("css文件", "*.css"));
+                    File newFile = fileChooser.showOpenDialog(rootPane.getScene().getWindow());
+                    // 应用
+                    rootPane.getStylesheets().setAll(newFile.toURI().toURL().toString());
+                    // 应用持久化
+                    configuration.setStyleCssPath(newFile.getAbsolutePath());
+                } catch (MalformedURLException e) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getMessage(),e);
+                }
+            }));
         }
 
         private void initOCR(SystemConfiguration.TextInputConfig configuration) {
@@ -495,7 +527,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 try {
                     Stage stage = new Stage();
                     Scene scene = new Scene(App.loadFXML(ControllerConstant.FILTER_CONTROLLER_FXML));
-                    stage.initOwner(anchorPane.getScene().getWindow());
+                    stage.initOwner(rootPane.getScene().getWindow());
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
@@ -509,7 +541,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 try {
                     Stage stage = new Stage();
                     Scene scene = new Scene(App.loadFXML(ControllerConstant.WORDS_REPLACER_CONTROLLER_FXML));
-                    stage.initOwner(anchorPane.getScene().getWindow());
+                    stage.initOwner(rootPane.getScene().getWindow());
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
@@ -525,7 +557,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 dialog.setTitle("设置");
                 dialog.setHeaderText("翻译历史数量设置");
                 dialog.setContentText("输入保存历史数量(不超过100):");
-                dialog.initOwner(anchorPane.getScene().getWindow());
+                dialog.initOwner(rootPane.getScene().getWindow());
                 // Traditional way to get the response value.
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(s -> {

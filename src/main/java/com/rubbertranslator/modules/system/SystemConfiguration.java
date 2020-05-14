@@ -473,6 +473,16 @@ public class SystemConfiguration implements Serializable {
     public static class UIConfig implements Serializable{
         @SerializedName("keep_top")
         private Boolean keepTop;
+        @SerializedName("custom_css_path")
+        private String styleCssPath;
+
+        public String getStyleCssPath() {
+            return styleCssPath;
+        }
+
+        public void setStyleCssPath(String styleCssPath) {
+            this.styleCssPath = styleCssPath;
+        }
 
         public Boolean isKeepTop() {
             return keepTop;

@@ -17,9 +17,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -28,6 +32,9 @@ import java.util.logging.Logger;
  * date 2020/5/9 21:51
  */
 public class FocusModeController implements EventHandler<ActionEvent>, TextInputListener, TranslatorFacade.TranslatorFacadeListener {
+
+    @FXML
+    private VBox rootPane;
 
     @FXML
     private TextArea translationArea;
@@ -96,6 +103,21 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
      */
     private void initViewsDisplay(){
         SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
+        // 样式加载
+        try{
+            // 回显
+            String path = configurationProxy.getUiConfig().getStyleCssPath();
+            if (path != null) {
+                File file = new File(path);
+                if (file.exists()) {
+                    rootPane.getStylesheets().setAll(file.toURI().toURL().toString());
+                }
+            }
+        }catch (MalformedURLException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getMessage(),e);
+        }
+
+
         // 置顶
         keepStageTopBt.setSelected(configurationProxy.getUiConfig().isKeepTop());
         // 翻译引擎
