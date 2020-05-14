@@ -3,6 +3,7 @@ package com.rubbertranslator.utils;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Raven
@@ -12,7 +13,10 @@ import java.io.IOException;
  */
 public class OkHttpUtil {
 
-    private static OkHttpClient client = new OkHttpClient.Builder().build();
+    private static OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(3, TimeUnit.SECONDS)
+            .readTimeout(3,TimeUnit.SECONDS)
+            .build();
 
     public static OkHttpClient getInstance() {
         return client;
@@ -38,10 +42,10 @@ public class OkHttpUtil {
         String result = null;
         Response response = client.newCall(request).execute();
         ResponseBody responseBody = response.body();
-        if (response.isSuccessful() && responseBody != null) {
-            result = responseBody.string();
-            responseBody.close();
+        if (response.isSuccessful()) {
+            result = responseBody.string(); // execute返回的response.body不会返回null
         }
+        responseBody.close();
         return result;
     }
 }
