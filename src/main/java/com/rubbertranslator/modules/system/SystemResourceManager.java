@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  */
 public class SystemResourceManager {
     // 新配置文件路径
-    public static String configJsonPath = "./configuration.json";
+    public static String configJsonPath = "./config/configuration.json";
     private static ClipBoardListenerThread clipBoardListenerThread;
     private static DragCopyThread dragCopyThread;
     private static WindowsPlatformActiveWindowListenerThread activeWindowListenerThread;

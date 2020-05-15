@@ -19,6 +19,11 @@ public class FileUtil {
      */
     public static void copyInputStreamToFile(InputStream in, File file) throws IOException {
         if (in == null) return;
+        // 父目录创建
+        File parent = file.getParentFile();
+        if(!parent.exists() && !parent.mkdirs()){
+            throw new IOException("parent dir cannot be created");
+        }
         FileOutputStream fout = null;
         BufferedOutputStream bout = null;
          try{
@@ -65,6 +70,11 @@ public class FileUtil {
     }
 
     public static void writeStringToFile(File file, String data,  Charset encoding) throws IOException {
+        // 父目录创建
+        File parent = file.getParentFile();
+        if(!parent.exists() && !parent.mkdirs()){
+            throw new IOException("parent dir cannot be created");
+        }
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), encoding)) {
             writer.write(data);
         }
