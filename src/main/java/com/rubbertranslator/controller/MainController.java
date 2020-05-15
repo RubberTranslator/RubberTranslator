@@ -480,7 +480,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     }
                 }
             }catch (MalformedURLException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getMessage(),e);
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getLocalizedMessage(),e);
             }
 
             // 点击事件
@@ -495,7 +495,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     // 应用持久化
                     configuration.setStyleCssPath(newFile.getAbsolutePath());
                 } catch (MalformedURLException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getMessage(),e);
+                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getLocalizedMessage(),e);
                 }
             }));
         }

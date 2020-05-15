@@ -110,7 +110,7 @@ public class ConfigProxy implements MethodInterceptor {
             newConfiguration.setTextProcessConfig(textProcessConfig);
 
         } catch (IllegalAccessException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,e.getMessage(),e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,e.getLocalizedMessage(),e);
         }
 
         return newConfiguration;

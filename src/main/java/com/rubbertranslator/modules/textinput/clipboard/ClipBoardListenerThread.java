@@ -80,7 +80,7 @@ public class ClipBoardListenerThread extends Thread {
                 }
 
             } catch (InterruptedException | IllegalStateException | UnsupportedFlavorException | IOException e) {
-                Logger.getLogger(ClipBoardListenerThread.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+                Logger.getLogger(ClipBoardListenerThread.class.getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
                 if (waitTime < maxWaitTime) {
                     waitTime += 100;  // 增加100ms等待时间
                 }

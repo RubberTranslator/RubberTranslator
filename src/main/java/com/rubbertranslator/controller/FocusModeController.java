@@ -114,7 +114,7 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
                 }
             }
         }catch (MalformedURLException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getMessage(),e);
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getLocalizedMessage(),e);
         }
 
 

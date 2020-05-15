@@ -134,7 +134,7 @@ public class SystemResourceManager {
             }
             configJson = FileUtil.readFileToString(file, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            Logger.getLogger(SystemResourceManager.class.getName()).severe(e.getMessage());
+            Logger.getLogger(SystemResourceManager.class.getName()).severe(e.getLocalizedMessage());
             return null;
         }
         // json --> object

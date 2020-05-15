@@ -47,7 +47,7 @@ public class CopyRobot {
                 clipboard.setContents(new StringSelection(text),null);
                 required = true;
             } catch (InterruptedException | IllegalStateException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getMessage(),e);
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getLocalizedMessage(),e);
             }
         }
     }

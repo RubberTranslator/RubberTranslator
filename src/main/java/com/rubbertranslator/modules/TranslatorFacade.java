@@ -196,7 +196,7 @@ public class TranslatorFacade {
                 history.addHistory(processedOrigin, translation);
                 translation = afterProcessor.process(translation);
             } catch (NullPointerException e) {
-                Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+                Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
             }
             return translation;
         }
