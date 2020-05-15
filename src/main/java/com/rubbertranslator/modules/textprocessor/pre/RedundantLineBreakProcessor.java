@@ -23,7 +23,7 @@ public class RedundantLineBreakProcessor {
         return sb.toString();
     }
 
-    public String keepParagraphProcess(String text) {
+    public String format(String text) {
         String[] splitText = text.split("\n");
         StringBuilder sb = new StringBuilder();
         for (String tempStr : splitText) {

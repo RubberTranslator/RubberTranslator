@@ -17,8 +17,8 @@ public class TextPreProcessConfigStaticProxy extends SystemConfiguration.TextPro
     }
 
     @Override
-    public Boolean isTryKeepParagraphFormat() {
-        return preProcessConfig.isTryKeepParagraphFormat();
+    public Boolean isTryToFormat() {
+        return preProcessConfig.isTryToFormat();
     }
 
     @Override
@@ -36,8 +36,8 @@ public class TextPreProcessConfigStaticProxy extends SystemConfiguration.TextPro
         this.preProcessConfig = preProcessConfig;
     }
 
-    public void setTryKeepParagraphFormat(Boolean tryKeepParagraphFormat) {
-        preProcessConfig.setTryKeepParagraphFormat(tryKeepParagraphFormat);
-        SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(tryKeepParagraphFormat);
+    public void setTryToFormat(Boolean tryToFormat) {
+        preProcessConfig.setTryToFormat(tryToFormat);
+        SystemResourceManager.getFacade().getTextPreProcessor().setTryToFormat(tryToFormat);
     }
 }

@@ -12,7 +12,7 @@ import com.rubbertranslator.modules.textprocessor.WordType;
  */
 public class TextPreProcessor {
 
-    private volatile boolean tryToKeepParagraph = true;
+    private volatile boolean tryToFormat = true;
     private volatile boolean incrementalCopy = false;
     private final StringBuffer lastText = new StringBuffer();
     private final RedundantLineBreakProcessor redundantLineBreakProcessor = new RedundantLineBreakProcessor();
@@ -31,20 +31,20 @@ public class TextPreProcessor {
     /**
      * 设置是否需要保持段落格式
      *
-     * @param tryToKeepParagraph 尽量保持段落？ true 保持
+     * @param tryToFormat 尽量保持段落？ true 保持
      *                           false 不保持
      */
-    public void setTryToKeepParagraph(boolean tryToKeepParagraph) {
-        this.tryToKeepParagraph = tryToKeepParagraph;
+    public void setTryToFormat(boolean tryToFormat) {
+        this.tryToFormat = tryToFormat;
     }
 
     public String process(String text) {
         if(text == null || "".equals(text)) return text;
 
         // 格式化
-        text = tryToKeepParagraph ?
-                redundantLineBreakProcessor.keepParagraphProcess(text) :
-                redundantLineBreakProcessor.nonKeepParagraphProcess(text);
+        text = tryToFormat ?
+                redundantLineBreakProcessor.format(text) :
+                text;
         // 增量复制
         if(incrementalCopy){
             if(WordType.checkType(text) ==WordType.SPACE){  // 空格系别语言

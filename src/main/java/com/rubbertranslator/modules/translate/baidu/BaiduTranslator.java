@@ -86,7 +86,6 @@ public class BaiduTranslator extends AbstractTranslator {
                 .add("sign", sign)
                 .build();
         String json = OkHttpUtil.syncPostRequest(URL, requestBody);
-        Logger.getLogger(this.getClass().getName()).info(json);
         BaiduTranslationResult deserialize = JsonUtil.deserialize(json, BaiduTranslationResult.class);
         if (deserialize != null && deserialize.getErrorCode() == null) {
             return deserialize;
@@ -104,8 +103,11 @@ public class BaiduTranslator extends AbstractTranslator {
     private String mergeTranslatedText(BaiduTranslationResult result) {
         StringBuilder sb = new StringBuilder();
         for (BaiduTranslationResult.TransResultItem item : result.getTransResult()) {
+            System.out.println(item.getDst());
             sb.append(item.getDst()).append("\n");
         }
+        // 删除最后的"\n"
+        sb.delete(sb.length()-1,sb.length());
         return sb.toString();
     }
 

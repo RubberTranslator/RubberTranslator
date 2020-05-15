@@ -100,6 +100,7 @@ public class YoudaoTranslator extends AbstractTranslator {
         for (String item : result.getTranslation()) {
             sb.append(item).append("\n");
         }
+        sb.delete(sb.length()-1,sb.length());
         return sb.toString();
     }
 

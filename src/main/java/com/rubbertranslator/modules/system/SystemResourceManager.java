@@ -251,7 +251,7 @@ public class SystemResourceManager {
 
     private static boolean preTextProcessInit(SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfig) {
         TextPreProcessor textPreProcessor = new TextPreProcessor();
-        textPreProcessor.setTryToKeepParagraph(preProcessConfig.isTryKeepParagraphFormat());
+        textPreProcessor.setTryToFormat(preProcessConfig.isTryToFormat());
         facade.setTextPreProcessor(textPreProcessor);
         return true;
     }

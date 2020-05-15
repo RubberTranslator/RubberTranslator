@@ -240,18 +240,18 @@ public class SystemConfiguration implements Serializable {
          * 前置处理
          */
         public static class TextPreProcessConfig implements Serializable{
-            @SerializedName("keep_paragraph_format")
-            private Boolean tryKeepParagraphFormat;
+            @SerializedName("try_format")
+            private Boolean tryToFormat;
 
             private Boolean incrementalCopy;
 
 
-            public Boolean isTryKeepParagraphFormat() {
-                return tryKeepParagraphFormat;
+            public Boolean isTryToFormat() {
+                return tryToFormat;
             }
 
-            public void setTryKeepParagraphFormat(Boolean tryKeepParagraphFormat) {
-                this.tryKeepParagraphFormat = tryKeepParagraphFormat;
+            public void setTryToFormat(Boolean tryToFormat) {
+                this.tryToFormat = tryToFormat;
             }
 
             public Boolean isIncrementalCopy() {
@@ -265,7 +265,7 @@ public class SystemConfiguration implements Serializable {
             @Override
             public String toString() {
                 return "TextPreProcessConfig{" +
-                        "tryKeepParagraphFormat=" + tryKeepParagraphFormat +
+                        "tryToFormat=" + tryToFormat +
                         ", incrementalCopy=" + incrementalCopy +
                         '}';
             }

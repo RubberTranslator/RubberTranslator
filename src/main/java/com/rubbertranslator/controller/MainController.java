@@ -107,8 +107,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     @FXML   // 自动粘贴
     private RadioMenuItem autoPasteMenu;
 
-    @FXML // 保持段落格式
-    private RadioMenuItem keepParagraphMenu;
+    @FXML // 文本格式化
+    private RadioMenuItem textFormatMenu;
     @FXML // 置顶
     private RadioMenuItem keepTopMenu;
 
@@ -233,8 +233,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 }
                 configuration.getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
             }));
-            keepParagraphMenu.setOnAction((actionEvent ->
-                    SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected())));
+            textFormatMenu.setOnAction((actionEvent ->
+                    SystemResourceManager.getFacade().getTextPreProcessor().setTryToFormat(textFormatMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> {
                 // XXX: UI模块的相关功能，没有静态代理管理，需要手动界面生效功能，然后动态代理自动持久化设置
                 App.setKeepTop(keepTopMenu.isSelected());
@@ -253,7 +253,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             // 自动粘贴
             autoPasteMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
             // 保持段落格式
-            keepParagraphMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isTryKeepParagraphFormat());
+            textFormatMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isTryToFormat());
             // 置顶
             keepTopMenu.setSelected(configuration.getUiConfig().isKeepTop());
 
@@ -263,7 +263,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             SystemResourceManager.getFacade().getTextPreProcessor().setIncrementalCopy(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
             SystemResourceManager.getFacade().getAfterProcessor().setAutoCopy(configuration.getAfterProcessorConfig().isAutoPaste());
             SystemResourceManager.getFacade().getAfterProcessor().setAutoPaste(configuration.getAfterProcessorConfig().isAutoPaste());
-            SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(configuration.getTextProcessConfig().getTextPreProcessConfig().isTryKeepParagraphFormat());
+            SystemResourceManager.getFacade().getTextPreProcessor().setTryToFormat(configuration.getTextProcessConfig().getTextPreProcessConfig().isTryToFormat());
             // 置顶在UI模块，UI模块不在系统资源管理范围内，xxx:考虑重构
             App.setKeepTop(keepTopMenu.isSelected());
         }
@@ -283,7 +283,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             }
             // 监听
             translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-                // TODO: fxml中如何引用枚举？ 这里暂时采用硬编码
                 SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
                 if (newValue == googleTranslator) {
                     translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
@@ -354,7 +353,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     /**
      * 高级设置
-     * TODO 高级设置中用到了dialog，使得controller臃肿度大大提高，但是丢给view做，又过于累赘
      */
 
     private interface ApiInfoChangedListener {

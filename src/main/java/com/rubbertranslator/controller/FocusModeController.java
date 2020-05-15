@@ -59,6 +59,8 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
     @FXML   // 自动粘贴
     private ToggleButton autoPasteMenu;
 
+    @FXML // 文本格式化
+    private ToggleButton textFormatMenu;
 
     @FXML // 监听剪切板
     private ToggleButton clipboardListenerMenu;
@@ -142,6 +144,8 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
         clipboardListenerMenu.setSelected(configurationProxy.getTextInputConfig().isOpenClipboardListener());
         // 拖拽
         dragCopyMenu.setSelected(configurationProxy.getTextInputConfig().isDragCopy());
+        // 文本格式化
+        textFormatMenu.setSelected(configurationProxy.getTextProcessConfig().getTextPreProcessConfig().isTryToFormat());
     }
 
     /**
@@ -161,10 +165,10 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
         copyTranslationBt.setOnAction(this);
         clipboardListenerMenu.setOnAction(this);
         dragCopyMenu.setOnAction(this);
+        textFormatMenu.setOnAction(this);
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue){
-        // TODO: fxml中如何引用枚举？ 这里暂时采用硬编码
         SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
         if (newValue == googleTranslator) {
             translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
@@ -214,7 +218,10 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
                 SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
             }
             SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
-        }else if(source == copyOriginBt){
+        }else if(source == textFormatMenu){
+            SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setTryToFormat(textFormatMenu.isSelected());
+        }
+        else if(source == copyOriginBt){
             copyOriginText();
         }else if(source == copyTranslationBt){
             copyTranslationText();

@@ -11,8 +11,6 @@ import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -59,7 +57,7 @@ public class OCRUtils {
             if (ocrResult == null) result = null;
             else result = ocrResult.getCombinedWords();
         }
-        Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, result);
+//        Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, result);
         return result;
     }
 
@@ -81,7 +79,7 @@ public class OCRUtils {
             if (tokenEntity == null) return null;
 
             cache = tokenEntity.getAccessToken();
-            Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, "OCR Token:" + cache);
+//            Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, "OCR Token:" + cache);
         }
         return cache;
     }
@@ -95,7 +93,7 @@ public class OCRUtils {
                 .add("client_secret", SECRET_KEY)
                 .build();
         result = OkHttpUtil.syncPostRequest(tokenUrl, requestBody);
-        Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, result);
+//        Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, result);
         return result;
     }
 

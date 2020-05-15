@@ -66,7 +66,7 @@
                         <RadioMenuItem fx:id="autoCopyMenu" mnemonicParsing="false" text="自动复制" />
                         <RadioMenuItem fx:id="autoPasteMenu" mnemonicParsing="false" text="自动粘贴" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <RadioMenuItem fx:id="keepParagraphMenu" mnemonicParsing="false" selected="true" text="保持段落格式" />
+                        <RadioMenuItem fx:id="textFormatMenu" mnemonicParsing="false" selected="true" text="文本格式化" />
                         <RadioMenuItem fx:id="keepTopMenu" mnemonicParsing="false" text="置顶" />
                   </items>
                 </Menu>

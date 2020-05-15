@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * date 2020/5/7 12:48
  */
 public class ProcessFilter implements ActiveWindowListener {
-    // 当前进程名 XXX:是否违反单一职责？
+    // 当前进程名
     private String currentProcess = "";
     // 是否打开过滤器
     private boolean open = true;
