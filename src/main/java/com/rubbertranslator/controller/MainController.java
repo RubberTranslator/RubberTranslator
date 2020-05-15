@@ -236,8 +236,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             keepParagraphMenu.setOnAction((actionEvent ->
                     SystemResourceManager.getFacade().getTextPreProcessor().setTryToKeepParagraph(keepParagraphMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> {
+                // XXX: UI模块的相关功能，没有静态代理管理，需要手动界面生效功能，然后动态代理自动持久化设置
                 App.setKeepTop(keepTopMenu.isSelected());
-                // XXX: UI模块的相关功能，需要手动实现保存
                 configuration.getUiConfig().setKeepTop(keepTopMenu.isSelected());
             }));
 

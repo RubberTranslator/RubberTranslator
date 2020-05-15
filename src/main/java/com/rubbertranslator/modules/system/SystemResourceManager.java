@@ -1,5 +1,4 @@
 package com.rubbertranslator.modules.system;
-
 import com.google.gson.Gson;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
@@ -17,13 +16,14 @@ import com.rubbertranslator.modules.translate.TranslatorFactory;
 import com.rubbertranslator.modules.translate.TranslatorType;
 import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
+import com.rubbertranslator.utils.FileUtil;
 import net.sf.cglib.proxy.Enhancer;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 /**
@@ -33,12 +33,15 @@ import java.util.logging.Logger;
  * 系统资源管理
  */
 public class SystemResourceManager {
-
+    // 新配置文件路径
     public static String configJsonPath = "./configuration.json";
     private static ClipBoardListenerThread clipBoardListenerThread;
     private static DragCopyThread dragCopyThread;
     private static WindowsPlatformActiveWindowListenerThread activeWindowListenerThread;
     private static TranslatorFacade facade;
+
+    // cache线程池，还是single线程池好一点？
+    private static final ExecutorService executor = Executors.newCachedThreadPool();
 
     // 所有用户得操作，都应该通过configurationProxy来操作
     private static SystemConfiguration configurationProxy;
@@ -46,8 +49,13 @@ public class SystemResourceManager {
 
     // 只能通过静态方法调用此类
     private SystemResourceManager() {
+
     }
 
+
+    public static ExecutorService getExecutor() {
+        return executor;
+    }
 
     public static ClipBoardListenerThread getClipBoardListenerThread() {
         assert clipBoardListenerThread != null : "请先执行SystemResourceManager.init";
@@ -120,11 +128,11 @@ public class SystemResourceManager {
         try {
             if (!file.exists()) {
                 InputStream resourceAsStream = SystemResourceManager.class.getResourceAsStream("/config/default_configuration.json");
-                FileUtils.copyInputStreamToFile(resourceAsStream,file);
+                FileUtil.copyInputStreamToFile(resourceAsStream,file);
             }
-            configJson = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+            configJson = FileUtil.readFileToString(file, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(SystemResourceManager.class.getName()).severe(e.getMessage());
             return null;
         }
         // json --> object
@@ -132,11 +140,7 @@ public class SystemResourceManager {
         // 原始配置记录
         SystemConfiguration configuration = gson.fromJson(configJson, SystemConfiguration.class);
         Logger.getLogger(SystemResourceManager.class.getName()).info("加载配置"+configJson);
-        if (configJson == null) {
-            return null;
-        } else {
-            return wrapProxy(configuration);
-        }
+        return wrapProxy(configuration);
     }
 
     /**
@@ -145,7 +149,7 @@ public class SystemResourceManager {
      *  两层代理：
      *  1. 静态代理： 设置更改后，通知后续处理模块，立马更改
      *  2. 动态代理： 设置更改后，持久化所有设置
-     * @param configuration
+     * @param configuration 系统配置
      */
     private static SystemConfiguration wrapProxy(SystemConfiguration configuration) {
         // 文本输入配置

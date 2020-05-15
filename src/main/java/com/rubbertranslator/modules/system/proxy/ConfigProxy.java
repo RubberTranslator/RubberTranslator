@@ -2,10 +2,10 @@ package com.rubbertranslator.modules.system.proxy;
 
 import com.rubbertranslator.modules.system.SystemConfiguration;
 import com.rubbertranslator.modules.system.SystemResourceManager;
+import com.rubbertranslator.utils.FileUtil;
 import com.rubbertranslator.utils.JsonUtil;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -31,9 +31,14 @@ public class ConfigProxy implements MethodInterceptor {
             Object ret = method.invoke(target, args);
             SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
             String json = JsonUtil.serialize(extractOriginConfig(configurationProxy));
-            // XXX: 考虑加载单线程池来写
-//            Logger.getLogger(this.getClass().getName()).info("setting changed:"+json);
-            FileUtils.writeStringToFile(new File(SystemResourceManager.configJsonPath), json, StandardCharsets.UTF_8);
+            // 使用后台线程来写入
+            SystemResourceManager.getExecutor().execute(()->{
+                try {
+                    FileUtil.writeStringToFile(new File(SystemResourceManager.configJsonPath), json, StandardCharsets.UTF_8);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
             return ret;
         }
         return method.invoke(target, args);
