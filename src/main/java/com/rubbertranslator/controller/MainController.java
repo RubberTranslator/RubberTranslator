@@ -290,6 +290,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     translatorConfig.setCurrentTranslator(TranslatorType.BAIDU);
                 } else if (newValue == youdaoTranslator) {
                     translatorConfig.setCurrentTranslator(TranslatorType.YOUDAO);
+                }else{
+                    oldValue.setSelected(true);
                 }
             });
         }

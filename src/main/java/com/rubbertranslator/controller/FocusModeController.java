@@ -176,6 +176,9 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
             translatorConfig.setCurrentTranslator(TranslatorType.BAIDU);
         } else if (newValue == youdaoTranslator) {
             translatorConfig.setCurrentTranslator(TranslatorType.YOUDAO);
+        }else{
+            // 走到这个分支，说明用户点击了当前已经选中的按钮
+            oldValue.setSelected(true);
         }
     }
 
