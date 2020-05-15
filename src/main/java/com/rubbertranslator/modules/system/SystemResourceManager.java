@@ -108,6 +108,7 @@ public class SystemResourceManager {
 
     /**
      * 释放资源
+     * xxx:考虑加个CountDownLatch确定线程都结束
      */
     public static void destroy() {
         textInputDestroy();

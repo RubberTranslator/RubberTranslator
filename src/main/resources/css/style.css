@@ -1,13 +1,12 @@
 #main {
-
+    /*-fx-font-size: 10pt;*/
 }
 
 #focus{
-
+    /*-fx-font-size: 10pt;*/
 }
 
 .text-area .content{
-    -fx-font-size: 15;
     -fx-background-color: white;
 }
 
