@@ -36,7 +36,6 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread {
                 lastChange = change;
                 lastProcess = currentProcess;
                 if (activeWindowListener != null) {
-                    Logger.getLogger(this.getClass().getName()).info(" lastProcess: " + lastProcess + " time: " + time + " seconds");
                     activeWindowListener.onActiveWindowChanged(lastProcess);
                 }
             }
@@ -47,7 +46,7 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread {
                 Logger.getLogger(this.getClass().getName()).warning(ex.getMessage());
             }
         }
-        Logger.getLogger(this.getClass().getName()).info("ActiveWindowListenerThread结束");
+        Logger.getLogger(this.getClass().getName()).info("ActiveWindowListenerThread exit");
     }
 
     public void exit() {

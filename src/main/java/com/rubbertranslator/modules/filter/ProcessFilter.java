@@ -62,7 +62,6 @@ public class ProcessFilter implements ActiveWindowListener {
      */
     public boolean check() {
         if(!open) return false; // 没打开，不需要过滤
-        Logger.getLogger(this.getClass().getName()).info("current process "+currentProcess);
         return filterList.contains(currentProcess);
     }
 

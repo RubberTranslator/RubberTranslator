@@ -182,7 +182,7 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
             try {
                 App.setRoot(ControllerConstant.MAIN_CONTROLLER_FXML);
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"切换主界面失败",e);
             }
         }else if(source == clearBt){
             updateTextArea("");
@@ -257,8 +257,7 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
                 onTextInput(text);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"ocr失败",e);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.rubbertranslator.modules.textinput.mousecopy.copymethods;
 
 import org.jnativehook.mouse.NativeMouseEvent;
+
 import java.awt.*;
 
 /**

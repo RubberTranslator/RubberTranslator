@@ -8,7 +8,11 @@ import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
 import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
 
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -141,12 +145,11 @@ public class TranslatorFacade {
                 try {
                     String result = get();
                     String processedOrigin = callable.getProcessedOrigin();
-                    //XXX: 失败回调，硬编码为中文
                     if(result != null && facadeListener != null){
                         facadeListener.onComplete(processedOrigin, result);
                     }
                 } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,e.getLocalizedMessage(),e);
                 }
             }
         }

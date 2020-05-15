@@ -90,7 +90,7 @@ public class ClipBoardListenerThread extends Thread {
                 }
             }
         }
-        Logger.getLogger(this.getClass().getName()).info("ClipBoard线程结束");
+        Logger.getLogger(this.getClass().getName()).info("ClipBoard exit");
     }
 
     public void setRun(boolean run){

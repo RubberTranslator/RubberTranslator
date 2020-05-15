@@ -1,4 +1,5 @@
 package com.rubbertranslator.modules.system;
+
 import com.google.gson.Gson;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
@@ -18,6 +19,7 @@ import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.utils.FileUtil;
 import net.sf.cglib.proxy.Enhancer;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

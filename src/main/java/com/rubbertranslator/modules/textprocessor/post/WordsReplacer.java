@@ -2,7 +2,10 @@ package com.rubbertranslator.modules.textprocessor.post;
 
 import com.rubbertranslator.modules.textprocessor.WordType;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**

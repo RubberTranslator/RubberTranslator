@@ -2,7 +2,6 @@ package com.rubbertranslator.modules.translate.youdao;
 
 import com.rubbertranslator.modules.translate.AbstractTranslator;
 import com.rubbertranslator.modules.translate.Language;
-import com.rubbertranslator.test.Configuration;
 import com.rubbertranslator.utils.DigestUtil;
 import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
@@ -54,8 +53,8 @@ public class YoudaoTranslator extends AbstractTranslator {
                 translatedText = mergeTranslatedText(translationResult);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "有道翻译失败", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         Logger.getLogger(this.getClass().getName()).info(translatedText);
         return translatedText;

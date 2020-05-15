@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * MD5编码相关的类
@@ -66,7 +68,7 @@ public class DigestUtil {
             return result;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(DigestUtil.class.getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
 
         return null;
@@ -83,7 +85,7 @@ public class DigestUtil {
             in.close();
             return byteArrayToHex(messagedigest.digest());
         } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(DigestUtil.class.getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return null;
     }

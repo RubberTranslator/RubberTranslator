@@ -20,7 +20,7 @@ public class CopyRobot {
             robot = new Robot();
             clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         } catch (AWTException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
     }
 

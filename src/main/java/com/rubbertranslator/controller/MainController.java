@@ -194,6 +194,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
         public void init() {
             initBasicSettingMenu(SystemResourceManager.getConfigurationProxy());
+            Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化基础设置成功");
         }
 
         /**
@@ -205,7 +206,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             initTranslatorType(configuration.getTranslatorConfig().getCurrentTranslator());
             initSrcDestLanguage(configuration.getTranslatorConfig().getSourceLanguage(), configuration.getTranslatorConfig().getDestLanguage());
             initBasicSettingOthers(configuration);
-            Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化功能开关成功");
         }
 
         private void initBasicSettingOthers(final SystemConfiguration configuration) {
@@ -410,7 +410,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 try {
                     Desktop.getDesktop().browse(new URI(titleClickUrl));
                 } catch (IOException | URISyntaxException e) {
-                    e.printStackTrace();
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"错误url:"+titleClickUrl,e);
                 }
             }));
             Label apiKeyLabel = new Label("API_KEY");
@@ -457,6 +457,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private class AdvancedSettingMenu {
         public void init() {
             initAdvancedSettingMenu(SystemResourceManager.getConfigurationProxy());
+            Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化高级设置成功");
         }
 
         private void initAdvancedSettingMenu(SystemConfiguration configuration) {
@@ -541,7 +542,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"过滤器页面错误",e);
                 }
             }));
         }
@@ -555,7 +556,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"词组替换页面打开失败",e);
                 }
             }));
         }
@@ -599,7 +600,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator"));
             } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"项目主页打开失败",e);
             }
         });
         // wiki
@@ -607,7 +608,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/wiki"));
             } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"使用帮助打开失败",e);
             }
         });
         // issue
@@ -615,7 +616,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/issues"));
             } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"issues打开失败",e);
             }
         }));
     }
@@ -631,8 +632,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         try {
             App.setRoot(ControllerConstant.FOCUS_CONTROLLER_FXML);
         } catch (IOException e) {
-            e.printStackTrace();
-            Logger.getLogger(MainController.class.getName()).warning(e.getMessage());
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"专注模式打开失败",e);
         }
     }
 
@@ -694,7 +694,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     @Override
     public void onTextInput(String text) {
-        Logger.getLogger(this.getClass().getName()).info("Controller执行翻译");
         processTranslate(text);
     }
 
@@ -706,8 +705,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 onTextInput(text);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"ocr识别错误",e);
         }
     }
 

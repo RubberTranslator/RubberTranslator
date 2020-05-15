@@ -45,15 +45,13 @@ public class GoogleTranslator extends AbstractTranslator {
         String translatedText = null;
         try {
             String html = doTranslate(langMap.get(source), langMap.get(dest), text);
-            Logger.getLogger(this.getClass().getName()).info(html);
             if (html != null) {
                 translatedText = extractTranslation(html);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Google翻译失败", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
-        Logger.getLogger(this.getClass().getName()).info("Google：" + translatedText);
         return translatedText;
     }
 

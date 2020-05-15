@@ -7,6 +7,7 @@ import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,10 +62,9 @@ public class BaiduTranslator extends AbstractTranslator {
                 translatedText = mergeTranslatedText(baiduTranslateResult);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "百度翻译失败", e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
-        Logger.getLogger(this.getClass().getName()).info("Baidu：" + translatedText);
         return translatedText;
     }
 

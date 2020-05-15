@@ -47,7 +47,6 @@ public class App extends Application {
     }
 
     public static void setKeepTop(boolean keepTop){
-        Logger.getLogger(App.class.getName()).info("App stage keep top:"+keepTop);
         appStage.setAlwaysOnTop(keepTop);
     }
 

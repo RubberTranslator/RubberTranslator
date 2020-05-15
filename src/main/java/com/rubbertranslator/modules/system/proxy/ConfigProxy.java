@@ -7,10 +7,13 @@ import com.rubbertranslator.utils.JsonUtil;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -36,7 +39,7 @@ public class ConfigProxy implements MethodInterceptor {
                 try {
                     FileUtil.writeStringToFile(new File(SystemResourceManager.configJsonPath), json, StandardCharsets.UTF_8);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"更新设置时出错",e);
                 }
             });
             return ret;
@@ -107,40 +110,10 @@ public class ConfigProxy implements MethodInterceptor {
             newConfiguration.setTextProcessConfig(textProcessConfig);
 
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,e.getMessage(),e);
         }
 
         return newConfiguration;
-    }
-
-    private <T> T copyObject(T t) {
-        ByteArrayOutputStream bos = null;
-        ObjectOutputStream oos = null;
-        ByteArrayInputStream bis = null;
-        ObjectInputStream ois = null;
-        Object obj = null;
-        try {
-            bos = new ByteArrayOutputStream();
-            oos = new ObjectOutputStream(bos);
-            oos.writeObject(t);
-            // bos.toByteArray()一定要在oos.write之后
-            bis = new ByteArrayInputStream(bos.toByteArray());
-            ois = new ObjectInputStream(bis);
-            obj = ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                ois.close();
-                bis.close();
-
-                oos.close();
-                bos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return (T) obj;
     }
 
 

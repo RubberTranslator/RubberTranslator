@@ -19,7 +19,6 @@ public class LoggerManager {
                     .getResourceAsStream("/log/log.properties");
             LogManager.getLogManager().readConfiguration(input);
         } catch (IOException e) {
-            e.printStackTrace();
             Logger.getLogger(LoggerManager.class.getName()).log(Level.SEVERE, "日志属性加载出错", e);
         }
     }
