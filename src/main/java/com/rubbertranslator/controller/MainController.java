@@ -490,6 +490,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     fileChooser.getExtensionFilters().add(
                             new FileChooser.ExtensionFilter("css文件", "*.css"));
                     File newFile = fileChooser.showOpenDialog(rootPane.getScene().getWindow());
+                    if(newFile == null) return;
                     // 应用
                     rootPane.getStylesheets().setAll(newFile.toURI().toURL().toString());
                     // 应用持久化
