@@ -29,3 +29,9 @@ test
 
 #
 *.json
+
+# installer
+*.exe
+*.msi
+*.deb
+*.rpm

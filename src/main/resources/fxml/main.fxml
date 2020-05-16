@@ -19,7 +19,7 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu fx:id="featureSwitcher" mnemonicParsing="false" text="基本设置">
+                <Menu fx:id="featureSwitcher" mnemonicParsing="false" text="基础设置">
                   <items>
                         <Menu mnemonicParsing="false" text="翻译引擎">
                           <items>

@@ -38,6 +38,7 @@ public class ConfigProxy implements MethodInterceptor {
             SystemResourceManager.getExecutor().execute(()->{
                 try {
                     FileUtil.writeStringToFile(new File(SystemResourceManager.configJsonPath), json, StandardCharsets.UTF_8);
+                    Logger.getLogger(this.getClass().getName()).info("更新设置:"+json);
                 } catch (IOException e) {
                     Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"更新设置时出错",e);
                 }

@@ -103,7 +103,6 @@ public class BaiduTranslator extends AbstractTranslator {
     private String mergeTranslatedText(BaiduTranslationResult result) {
         StringBuilder sb = new StringBuilder();
         for (BaiduTranslationResult.TransResultItem item : result.getTransResult()) {
-            System.out.println(item.getDst());
             sb.append(item.getDst()).append("\n");
         }
         // 删除最后的"\n"
