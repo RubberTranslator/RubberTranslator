@@ -34,7 +34,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 ![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/S24b0bnOaP.gif)
 
-默认支持，谷歌翻译，百度翻译和有道翻译。（百度和有道翻译需要配置API信息才可以使用，详情可参看：）
+默认支持，谷歌翻译，百度翻译和有道翻译。（百度和有道翻译需要配置API信息才可以使用，详情可参看：[ocr,百度，有道配置](https://github.com/ravenxrz/RubberTranslator/wiki/OCR%EF%BC%8C%E7%99%BE%E5%BA%A6%E5%92%8C%E6%9C%89%E9%81%93%E9%85%8D%E7%BD%AE)
 
 ### 1.3 文本格式化
 
@@ -75,9 +75,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 自动复制用于自动复制译文，RubberTranslator在翻译完一段文本后，会自动将文本放入到系统剪切板中，此时用户通过”粘贴“功能即可在任何地方输入译文了。演示：
 
-![](https://cdn.jsdeliver.net/gh/ravenxrz/PicBed/img/iZxFZS5tV4.gif)
-
-
+![](https://pic.downk.cc/item/5ebf5073c2a9a83be588af19.gif)
 
 ### 1.7 自动粘贴
 
@@ -97,7 +95,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 ![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/vI26MTVGa3.gif)
 
-ocr功能需要配置百度ocr api key。
+ocr功能需要配置百度ocr api key。[ocr,百度，有道配置](https://github.com/ravenxrz/RubberTranslator/wiki/OCR%EF%BC%8C%E7%99%BE%E5%BA%A6%E5%92%8C%E6%9C%89%E9%81%93%E9%85%8D%E7%BD%AE)
 
 ### 1.10 历史记录
 
@@ -168,9 +166,9 @@ RubberTranslator支持自定义css样式。 如，设置护眼模式，更改字
 
 https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html
 
-### 5. 百度和有道APi设置
+### 5. OCR 百度和有道APi设置
 
-**这个会单独出一篇文章进行说明，要使用百度翻译和有道翻译，必须设置此项。**
+[ocr,百度，有道配置](https://github.com/ravenxrz/RubberTranslator/wiki/OCR%EF%BC%8C%E7%99%BE%E5%BA%A6%E5%92%8C%E6%9C%89%E9%81%93%E9%85%8D%E7%BD%AE)
 
 ## 3. 帮助
 
@@ -194,7 +192,7 @@ https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html
 
 ### 4. OCR、百度、有道翻译引擎无效？
 
-这三个功能需要用户自行配置App key & secret key。请参考：
+这三个功能需要用户自行配置App key & secret key。请参考：[ocr,百度，有道配置](https://github.com/ravenxrz/RubberTranslator/wiki/OCR%EF%BC%8C%E7%99%BE%E5%BA%A6%E5%92%8C%E6%9C%89%E9%81%93%E9%85%8D%E7%BD%AE)
 
 ### 5. 有时候翻译会失效？
 
