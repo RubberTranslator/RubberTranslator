@@ -19,16 +19,14 @@ import java.util.logging.Logger;
  */
 public class BaiduTranslator extends AbstractTranslator {
 
-    private String APP_KEY;
-    private String SECRET_KEY;
-
-    public void setAPP_KEY(String APP_KEY) {
-        this.APP_KEY = APP_KEY;
+    @Override
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 
-
-    public void setSECRET_KEY(String SECRET_KEY) {
-        this.SECRET_KEY = SECRET_KEY;
+    @Override
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 
     // https://gss0.bdstatic.com/70cFfyinKgQIm2_p8IuM_a/daf/pic/item/91ef76c6a7efce1b1fde01aca051f3deb58f65db.jpg
@@ -69,19 +67,19 @@ public class BaiduTranslator extends AbstractTranslator {
     }
 
     private BaiduTranslationResult doTranslate(String source, String dest, String text) throws IOException {
-        if(APP_KEY == null || SECRET_KEY == null) return null;
+        if(appKey == null || secretKey == null) return null;
         String URL = "https://fanyi-api.baidu.com/api/trans/vip/translate";
         // 随机数
         String salt = String.valueOf(System.currentTimeMillis());
         // 加密前的原文
-        String src = APP_KEY + text + salt + SECRET_KEY;
+        String src = appKey + text + salt + secretKey;
         String sign = DigestUtil.md5(src);
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("q", text)
                 .add("from", source)
                 .add("to", dest)
-                .add("appid", APP_KEY)
+                .add("appid", appKey)
                 .add("salt", salt)
                 .add("sign", sign)
                 .build();

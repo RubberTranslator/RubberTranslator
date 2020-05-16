@@ -506,30 +506,30 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     "https://ai.baidu.com/tech/ocr",
                     new ApiInfo(configuration.getBaiduOcrApiKey(), configuration.getBaiduOcrSecretKey()),   // 回显所需信息
                     (newValue) -> {   // 用户确定后的回调
-                        configuration.setBaiduOcrApiKey(newValue.getApiKey());
-                        configuration.setBaiduOcrSecretKey(newValue.getSecretKey());
+                        configuration.setBaiduOcrApiKey(newValue.getApiKey().trim());
+                        configuration.setBaiduOcrSecretKey(newValue.getSecretKey().trim());
                     })
                     .showDialog()));
         }
 
         /**
-         * 百度和有道的api secret key menu
+         * ocr 百度和有道的api secret key menu
          */
         private void initApiMenu(SystemConfiguration.TranslatorConfig configuration) {
             baiduApiMenu.setOnAction((actionEvent -> new ApiDialog("百度翻译",  // 标题
                     "http://api.fanyi.baidu.com/",
                     new ApiInfo(configuration.getBaiduTranslatorApiKey(), configuration.getYouDaoTranslatorSecretKey()),   // 回显所需信息
                     (newValue) -> {   // 用户确定后的回调
-                        configuration.setBaiduTranslatorApiKey(newValue.getApiKey());
-                        configuration.setBaiduTranslatorSecretKey(newValue.getSecretKey());
+                        configuration.setBaiduTranslatorApiKey(newValue.getApiKey().trim());
+                        configuration.setBaiduTranslatorSecretKey(newValue.getSecretKey().trim());
                     })
                     .showDialog()));
             youdaoApiMenu.setOnAction((actionEvent -> new ApiDialog("有道翻译", // 标题
                     "https://ai.youdao.com/?keyfrom=old-openapi",
                     new ApiInfo(configuration.getYouDaoTranslatorApiKey(), configuration.getYouDaoTranslatorSecretKey()),   // 回显所需信息
                     (newValue) -> {   // 用户确定后的回调
-                        configuration.setYouDaoTranslatorApiKey(newValue.getApiKey());
-                        configuration.setYouDaoTranslatorSecretKey(newValue.getSecretKey());
+                        configuration.setYouDaoTranslatorApiKey(newValue.getApiKey().trim());
+                        configuration.setYouDaoTranslatorSecretKey(newValue.getSecretKey().trim());
                     })
                     .showDialog()));
         }

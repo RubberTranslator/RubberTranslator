@@ -11,6 +11,11 @@ import java.util.Map;
  */
 public abstract class AbstractTranslator {
 
+
+    protected String appKey;
+
+    protected String secretKey;
+
     protected Map<Language, String> langMap = new HashMap<>();
 
     public AbstractTranslator() {
@@ -18,6 +23,14 @@ public abstract class AbstractTranslator {
     }
 
     public abstract void addLanguageMap();
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
 
     /**
      * 翻译

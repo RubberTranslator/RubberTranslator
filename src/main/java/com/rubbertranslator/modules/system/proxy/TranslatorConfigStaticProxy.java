@@ -79,20 +79,24 @@ public class TranslatorConfigStaticProxy extends SystemConfiguration.TranslatorC
     @Override
     public void setBaiduTranslatorApiKey(String baiduTranslatorApiKey) {
         translatorConfig.setBaiduTranslatorApiKey(baiduTranslatorApiKey);
+        SystemResourceManager.getFacade().getTranslatorFactory().getTranslator(TranslatorType.BAIDU).setAppKey(baiduTranslatorApiKey);
     }
 
     @Override
     public void setBaiduTranslatorSecretKey(String baiduTranslatorSecretKey) {
         translatorConfig.setBaiduTranslatorSecretKey(baiduTranslatorSecretKey);
+        SystemResourceManager.getFacade().getTranslatorFactory().getTranslator(TranslatorType.BAIDU).setSecretKey(baiduTranslatorSecretKey);
     }
 
     @Override
     public void setYouDaoTranslatorApiKey(String youDaoTranslatorApiKey) {
         translatorConfig.setYouDaoTranslatorApiKey(youDaoTranslatorApiKey);
+        SystemResourceManager.getFacade().getTranslatorFactory().getTranslator(TranslatorType.YOUDAO).setAppKey(youDaoTranslatorApiKey);
     }
 
     @Override
     public void setYouDaoTranslatorSecretKey(String youDaoTranslatorSecretKey) {
         translatorConfig.setYouDaoTranslatorSecretKey(youDaoTranslatorSecretKey);
+        SystemResourceManager.getFacade().getTranslatorFactory().getTranslator(TranslatorType.YOUDAO).setSecretKey(youDaoTranslatorSecretKey);
     }
 }

@@ -57,6 +57,16 @@ public class TranslatorFactory {
     }
 
     /**
+     * 取回指定type的translator
+     * @param type 翻译类型
+     * @return translator
+     *          null 如果没有该translator
+     */
+    public AbstractTranslator getTranslator(TranslatorType type){
+        return translatorEngineMap.get(type);
+    }
+
+    /**
      * 用户没有主动添加翻译引擎，则采用默认设置
      * @param type
      */

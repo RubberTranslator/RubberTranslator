@@ -272,14 +272,14 @@ public class SystemResourceManager {
         translatorFactory.setDestLanguage(configuration.getDestLanguage());
         if (configuration.getBaiduTranslatorApiKey() != null && configuration.getBaiduTranslatorSecretKey() != null) {
             BaiduTranslator baiduTranslator = new BaiduTranslator();
-            baiduTranslator.setAPP_KEY(configuration.getBaiduTranslatorApiKey());
-            baiduTranslator.setSECRET_KEY(configuration.getBaiduTranslatorSecretKey());
+            baiduTranslator.setAppKey(configuration.getBaiduTranslatorApiKey());
+            baiduTranslator.setSecretKey(configuration.getBaiduTranslatorSecretKey());
             translatorFactory.addTranslator(TranslatorType.BAIDU, baiduTranslator);
         }
         if (configuration.getYouDaoTranslatorApiKey() != null && configuration.getYouDaoTranslatorSecretKey() != null) {
             YoudaoTranslator youdaoTranslator = new YoudaoTranslator();
-            youdaoTranslator.setAPP_KEY(configuration.getYouDaoTranslatorApiKey());
-            youdaoTranslator.setSECRET_KEY(configuration.getYouDaoTranslatorSecretKey());
+            youdaoTranslator.setAppKey(configuration.getYouDaoTranslatorApiKey());
+            youdaoTranslator.setSecretKey(configuration.getYouDaoTranslatorSecretKey());
             translatorFactory.addTranslator(TranslatorType.YOUDAO, youdaoTranslator);
         }
         facade.setTranslatorFactory(translatorFactory);

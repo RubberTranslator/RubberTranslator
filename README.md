@@ -200,5 +200,6 @@ https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html
 
 连续且多次使用同一个翻译引擎时，可能ip会被ban，当遇到无法翻译的时候，请切换致另一个翻译引擎。
 
+## 开源许可
 
-
+GPL v3.0
