@@ -29,6 +29,7 @@ AE%B5)
   * [4\. OCR、百度、有道翻译引擎无效？](#4-ocr%E7%99%BE%E5%BA%A6%E6%9C%89%E9%81%93%E7%BF%BB%E8%AF%91%E5%BC%95%E6%93%8E%E6%97%A0%E6%95%88)
   * [5\. 有时候翻译会失效？](#5-%E6%9C%89%E6%97%B6%E5%80%99%E7%BF%BB%E8%AF%91%E4%BC%9A%E5%A4%B1%E6%95%88)
 
+
 ## 0. 前言
 
 RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件后，基于javafx开发的一款文献辅助翻译软件。总体功能思想来自CopyTranslator，在此基础之上添加了自己觉得实用的功能。
@@ -49,11 +50,11 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 作为翻译软件最基础的功能，RubberTranslator也是支持手动翻译的，如：
 
-![](https://pic.downk.cc/item/5ebf4cdec2a9a83be5840fc7.gif)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/oRsHcgsqvQ.gif)
 
 ### 1.2 翻译引擎选择&源/目标语言设置
 
-![](https://pic.downk.cc/item/5ebf4ceec2a9a83be5842b41.gif)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/S24b0bnOaP.gif)
 
 默认支持，谷歌翻译，百度翻译和有道翻译。（百度和有道翻译需要配置API信息才可以使用，详情可参看：）
 
@@ -61,11 +62,11 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 文本格式化是用来做什么的呢？我们平常在阅读pdf文档的时候，经常有这样的一个问题，从pdf中拷贝的文本粘贴到其它地方会多出很多换行，如：
 
-![image-20200515203036559](https://pic.downk.cc/item/5ebf4cf9c2a9a83be5843f2f.png)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20200515203036559.png)
 
 可以看到，因为多出很多空行，翻译会变得非常的不准确，一般来说，我们会手动替换掉所有的换行符，RubberTranslator默认开启”文本格式化“功能，可以用来解决问题，在替换掉换行符的同时，**尽量保持分段格式**，功能展示：
 
-![](https://pic.downk.cc/item/5ebf4d02c2a9a83be58450e6.gif)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/HpgwWgEwNd.gif)
 
 *注意：谷歌翻译引擎不支持保持分段格式。*
 
@@ -73,7 +74,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 开启监听剪切板功能，只要PC剪贴板中有新文本或图片时，RubberTranslator会自动翻译，也就是说只要有”复制“(Ctrl+C或鼠标复制）动作，RubberTranslator就会复制。如：
 
-![](https://pic.downk.cc/item/5ebf4d0fc2a9a83be5846801.gif)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/iasVDY9BIQ.gif)
 
 ### 1.5 拖拽复制
 
@@ -90,15 +91,13 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 拖拽：
 
-![](https://pic.downk.cc/item/5ebf4d60c2a9a83be584dc3f.gif)
-
-
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/94VVcyPHtK.gif)
 
 ### 1.6 自动复制
 
 自动复制用于自动复制译文，RubberTranslator在翻译完一段文本后，会自动将文本放入到系统剪切板中，此时用户通过”粘贴“功能即可在任何地方输入译文了。演示：
 
-![](https://pic.downk.cc/item/5ebf5073c2a9a83be588af19.gif)
+![](https://cdn.jsdeliver.net/gh/ravenxrz/PicBed/img/iZxFZS5tV4.gif)
 
 
 
@@ -106,19 +105,19 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 自动粘贴用于就地替换原文，如下：
 
-![](https://pic.downk.cc/item/5ebf50f6c2a9a83be5893148.gif)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/mYHGWcR1eQ.gif)
 
 ### 1.8 增量复制
 
 增量复制用于解决阅读过程中，”文本翻页“的情况，如：
 
-![](https://pic.downk.cc/item/5ebf5100c2a9a83be5893a4d.gif)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/AncXUT56Pq.gif)
 
 ### 1.9 OCR翻译
 
 对于一些无法复制的pdf文本，可以通过ocr进行翻译，如：
 
-![](https://pic.downk.cc/item/5ebf510cc2a9a83be5894878.gif)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/vI26MTVGa3.gif)
 
 ocr功能需要配置百度ocr api key。
 
@@ -130,7 +129,7 @@ RubberTranslation也支持历史记录，默认支持10条内的记录，可在�
 
 专注模式只保留译文，整体布局更为紧凑，适合在阅读论文时使用。
 
-![image-20200515211515270](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20200515211515270.png)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20200515211515270.png)
 
 ## 2. 高级设置
 
@@ -142,7 +141,7 @@ RubberTranslation也支持历史记录，默认支持10条内的记录，可在�
 
 操作：高级设置->过滤器,点击添加，找到浏览器的exe文件(快捷方式也可以）即可：
 
-![image-20200515211034440](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20200515211034440.png)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20200515211034440.png)
 
 ### 2. 翻译文本替换
 
@@ -150,11 +149,11 @@ RubberTranslation也支持历史记录，默认支持10条内的记录，可在�
 
 先看，没有添加词组前：
 
-![](https://pic.downk.cc/item/5ebf5120c2a9a83be5895a99.gif)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/Gu9OkaJ3Q8.gif)
 
 再看添加词组后：
 
-![](https://pic.downk.cc/item/5ebe9775c2a9a83be5dbc6da.gif)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/MD3Q6XYcnu.gif)
 
 ### 3. 历史记录数量设置
 
@@ -185,7 +184,7 @@ RubberTranslator支持自定义css样式。 如，设置护眼模式，更改字
 
 效果：
 
-![image-20200515212539191](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20200515212539191.png)
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20200515212539191.png)
 
 更多可设置效果，请参考
 
@@ -193,7 +192,7 @@ https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html
 
 ### 5. 百度和有道APi设置
 
-参考这里。
+**这个会单独出一篇文章进行说明，要使用百度翻译和有道翻译，必须设置此项。**
 
 ## 3. 帮助
 
