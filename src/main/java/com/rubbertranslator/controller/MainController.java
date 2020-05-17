@@ -518,7 +518,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         private void initApiMenu(SystemConfiguration.TranslatorConfig configuration) {
             baiduApiMenu.setOnAction((actionEvent -> new ApiDialog("百度翻译",  // 标题
                     "http://api.fanyi.baidu.com/",
-                    new ApiInfo(configuration.getBaiduTranslatorApiKey(), configuration.getYouDaoTranslatorSecretKey()),   // 回显所需信息
+                    new ApiInfo(configuration.getBaiduTranslatorApiKey(), configuration.getBaiduTranslatorSecretKey()),   // 回显所需信息
                     (newValue) -> {   // 用户确定后的回调
                         configuration.setBaiduTranslatorApiKey(newValue.getApiKey().trim());
                         configuration.setBaiduTranslatorSecretKey(newValue.getSecretKey().trim());
