@@ -39,11 +39,8 @@ public class TranslatorFacade {
     // facade回调
     private TranslatorFacadeListener facadeListener;
 
-    // lastOrigin 保存最后格式化后的原文
-    private String lastOrigin = "";
     // lastTranslation 保存最后的译文
     private String lastTranslation = "";
-
 
 
     public TranslatorFacade() {
@@ -60,6 +57,7 @@ public class TranslatorFacade {
      * 后置所有模块清理
      */
     public void clear() {
+        // 前置模块 --增量复制功能 buffer清理
         this.textPreProcessor.cleanBuffer();
     }
 
@@ -117,7 +115,9 @@ public class TranslatorFacade {
      * 失败 null
      */
     public void process(String text) {
-        if ((lastOrigin != null && lastOrigin.equals(text)) ||
+        if (/*(lastOrigin != null && lastOrigin.equals(text)) ||*/
+                // 当前输入text是否和上一次的译文相同
+                //此condition用于排除“自动复制”所带来的二次翻译问题，但是对用户点击的二次翻译“原文”开放
                 (lastTranslation != null && lastTranslation.equals(text))) {
             return;
         }
@@ -177,8 +177,6 @@ public class TranslatorFacade {
         public String call() {
             if (origin == null || "".equals(origin)) return null;
 
-
-
             String translation = null;
             try {
                 // 过滤
@@ -186,7 +184,8 @@ public class TranslatorFacade {
                 // text保存处理后的文本
                 processedOrigin = textPreProcessor.process(origin);
                 // 重新初始化lastOrigin
-                lastOrigin = processedOrigin;
+                // lastOrigin 保存最后格式化后的原文
+                // lastOrigin = processedOrigin;
                 translation = translatorFactory.translate(processedOrigin);
                 // 后置处理
                 translation = textPostProcessor.process(translation);

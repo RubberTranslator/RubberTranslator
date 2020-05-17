@@ -58,6 +58,7 @@ public class BaiduTranslator extends AbstractTranslator {
                     langMap.get(source), langMap.get(dest), text);
             if (baiduTranslateResult != null) {
                 translatedText = mergeTranslatedText(baiduTranslateResult);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
             }
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "百度翻译失败", e);

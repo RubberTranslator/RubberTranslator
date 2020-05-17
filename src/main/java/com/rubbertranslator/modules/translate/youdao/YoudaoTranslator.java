@@ -7,7 +7,6 @@ import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
-
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +40,14 @@ public class YoudaoTranslator extends AbstractTranslator {
         langMap.put(Language.JAPANESE, "ja");
     }
 
+    /**
+     *
+     * @param source 源语言
+     * @param dest   目标语言
+     * @param text   需要翻译的文本
+     * @return 成功,翻译后的文本
+     *          失败,null
+     */
     @Override
     public String translate(Language source, Language dest, String text) {
         String translatedText = null;
@@ -48,8 +55,8 @@ public class YoudaoTranslator extends AbstractTranslator {
             YoudaoTranslationResult translationResult = doTranslate(
                     langMap.get(source), langMap.get(dest), text);
             if (translationResult != null) {
-                Logger.getLogger(this.getClass().getName()).info(translationResult.toString());
                 translatedText = mergeTranslatedText(translationResult);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
             }
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "有道翻译失败", e);

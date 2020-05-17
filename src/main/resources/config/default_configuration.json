@@ -29,7 +29,7 @@
   },
   "translator": {
     "current_translator": "GOOGLE",
-    "source_language": "ENGLISH",
+    "source_language": "AUTO",
     "dest_language": "CHINESE_SIMPLIFIED",
     "baidu_translator_api_key": "",
     "baidu_translator_secret_key": "",

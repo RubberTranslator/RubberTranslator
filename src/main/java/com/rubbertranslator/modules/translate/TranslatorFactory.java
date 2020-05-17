@@ -6,6 +6,7 @@ import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -22,6 +23,14 @@ public class TranslatorFactory {
     private Language sourceLanguage = Language.AUTO;
 
     private Language destLanguage = Language.CHINESE_SIMPLIFIED;
+
+    // 加载所有翻译引擎
+    {
+        instanceTranslatorEngine(TranslatorType.GOOGLE);
+        instanceTranslatorEngine(TranslatorType.BAIDU);
+        instanceTranslatorEngine(TranslatorType.YOUDAO);
+    }
+
 
     public Language getSourceLanguage() {
         return sourceLanguage;
@@ -44,11 +53,29 @@ public class TranslatorFactory {
     }
 
     public String translate(String text){
-        if(!translatorEngineMap.containsKey(engineType)){
-            instanceTranslatorEngine(engineType);
+        // lazy load
+//        if(!translatorEngineMap.containsKey(engineType)){
+//            instanceTranslatorEngine(engineType);
+//        }
+        // 首先使用当前首选的翻译引擎翻译
+        String result = null;
+        AbstractTranslator currentEngine = translatorEngineMap.get(engineType);
+        result =  currentEngine.translate(sourceLanguage,destLanguage,text);
+        if(result != null){
+            return result;
+        }else{
+            // 一旦失败,自动使用其他翻译引擎翻译
+            for(AbstractTranslator translator: translatorEngineMap.values()){
+                if(translator == currentEngine){
+                    continue;
+                }
+                result = translator.translate(sourceLanguage,destLanguage,text);
+                if(result != null){
+                    return result;
+                }
+            }
         }
-        AbstractTranslator translatorEngine = translatorEngineMap.get(engineType);
-        return translatorEngine.translate(sourceLanguage,destLanguage,text);
+        return null;
     }
 
 

@@ -70,6 +70,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     @FXML // 源语言类型
     private ToggleGroup sourceLanguageGroup;
     @FXML
+    private RadioMenuItem srcAuto;
+    @FXML
     private RadioMenuItem srcSimpleChinese;
     @FXML
     private RadioMenuItem srcTraditionalChinese;
@@ -271,15 +273,9 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         private void initTranslatorType(TranslatorType type) {
             // view
             switch (type) {
-                case GOOGLE:
-                    googleTranslator.setSelected(true);
-                    break;
-                case BAIDU:
-                    baiduTranslator.setSelected(true);
-                    break;
-                case YOUDAO:
-                    youdaoTranslator.setSelected(true);
-                    break;
+                case GOOGLE -> googleTranslator.setSelected(true);
+                case BAIDU -> baiduTranslator.setSelected(true);
+                case YOUDAO -> youdaoTranslator.setSelected(true);
             }
             // 监听
             translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
@@ -297,33 +293,25 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         }
 
         private void initSrcDestLanguage(Language src, Language dest) {
+            // xxx: 源、目标语言的设置方式有些违反单一职责，但是降低了重复代码
             // src
-            initLanguage(src, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
+            initLanguage(src,srcAuto,srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
             srcDestLanguageChooseEvent(true, sourceLanguageGroup, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
             // dest
-            initLanguage(dest, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
+            initLanguage(dest, null,destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
             srcDestLanguageChooseEvent(false, destLanguageGroup, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
 
         }
 
-        private void initLanguage(Language type, RadioMenuItem simpleChinese, RadioMenuItem traditional,
+        private void initLanguage(Language type, RadioMenuItem auto, RadioMenuItem simpleChinese, RadioMenuItem traditional,
                                   RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
             switch (type) {
-                case CHINESE_SIMPLIFIED:
-                    simpleChinese.setSelected(true);
-                    break;
-                case CHINESE_TRADITIONAL:
-                    traditional.setSelected(true);
-                    break;
-                case ENGLISH:
-                    english.setSelected(true);
-                    break;
-                case FRENCH:
-                    french.setSelected(true);
-                    break;
-                case JAPANESE:
-                    japanese.setSelected(true);
-                    break;
+                case AUTO -> auto.setSelected(true);
+                case CHINESE_SIMPLIFIED -> simpleChinese.setSelected(true);
+                case CHINESE_TRADITIONAL -> traditional.setSelected(true);
+                case ENGLISH -> english.setSelected(true);
+                case FRENCH -> french.setSelected(true);
+                case JAPANESE -> japanese.setSelected(true);
             }
         }
 
@@ -332,7 +320,9 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
                 SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
                 Language language = Language.AUTO;
-                if (newValue == simpleChinese) {
+                if(newValue == srcAuto){    // 此判断多余，但是为了完整性，还是加上
+                    language= Language.AUTO;
+                }else if (newValue == simpleChinese) {
                     language = Language.CHINESE_SIMPLIFIED;
                 } else if (newValue == traditional) {
                     language = Language.CHINESE_TRADITIONAL;

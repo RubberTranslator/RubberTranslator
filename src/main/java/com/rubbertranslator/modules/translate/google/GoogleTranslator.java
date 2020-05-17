@@ -38,7 +38,8 @@ public class GoogleTranslator extends AbstractTranslator {
      * @param source 源语言
      * @param dest   目标语言
      * @param text   需要翻译的文本
-     * @return
+     * @return 成功，翻译后的文本
+     *          失败,null
      */
     @Override
     public String translate(Language source, Language dest, String text) {
@@ -47,6 +48,7 @@ public class GoogleTranslator extends AbstractTranslator {
             String html = doTranslate(langMap.get(source), langMap.get(dest), text);
             if (html != null) {
                 translatedText = extractTranslation(html);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
             }
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Google翻译失败", e);
@@ -65,10 +67,10 @@ public class GoogleTranslator extends AbstractTranslator {
      * 失败 null
      */
     private String doTranslate(String source, String dest, String text) throws IOException {
-        String pageUrl = String.format("https://translate.google.com/m?sl=%s&tl=%s&q=%s",
+        String pageUrl = String.format("https://translate.google.cn/m?sl=%s&tl=%s&q=%s",
                 source, dest, URLEncoder.encode(text, StandardCharsets.UTF_8));
         Request request = new Request.Builder()
-                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11")
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
                 .url(pageUrl)
                 .get()
                 .build();
