@@ -16,6 +16,10 @@ public class DragCopyThread extends Thread{
     // Construct the example object.
     private final GlobalMouseListener mouseListener = new GlobalMouseListener();
 
+    public DragCopyThread() {
+        setName("DragCopy Thread");
+    }
+
     @Override
     public void run() {
         // 初始化后就退出，无需做保活

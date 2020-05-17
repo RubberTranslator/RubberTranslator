@@ -16,6 +16,7 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread {
     private ActiveWindowListener activeWindowListener;
 
     public WindowsPlatformActiveWindowListenerThread(ActiveWindowListener listener) {
+        setName("ActiveWindowListener Thread");
         this.activeWindowListener = listener;
     }
 

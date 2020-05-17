@@ -6,19 +6,17 @@
     <version>1.0-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>11</version>
+            <version>14</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>11</version>
+            <version>14</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->
         <dependency>
@@ -106,7 +104,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>11</release>
+                    <release>14</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -114,7 +112,23 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.3</version>
                 <configuration>
-                    <mainClass>com.rubbertranslator.App</mainClass>
+                    <source>14</source>
+                    <target>14</target>
+                    <release>14</release>
+                    <!-- runtime options-->
+                    <options>
+                        <option>--add-opens</option>
+                        <option>java.base/java.lang=cglib</option>
+                    </options>
+                    <!--jlink-->
+                    <stripDebug>true</stripDebug>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>RubberTranslator</launcher>
+                    <jlinkImageName>RubberTranslator</jlinkImageName>
+                    <jlinkZipName>RubberTranslator</jlinkZipName>
+                    <mainClass>rubbertranslator/com.rubbertranslator.App</mainClass>
                     <launcher>start</launcher>
                 </configuration>
             </plugin>

@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 
-public class ClipBoardListenerThread extends Thread {
+public class ClipboardListenerThread extends Thread {
     // 系统剪切板
     private final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
@@ -34,10 +34,11 @@ public class ClipBoardListenerThread extends Thread {
         this.textInputListener = textInputListener;
     }
 
-    public ClipBoardListenerThread() {
+    public ClipboardListenerThread() {
+        setName("Clipboard Thread");
     }
 
-    public ClipBoardListenerThread(TextInputListener listener) {
+    public ClipboardListenerThread(TextInputListener listener) {
         this.textInputListener = listener;
     }
 
@@ -80,7 +81,7 @@ public class ClipBoardListenerThread extends Thread {
                 }
 
             } catch (InterruptedException | IllegalStateException | UnsupportedFlavorException | IOException e) {
-                Logger.getLogger(ClipBoardListenerThread.class.getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
+                Logger.getLogger(ClipboardListenerThread.class.getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
                 if (waitTime < maxWaitTime) {
                     waitTime += 100;  // 增加100ms等待时间
                 }

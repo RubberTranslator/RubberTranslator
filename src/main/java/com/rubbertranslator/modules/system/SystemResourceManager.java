@@ -8,7 +8,7 @@ import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerTh
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.log.LoggerManager;
 import com.rubbertranslator.modules.system.proxy.*;
-import com.rubbertranslator.modules.textinput.clipboard.ClipBoardListenerThread;
+import com.rubbertranslator.modules.textinput.clipboard.ClipboardListenerThread;
 import com.rubbertranslator.modules.textinput.mousecopy.DragCopyThread;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 public class SystemResourceManager {
     // 新配置文件路径
     public static String configJsonPath = "./config/configuration.json";
-    private static ClipBoardListenerThread clipBoardListenerThread;
+    private static ClipboardListenerThread clipBoardListenerThread;
     private static DragCopyThread dragCopyThread;
     private static WindowsPlatformActiveWindowListenerThread activeWindowListenerThread;
     private static TranslatorFacade facade;
@@ -59,7 +59,7 @@ public class SystemResourceManager {
         return executor;
     }
 
-    public static ClipBoardListenerThread getClipBoardListenerThread() {
+    public static ClipboardListenerThread getClipBoardListenerThread() {
         assert clipBoardListenerThread != null : "请先执行SystemResourceManager.init";
         return clipBoardListenerThread;
     }
@@ -217,7 +217,7 @@ public class SystemResourceManager {
 
 
     private static boolean textInputInit(SystemConfiguration.TextInputConfig configuration) {
-        clipBoardListenerThread = new ClipBoardListenerThread();
+        clipBoardListenerThread = new ClipboardListenerThread();
         clipBoardListenerThread.setRun(configuration.isOpenClipboardListener());
         dragCopyThread = new DragCopyThread();
         dragCopyThread.setRun(configuration.isDragCopy());
