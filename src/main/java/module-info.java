@@ -26,5 +26,5 @@ open module rubbertranslator {
     exports com.rubbertranslator.modules.translate;
     exports com.rubbertranslator.modules.history;
     exports com.rubbertranslator.modules.afterprocess;
-    exports com.rubbertranslator.modules.system;
+    exports com.rubbertranslator.system;
 }

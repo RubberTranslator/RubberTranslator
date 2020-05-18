@@ -1,4 +1,4 @@
-package com.rubbertranslator.modules.system;
+package com.rubbertranslator.system;
 
 import com.google.gson.Gson;
 import com.rubbertranslator.modules.TranslatorFacade;
@@ -7,7 +7,7 @@ import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.log.LoggerManager;
-import com.rubbertranslator.modules.system.proxy.*;
+import com.rubbertranslator.system.proxy.*;
 import com.rubbertranslator.modules.textinput.clipboard.ClipboardListenerThread;
 import com.rubbertranslator.modules.textinput.mousecopy.DragCopyThread;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
@@ -19,7 +19,6 @@ import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.utils.FileUtil;
 import net.sf.cglib.proxy.Enhancer;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -252,6 +251,7 @@ public class SystemResourceManager {
     private static boolean preTextProcessInit(SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfig) {
         TextPreProcessor textPreProcessor = new TextPreProcessor();
         textPreProcessor.setTryToFormat(preProcessConfig.isTryToFormat());
+        textPreProcessor.setIncrementalCopy(preProcessConfig.isIncrementalCopy());
         facade.setTextPreProcessor(textPreProcessor);
         return true;
     }
@@ -296,6 +296,7 @@ public class SystemResourceManager {
         AfterProcessor afterProcessor = new AfterProcessor();
         afterProcessor.setAutoCopy(configuration.isAutoCopy());
         afterProcessor.setAutoPaste(configuration.isAutoPaste());
+        System.out.println(afterProcessor);
         facade.setAfterProcessor(afterProcessor);
         return  true;
     }

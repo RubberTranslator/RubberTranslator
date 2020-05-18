@@ -16,6 +16,14 @@ public class AfterProcessor {
     // hack:自动粘贴(依赖于自动复制）
     private volatile boolean autoPaste = false;
 
+    @Override
+    public String toString() {
+        return "AfterProcessor{" +
+                "autoCopy=" + autoCopy +
+                ", autoPaste=" + autoPaste +
+                '}';
+    }
+
     public boolean isAutoCopy() {
         return autoCopy;
     }
@@ -33,6 +41,7 @@ public class AfterProcessor {
     }
 
     public String process(String text){
+        Logger.getLogger(this.getClass().getName()).info(this.toString());
         if(autoCopy){
             Logger.getLogger(this.getClass().getName()).info("set clipboard:"+ text);
             CopyRobot.getInstance().copyText(text);

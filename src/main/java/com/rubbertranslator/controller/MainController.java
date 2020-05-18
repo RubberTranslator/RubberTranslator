@@ -3,8 +3,8 @@ package com.rubbertranslator.controller;
 import com.rubbertranslator.App;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.history.HistoryEntry;
-import com.rubbertranslator.modules.system.SystemConfiguration;
-import com.rubbertranslator.modules.system.SystemResourceManager;
+import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.system.SystemResourceManager;
 import com.rubbertranslator.modules.textinput.TextInputListener;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.Language;
@@ -259,13 +259,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             // 置顶
             keepTopMenu.setSelected(configuration.getUiConfig().isKeepTop());
 
-            // 设置生效
-            SystemResourceManager.getClipBoardListenerThread().setRun(configuration.getTextInputConfig().isOpenClipboardListener());
-            SystemResourceManager.getDragCopyThread().setRun(configuration.getTextInputConfig().isDragCopy());
-            SystemResourceManager.getFacade().getTextPreProcessor().setIncrementalCopy(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
-            SystemResourceManager.getFacade().getAfterProcessor().setAutoCopy(configuration.getAfterProcessorConfig().isAutoPaste());
-            SystemResourceManager.getFacade().getAfterProcessor().setAutoPaste(configuration.getAfterProcessorConfig().isAutoPaste());
-            SystemResourceManager.getFacade().getTextPreProcessor().setTryToFormat(configuration.getTextProcessConfig().getTextPreProcessConfig().isTryToFormat());
             // 置顶在UI模块，UI模块不在系统资源管理范围内，xxx:考虑重构
             App.setKeepTop(keepTopMenu.isSelected());
         }

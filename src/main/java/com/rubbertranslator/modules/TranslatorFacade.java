@@ -3,7 +3,7 @@ package com.rubbertranslator.modules;
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.history.TranslationHistory;
-import com.rubbertranslator.modules.system.SystemResourceManager;
+import com.rubbertranslator.system.SystemResourceManager;
 import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
 import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.modules.translate.TranslatorFactory;

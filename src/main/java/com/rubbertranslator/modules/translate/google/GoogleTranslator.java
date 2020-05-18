@@ -6,6 +6,8 @@ import com.rubbertranslator.utils.OkHttpUtil;
 import okhttp3.Request;
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
@@ -67,14 +69,20 @@ public class GoogleTranslator extends AbstractTranslator {
      * 失败 null
      */
     private String doTranslate(String source, String dest, String text) throws IOException {
-        String pageUrl = String.format("https://translate.google.cn/m?sl=%s&tl=%s&q=%s",
-                source, dest, URLEncoder.encode(text, StandardCharsets.UTF_8));
-        Request request = new Request.Builder()
-                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
-                .url(pageUrl)
-                .get()
-                .build();
-        return OkHttpUtil.syncRequest(request);
+        String result = null;
+        try{
+            String pageUrl = String.format("https://translate.google.cn/m?sl=%s&tl=%s&q=%s",
+                    source, dest, URLEncoder.encode(text, StandardCharsets.UTF_8));
+            Request request = new Request.Builder()
+                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
+                    .url(pageUrl)
+                    .get()
+                    .build();
+            result = OkHttpUtil.syncRequest(request);
+        }catch (SocketException | SocketTimeoutException e){
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getLocalizedMessage(),e);
+        }
+        return result;
     }
 
     /**

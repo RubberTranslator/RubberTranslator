@@ -1,6 +1,6 @@
 package com.rubbertranslator.controller;
 
-import com.rubbertranslator.modules.system.SystemResourceManager;
+import com.rubbertranslator.system.SystemResourceManager;
 import com.rubbertranslator.modules.textprocessor.post.WordsPair;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

@@ -1,7 +1,7 @@
-package com.rubbertranslator.modules.system.proxy;
+package com.rubbertranslator.system.proxy;
 
-import com.rubbertranslator.modules.system.SystemConfiguration;
-import com.rubbertranslator.modules.system.SystemResourceManager;
+import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.system.SystemResourceManager;
 import com.rubbertranslator.modules.textprocessor.post.WordsReplacer;
 
 /**

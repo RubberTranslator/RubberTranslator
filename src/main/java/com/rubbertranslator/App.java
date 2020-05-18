@@ -1,7 +1,7 @@
 package com.rubbertranslator;
 
 import com.rubbertranslator.controller.ControllerConstant;
-import com.rubbertranslator.modules.system.SystemResourceManager;
+import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
