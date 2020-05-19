@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -71,9 +70,6 @@ public class WordsReplacer {
             src = wordsPair.getSrc();
             dest = wordsPair.getDest();
             text = doReplace(src, dest, text);
-            Logger.getLogger(this.getClass().getName()).info("替换词组:"+wordsPair);
-            Logger.getLogger(this.getClass().getName()).info("替换结果:"+text);
-
         }
         return text;
     }
