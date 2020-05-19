@@ -7,7 +7,9 @@ import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
+
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +21,7 @@ import java.util.logging.Logger;
  * 旧式接口：http://fanyi.youdao.com/openapi.do?keyfrom=xinlei&key=759115437&type=data&doctype=json&version=1.1&q=Byte-addressable
  */
 public class YoudaoTranslator extends AbstractTranslator {
-    
+
 
     public void setAppKey(String appKey) {
         this.appKey = appKey;
@@ -41,12 +43,11 @@ public class YoudaoTranslator extends AbstractTranslator {
     }
 
     /**
-     *
      * @param source 源语言
      * @param dest   目标语言
      * @param text   需要翻译的文本
-     * @return 成功,翻译后的文本
-     *          失败,null
+     * @return 成功, 翻译后的文本
+     * 失败,null
      */
     @Override
     public String translate(Language source, Language dest, String text) {
@@ -55,8 +56,8 @@ public class YoudaoTranslator extends AbstractTranslator {
             YoudaoTranslationResult translationResult = doTranslate(
                     langMap.get(source), langMap.get(dest), text);
             if (translationResult != null) {
+                Logger.getLogger(this.getClass().getName()).info(translationResult.toString());
                 translatedText = mergeTranslatedText(translationResult);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
             }
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "有道翻译失败", e);
@@ -66,7 +67,7 @@ public class YoudaoTranslator extends AbstractTranslator {
     }
 
     private YoudaoTranslationResult doTranslate(String source, String dest, String text) throws IOException {
-        if(appKey == null || secretKey == null) return null;
+        if (appKey == null || secretKey == null) return null;
         String curtime = String.valueOf(System.currentTimeMillis() / 1000);
         String salt = String.valueOf(System.currentTimeMillis());
         String signStr = appKey + truncate(text) + salt + curtime + secretKey;
@@ -105,7 +106,28 @@ public class YoudaoTranslator extends AbstractTranslator {
         for (String item : result.getTranslation()) {
             sb.append(item).append("\n");
         }
-        sb.delete(sb.length()-1,sb.length());
+
+        // 音标
+        YoudaoTranslationResult.Basic basic = result.getBasic();
+        if (basic != null) {
+            String ukPhonetic = result.getBasic().getUkPhonetic();
+            String usPhonetic = result.getBasic().getUsPhonetic();
+            if (ukPhonetic != null) {
+                sb.append("英式:").append("[").append(ukPhonetic).append("]").append("\n");
+            }
+            if (usPhonetic != null) {
+                sb.append("美式:").append("[").append(usPhonetic).append("]").append("\n");
+            }
+            // 单词拼接
+            List<String> explains = result.getBasic().getExplains();
+            if (explains != null && explains.size() > 0) {
+                sb.append("更多释义:\n");
+                for (String ex : explains) {
+                    sb.append(ex).append("\n");
+                }
+            }
+        }
+        sb.delete(sb.length() - 1, sb.length());
         return sb.toString();
     }
 
