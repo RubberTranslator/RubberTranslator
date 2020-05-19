@@ -41,7 +41,6 @@ public class AfterProcessor {
     }
 
     public String process(String text){
-        Logger.getLogger(this.getClass().getName()).info(this.toString());
         if(autoCopy){
             Logger.getLogger(this.getClass().getName()).info("set clipboard:"+ text);
             CopyRobot.getInstance().copyText(text);

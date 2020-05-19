@@ -1,6 +1,7 @@
 package com.rubbertranslator.modules.textinput.clipboard;
 
 
+import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.textinput.TextInputListener;
 
 import java.awt.*;
@@ -27,8 +28,21 @@ public class ClipboardListenerThread extends Thread {
     private volatile boolean running = true;
     private final Object blocker = new Object();
 
+    // 过滤器
+    private ProcessFilter processFilter;
+
     //
     private TextInputListener textInputListener;
+
+    public ProcessFilter getProcessFilter() {
+        return processFilter;
+    }
+
+
+
+    public void setProcessFilter(ProcessFilter processFilter) {
+        this.processFilter = processFilter;
+    }
 
     public void setTextInputListener(TextInputListener textInputListener) {
         this.textInputListener = textInputListener;
@@ -69,14 +83,19 @@ public class ClipboardListenerThread extends Thread {
                     String paste = (String) t.getTransferData(DataFlavor.stringFlavor);
                     if (!Objects.equals(paste, initialText) && textInputListener != null) {
                         initialText = paste;
-                        textInputListener.onTextInput(paste);
+                        // 过滤器
+                        if(processFilter!=null && !processFilter.check()){
+                            textInputListener.onTextInput(paste);
+                        }
                     }
                 } else if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
                     Image paste = (Image) t.getTransferData(DataFlavor.imageFlavor);
                     if ((paste.getWidth(null) != initialImage.getWidth(null) || paste.getHeight(null) != initialImage.getHeight(null))
                             && textInputListener != null) {
                         initialImage = paste;
-                        textInputListener.onImageInput(paste);
+                        if(processFilter!=null && !processFilter.check()){
+                            textInputListener.onImageInput(paste);
+                        }
                     }
                 }
 

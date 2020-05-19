@@ -1,12 +1,11 @@
 package com.rubbertranslator.modules;
 
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
-import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.history.TranslationHistory;
-import com.rubbertranslator.system.SystemResourceManager;
 import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
 import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
+import com.rubbertranslator.system.SystemResourceManager;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -22,8 +21,6 @@ import java.util.logging.Logger;
  */
 public class TranslatorFacade {
 
-    // 进程过滤器
-    private ProcessFilter processFilter;
     // 文本预处理器
     private TextPreProcessor textPreProcessor;
     // 翻译模块
@@ -69,10 +66,6 @@ public class TranslatorFacade {
         this.afterProcessor = afterProcessor;
     }
 
-    public ProcessFilter getProcessFilter() {
-        return processFilter;
-    }
-
     public TextPreProcessor getTextPreProcessor() {
         return textPreProcessor;
     }
@@ -101,10 +94,6 @@ public class TranslatorFacade {
         this.textPostProcessor = textPostProcessor;
     }
 
-
-    public void setProcessFilter(ProcessFilter processFilter) {
-        this.processFilter = processFilter;
-    }
 
 
     /**
@@ -179,8 +168,6 @@ public class TranslatorFacade {
 
             String translation = null;
             try {
-                // 过滤
-                if (processFilter.check()) return null;
                 // text保存处理后的文本
                 processedOrigin = textPreProcessor.process(origin);
                 // 重新初始化lastOrigin

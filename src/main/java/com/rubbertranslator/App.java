@@ -2,6 +2,8 @@ package com.rubbertranslator;
 
 import com.rubbertranslator.controller.ControllerConstant;
 import com.rubbertranslator.system.SystemResourceManager;
+import it.sauronsoftware.junique.AlreadyLockedException;
+import it.sauronsoftware.junique.JUnique;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,6 +40,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        Logger.getLogger(this.getClass().getName()).info("程序启动");
         appStage = stage;
         appScene = new Scene(loadFXML(ControllerConstant.MAIN_CONTROLLER_FXML));
         stage.setScene(appScene);
@@ -74,7 +77,21 @@ public class App extends Application {
 
 
     public static void main(String[] args) {
-        launch();
+        String appId = "RubberTranslator";
+        boolean alreadyRunning;
+        try {
+            JUnique.acquireLock(appId);
+            alreadyRunning = false;
+        } catch (AlreadyLockedException e) {
+            alreadyRunning = true;
+        }
+        if (!alreadyRunning) {
+            // Start sequence here
+            launch();
+        }else{
+            System.exit(0);
+        }
+
     }
 
 }

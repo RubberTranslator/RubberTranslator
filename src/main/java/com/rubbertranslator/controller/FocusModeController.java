@@ -95,7 +95,7 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
 
     private void initListeners() {
         // 注册文本变化监听
-        SystemResourceManager.getClipBoardListenerThread().setTextInputListener(this);
+        SystemResourceManager.getClipboardListenerThread().setTextInputListener(this);
         // 注册翻译完成监听
         SystemResourceManager.getFacade().setFacadeListener(this);
     }

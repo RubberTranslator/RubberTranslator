@@ -168,7 +168,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
 
     private void initListeners() {
         // 注册文本变化监听
-        SystemResourceManager.getClipBoardListenerThread().setTextInputListener(this);
+        SystemResourceManager.getClipboardListenerThread().setTextInputListener(this);
         // 注册翻译完成监听
         SystemResourceManager.getFacade().setFacadeListener(this);
     }
@@ -714,6 +714,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     @Override
     public void onComplete(String origin, String translation) {
         // 不管从哪里会回调，回到UI线程
+        Logger.getLogger(this.getClass().getName()).info("facade处理结束，准备显示到UI");
         Platform.runLater(() -> updateTextArea(origin, translation));
     }
 }

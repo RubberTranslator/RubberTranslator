@@ -47,7 +47,7 @@ public class TextInputConfigStaticProxy extends SystemConfiguration.TextInputCon
 
     public void setOpenClipboardListener(Boolean openClipboardListener) {
         textInputConfig.setOpenClipboardListener(openClipboardListener);
-        SystemResourceManager.getClipBoardListenerThread().setRun(openClipboardListener);
+        SystemResourceManager.getClipboardListenerThread().setRun(openClipboardListener);
     }
     public void setDragCopy(Boolean dragCopy) {
         textInputConfig.setDragCopy(dragCopy);

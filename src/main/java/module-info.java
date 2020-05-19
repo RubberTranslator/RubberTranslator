@@ -17,6 +17,7 @@ open module rubbertranslator {
     requires cglib;
     requires jnativehook;
     requires okhttp3;
+    requires junique;
 
     exports com.rubbertranslator;
     exports com.rubbertranslator.modules.textinput;

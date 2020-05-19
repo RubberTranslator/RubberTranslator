@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 public class SystemResourceManager {
     // 新配置文件路径 更改为用户home目录
     public static String configJsonPath = System.getProperty("user.home")+"/RubberTranslator/config/configuration.json";
-    private static ClipboardListenerThread clipBoardListenerThread;
+    private static ClipboardListenerThread clipboardListenerThread;
     private static DragCopyThread dragCopyThread;
     private static WindowsPlatformActiveWindowListenerThread activeWindowListenerThread;
     private static TranslatorFacade facade;
@@ -58,9 +58,9 @@ public class SystemResourceManager {
         return executor;
     }
 
-    public static ClipboardListenerThread getClipBoardListenerThread() {
-        assert clipBoardListenerThread != null : "请先执行SystemResourceManager.init";
-        return clipBoardListenerThread;
+    public static ClipboardListenerThread getClipboardListenerThread() {
+        assert clipboardListenerThread != null : "请先执行SystemResourceManager.init";
+        return clipboardListenerThread;
     }
 
     public static DragCopyThread getDragCopyThread() {
@@ -216,20 +216,20 @@ public class SystemResourceManager {
 
 
     private static boolean textInputInit(SystemConfiguration.TextInputConfig configuration) {
-        clipBoardListenerThread = new ClipboardListenerThread();
-        clipBoardListenerThread.setRun(configuration.isOpenClipboardListener());
+        clipboardListenerThread = new ClipboardListenerThread();
+        clipboardListenerThread.setRun(configuration.isOpenClipboardListener());
         dragCopyThread = new DragCopyThread();
         dragCopyThread.setRun(configuration.isDragCopy());
         OCRUtils.setApiKey(configuration.getBaiduOcrApiKey());
         OCRUtils.setSecretKey(configuration.getBaiduOcrSecretKey());
 
-        clipBoardListenerThread.start();
+        clipboardListenerThread.start();
         dragCopyThread.start();
         return true;
     }
 
     private static void textInputDestroy() {
-        clipBoardListenerThread.exit();
+        clipboardListenerThread.exit();
         dragCopyThread.exit();
     }
 
@@ -242,7 +242,9 @@ public class SystemResourceManager {
         processFilter.setOpen(configuration.isOpenProcessFilter());
         processFilter.addFilterList(configuration.getProcessList());
         activeWindowListenerThread = new WindowsPlatformActiveWindowListenerThread(processFilter);
-        facade.setProcessFilter(processFilter);
+
+        // 装载过滤器到剪切板监听线程
+        clipboardListenerThread.setProcessFilter(processFilter);
 
         activeWindowListenerThread.start();
         return true;

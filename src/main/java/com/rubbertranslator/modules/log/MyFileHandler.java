@@ -11,7 +11,7 @@ import java.util.logging.LogManager;
  * @author Raven
  * @version 1.0
  * date  2020/5/19 9:22
- * 自定义FileHandler,java log框架存在bug，如果日志文件目录不存在，在抛出异常，详情参考：
+ * 自定义FileHandler,java log框架存在bug，如果日志文件目录不存在，会抛出异常，详情参考：
  * https://stackoverflow.com/questions/1263876/configuring-java-filehandler-logging-to-create-directories-if-they-do-not-exist
  *
  */

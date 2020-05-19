@@ -35,10 +35,10 @@ public class ProcessFilterConfigStaticProxy extends SystemConfiguration.ProcessF
 
     public void setOpenProcessFilter(Boolean openProcessFilter) {
         processFilterConfig.setOpenProcessFilter(openProcessFilter);
-        SystemResourceManager.getFacade().getProcessFilter().setOpen(openProcessFilter);
+        SystemResourceManager.getClipboardListenerThread().getProcessFilter().setOpen(openProcessFilter);
     }
     public void setProcessList(List<String> processList) {
         processFilterConfig.setProcessList(processList);
-        SystemResourceManager.getFacade().getProcessFilter().setFilterList(processList);
+        SystemResourceManager.getClipboardListenerThread().getProcessFilter().setFilterList(processList);
     }
 }
