@@ -1,7 +1,6 @@
 package com.rubbertranslator.modules.log;
 
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -15,16 +14,12 @@ import java.util.logging.Logger;
 public class LoggerManager {
     public static void configLog() {
         try {
-            InputStream input = LoggerManager.class
+            InputStream input =LoggerManager.class
                     .getResourceAsStream("/log/log.properties");
             LogManager.getLogManager().readConfiguration(input);
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             Logger.getLogger(LoggerManager.class.getName()).log(Level.SEVERE, "日志属性加载出错", e);
         }
     }
-
-    public static void setLogLevel(String name, Level level) {
-        Logger.getLogger(name).setLevel(level);
-    }
-
 }

@@ -266,9 +266,15 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         private void initTranslatorType(TranslatorType type) {
             // view
             switch (type) {
-                case GOOGLE -> googleTranslator.setSelected(true);
-                case BAIDU -> baiduTranslator.setSelected(true);
-                case YOUDAO -> youdaoTranslator.setSelected(true);
+                case GOOGLE:
+                    googleTranslator.setSelected(true);
+                    break;
+                case BAIDU:
+                    baiduTranslator.setSelected(true);
+                    break;
+                case YOUDAO:
+                    youdaoTranslator.setSelected(true);
+                    break;
             }
             // 监听
             translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
@@ -279,7 +285,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     translatorConfig.setCurrentTranslator(TranslatorType.BAIDU);
                 } else if (newValue == youdaoTranslator) {
                     translatorConfig.setCurrentTranslator(TranslatorType.YOUDAO);
-                }else{
+                } else {
                     oldValue.setSelected(true);
                 }
             });
@@ -288,10 +294,10 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         private void initSrcDestLanguage(Language src, Language dest) {
             // xxx: 源、目标语言的设置方式有些违反单一职责，但是降低了重复代码
             // src
-            initLanguage(src,srcAuto,srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
+            initLanguage(src, srcAuto, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
             srcDestLanguageChooseEvent(true, sourceLanguageGroup, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
             // dest
-            initLanguage(dest, null,destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
+            initLanguage(dest, null, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
             srcDestLanguageChooseEvent(false, destLanguageGroup, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
 
         }
@@ -299,12 +305,24 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         private void initLanguage(Language type, RadioMenuItem auto, RadioMenuItem simpleChinese, RadioMenuItem traditional,
                                   RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
             switch (type) {
-                case AUTO -> auto.setSelected(true);
-                case CHINESE_SIMPLIFIED -> simpleChinese.setSelected(true);
-                case CHINESE_TRADITIONAL -> traditional.setSelected(true);
-                case ENGLISH -> english.setSelected(true);
-                case FRENCH -> french.setSelected(true);
-                case JAPANESE -> japanese.setSelected(true);
+                case AUTO:
+                    auto.setSelected(true);
+                    break;
+                case CHINESE_SIMPLIFIED:
+                    simpleChinese.setSelected(true);
+                    break;
+                case CHINESE_TRADITIONAL:
+                    traditional.setSelected(true);
+                    break;
+                case ENGLISH:
+                    english.setSelected(true);
+                    break;
+                case FRENCH:
+                    french.setSelected(true);
+                    break;
+                case JAPANESE:
+                    japanese.setSelected(true);
+                    break;
             }
         }
 
@@ -313,9 +331,9 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
                 SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
                 Language language = Language.AUTO;
-                if(newValue == srcAuto){    // 此判断多余，但是为了完整性，还是加上
-                    language= Language.AUTO;
-                }else if (newValue == simpleChinese) {
+                if (newValue == srcAuto) {    // 此判断多余，但是为了完整性，还是加上
+                    language = Language.AUTO;
+                } else if (newValue == simpleChinese) {
                     language = Language.CHINESE_SIMPLIFIED;
                 } else if (newValue == traditional) {
                     language = Language.CHINESE_TRADITIONAL;
@@ -393,7 +411,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 try {
                     Desktop.getDesktop().browse(new URI(titleClickUrl));
                 } catch (IOException | URISyntaxException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"错误url:"+titleClickUrl,e);
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "错误url:" + titleClickUrl, e);
                 }
             }));
             Label apiKeyLabel = new Label("API_KEY");
@@ -453,7 +471,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         }
 
         private void initCustomCss(SystemConfiguration.UIConfig configuration) {
-            try{
+            try {
                 // 回显
                 String path = configuration.getStyleCssPath();
                 if (path != null) {
@@ -462,24 +480,24 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                         rootPane.getStylesheets().setAll(file.toURI().toURL().toString());
                     }
                 }
-            }catch (MalformedURLException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getLocalizedMessage(),e);
+            } catch (MalformedURLException e) {
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
             }
 
             // 点击事件
             customCssMenu.setOnAction((actionEvent -> {
-                try{
+                try {
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.getExtensionFilters().add(
                             new FileChooser.ExtensionFilter("css文件", "*.css"));
                     File newFile = fileChooser.showOpenDialog(rootPane.getScene().getWindow());
-                    if(newFile == null) return;
+                    if (newFile == null) return;
                     // 应用
                     rootPane.getStylesheets().setAll(newFile.toURI().toURL().toString());
                     // 应用持久化
                     configuration.setStyleCssPath(newFile.getAbsolutePath());
                 } catch (MalformedURLException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getLocalizedMessage(),e);
+                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
                 }
             }));
         }
@@ -526,7 +544,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"过滤器页面错误",e);
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "过滤器页面错误", e);
                 }
             }));
         }
@@ -540,7 +558,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"词组替换页面打开失败",e);
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "词组替换页面打开失败", e);
                 }
             }));
         }
@@ -584,7 +602,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator"));
             } catch (IOException | URISyntaxException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"项目主页打开失败",e);
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "项目主页打开失败", e);
             }
         });
         // wiki
@@ -592,7 +610,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/wiki"));
             } catch (IOException | URISyntaxException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"使用帮助打开失败",e);
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "使用帮助打开失败", e);
             }
         });
         // issue
@@ -600,7 +618,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/issues"));
             } catch (IOException | URISyntaxException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"issues打开失败",e);
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "issues打开失败", e);
             }
         }));
     }
@@ -616,7 +634,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         try {
             App.setRoot(ControllerConstant.FOCUS_CONTROLLER_FXML);
         } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"专注模式打开失败",e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "专注模式打开失败", e);
         }
     }
 
@@ -625,13 +643,13 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         Label next = new Label("下一条");
         pre.setOnMouseClicked((event -> {
             HistoryEntry entry = SystemResourceManager.getFacade().getHistory().previous();
-            if(entry!=null){
+            if (entry != null) {
                 updateTextArea(entry.getOrigin(), entry.getTranslation());
             }
         }));
         next.setOnMouseClicked(event -> {
             HistoryEntry entry = SystemResourceManager.getFacade().getHistory().next();
-            if(entry != null){
+            if (entry != null) {
                 updateTextArea(entry.getOrigin(), entry.getTranslation());
             }
         });
@@ -689,7 +707,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 onTextInput(text);
             }
         } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"ocr识别错误",e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
         }
     }
 

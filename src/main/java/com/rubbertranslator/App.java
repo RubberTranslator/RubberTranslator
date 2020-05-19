@@ -16,12 +16,10 @@ import java.util.logging.Logger;
  * JavaFX App
  */
 public class App extends Application {
-
     // 主界面
     private static Scene appScene;
     private static Stage appStage;
     private static String currentContentRoot;
-
 
     @Override
     public void init() throws Exception {

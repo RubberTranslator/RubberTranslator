@@ -34,8 +34,8 @@ import java.util.logging.Logger;
  * 系统资源管理
  */
 public class SystemResourceManager {
-    // 新配置文件路径
-    public static String configJsonPath = "./config/configuration.json";
+    // 新配置文件路径 更改为用户home目录
+    public static String configJsonPath = System.getProperty("user.home")+"/RubberTranslator/config/configuration.json";
     private static ClipboardListenerThread clipBoardListenerThread;
     private static DragCopyThread dragCopyThread;
     private static WindowsPlatformActiveWindowListenerThread activeWindowListenerThread;
@@ -296,7 +296,6 @@ public class SystemResourceManager {
         AfterProcessor afterProcessor = new AfterProcessor();
         afterProcessor.setAutoCopy(configuration.isAutoCopy());
         afterProcessor.setAutoPaste(configuration.isAutoPaste());
-        System.out.println(afterProcessor);
         facade.setAfterProcessor(afterProcessor);
         return  true;
     }

@@ -1,7 +1,7 @@
 /**
  * @author Raven
  * date  2020/5/16 19:24
- * module-info文件目前无效，因为以来了non-module的jar包，所以没办法使用jlink打包
+ * IDEA 2020版目前必须要有这个文件，不模块化无法启动
  */
 open module rubbertranslator {
     requires javafx.base;
