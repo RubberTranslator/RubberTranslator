@@ -175,7 +175,7 @@ public class TranslatorFacade {
                 // lastOrigin = processedOrigin;
                 translation = translatorFactory.translate(processedOrigin);
                 // 后置处理
-                translation = textPostProcessor.process(translation);
+                translation = textPostProcessor.process(processedOrigin,translation);
                 // lastTranslation 重新初始化
                 lastTranslation = translation;
                 // 记录翻译历史

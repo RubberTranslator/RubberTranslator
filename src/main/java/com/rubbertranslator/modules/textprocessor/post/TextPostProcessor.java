@@ -10,6 +10,8 @@ public class TextPostProcessor {
     private volatile boolean open = true;
     // 替换器
     private WordsReplacer replacer = new WordsReplacer();
+    // 段落自动缩进器
+    private ParagraphIndentProcessor indentProcessor = new ParagraphIndentProcessor();
 
     public boolean isOpen() {
         return open;
@@ -27,10 +29,13 @@ public class TextPostProcessor {
         this.open = open;
     }
 
-    public String process(String text){
+    public String process(String origin,String translation){
         if(open){
-            text = replacer.replace(text);
+            // 译文词组替换
+            translation = replacer.replace(translation);
+            // 段落增加缩进（有换行符则缩进）
+            translation = indentProcessor.process(origin,translation);
         }
-        return text;
+        return translation;
     }
 }

@@ -236,7 +236,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
                 configuration.getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
             }));
             textFormatMenu.setOnAction((actionEvent ->
-                    SystemResourceManager.getFacade().getTextPreProcessor().setTryToFormat(textFormatMenu.isSelected())));
+                    configuration.getTextProcessConfig().getTextPreProcessConfig().setTryToFormat(textFormatMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> {
                 // XXX: UI模块的相关功能，没有静态代理管理，需要手动界面生效功能，然后动态代理自动持久化设置
                 App.setKeepTop(keepTopMenu.isSelected());
