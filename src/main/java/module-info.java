@@ -18,6 +18,7 @@ open module rubbertranslator {
     requires jnativehook;
     requires okhttp3;
     requires junique;
+    requires eventbus;
 
     exports com.rubbertranslator;
     exports com.rubbertranslator.modules.textinput;

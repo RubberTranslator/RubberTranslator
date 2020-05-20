@@ -2,18 +2,20 @@ package com.rubbertranslator.controller;
 
 import com.rubbertranslator.App;
 import com.rubbertranslator.modules.TranslatorFacade;
+import com.rubbertranslator.event.TranslatorFacadeEvent;
 import com.rubbertranslator.modules.history.HistoryEntry;
-import com.rubbertranslator.system.SystemConfiguration;
-import com.rubbertranslator.system.SystemResourceManager;
 import com.rubbertranslator.modules.textinput.TextInputListener;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
+import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -26,6 +28,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.awt.*;
 import java.io.File;
@@ -54,6 +59,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private TextArea originTextArea;
     @FXML
     private TextArea translatedTextArea;
+    @FXML
+    private Button translateBt;
 
     /**
      * -------------------基本设置------------------------------
@@ -171,6 +178,25 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         SystemResourceManager.getClipboardListenerThread().setTextInputListener(this);
         // 注册翻译完成监听
         SystemResourceManager.getFacade().setFacadeListener(this);
+        // 注册翻译事件模型
+        EventBus.getDefault().register(this);
+    }
+
+    /**
+     * translatorEvent事件接收
+     * @param event translatorEvent事件接收
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void translatorFacadeEvent(TranslatorFacadeEvent event) {
+        Platform.runLater(()->{
+            if(event.isProcessStart()){ // 处理开始
+                translateBt.setText("翻译中");
+                translateBt.setDisable(true);
+            }else{      // 处理结束
+                translateBt.setText("翻译");
+                translateBt.setDisable(false);
+            }
+        });
     }
 
     private void initViews() {
@@ -251,7 +277,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
             // 增量复制
             incrementalCopyMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
             // 自动复制
-            autoCopyMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
+            autoCopyMenu.setSelected(configuration.getAfterProcessorConfig().isAutoCopy());
             // 自动粘贴
             autoPasteMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
             // 保持段落格式
@@ -715,6 +741,8 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     public void onComplete(String origin, String translation) {
         // 不管从哪里会回调，回到UI线程
         Logger.getLogger(this.getClass().getName()).info("facade处理结束，准备显示到UI");
-        Platform.runLater(() -> updateTextArea(origin, translation));
+        Platform.runLater(() -> {
+            updateTextArea(origin, translation);
+        });
     }
 }

@@ -1,11 +1,13 @@
 package com.rubbertranslator.modules;
 
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
+import com.rubbertranslator.event.TranslatorFacadeEvent;
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
 import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
 import com.rubbertranslator.system.SystemResourceManager;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -35,9 +37,6 @@ public class TranslatorFacade {
     private final ExecutorService executor;
     // facade回调
     private TranslatorFacadeListener facadeListener;
-
-    // lastTranslation 保存最后的译文
-    private String lastTranslation = "";
 
 
     public TranslatorFacade() {
@@ -98,18 +97,13 @@ public class TranslatorFacade {
 
     /**
      * 处理整个翻译过程
-     *
+     * 最终处理结果会通过ranslatorFacadeListener#onComplete(java.lang.String, java.lang.String)回调
+     * 成功：回调原文+译文
+     * 失败：回调原文+null
      * @param text 原文
-     * @return 成功 译文
      * 失败 null
      */
     public void process(String text) {
-        if (/*(lastOrigin != null && lastOrigin.equals(text)) ||*/
-                // 当前输入text是否和上一次的译文相同
-                //此condition用于排除“自动复制”所带来的二次翻译问题，但是对用户点击的二次翻译“原文”开放
-                (lastTranslation != null && lastTranslation.equals(text))) {
-            return;
-        }
         Callable<String> callable = new FacadeCallable(text);
         FutureTask<String> task = new FacadeFutureTask(callable);
         executor.execute(task);
@@ -132,9 +126,9 @@ public class TranslatorFacade {
         protected void done() {
             if (facadeListener != null) {
                 try {
-                    String result = get();
-                    String processedOrigin = callable.getProcessedOrigin();
-                    if(result != null && facadeListener != null){
+                    String result = get();  // 译文（如果有的话）
+                    String processedOrigin = callable.getProcessedOrigin(); // 原文
+                    if(facadeListener != null){
                         facadeListener.onComplete(processedOrigin, result);
                     }
                 } catch (InterruptedException | ExecutionException e) {
@@ -165,6 +159,10 @@ public class TranslatorFacade {
         @Override
         public String call() {
             if (origin == null || "".equals(origin)) return null;
+            // facade处理开始
+//            ModuleMediator.getInstance().facadeCallStart();
+            EventBus.getDefault().post(new TranslatorFacadeEvent(true));
+
 
             String translation = null;
             try {
@@ -176,13 +174,14 @@ public class TranslatorFacade {
                 translation = translatorFactory.translate(processedOrigin);
                 // 后置处理
                 translation = textPostProcessor.process(processedOrigin,translation);
-                // lastTranslation 重新初始化
-                lastTranslation = translation;
                 // 记录翻译历史
                 history.addHistory(processedOrigin, translation);
                 translation = afterProcessor.process(translation);
             } catch (NullPointerException e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
+            }finally {
+//                ModuleMediator.getInstance().facadeCallEnd();
+                EventBus.getDefault().post(new TranslatorFacadeEvent(false));
             }
             return translation;
         }
