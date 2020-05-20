@@ -1,25 +1,26 @@
 package com.rubbertranslator.controller;
 
 import com.rubbertranslator.App;
-import com.rubbertranslator.modules.TranslatorFacade;
+import com.rubbertranslator.event.ClipboardContentInputEvent;
+import com.rubbertranslator.event.TranslateCompleteEvent;
+import com.rubbertranslator.event.TranslatorFacadeEvent;
 import com.rubbertranslator.modules.history.HistoryEntry;
-import com.rubbertranslator.system.SystemConfiguration;
-import com.rubbertranslator.system.SystemResourceManager;
-import com.rubbertranslator.modules.textinput.TextInputListener;
 import com.rubbertranslator.modules.textinput.mousecopy.copymethods.CopyRobot;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.TranslatorType;
+import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -31,16 +32,18 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/9 21:51
  */
-public class FocusModeController implements EventHandler<ActionEvent>, TextInputListener, TranslatorFacade.TranslatorFacadeListener {
+public class FocusModeController implements EventHandler<ActionEvent> {
 
     @FXML
     private VBox rootPane;
 
     @FXML
-    private TextArea translationArea;
+    private TextArea textArea;
 
     @FXML // 退回到主界面
     private Button backBt;
+    @FXML  // 翻译按钮
+    private Button translateBt;
 
     @FXML   // 翻译组
     private ToggleGroup translatorGroup;
@@ -95,9 +98,7 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
 
     private void initListeners() {
         // 注册文本变化监听
-        SystemResourceManager.getClipboardListenerThread().setTextInputListener(this);
-        // 注册翻译完成监听
-        SystemResourceManager.getFacade().setFacadeListener(this);
+        EventBus.getDefault().register(this);
     }
 
     /**
@@ -182,15 +183,20 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
         }
     }
 
+    public void switchToMainController(){
+        try {
+            App.setRoot(ControllerConstant.MAIN_CONTROLLER_FXML);
+            EventBus.getDefault().unregister(this);
+        } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"切换主界面失败",e);
+        }
+    }
+
     @Override
     public void handle(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
         if(source == backBt){
-            try {
-                App.setRoot(ControllerConstant.MAIN_CONTROLLER_FXML);
-            } catch (IOException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"切换主界面失败",e);
-            }
+            switchToMainController();
         }else if(source == clearBt){
             updateTextArea("");
             SystemResourceManager.getFacade().clear();
@@ -250,32 +256,52 @@ public class FocusModeController implements EventHandler<ActionEvent>, TextInput
     }
 
     private void updateTextArea(String translation){
-        translationArea.setText(translation);
+        textArea.setText(translation);
     }
 
-
-    @Override
-    public void onTextInput(String text) {
-        processTranslate(text);
+    @FXML
+    public void onBtnTranslateClick() {
+        String originText = textArea.getText();
+        processTranslate(originText);
     }
 
-    @Override
-    public void onImageInput(Image image) {
-        try {
-            String text = OCRUtils.ocr(image);
-            if (text != null) {
-                onTextInput(text);
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void translatorFacadeEvent(TranslatorFacadeEvent event) {
+        if(event == null) return;
+        Platform.runLater(()->{
+            if(event.isProcessStart()){ // 处理开始
+//                translateBt.setText("翻译中");
+                translateBt.setDisable(true);
+            }else{      // 处理结束
+                translateBt.setText("翻译");
+                translateBt.setDisable(false);
             }
-        } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"ocr失败",e);
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onClipboardContentInput(ClipboardContentInputEvent event){
+        if (event == null) return;
+        if(event.isTextType()){
+            processTranslate(event.getText());
+        }else{
+            try {
+                String text = OCRUtils.ocr(event.getImage());
+                if (text != null) {
+                    processTranslate(text);
+                }
+            } catch (IOException e) {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
+            }
         }
     }
 
-
-
-    @Override
-    public void onComplete(String origin, String translation) {
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onComplete(TranslateCompleteEvent event) {
+        if (event == null) return;
         // 不管从哪里会回调，回到UI线程
-        Platform.runLater(() -> updateTextArea(translation));
+        Platform.runLater(() -> {
+            updateTextArea(event.getTranslation());
+        });
     }
 }

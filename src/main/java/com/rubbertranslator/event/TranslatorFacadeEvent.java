@@ -8,10 +8,18 @@ package com.rubbertranslator.event;
  */
 public class TranslatorFacadeEvent {
     // 处理开始与否
-    private final boolean processStart;
+    private boolean processStart;
 
-    public TranslatorFacadeEvent(boolean start) {
-        this.processStart = start;
+    public void start(){
+        setProcessStart(true);
+    }
+
+    public void end(){
+        setProcessStart(false);
+    }
+
+    private void setProcessStart(boolean processStart){
+        this.processStart = processStart;
     }
 
     public boolean isProcessStart() {

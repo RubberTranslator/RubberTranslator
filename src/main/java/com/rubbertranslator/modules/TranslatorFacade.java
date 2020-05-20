@@ -1,5 +1,6 @@
 package com.rubbertranslator.modules;
 
+import com.rubbertranslator.event.TranslateCompleteEvent;
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
 import com.rubbertranslator.event.TranslatorFacadeEvent;
 import com.rubbertranslator.modules.history.TranslationHistory;
@@ -35,17 +36,14 @@ public class TranslatorFacade {
     private AfterProcessor afterProcessor;
     // 创建线程池（使用了预定义的配置）
     private final ExecutorService executor;
-    // facade回调
-    private TranslatorFacadeListener facadeListener;
-
+    // 翻译过程管理事件
+    private final TranslatorFacadeEvent facadeEvent = new TranslatorFacadeEvent();
+    // 翻译完成事件
+    private final TranslateCompleteEvent translateCompleteEvent = new TranslateCompleteEvent();
 
     public TranslatorFacade() {
         history = new TranslationHistory();
         executor = SystemResourceManager.getExecutor();
-    }
-
-    public void setFacadeListener(TranslatorFacadeListener facadeListener) {
-        this.facadeListener = facadeListener;
     }
 
 
@@ -94,24 +92,19 @@ public class TranslatorFacade {
     }
 
 
-
     /**
      * 处理整个翻译过程
      * 最终处理结果会通过ranslatorFacadeListener#onComplete(java.lang.String, java.lang.String)回调
      * 成功：回调原文+译文
      * 失败：回调原文+null
+     *
      * @param text 原文
-     * 失败 null
+     *             失败 null
      */
-    public void process(String text) {
+    public void process(String text ) {
         Callable<String> callable = new FacadeCallable(text);
         FutureTask<String> task = new FacadeFutureTask(callable);
         executor.execute(task);
-    }
-
-
-    public interface TranslatorFacadeListener {
-        void onComplete(String origin, String translation);
     }
 
     private class FacadeFutureTask extends FutureTask<String> {
@@ -124,17 +117,16 @@ public class TranslatorFacade {
 
         @Override
         protected void done() {
-            if (facadeListener != null) {
-                try {
-                    String result = get();  // 译文（如果有的话）
-                    String processedOrigin = callable.getProcessedOrigin(); // 原文
-                    if(facadeListener != null){
-                        facadeListener.onComplete(processedOrigin, result);
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,e.getLocalizedMessage(),e);
-                }
+            try {
+                String result = get();  // 译文（如果有的话）
+                String processedOrigin = callable.getProcessedOrigin(); // 原文
+                translateCompleteEvent.setOrigin(processedOrigin);
+                translateCompleteEvent.setTranslation(result);
+                EventBus.getDefault().post(translateCompleteEvent);
+            } catch (InterruptedException | ExecutionException e) {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
             }
+
         }
     }
 
@@ -161,8 +153,8 @@ public class TranslatorFacade {
             if (origin == null || "".equals(origin)) return null;
             // facade处理开始
 //            ModuleMediator.getInstance().facadeCallStart();
-            EventBus.getDefault().post(new TranslatorFacadeEvent(true));
-
+            facadeEvent.start();
+            EventBus.getDefault().post(facadeEvent);
 
             String translation = null;
             try {
@@ -173,15 +165,15 @@ public class TranslatorFacade {
                 // lastOrigin = processedOrigin;
                 translation = translatorFactory.translate(processedOrigin);
                 // 后置处理
-                translation = textPostProcessor.process(processedOrigin,translation);
+                translation = textPostProcessor.process(processedOrigin, translation);
                 // 记录翻译历史
                 history.addHistory(processedOrigin, translation);
                 translation = afterProcessor.process(translation);
             } catch (NullPointerException e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
-            }finally {
-//                ModuleMediator.getInstance().facadeCallEnd();
-                EventBus.getDefault().post(new TranslatorFacadeEvent(false));
+            } finally {
+                facadeEvent.end();
+                EventBus.getDefault().post(facadeEvent);
             }
             return translation;
         }

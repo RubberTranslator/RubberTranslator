@@ -1,10 +1,10 @@
 package com.rubbertranslator.controller;
 
 import com.rubbertranslator.App;
-import com.rubbertranslator.modules.TranslatorFacade;
+import com.rubbertranslator.event.ClipboardContentInputEvent;
+import com.rubbertranslator.event.TranslateCompleteEvent;
 import com.rubbertranslator.event.TranslatorFacadeEvent;
 import com.rubbertranslator.modules.history.HistoryEntry;
-import com.rubbertranslator.modules.textinput.TextInputListener;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
@@ -12,6 +12,7 @@ import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -47,7 +48,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/6 20:49
  */
-public class MainController implements TranslatorFacade.TranslatorFacadeListener, TextInputListener {
+public class MainController {
 
     @FXML
     private AnchorPane rootPane;
@@ -174,10 +175,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     }
 
     private void initListeners() {
-        // 注册文本变化监听
-        SystemResourceManager.getClipboardListenerThread().setTextInputListener(this);
-        // 注册翻译完成监听
-        SystemResourceManager.getFacade().setFacadeListener(this);
         // 注册翻译事件模型
         EventBus.getDefault().register(this);
     }
@@ -188,6 +185,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void translatorFacadeEvent(TranslatorFacadeEvent event) {
+        if(event == null) return;
         Platform.runLater(()->{
             if(event.isProcessStart()){ // 处理开始
                 translateBt.setText("翻译中");
@@ -619,8 +617,6 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     /**
      * 帮助设置
      */
-
-
     private void initHelpingMenu() {
         //
         homePage.setOnAction((actionEvent) ->
@@ -659,6 +655,7 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
     private void switchToFocusMode(MouseEvent event) {
         try {
             App.setRoot(ControllerConstant.FOCUS_CONTROLLER_FXML);
+            EventBus.getDefault().unregister(this);
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "专注模式打开失败", e);
         }
@@ -720,29 +717,32 @@ public class MainController implements TranslatorFacade.TranslatorFacadeListener
         SystemResourceManager.getFacade().process(text);
     }
 
-    @Override
-    public void onTextInput(String text) {
-        processTranslate(text);
-    }
 
-    @Override
-    public void onImageInput(Image image) {
-        try {
-            String text = OCRUtils.ocr(image);
-            if (text != null) {
-                onTextInput(text);
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onClipboardContentInput(ClipboardContentInputEvent event){
+        if (event == null) return;
+        if(event.isTextType()){
+            processTranslate(event.getText());
+        }else{
+            try {
+                String text = OCRUtils.ocr(event.getImage());
+                if (text != null) {
+                    processTranslate(text);
+                }
+            } catch (IOException e) {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
             }
-        } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
         }
     }
 
-    @Override
-    public void onComplete(String origin, String translation) {
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onComplete(TranslateCompleteEvent event) {
+        if (event == null) return;
         // 不管从哪里会回调，回到UI线程
-        Logger.getLogger(this.getClass().getName()).info("facade处理结束，准备显示到UI");
         Platform.runLater(() -> {
-            updateTextArea(origin, translation);
+            updateTextArea(event.getOrigin(), event.getTranslation());
         });
     }
+
+
 }

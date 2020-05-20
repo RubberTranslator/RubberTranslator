@@ -21,7 +21,6 @@ open module rubbertranslator {
     requires eventbus;
 
     exports com.rubbertranslator;
-    exports com.rubbertranslator.modules.textinput;
     exports com.rubbertranslator.modules.filter;
     exports com.rubbertranslator.modules.textprocessor.pre;
     exports com.rubbertranslator.modules.textprocessor.post;
@@ -29,4 +28,5 @@ open module rubbertranslator {
     exports com.rubbertranslator.modules.history;
     exports com.rubbertranslator.modules.afterprocess;
     exports com.rubbertranslator.system;
+    exports com.rubbertranslator.event;
 }

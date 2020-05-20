@@ -241,11 +241,9 @@ public class SystemResourceManager {
         ProcessFilter processFilter = new ProcessFilter();
         processFilter.setOpen(configuration.isOpenProcessFilter());
         processFilter.addFilterList(configuration.getProcessList());
-        activeWindowListenerThread = new WindowsPlatformActiveWindowListenerThread(processFilter);
-
         // 装载过滤器到剪切板监听线程
         clipboardListenerThread.setProcessFilter(processFilter);
-
+        activeWindowListenerThread = new WindowsPlatformActiveWindowListenerThread();
         activeWindowListenerThread.start();
         return true;
     }

@@ -1,5 +1,10 @@
 package com.rubbertranslator.modules.filter;
 
+import com.rubbertranslator.event.ActiveWindowChangeEvent;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,11 +15,16 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/7 12:48
  */
-public class ProcessFilter implements ActiveWindowListener {
+public class ProcessFilter {
     // 当前进程名
     private String currentProcess = "";
     // 是否打开过滤器
     private boolean open = true;
+
+    public ProcessFilter() {
+        // 注册消息监听（这里监听active window)
+        EventBus.getDefault().register(this);
+    }
 
     public boolean isOpen() {
         return open;
@@ -45,12 +55,12 @@ public class ProcessFilter implements ActiveWindowListener {
         this.filterList.addAll(list);
     }
 
-    public void setFilterList(Collection<String> list){
+    public void setFilterList(Collection<String> list) {
         // xxx: 暴力清除，性能降低
         filterList.clear();
         addFilterList(list);
         Logger.getLogger(this.getClass().getName()).info("set filter list");
-        Logger.getLogger(this.getClass().getName()).info("过滤器打开："+open);
+        Logger.getLogger(this.getClass().getName()).info("过滤器打开：" + open);
     }
 
 
@@ -61,12 +71,13 @@ public class ProcessFilter implements ActiveWindowListener {
      * false 不过滤
      */
     public boolean check() {
-        if(!open) return false; // 没打开，不需要过滤
+        if (!open) return false; // 没打开，不需要过滤
         return filterList.contains(currentProcess);
     }
 
-    @Override
-    public void onActiveWindowChanged(String processName) {
-        currentProcess = processName;
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onActiveWindowChanged(ActiveWindowChangeEvent event) {
+        if(event == null) return;
+        currentProcess = event.getCurrentProcessName();
     }
 }

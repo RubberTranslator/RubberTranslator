@@ -1,9 +1,11 @@
 package com.rubbertranslator.modules.filter;
 
+import com.rubbertranslator.event.ActiveWindowChangeEvent;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.ptr.PointerByReference;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.logging.Logger;
 
@@ -12,33 +14,24 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread {
     private static final int MAX_TITLE_LENGTH = 1024;
     // 线程是否需要退出
     private volatile boolean stop = false;
-    // windowChange 监听器
-    private ActiveWindowListener activeWindowListener;
 
-    public WindowsPlatformActiveWindowListenerThread(ActiveWindowListener listener) {
+    public WindowsPlatformActiveWindowListenerThread() {
         setName("ActiveWindowListener Thread");
-        this.activeWindowListener = listener;
     }
 
-    public void setActiveWindowListener(ActiveWindowListener activeWindowListener) {
-        this.activeWindowListener = activeWindowListener;
-    }
 
 
     @Override
     public void run() {
         String lastProcess = "";
-        long lastChange = System.currentTimeMillis();
+        ActiveWindowChangeEvent activeWindowChangeEvent = new ActiveWindowChangeEvent();
         while (!stop) {
             String currentProcess = getActiveWindowProcess();
             if (!lastProcess.equals(currentProcess)) {
-                long change = System.currentTimeMillis();
-                long time = (change - lastChange) / 1000;
-                lastChange = change;
                 lastProcess = currentProcess;
-                if (activeWindowListener != null) {
-                    activeWindowListener.onActiveWindowChanged(lastProcess);
-                }
+                // 推送active windows变化消息
+                activeWindowChangeEvent.setCurrentProcessName(lastProcess);
+                EventBus.getDefault().post(activeWindowChangeEvent);
             }
             try {
                 // XXX:浪费CPU时间
