@@ -11,132 +11,119 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.image.BufferedImage;
+import java.awt.datatransfer.*;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
-
-public class ClipboardListenerThread extends Thread {
+public class ClipboardListenerThread extends Thread implements ClipboardOwner {
     // 系统剪切板
     private final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-
-    // 程序终止
-    private volatile boolean exit = false;
+    // blocker用于线程保活
+    private final Blocker blocker = new Blocker();
     // 程序暂停
     private volatile boolean running = true;
-    private final Object blocker = new Object();
-
+    // 动态等待时间
+    private long waitTime = 50;
+    // 跳过本次变化监听
+    private boolean ignoreThisTime = false;
+    // 消息通知事件
+    private final ClipboardContentInputEvent textInputEvent = new ClipboardContentInputEvent();
     // 过滤器
     private ProcessFilter processFilter;
 
-    public ProcessFilter getProcessFilter() {
-        return processFilter;
-    }
-
-    // 跳过本次监听变化
-    private boolean ignoreThisTime = false;
-
-    public void setProcessFilter(ProcessFilter processFilter) {
-        this.processFilter = processFilter;
-    }
 
     public ClipboardListenerThread() {
         setName("Clipboard Thread");
     }
 
-    private void init(){
-        EventBus.getDefault().register(this);
+    @Override
+    public void run() {
+        init();
+        blocker.keepAlive();
+        destroy();
+        Logger.getLogger(this.getClass().getName()).info("ClipBoard exit");
     }
 
-    private void destroy(){
+    private void init() {
+        // 注册消息监听
+        EventBus.getDefault().register(this);
+        // 初始化剪切板监听
+        Transferable trans = clipboard.getContents(this);
+        clipboard.setContents(trans, this);
+    }
+
+    private void destroy() {
         EventBus.getDefault().unregister(this);
     }
 
     @Override
-    public void run() {
-        init();
-        final long minWaitTime = 100;
+    public void lostOwnership(Clipboard c, Transferable t) {
+        Transferable contents;
+        // 循环require clipboard owner
+        boolean required = false;
+        final long minWaitTime = 50;
         final long maxWaitTime = 3000;
-        // 动态等待时间
-        long waitTime = minWaitTime;
-        String initialText = "";
-        Image initialImage = new BufferedImage(1, 1, TYPE_INT_RGB);
-        // 通知事件Event
-        ClipboardContentInputEvent textInputEvent = new ClipboardContentInputEvent();
-        // 剪切板内容对象
-        Transferable t;
-        while (!exit) {
+        while (!required) {
             try {
-                // xxx:怎么避免浪费CPU时间？
+                //waiting e.g for loading huge elements like word's etc.
                 Thread.sleep(waitTime);
-                if (!running){  // 暂停
-                    synchronized (blocker){
-                        blocker.wait();
-                    }
+                contents = clipboard.getContents(null);
+                clipboard.setContents(contents, this);
+                required = true;
+                // 忽略条件只能在成为剪切板owner后判定，否则无法继续监听剪切板
+                if (!running) {
+                    break;
                 }
-
-                t = clipboard.getContents(null);
-                // XXX: 下面的代码判断重复多余，但是尚未找到好的方法来区别不同的Transferable
-                if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                    String paste = (String) t.getTransferData(DataFlavor.stringFlavor);
-                    if (!Objects.equals(paste, initialText)) {
-                        initialText = paste;
-                        // 本次忽略
-                        if(ignoreThisTime){
-                            ignoreThisTime = false;
-                        }else{
-                            // 正常流程
-                            // 过滤器
-                            if(processFilter!=null && !processFilter.check()){
-                                textInputEvent.setText(paste);
-                                EventBus.getDefault().post(textInputEvent);
-                            }
-                        }
-                    }
-                } else if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-                    Image paste = (Image) t.getTransferData(DataFlavor.imageFlavor);
-                    if ((paste.getWidth(null) != initialImage.getWidth(null)
-                            || paste.getHeight(null) != initialImage.getHeight(null))) {
-                        initialImage = paste;
-
-                        if(ignoreThisTime){
-                            ignoreThisTime = false;
-                        }else{
-                            if(processFilter!=null && !processFilter.check()){
-                                textInputEvent.setImage(paste);
-                                EventBus.getDefault().post(textInputEvent);
-                            }
-                        }
-                    }
+                if (ignoreThisTime) {
+                    ignoreThisTime = false;
+                    break;
                 }
-
-            } catch (InterruptedException | IllegalStateException | UnsupportedFlavorException | IOException e) {
-                Logger.getLogger(ClipboardListenerThread.class.getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
+                processClipboard(contents);
+            } catch (Exception e) {
                 if (waitTime < maxWaitTime) {
                     waitTime += 100;  // 增加100ms等待时间
                 }
+                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
             } finally {
                 if (waitTime > minWaitTime) {
                     waitTime -= 10;   // 减少10ms等待时间
                 }
             }
         }
-        destroy();
-        Logger.getLogger(this.getClass().getName()).info("ClipBoard exit");
     }
 
-    public void setRun(boolean run){
-        if(run){
+    private void processClipboard(Transferable t) throws IOException, UnsupportedFlavorException {
+        if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+            String paste = (String) t.getTransferData(DataFlavor.stringFlavor);
+            if (processFilter != null && !processFilter.check()) {
+                textInputEvent.setText(paste);
+                EventBus.getDefault().post(textInputEvent);
+            }
+        } else if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+            Image paste = (Image) t.getTransferData(DataFlavor.imageFlavor);
+            if (processFilter != null && !processFilter.check()) {
+                textInputEvent.setImage(paste);
+                EventBus.getDefault().post(textInputEvent);
+            }
+        }
+    }
+
+    public void setProcessFilter(ProcessFilter processFilter) {
+        this.processFilter = processFilter;
+    }
+
+    public ProcessFilter getProcessFilter() {
+        return processFilter;
+    }
+
+
+    public void setRun(boolean run) {
+        if (run) {
             resumeRun();
-        }else{
+        } else {
             pause();
         }
     }
@@ -147,28 +134,27 @@ public class ClipboardListenerThread extends Thread {
 
     private void resumeRun() {
         running = true;
-        synchronized (blocker){
-            blocker.notify();
-        }
     }
 
     public void exit() {
-        exit = true;
+        System.out.println("blocker dead");
+        blocker.dead();
     }
 
     /**
      * translatorProcessEvent事件接收 翻译过程开始或结束
+     *
      * @param event translatorEvent事件接收
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void translatorProcessEvent(TranslatorProcessEvent event) {
         if (event == null) return;
-        if(event.isProcessStart()){
+        if (event.isProcessStart()) {
             pause();    // 事件处理开始，暂停接收新变化
-        }else{
-            if(SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().isAutoCopy()){
+        } else {
+            if (SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().isAutoCopy()) {
                 // 如果当前系统开启自动复制，必须忽略本次剪切板变化，避免重复翻译
-                ignoreThisTime=true;
+                ignoreThisTime = true;
             }
             resumeRun();
         }
@@ -176,11 +162,30 @@ public class ClipboardListenerThread extends Thread {
 
     /**
      * 用户复制原文或译文时，为了避免重复翻译，监听线程需要忽略本次剪切板变化
+     *
      * @param event 复制原文或译文事件
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void triggerIgnoreThisTime(CopyOriginOrTranslationEvent event) {
-        if(event == null) return;
+        if (event == null) return;
         ignoreThisTime = true;
+    }
+
+
+    /**
+     * 阻塞器，用于线程保活
+     */
+    private static class Blocker {
+        public synchronized void keepAlive() {
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public synchronized void dead() {
+            this.notify();
+        }
     }
 }
