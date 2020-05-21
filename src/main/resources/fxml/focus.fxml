@@ -18,7 +18,7 @@
       <FlowPane columnHalignment="CENTER" hgap="5.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0">
          <children>
             <Button fx:id="backBt" mnemonicParsing="false" text="返回" />
-            <Button fx:id="translateBt" mnemonicParsing="false" onAction="#onBtnTranslateClick" text="翻译" />
+            <Button fx:id="translateBt" mnemonicParsing="false" text="翻译" />
             <ToggleButton fx:id="googleTranslator" mnemonicParsing="false" text="谷歌" textAlignment="CENTER">
                <toggleGroup>
                   <ToggleGroup fx:id="translatorGroup" />
@@ -31,6 +31,7 @@
             <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条" />
             <Button fx:id="clearBt" mnemonicParsing="false" text="清空" />
             <ToggleButton fx:id="keepStageTopBt" mnemonicParsing="false" text="置顶" />
+            <Button fx:id="displayTextBt" mnemonicParsing="false" text="显示原文" />
             <Button fx:id="copyOriginBt" mnemonicParsing="false" text="复制原文" />
             <Button fx:id="copyTranslationBt" mnemonicParsing="false" text="复制译文" />
             <ToggleButton fx:id="autoCopyMenu" mnemonicParsing="false" text="自动复制" />

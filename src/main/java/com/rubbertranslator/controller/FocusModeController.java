@@ -21,7 +21,6 @@ import javafx.scene.layout.VBox;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -82,9 +81,15 @@ public class FocusModeController implements EventHandler<ActionEvent> {
     @FXML   // 清空
     private Button clearBt;
 
-    @FXML
+    @FXML   // 显示文本： 显示原文或者显示译文
+    private Button displayTextBt;
+
+    private final String showOrigin = "显示原文";
+    private final String showTranslation = "显示译文";
+
+    @FXML   // 复制原文
     private Button copyOriginBt;
-    @FXML
+    @FXML   // 复制译文
     private Button copyTranslationBt;
 
     /**
@@ -105,10 +110,10 @@ public class FocusModeController implements EventHandler<ActionEvent> {
     /**
      * 回显
      */
-    private void initViewsDisplay(){
+    private void initViewsDisplay() {
         SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
         // 样式加载
-        try{
+        try {
             // 回显
             String path = configurationProxy.getUiConfig().getStyleCssPath();
             if (path != null) {
@@ -117,8 +122,8 @@ public class FocusModeController implements EventHandler<ActionEvent> {
                     rootPane.getStylesheets().setAll(file.toURI().toURL().toString());
                 }
             }
-        }catch (MalformedURLException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getLocalizedMessage(),e);
+        } catch (MalformedURLException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
         }
 
 
@@ -168,9 +173,11 @@ public class FocusModeController implements EventHandler<ActionEvent> {
         clipboardListenerMenu.setOnAction(this);
         dragCopyMenu.setOnAction(this);
         textFormatMenu.setOnAction(this);
+        translateBt.setOnAction(this);
+        displayTextBt.setOnAction(this);
     }
 
-    private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue){
+    private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
         SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
         if (newValue == googleTranslator) {
             translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
@@ -178,78 +185,144 @@ public class FocusModeController implements EventHandler<ActionEvent> {
             translatorConfig.setCurrentTranslator(TranslatorType.BAIDU);
         } else if (newValue == youdaoTranslator) {
             translatorConfig.setCurrentTranslator(TranslatorType.YOUDAO);
-        }else{
+        } else {
             // 走到这个分支，说明用户点击了当前已经选中的按钮
             oldValue.setSelected(true);
         }
     }
 
-    public void switchToMainController(){
+    public void switchToMainController() {
         try {
-            App.setRoot(ControllerConstant.MAIN_CONTROLLER_FXML);
+            App.setRoot(ControllerFxmlPath.MAIN_CONTROLLER_FXML);
             EventBus.getDefault().unregister(this);
         } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"切换主界面失败",e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "切换主界面失败", e);
         }
     }
 
     @Override
     public void handle(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
-        if(source == backBt){
+        if (source == backBt) {   // 返回
             switchToMainController();
-        }else if(source == clearBt){
-            updateTextArea("");
-            SystemResourceManager.getFacade().clear();
-        } else if(source == keepStageTopBt){
-            App.setKeepTop(keepStageTopBt.isSelected());
-            SystemResourceManager.getConfigurationProxy().getUiConfig().setKeepTop(keepStageTopBt.isSelected());
-        }else if(source == incrementalCopyMenu){
-             SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected());
-        }else if(source == preHistoryBt){
-            HistoryEntry previous = SystemResourceManager.getFacade().getHistory().previous();
-            if(previous!=null){
-                updateTextArea(previous.getTranslation());
-            }
-        }else if(source == nextHistoryBt){
-            HistoryEntry next = SystemResourceManager.getFacade().getHistory().next();
-            if(next != null){
-                updateTextArea(next.getTranslation());
-            }
-        }else if(source == autoCopyMenu){
-            if(!autoCopyMenu.isSelected()){
-                autoPasteMenu.setSelected(false);
-                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(false);
-            }
-            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(autoCopyMenu.isSelected());
-        }else if(source == autoPasteMenu){
-            // 自动粘贴依赖于自动复制
-            if(autoPasteMenu.isSelected()){
-                autoCopyMenu.setSelected(true);
-                SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
-            }
-            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
-        }else if(source == textFormatMenu){
-            SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setTryToFormat(textFormatMenu.isSelected());
-        }
-        else if(source == copyOriginBt){
+        } else if (source == clearBt) {    // 清空文本
+            clearText();
+        } else if (source == keepStageTopBt) {    // 置顶
+            keepTop(keepStageTopBt.isSelected());
+        } else if (source == incrementalCopyMenu) {    // 增量复制
+            incrementCopy(incrementalCopyMenu.isSelected());
+        } else if (source == preHistoryBt) {       // 前一个历史
+            previousHistory();
+        } else if (source == nextHistoryBt) {  // 后一个历史
+            nextHistory();
+        } else if (source == autoCopyMenu) {   // 自动复制
+            autoCopy(autoCopyMenu.isSelected());
+        } else if (source == autoPasteMenu) {  // 自动粘贴
+            autoPaste(autoPasteMenu.isSelected());
+        } else if (source == textFormatMenu) { // 文本格式化
+            textFormat(textFormatMenu.isSelected());
+        } else if (source == copyOriginBt) {    // 复制原文
             copyOriginText();
-        }else if(source == copyTranslationBt){
+        } else if (source == copyTranslationBt) {  // 复制译文
             copyTranslationText();
-        } else if(source == clipboardListenerMenu){
-            SystemResourceManager.getConfigurationProxy().getTextInputConfig().setOpenClipboardListener(clipboardListenerMenu.isSelected());
-        }else if(source == dragCopyMenu){
-            SystemResourceManager.getConfigurationProxy().getTextInputConfig().setDragCopy(dragCopyMenu.isSelected());
+        } else if (source == clipboardListenerMenu) { // 剪切板
+            clipboardListenerSwitch(clipboardListenerMenu.isSelected());
+        } else if (source == dragCopyMenu) {   // 拖拽复制
+            dragCopyListenerSwitch(dragCopyMenu.isSelected());
+        } else if (source == translateBt) {    // 翻译
+            triggerTranslate();
+        } else if (source == displayTextBt) {    // 文本显示
+            displayText();
         }
     }
 
-    private void copyOriginText(){
+    private void triggerTranslate(){
+        String originText = textArea.getText();
+        processTranslate(originText);
+    }
+
+    private void clipboardListenerSwitch(boolean open) {
+        SystemResourceManager.getConfigurationProxy().getTextInputConfig().setOpenClipboardListener(open);
+    }
+
+    private void dragCopyListenerSwitch(boolean open) {
+        SystemResourceManager.getConfigurationProxy().getTextInputConfig().setDragCopy(open);
+    }
+
+    private void clearText() {
+        updateTextArea("");
+        SystemResourceManager.getFacade().clear();
+    }
+
+    private void keepTop(boolean isKeep) {
+        App.setKeepTop(isKeep);
+        SystemResourceManager.getConfigurationProxy().getUiConfig().setKeepTop(keepStageTopBt.isSelected());
+    }
+
+    private void incrementCopy(boolean openIncrementCopy) {
+        SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(openIncrementCopy);
+    }
+
+    private void previousHistory() {
+        HistoryEntry previous = SystemResourceManager.getFacade().getHistory().previous();
+        if (previous != null) {
+            updateTextArea(previous.getTranslation());
+        }
+    }
+
+    private void nextHistory() {
+        HistoryEntry next = SystemResourceManager.getFacade().getHistory().next();
+        if (next != null) {
+            updateTextArea(next.getTranslation());
+        }
+    }
+
+    private void autoCopy(boolean open) {
+        if (!autoCopyMenu.isSelected()) {
+            autoPasteMenu.setSelected(false);
+            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(false);
+        }
+        SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(open);
+    }
+
+    private void autoPaste(boolean open) {
+        // 自动粘贴依赖于自动复制
+        if (autoPasteMenu.isSelected()) {
+            autoCopyMenu.setSelected(true);
+            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
+        }
+        SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(open);
+    }
+
+    private void textFormat(boolean open) {
+        SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setTryToFormat(open);
+    }
+
+    private void displayText() {
+        HistoryEntry currentHistoryEntry = SystemResourceManager.getFacade().getHistory().current();
+        if(currentHistoryEntry == null) return;
+
+        final String currentState = displayTextBt.getText();
+
+        if (showOrigin.equals(currentState)) {
+            textArea.setText(currentHistoryEntry.getOrigin());
+            // 下一个状态
+            displayTextBt.setText(showTranslation);
+        } else if (showTranslation.equals(currentState)) {
+            textArea.setText(currentHistoryEntry.getTranslation());
+            // 下一个状态
+            displayTextBt.setText(showOrigin);
+        }
+    }
+
+
+    private void copyOriginText() {
         EventBus.getDefault().post(new CopyOriginOrTranslationEvent());
         HistoryEntry current = SystemResourceManager.getFacade().getHistory().current();
         CopyRobot.getInstance().copyText(current.getOrigin());
     }
 
-    private void copyTranslationText(){
+    private void copyTranslationText() {
         EventBus.getDefault().post(new CopyOriginOrTranslationEvent());
         HistoryEntry current = SystemResourceManager.getFacade().getHistory().current();
         CopyRobot.getInstance().copyText(current.getTranslation());
@@ -259,36 +332,35 @@ public class FocusModeController implements EventHandler<ActionEvent> {
         SystemResourceManager.getFacade().process(text);
     }
 
-    private void updateTextArea(String translation){
+    private void updateTextArea(String translation) {
         textArea.setText(translation);
-    }
-
-    @FXML
-    public void onBtnTranslateClick() {
-        String originText = textArea.getText();
-        processTranslate(originText);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void translatorFacadeEvent(TranslatorProcessEvent event) {
-        if(event == null) return;
-        Platform.runLater(()->{
-            if(event.isProcessStart()){ // 处理开始
+        if (event == null) return;
+        Platform.runLater(() -> {
+            if (event.isProcessStart()) { // 处理开始
 //                translateBt.setText("翻译中");
                 translateBt.setDisable(true);
-            }else{      // 处理结束
+                displayTextBt.setDisable(true);
+            } else {      // 处理结束
                 translateBt.setText("翻译");
                 translateBt.setDisable(false);
+
+                // displayBt reinitialize
+                displayTextBt.setText(showOrigin);
+                displayTextBt.setDisable(false);
             }
         });
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onClipboardContentInput(ClipboardContentInputEvent event){
+    public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null) return;
-        if(event.isTextType()){
+        if (event.isTextType()) {
             processTranslate(event.getText());
-        }else{
+        } else {
             try {
                 String text = OCRUtils.ocr(event.getImage());
                 if (text != null) {
@@ -304,8 +376,6 @@ public class FocusModeController implements EventHandler<ActionEvent> {
     public void onComplete(TranslateCompleteEvent event) {
         if (event == null) return;
         // 不管从哪里会回调，回到UI线程
-        Platform.runLater(() -> {
-            updateTextArea(event.getTranslation());
-        });
+        Platform.runLater(() -> updateTextArea(event.getTranslation()));
     }
 }

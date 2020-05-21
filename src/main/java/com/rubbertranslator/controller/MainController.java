@@ -562,7 +562,7 @@ public class MainController {
             filterMenu.setOnAction((actionEvent -> {
                 try {
                     Stage stage = new Stage();
-                    Scene scene = new Scene(App.loadFXML(ControllerConstant.FILTER_CONTROLLER_FXML));
+                    Scene scene = new Scene(App.loadFXML(ControllerFxmlPath.FILTER_CONTROLLER_FXML));
                     stage.initOwner(rootPane.getScene().getWindow());
                     stage.setScene(scene);
                     stage.show();
@@ -576,7 +576,7 @@ public class MainController {
             translationWordsReplacerMenu.setOnAction((actionEvent -> {
                 try {
                     Stage stage = new Stage();
-                    Scene scene = new Scene(App.loadFXML(ControllerConstant.WORDS_REPLACER_CONTROLLER_FXML));
+                    Scene scene = new Scene(App.loadFXML(ControllerFxmlPath.WORDS_REPLACER_CONTROLLER_FXML));
                     stage.initOwner(rootPane.getScene().getWindow());
                     stage.setScene(scene);
                     stage.show();
@@ -653,7 +653,7 @@ public class MainController {
 
     private void switchToFocusMode(MouseEvent event) {
         try {
-            App.setRoot(ControllerConstant.FOCUS_CONTROLLER_FXML);
+            App.setRoot(ControllerFxmlPath.FOCUS_CONTROLLER_FXML);
             EventBus.getDefault().unregister(this);
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "专注模式打开失败", e);

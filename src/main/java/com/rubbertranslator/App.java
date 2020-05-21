@@ -1,6 +1,6 @@
 package com.rubbertranslator;
 
-import com.rubbertranslator.controller.ControllerConstant;
+import com.rubbertranslator.controller.ControllerFxmlPath;
 import com.rubbertranslator.system.SystemResourceManager;
 import it.sauronsoftware.junique.AlreadyLockedException;
 import it.sauronsoftware.junique.JUnique;
@@ -42,7 +42,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         Logger.getLogger(this.getClass().getName()).info("程序启动");
         appStage = stage;
-        appScene = new Scene(loadFXML(ControllerConstant.MAIN_CONTROLLER_FXML));
+        appScene = new Scene(loadFXML(ControllerFxmlPath.MAIN_CONTROLLER_FXML));
         stage.setScene(appScene);
         stage.show();
     }
@@ -59,10 +59,10 @@ public class App extends Application {
 
     public static void resizeStage(){
         // xxx:写得不太好，可进行优化
-        if(ControllerConstant.FOCUS_CONTROLLER_FXML.equals(currentContentRoot)){
+        if(ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(currentContentRoot)){
             appStage.setWidth(660);
             appStage.setHeight(400);
-        }else if(ControllerConstant.MAIN_CONTROLLER_FXML.equals(currentContentRoot)){
+        }else if(ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(currentContentRoot)){
             appStage.setWidth(800);
             appStage.setHeight(600);
         }
