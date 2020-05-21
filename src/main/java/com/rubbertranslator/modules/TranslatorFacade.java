@@ -2,7 +2,7 @@ package com.rubbertranslator.modules;
 
 import com.rubbertranslator.event.TranslateCompleteEvent;
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
-import com.rubbertranslator.event.TranslatorFacadeEvent;
+import com.rubbertranslator.event.TranslatorProcessEvent;
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
 import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
@@ -37,7 +37,7 @@ public class TranslatorFacade {
     // 创建线程池（使用了预定义的配置）
     private final ExecutorService executor;
     // 翻译过程管理事件
-    private final TranslatorFacadeEvent facadeEvent = new TranslatorFacadeEvent();
+    private final TranslatorProcessEvent translatorProcessEvent = new TranslatorProcessEvent();
     // 翻译完成事件
     private final TranslateCompleteEvent translateCompleteEvent = new TranslateCompleteEvent();
 
@@ -153,8 +153,8 @@ public class TranslatorFacade {
             if (origin == null || "".equals(origin)) return null;
             // facade处理开始
 //            ModuleMediator.getInstance().facadeCallStart();
-            facadeEvent.start();
-            EventBus.getDefault().post(facadeEvent);
+            translatorProcessEvent.start();
+            EventBus.getDefault().post(translatorProcessEvent);
 
             String translation = null;
             try {
@@ -172,8 +172,8 @@ public class TranslatorFacade {
             } catch (NullPointerException e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
             } finally {
-                facadeEvent.end();
-                EventBus.getDefault().post(facadeEvent);
+                translatorProcessEvent.end();
+                EventBus.getDefault().post(translatorProcessEvent);
             }
             return translation;
         }

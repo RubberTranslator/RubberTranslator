@@ -2,7 +2,8 @@ package com.rubbertranslator.modules.textinput.clipboard;
 
 
 import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.event.TranslatorFacadeEvent;
+import com.rubbertranslator.event.CopyOriginOrTranslationEvent;
+import com.rubbertranslator.event.TranslatorProcessEvent;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.system.SystemResourceManager;
 import org.greenrobot.eventbus.EventBus;
@@ -70,6 +71,8 @@ public class ClipboardListenerThread extends Thread {
         Image initialImage = new BufferedImage(1, 1, TYPE_INT_RGB);
         // 通知事件Event
         ClipboardContentInputEvent textInputEvent = new ClipboardContentInputEvent();
+        // 剪切板内容对象
+        Transferable t;
         while (!exit) {
             try {
                 // xxx:怎么避免浪费CPU时间？
@@ -80,7 +83,7 @@ public class ClipboardListenerThread extends Thread {
                     }
                 }
 
-                Transferable t = clipboard.getContents(null);
+                t = clipboard.getContents(null);
                 // XXX: 下面的代码判断重复多余，但是尚未找到好的方法来区别不同的Transferable
                 if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                     String paste = (String) t.getTransferData(DataFlavor.stringFlavor);
@@ -154,11 +157,11 @@ public class ClipboardListenerThread extends Thread {
     }
 
     /**
-     * translatorEvent事件接收
+     * translatorProcessEvent事件接收 翻译过程开始或结束
      * @param event translatorEvent事件接收
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void translatorFacadeEvent(TranslatorFacadeEvent event) {
+    public void translatorProcessEvent(TranslatorProcessEvent event) {
         if (event == null) return;
         if(event.isProcessStart()){
             pause();    // 事件处理开始，暂停接收新变化
@@ -169,5 +172,15 @@ public class ClipboardListenerThread extends Thread {
             }
             resumeRun();
         }
+    }
+
+    /**
+     * 用户复制原文或译文时，为了避免重复翻译，监听线程需要忽略本次剪切板变化
+     * @param event 复制原文或译文事件
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void triggerIgnoreThisTime(CopyOriginOrTranslationEvent event) {
+        if(event == null) return;
+        ignoreThisTime = true;
     }
 }

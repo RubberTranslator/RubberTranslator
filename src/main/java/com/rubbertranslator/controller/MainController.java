@@ -3,16 +3,15 @@ package com.rubbertranslator.controller;
 import com.rubbertranslator.App;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.TranslateCompleteEvent;
-import com.rubbertranslator.event.TranslatorFacadeEvent;
+import com.rubbertranslator.event.TranslatorProcessEvent;
 import com.rubbertranslator.modules.history.HistoryEntry;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
-import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.modules.config.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -184,7 +183,7 @@ public class MainController {
      * @param event translatorEvent事件接收
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void translatorFacadeEvent(TranslatorFacadeEvent event) {
+    public void translatorFacadeEvent(TranslatorProcessEvent event) {
         if(event == null) return;
         Platform.runLater(()->{
             if(event.isProcessStart()){ // 处理开始

@@ -1,6 +1,6 @@
 package com.rubbertranslator.controller;
 
-import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.modules.config.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;

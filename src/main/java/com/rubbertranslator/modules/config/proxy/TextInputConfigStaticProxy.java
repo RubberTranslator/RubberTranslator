@@ -1,6 +1,6 @@
-package com.rubbertranslator.system.proxy;
+package com.rubbertranslator.modules.config.proxy;
 
-import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.modules.config.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 

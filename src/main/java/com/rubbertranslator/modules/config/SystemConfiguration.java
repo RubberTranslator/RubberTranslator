@@ -1,4 +1,4 @@
-package com.rubbertranslator.system;
+package com.rubbertranslator.modules.config;
 
 import com.google.gson.annotations.SerializedName;
 import com.rubbertranslator.modules.textprocessor.post.WordsPair;

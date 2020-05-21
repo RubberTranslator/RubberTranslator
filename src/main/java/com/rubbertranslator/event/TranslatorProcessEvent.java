@@ -4,9 +4,9 @@ package com.rubbertranslator.event;
  * @author Raven
  * @version 1.0
  * date  2020/5/20 21:29
- *
+ * 翻译过程事件，表明整个翻译开始和结束
  */
-public class TranslatorFacadeEvent {
+public class TranslatorProcessEvent {
     // 处理开始与否
     private boolean processStart;
 
