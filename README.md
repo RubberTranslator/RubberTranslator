@@ -136,6 +136,8 @@ RubberTranslation也支持历史记录，默认支持10条内的记录，可在�
 
 ![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/MD3Q6XYcnu.gif)
 
+**支持java正则表达式。**
+
 ### 3. 历史记录数量设置
 
 可以设置历史记录的数量，历史记录并不会持久化到硬盘上，每次启动程序都会清空，所有历史记录都会保留在内存中，所以不建议将历史记录数量设置过大。
