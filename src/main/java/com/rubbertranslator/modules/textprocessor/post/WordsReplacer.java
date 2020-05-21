@@ -79,7 +79,7 @@ public class WordsReplacer {
         String result;
         WordType wordType = WordType.checkType(text);
         if (wordType == WordType.SPACE) {
-            src = "\b" + src + "\b";
+            src = "\\b" + src + "\\b";  // 单词边界
         }
         if (!caseInsensitive) {
             result = text.replaceAll("(?i)" + src, dest);
