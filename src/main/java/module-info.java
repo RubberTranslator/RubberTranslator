@@ -19,6 +19,7 @@ open module rubbertranslator {
     requires okhttp3;
     requires junique;
     requires eventbus;
+    requires java.management;
 
     exports com.rubbertranslator;
     exports com.rubbertranslator.modules.filter;

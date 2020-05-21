@@ -203,6 +203,7 @@ public class FocusModeController implements EventHandler<ActionEvent> {
             SystemResourceManager.getFacade().clear();
         } else if(source == keepStageTopBt){
             App.setKeepTop(keepStageTopBt.isSelected());
+            SystemResourceManager.getConfigurationProxy().getUiConfig().setKeepTop(keepStageTopBt.isSelected());
         }else if(source == incrementalCopyMenu){
              SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected());
         }else if(source == preHistoryBt){

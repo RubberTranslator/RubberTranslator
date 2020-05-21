@@ -130,12 +130,10 @@
                     <target>11</target>
                     <release>11</release>
                     <!-- runtime options-->
-<!--                    <options>-->
-<!--                        <option>&#45;&#45;add-opens</option>-->
-<!--                        <option>java.base/java.lang=cglib</option>-->
-<!--                        <option>&#45;&#45;add-opens</option>-->
-<!--                        <option>java.base/jdk.internal.misc=rubbertranslator</option>-->
-<!--                    </options>-->
+                    <options>
+                        <option>--add-opens</option>
+                        <option>java.base/java.lang=cglib</option>
+                    </options>
                     <!--jlink-->
                     <stripDebug>true</stripDebug>
                     <compress>2</compress>
@@ -146,6 +144,10 @@
                     <jlinkZipName>RubberTranslator</jlinkZipName>
                     <mainClass>rubbertranslator/com.rubbertranslator.App</mainClass>
                     <launcher>start</launcher>
+
+                    <!-- extra args -->
+<!--                    <commandlineArgs>-XX:+UseG1GC</commandlineArgs>-->
+<!--                    <commandlineArgs>-Xms60M</commandlineArgs>-->
                 </configuration>
             </plugin>
         </plugins>

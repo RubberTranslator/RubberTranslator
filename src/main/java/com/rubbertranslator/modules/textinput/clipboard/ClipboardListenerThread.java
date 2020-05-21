@@ -137,7 +137,6 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
     }
 
     public void exit() {
-        System.out.println("blocker dead");
         blocker.dead();
     }
 
