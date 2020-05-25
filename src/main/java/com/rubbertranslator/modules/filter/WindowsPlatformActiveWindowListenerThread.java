@@ -2,6 +2,7 @@ package com.rubbertranslator.modules.filter;
 
 import com.rubbertranslator.event.ActiveWindowChangeEvent;
 import com.sun.jna.Native;
+import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.ptr.PointerByReference;
@@ -23,6 +24,9 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread {
 
     @Override
     public void run() {
+        if(!Platform.isWindows()){
+            return;
+        }
         String lastProcess = "";
         ActiveWindowChangeEvent activeWindowChangeEvent = new ActiveWindowChangeEvent();
         while (!stop) {
