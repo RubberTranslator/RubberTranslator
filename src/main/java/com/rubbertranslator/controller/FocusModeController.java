@@ -333,6 +333,58 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
            if(autoHideBt.isSelected()){
                hideWindow();
            }
+    /**
+     * 隐匿模式：show window
+     * 跟随鼠标显示，同时window不能超过界面宽度
+     */
+    private void showWindow(){
+        if(autoHideBt.isSelected())
+        {
+            Stage window  = (Stage) rootPane.getScene().getWindow();
+            // 回到ui线程
+            Platform.runLater(()->{
+                if(currentMouseClickPos!=null)
+                {
+                    double mouseX = currentMouseClickPos.getX()/screenScaleRatio;
+                    double mouseY= currentMouseClickPos.getY()/screenScaleRatio;
+                    double width = window.getWidth();
+                    double height = window.getHeight();
+                    double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+                    double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+                    if(mouseX + width > screenWidth){
+                        mouseX = screenWidth - width - 20;
+                    }
+                    if(mouseY + height > screenHeight){
+                        mouseY = screenHeight - width - 20;
+                    }
+
+                    rootPane.getScene().getWindow().setX(mouseX);
+                    rootPane.getScene().getWindow().setY(mouseY);
+
+                    if(!window.isShowing())
+                    {
+                        window.show();
+                        textArea.requestFocus();
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean focus) {
+        if(!focus){
+           if(autoHideBt.isSelected()){
+               hideWindow();
+           }
+        }
+    }
+
+    @FXML
+    private void onRightMoveAction()
+    {
+    }
+
         }
     }
 
