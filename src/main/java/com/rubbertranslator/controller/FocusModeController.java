@@ -147,7 +147,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
         // 样式加载
         try {
             // 回显
-            String path = configurationProxy.getUiConfig().getStyleCssPath();
+            String path = configurationProxy.getStyleCssPath();
             if (path != null) {
                 File file = new File(path);
                 if (file.exists()) {
@@ -160,9 +160,9 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
 
 
         // 置顶
-        keepStageTopBt.setSelected(configurationProxy.getUiConfig().isKeepTop());
+        keepStageTopBt.setSelected(configurationProxy.isKeepTop());
         // 翻译引擎
-        switch (configurationProxy.getTranslatorConfig().getCurrentTranslator()) {
+        switch (configurationProxy.getCurrentTranslator()) {
             case GOOGLE:
                 googleTranslator.setSelected(true);
                 break;
@@ -174,17 +174,17 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
                 break;
         }
         // 增量
-        incrementalCopyMenu.setSelected(configurationProxy.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
+        incrementalCopyMenu.setSelected(configurationProxy.isIncrementalCopy());
         // 自动复制
-        autoCopyMenu.setSelected(configurationProxy.getAfterProcessorConfig().isAutoCopy());
+        autoCopyMenu.setSelected(configurationProxy.isAutoCopy());
         // 自动粘贴
-        autoPasteMenu.setSelected(configurationProxy.getAfterProcessorConfig().isAutoPaste());
+        autoPasteMenu.setSelected(configurationProxy.isAutoPaste());
         // 监听版
-        clipboardListenerMenu.setSelected(configurationProxy.getTextInputConfig().isOpenClipboardListener());
+        clipboardListenerMenu.setSelected(configurationProxy.isOpenClipboardListener());
         // 拖拽
-        dragCopyMenu.setSelected(configurationProxy.getTextInputConfig().isDragCopy());
+        dragCopyMenu.setSelected(configurationProxy.isDragCopy());
         // 文本格式化
-        textFormatMenu.setSelected(configurationProxy.getTextProcessConfig().getTextPreProcessConfig().isTryToFormat());
+        textFormatMenu.setSelected(configurationProxy.isTryToFormat());
     }
 
     /**
@@ -211,7 +211,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
-        SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
+        SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
         if (newValue == googleTranslator) {
             translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
         } else if (newValue == baiduTranslator) {
@@ -342,11 +342,11 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     }
 
     private void clipboardListenerSwitch(boolean open) {
-        SystemResourceManager.getConfigurationProxy().getTextInputConfig().setOpenClipboardListener(open);
+        SystemResourceManager.getConfigurationProxy().setOpenClipboardListener(open);
     }
 
     private void dragCopyListenerSwitch(boolean open) {
-        SystemResourceManager.getConfigurationProxy().getTextInputConfig().setDragCopy(open);
+        SystemResourceManager.getConfigurationProxy().setDragCopy(open);
     }
 
     private void clearText() {
@@ -356,11 +356,11 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
 
     private void keepTop(boolean isKeep) {
         App.setKeepTop(isKeep);
-        SystemResourceManager.getConfigurationProxy().getUiConfig().setKeepTop(keepStageTopBt.isSelected());
+        SystemResourceManager.getConfigurationProxy().setKeepTop(keepStageTopBt.isSelected());
     }
 
     private void incrementCopy(boolean openIncrementCopy) {
-        SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(openIncrementCopy);
+        SystemResourceManager.getConfigurationProxy().setIncrementalCopy(openIncrementCopy);
     }
 
     private void previousHistory() {
@@ -380,22 +380,22 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     private void autoCopy(boolean open) {
         if (!autoCopyMenu.isSelected()) {
             autoPasteMenu.setSelected(false);
-            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(false);
+            SystemResourceManager.getConfigurationProxy().setAutoPaste(false);
         }
-        SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(open);
+        SystemResourceManager.getConfigurationProxy().setAutoCopy(open);
     }
 
     private void autoPaste(boolean open) {
         // 自动粘贴依赖于自动复制
         if (autoPasteMenu.isSelected()) {
             autoCopyMenu.setSelected(true);
-            SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoCopy(true);
+            SystemResourceManager.getConfigurationProxy().setAutoCopy(true);
         }
-        SystemResourceManager.getConfigurationProxy().getAfterProcessorConfig().setAutoPaste(open);
+        SystemResourceManager.getConfigurationProxy().setAutoPaste(open);
     }
 
     private void textFormat(boolean open) {
-        SystemResourceManager.getConfigurationProxy().getTextProcessConfig().getTextPreProcessConfig().setTryToFormat(open);
+        SystemResourceManager.getConfigurationProxy().setTryToFormat(open);
     }
 
     private void displayText() {

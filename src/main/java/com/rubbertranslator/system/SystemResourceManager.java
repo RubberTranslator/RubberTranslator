@@ -3,12 +3,13 @@ package com.rubbertranslator.system;
 import com.google.gson.Gson;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
+import com.rubbertranslator.modules.config.ConfigProxy;
 import com.rubbertranslator.modules.config.SystemConfiguration;
+import com.rubbertranslator.modules.config.SystemConfigurationStaticProxy;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.log.LoggerManager;
-import com.rubbertranslator.modules.config.proxy.*;
 import com.rubbertranslator.modules.textinput.clipboard.ClipboardListenerThread;
 import com.rubbertranslator.modules.textinput.mousecopy.DragCopyThread;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
@@ -53,8 +54,6 @@ public class SystemResourceManager {
     private SystemResourceManager() {
 
     }
-
-
     public static ExecutorService getExecutor() {
         return executor;
     }
@@ -95,13 +94,13 @@ public class SystemResourceManager {
         facade = new TranslatorFacade();
         // 3. 启动各组件
         // ui配置在controller进行应用
-        return textInputInit(configurationProxy.getTextInputConfig()) &&
-                filterInit(configurationProxy.getProcessFilterConfig()) &&
-                preTextProcessInit(configurationProxy.getTextProcessConfig().getTextPreProcessConfig()) &&
-                postTextProcessInit(configurationProxy.getTextProcessConfig().getTextPostProcessConfig()) &&
-                translatorInit(configurationProxy.getTranslatorConfig()) &&
-                historyInit(configurationProxy.getHistoryConfig()) &&
-                afterProcessorInit(configurationProxy.getAfterProcessorConfig());
+        return textInputInit(configurationProxy) &&
+                filterInit(configurationProxy) &&
+                preTextProcessInit(configurationProxy) &&
+                postTextProcessInit(configurationProxy) &&
+                translatorInit(configurationProxy) &&
+                historyInit(configurationProxy) &&
+                afterProcessorInit(configurationProxy);
     }
 
 
@@ -155,68 +154,15 @@ public class SystemResourceManager {
      * @param configuration 系统配置
      */
     private static SystemConfiguration wrapProxy(SystemConfiguration configuration) {
-        // 文本输入配置
-        TextInputConfigStaticProxy textInputConfigStaticProxy = new TextInputConfigStaticProxy(configuration.getTextInputConfig());
-        SystemConfiguration.TextInputConfig textInputConfigProxy = (SystemConfiguration.TextInputConfig)
-                Enhancer.create(SystemConfiguration.TextInputConfig.class, new ConfigProxy(textInputConfigStaticProxy));
-
-        // 过滤器
-        ProcessFilterConfigStaticProxy processFilterStaticConfig = new ProcessFilterConfigStaticProxy(configuration.getProcessFilterConfig());
-        SystemConfiguration.ProcessFilterConfig processFilterConfigProxy = (SystemConfiguration.ProcessFilterConfig)
-                Enhancer.create(SystemConfiguration.ProcessFilterConfig.class, new ConfigProxy(processFilterStaticConfig));
-
-        // 前置处理
-        TextPreProcessConfigStaticProxy textPreProcessStaticConfig = new TextPreProcessConfigStaticProxy(configuration.getTextProcessConfig().getTextPreProcessConfig());
-        SystemConfiguration.TextProcessConfig.TextPreProcessConfig textPreProcessConfigProxy = (SystemConfiguration.TextProcessConfig.TextPreProcessConfig)
-                Enhancer.create(SystemConfiguration.TextProcessConfig.TextPreProcessConfig.class, new ConfigProxy(textPreProcessStaticConfig));
-        // 后置文本处理
-        /**
-         * FIXME: 降低文本处理的嵌套层级！！！！当前：总->TextProcess->TextPostProcess->WordReplacer
-         * FIXME：改为 总->WordReplacer
-         */
-        // 文本替换处理
-        WordsReplacerConfigStaticProxy wordsReplacerStaticConfig =
-                new WordsReplacerConfigStaticProxy(configuration.getTextProcessConfig().getTextPostProcessConfig().getWordsReplacerConfig());
-        SystemConfiguration.TextProcessConfig.TextPostProcessConfig.WordsReplacerConfig wordsReplacerConfig = (SystemConfiguration.TextProcessConfig.TextPostProcessConfig.WordsReplacerConfig) Enhancer.create(SystemConfiguration.TextProcessConfig.TextPostProcessConfig.WordsReplacerConfig.class,new ConfigProxy(wordsReplacerStaticConfig));
-
-        configuration.getTextProcessConfig().getTextPostProcessConfig().setWordsReplacerConfig(wordsReplacerConfig);
-        TextPostProcessConfigStaticProxy textPostProcessStaticConfig = new TextPostProcessConfigStaticProxy(configuration.getTextProcessConfig().getTextPostProcessConfig());
-        SystemConfiguration.TextProcessConfig.TextPostProcessConfig textPostProcessConfig = (SystemConfiguration.TextProcessConfig.TextPostProcessConfig)
-                Enhancer.create(SystemConfiguration.TextProcessConfig.TextPostProcessConfig.class, new ConfigProxy(textPostProcessStaticConfig));
-
-        // 翻译配置
-        TranslatorConfigStaticProxy translatorStaticConfig = new TranslatorConfigStaticProxy(configuration.getTranslatorConfig());
-        SystemConfiguration.TranslatorConfig translatorConfigProxy = (SystemConfiguration.TranslatorConfig)
-                Enhancer.create(SystemConfiguration.TranslatorConfig.class, new ConfigProxy(translatorStaticConfig));
-
-        // 历史配置
-        HistoryConfigStaticProxy historyStaticConfig = new HistoryConfigStaticProxy(configuration.getHistoryConfig());
-        SystemConfiguration.HistoryConfig historyConfigProxy = (SystemConfiguration.HistoryConfig)
-                Enhancer.create(SystemConfiguration.HistoryConfig.class, new ConfigProxy(historyStaticConfig));
-
-        // 后置处理配置
-        AfterProcessorConfigStaticProxy afterProcessorStaticConfig = new AfterProcessorConfigStaticProxy(configuration.getAfterProcessorConfig());
-        SystemConfiguration.AfterProcessorConfig afterProcessorConfig = (SystemConfiguration.AfterProcessorConfig) Enhancer.create(SystemConfiguration.AfterProcessorConfig.class, new ConfigProxy(afterProcessorStaticConfig));
-
-        // ui配置
-        SystemConfiguration.UIConfig uiConfigProxy = (SystemConfiguration.UIConfig)
-                Enhancer.create(SystemConfiguration.UIConfig.class,new ConfigProxy(configuration.getUiConfig()));
-
-        // 注入
-        configuration.setTextInputConfig(textInputConfigProxy);
-        configuration.setProcessFilterConfig(processFilterConfigProxy);
-        configuration.getTextProcessConfig().setTextPreProcessConfig(textPreProcessConfigProxy);
-        configuration.getTextProcessConfig().setTextPostProcessConfig(textPostProcessConfig);
-        configuration.setTranslatorConfig(translatorConfigProxy);
-        configuration.setHistoryConfig(historyConfigProxy);
-        configuration.setAfterProcessorConfig(afterProcessorConfig);
-        configuration.setUiConfig(uiConfigProxy);
+        SystemConfiguration systemStaticConfig = new SystemConfigurationStaticProxy(configuration);
+        SystemConfiguration systemConfiguration = (SystemConfiguration)
+                Enhancer.create(SystemConfiguration.class, new ConfigProxy(systemStaticConfig));
         Logger.getLogger(SystemConfiguration.class.getName()).info("wrap代理完成");
-        return configuration;
+        return systemConfiguration;
     }
 
 
-    private static boolean textInputInit(SystemConfiguration.TextInputConfig configuration) {
+    private static boolean textInputInit(SystemConfiguration configuration) {
         clipboardListenerThread = new ClipboardListenerThread();
         clipboardListenerThread.setRun(configuration.isOpenClipboardListener());
         dragCopyThread = new DragCopyThread();
@@ -238,7 +184,7 @@ public class SystemResourceManager {
         activeWindowListenerThread.exit();
     }
 
-    private static boolean filterInit(SystemConfiguration.ProcessFilterConfig configuration) {
+    private static boolean filterInit(SystemConfiguration configuration) {
         ProcessFilter processFilter = new ProcessFilter();
         processFilter.setOpen(configuration.isOpenProcessFilter());
         processFilter.addFilterList(configuration.getProcessList());
@@ -249,7 +195,7 @@ public class SystemResourceManager {
         return true;
     }
 
-    private static boolean preTextProcessInit(SystemConfiguration.TextProcessConfig.TextPreProcessConfig preProcessConfig) {
+    private static boolean preTextProcessInit(SystemConfiguration preProcessConfig) {
         TextPreProcessor textPreProcessor = new TextPreProcessor();
         textPreProcessor.setTryToFormat(preProcessConfig.isTryToFormat());
         textPreProcessor.setIncrementalCopy(preProcessConfig.isIncrementalCopy());
@@ -257,16 +203,15 @@ public class SystemResourceManager {
         return true;
     }
 
-    private static boolean postTextProcessInit(SystemConfiguration.TextProcessConfig.TextPostProcessConfig postProcessConfig) {
+    private static boolean postTextProcessInit(SystemConfiguration postProcessConfig) {
         TextPostProcessor textPostProcessor = new TextPostProcessor();
-        textPostProcessor.setOpen(postProcessConfig.isOpenPostProcess());
-        textPostProcessor.getReplacer().setCaseInsensitive(postProcessConfig.getWordsReplacerConfig().isCaseInsensitive());
-        textPostProcessor.getReplacer().addWords(postProcessConfig.getWordsReplacerConfig().getWordsPairs());
+        textPostProcessor.getReplacer().setCaseInsensitive(postProcessConfig.isCaseInsensitive());
+        textPostProcessor.getReplacer().addWords(postProcessConfig.getWordsPairs());
         facade.setTextPostProcessor(textPostProcessor);
         return true;
     }
 
-    private static boolean translatorInit(SystemConfiguration.TranslatorConfig configuration) {
+    private static boolean translatorInit(SystemConfiguration configuration) {
         TranslatorFactory translatorFactory = new TranslatorFactory();
         translatorFactory.setEngineType(configuration.getCurrentTranslator());
         translatorFactory.setSourceLanguage(configuration.getSourceLanguage());
@@ -287,13 +232,13 @@ public class SystemResourceManager {
         return true;
     }
 
-    private static boolean historyInit(SystemConfiguration.HistoryConfig configuration){
+    private static boolean historyInit(SystemConfiguration configuration){
         TranslationHistory history = new TranslationHistory();
         history.setHistoryCapacity(configuration.getHistoryNum());
         return true;
     }
 
-    private static boolean afterProcessorInit(SystemConfiguration.AfterProcessorConfig configuration) {
+    private static boolean afterProcessorInit(SystemConfiguration configuration) {
         AfterProcessor afterProcessor = new AfterProcessor();
         afterProcessor.setAutoCopy(configuration.isAutoCopy());
         afterProcessor.setAutoPaste(configuration.isAutoPaste());

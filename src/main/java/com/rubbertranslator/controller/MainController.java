@@ -228,59 +228,59 @@ public class MainController {
          * @param configuration 系统配置
          */
         private void initBasicSettingMenu(SystemConfiguration configuration) {
-            initTranslatorType(configuration.getTranslatorConfig().getCurrentTranslator());
-            initSrcDestLanguage(configuration.getTranslatorConfig().getSourceLanguage(), configuration.getTranslatorConfig().getDestLanguage());
+            initTranslatorType(configuration.getCurrentTranslator());
+            initSrcDestLanguage(configuration.getSourceLanguage(), configuration.getDestLanguage());
             initBasicSettingOthers(configuration);
         }
 
         private void initBasicSettingOthers(final SystemConfiguration configuration) {
             // 设置onActionListener
             clipboardListenerMenu.setOnAction((actionEvent) ->
-                    configuration.getTextInputConfig().setOpenClipboardListener(clipboardListenerMenu.isSelected())
+                    configuration.setOpenClipboardListener(clipboardListenerMenu.isSelected())
             );
 
             dragCopyMenu.setOnAction((actionEvent) ->
-                    configuration.getTextInputConfig().setDragCopy(dragCopyMenu.isSelected()));
+                    configuration.setDragCopy(dragCopyMenu.isSelected()));
             incrementalCopyMenu.setOnAction((actionEvent ->
-                    configuration.getTextProcessConfig().getTextPreProcessConfig().setIncrementalCopy(incrementalCopyMenu.isSelected())));
+                    configuration.setIncrementalCopy(incrementalCopyMenu.isSelected())));
             autoCopyMenu.setOnAction((actionEvent -> {
                 if (!autoCopyMenu.isSelected()) {
                     autoPasteMenu.setSelected(false);
-                    configuration.getAfterProcessorConfig().setAutoPaste(false);
+                    configuration.setAutoPaste(false);
                 }
-                configuration.getAfterProcessorConfig().setAutoCopy(autoCopyMenu.isSelected());
+                configuration.setAutoCopy(autoCopyMenu.isSelected());
             }));
             autoPasteMenu.setOnAction((actionEvent -> {
                 // 自动粘贴依赖于自动复制
                 if (autoPasteMenu.isSelected()) {
                     autoCopyMenu.setSelected(true);
-                    configuration.getAfterProcessorConfig().setAutoCopy(true);
+                    configuration.setAutoCopy(true);
                 }
-                configuration.getAfterProcessorConfig().setAutoPaste(autoPasteMenu.isSelected());
+                configuration.setAutoPaste(autoPasteMenu.isSelected());
             }));
             textFormatMenu.setOnAction((actionEvent ->
-                    configuration.getTextProcessConfig().getTextPreProcessConfig().setTryToFormat(textFormatMenu.isSelected())));
+                    configuration.setTryToFormat(textFormatMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> {
                 // XXX: UI模块的相关功能，没有静态代理管理，需要手动界面生效功能，然后动态代理自动持久化设置
                 App.setKeepTop(keepTopMenu.isSelected());
-                configuration.getUiConfig().setKeepTop(keepTopMenu.isSelected());
+                configuration.setKeepTop(keepTopMenu.isSelected());
             }));
 
             // ui回显
             // 监听剪切板
-            clipboardListenerMenu.setSelected(configuration.getTextInputConfig().isOpenClipboardListener());
+            clipboardListenerMenu.setSelected(configuration.isOpenClipboardListener());
             // 拖拽复制
-            dragCopyMenu.setSelected(configuration.getTextInputConfig().isDragCopy());
+            dragCopyMenu.setSelected(configuration.isDragCopy());
             // 增量复制
-            incrementalCopyMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isIncrementalCopy());
+            incrementalCopyMenu.setSelected(configuration.isIncrementalCopy());
             // 自动复制
-            autoCopyMenu.setSelected(configuration.getAfterProcessorConfig().isAutoCopy());
+            autoCopyMenu.setSelected(configuration.isAutoCopy());
             // 自动粘贴
-            autoPasteMenu.setSelected(configuration.getAfterProcessorConfig().isAutoPaste());
+            autoPasteMenu.setSelected(configuration.isAutoPaste());
             // 保持段落格式
-            textFormatMenu.setSelected(configuration.getTextProcessConfig().getTextPreProcessConfig().isTryToFormat());
+            textFormatMenu.setSelected(configuration.isTryToFormat());
             // 置顶
-            keepTopMenu.setSelected(configuration.getUiConfig().isKeepTop());
+            keepTopMenu.setSelected(configuration.isKeepTop());
 
             // 置顶在UI模块，UI模块不在系统资源管理范围内，xxx:考虑重构
             App.setKeepTop(keepTopMenu.isSelected());
@@ -301,7 +301,7 @@ public class MainController {
             }
             // 监听
             translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-                SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
+                SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
                 if (newValue == googleTranslator) {
                     translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
                 } else if (newValue == baiduTranslator) {
@@ -352,7 +352,7 @@ public class MainController {
         private void srcDestLanguageChooseEvent(boolean isSrc, ToggleGroup languageGroup, RadioMenuItem simpleChinese, RadioMenuItem traditional,
                                                 RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
             languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
-                SystemConfiguration.TranslatorConfig translatorConfig = SystemResourceManager.getConfigurationProxy().getTranslatorConfig();
+                SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
                 Language language = Language.AUTO;
                 if (newValue == srcAuto) {    // 此判断多余，但是为了完整性，还是加上
                     language = Language.AUTO;
@@ -485,15 +485,15 @@ public class MainController {
         }
 
         private void initAdvancedSettingMenu(SystemConfiguration configuration) {
-            initOCR(configuration.getTextInputConfig());
+            initOCR(configuration);
             initProcessFilter();
             initWordsReplacer();
-            initTranslationHistoryNumMenu(configuration.getHistoryConfig());
-            initCustomCss(configuration.getUiConfig());
-            initApiMenu(configuration.getTranslatorConfig());
+            initTranslationHistoryNumMenu(configuration);
+            initCustomCss(configuration);
+            initApiMenu(configuration);
         }
 
-        private void initCustomCss(SystemConfiguration.UIConfig configuration) {
+        private void initCustomCss(SystemConfiguration configuration) {
             try {
                 // 回显
                 String path = configuration.getStyleCssPath();
@@ -525,7 +525,7 @@ public class MainController {
             }));
         }
 
-        private void initOCR(SystemConfiguration.TextInputConfig configuration) {
+        private void initOCR(SystemConfiguration configuration) {
             ocrMenu.setOnAction((actionEvent -> new ApiDialog("百度OCR",  // 标题
                     "https://ai.baidu.com/tech/ocr",
                     new ApiInfo(configuration.getBaiduOcrApiKey(), configuration.getBaiduOcrSecretKey()),   // 回显所需信息
@@ -539,7 +539,7 @@ public class MainController {
         /**
          * ocr 百度和有道的api secret key menu
          */
-        private void initApiMenu(SystemConfiguration.TranslatorConfig configuration) {
+        private void initApiMenu(SystemConfiguration configuration) {
             baiduApiMenu.setOnAction((actionEvent -> new ApiDialog("百度翻译",  // 标题
                     "http://api.fanyi.baidu.com/",
                     new ApiInfo(configuration.getBaiduTranslatorApiKey(), configuration.getBaiduTranslatorSecretKey()),   // 回显所需信息
@@ -587,7 +587,7 @@ public class MainController {
         }
 
 
-        private void initTranslationHistoryNumMenu(SystemConfiguration.HistoryConfig configuration) {
+        private void initTranslationHistoryNumMenu(SystemConfiguration configuration) {
             historyNumMenu.setOnAction((actionEvent -> {
                 TextInputDialog dialog = new TextInputDialog("" + configuration.getHistoryNum());
                 dialog.setTitle("设置");
