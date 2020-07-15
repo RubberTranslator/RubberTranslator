@@ -1,5 +1,7 @@
 package com.rubbertranslator.modules.textinput.mousecopy.copymethods;
 
+import com.rubbertranslator.event.MouseClickPositionEvent;
+import org.greenrobot.eventbus.EventBus;
 import org.jnativehook.mouse.NativeMouseEvent;
 
 import java.util.ArrayList;
@@ -11,10 +13,10 @@ import java.util.List;
  * date 2020/4/28 11:51
  * 鼠标事件分发器
  */
-public class MouseEventDispatcher {
+public class MouseCopyEventDispatcher {
     private List<CopyMethod> copyMethods = new ArrayList<>();
 
-    public MouseEventDispatcher() {
+    public MouseCopyEventDispatcher() {
         // 初始化处理链
         initializeCopyMethodsChain();
     }
@@ -31,6 +33,7 @@ public class MouseEventDispatcher {
 
 
     public void pressEventDispatch(NativeMouseEvent event) {
+        preDispatch(event);
         for (CopyMethod copyMethod : copyMethods) {
             copyMethod.onPressed(event);
         }
@@ -41,9 +44,26 @@ public class MouseEventDispatcher {
             copyMethod.onRelease(event);
             if (copyMethod.isProcessed()) {
                 // 处理链终止
-                return;
+                break;
             }
         }
+        postDispatch(event);
+    }
+
+    /**
+     * mouse press event 分发之前
+     * @param event
+     */
+    protected void preDispatch(NativeMouseEvent event){
+
+    }
+
+    /**
+     * mouse release event 分发之后
+     * @param event
+     */
+    public void postDispatch(NativeMouseEvent event){
+        EventBus.getDefault().post(new MouseClickPositionEvent(event.getPoint()));
     }
 
 }

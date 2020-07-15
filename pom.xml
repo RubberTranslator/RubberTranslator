@@ -7,6 +7,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -70,6 +71,7 @@
             <groupId>it.sauronsoftware</groupId>
             <artifactId>junique</artifactId>
             <version>1.0.4</version>
+            <type>jar</type>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.greenrobot/eventbus -->

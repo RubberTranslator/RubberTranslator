@@ -39,6 +39,7 @@
             <ToggleButton fx:id="textFormatMenu" mnemonicParsing="false" text="文本格式化" />
             <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="剪切板" />
             <ToggleButton fx:id="dragCopyMenu" mnemonicParsing="false" text="拖拽" />
+            <ToggleButton fx:id="autoHideBt" mnemonicParsing="false" text="隐匿" />
          </children>
          <VBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

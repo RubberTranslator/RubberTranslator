@@ -1,29 +1,37 @@
 package com.rubbertranslator.controller;
 
 import com.rubbertranslator.App;
-import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.event.CopyOriginOrTranslationEvent;
-import com.rubbertranslator.event.TranslateCompleteEvent;
-import com.rubbertranslator.event.TranslatorProcessEvent;
+import com.rubbertranslator.event.*;
+import com.rubbertranslator.modules.config.SystemConfiguration;
 import com.rubbertranslator.modules.history.HistoryEntry;
 import com.rubbertranslator.modules.textinput.mousecopy.copymethods.CopyRobot;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.TranslatorType;
-import com.rubbertranslator.modules.config.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +40,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/9 21:51
  */
-public class FocusModeController implements EventHandler<ActionEvent> {
+public class FocusModeController implements Initializable, EventHandler<ActionEvent>,ChangeListener<Boolean> {
 
     @FXML
     private VBox rootPane;
@@ -84,27 +92,51 @@ public class FocusModeController implements EventHandler<ActionEvent> {
     @FXML   // 显示文本： 显示原文或者显示译文
     private Button displayTextBt;
 
-    private final String showOrigin = "显示原文";
-    private final String showTranslation = "显示译文";
-
     @FXML   // 复制原文
     private Button copyOriginBt;
     @FXML   // 复制译文
     private Button copyTranslationBt;
 
+    @FXML   // 隐匿模式开关
+    private ToggleButton autoHideBt;
+
+    // 辅助变量，记录鼠标点击位置
+    private Point currentMouseClickPos;
+    // 屏幕缩放率
+    private double screenScaleRatio;
+
+
     /**
      * 组件初始化完成后，会调用这个方法
      */
-    @FXML
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         initViewsDisplay();
         initClickEvents();
         initListeners();
+        initParams();
     }
 
+    /**
+     * 初始化参数
+     */
+    private void initParams(){
+        screenScaleRatio = Toolkit.getDefaultToolkit().getScreenResolution()/96.0;
+    }
+
+    /**
+     * 注册监听
+     */
     private void initListeners() {
-        // 注册文本变化监听
+        // 注册监听
         EventBus.getDefault().register(this);
+        // 延迟注册焦点监听， 直接注册会报NullPointer
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                rootPane.getScene().getWindow().focusedProperty().addListener(FocusModeController.this);
+            }
+        },500);
     }
 
     /**
@@ -175,6 +207,7 @@ public class FocusModeController implements EventHandler<ActionEvent> {
         textFormatMenu.setOnAction(this);
         translateBt.setOnAction(this);
         displayTextBt.setOnAction(this);
+        autoHideBt.setOnAction(this);
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
@@ -233,6 +266,73 @@ public class FocusModeController implements EventHandler<ActionEvent> {
             triggerTranslate();
         } else if (source == displayTextBt) {    // 文本显示
             displayText();
+        } else if(source == autoHideBt){ // 隐匿模式
+        }
+    }
+
+
+    /**
+     * 隐匿模式：hide window
+     */
+    private void hideWindow(){
+        if(autoHideBt.isSelected())
+        {
+            Stage window  = (Stage) rootPane.getScene().getWindow();
+            // 回到ui线程
+            Platform.runLater(()->{
+                if(window.isShowing())
+                {
+                    window.hide();
+                    Logger.getLogger(this.getClass().getName()).info("window hide");
+                }
+            });
+        }
+    }
+
+    /**
+     * 隐匿模式：show window
+     * 跟随鼠标显示，同时window不能超过界面宽度
+     */
+    private void showWindow(){
+        if(autoHideBt.isSelected())
+        {
+            Stage window  = (Stage) rootPane.getScene().getWindow();
+            // 回到ui线程
+            Platform.runLater(()->{
+                if(currentMouseClickPos!=null)
+                {
+                    double mouseX = currentMouseClickPos.getX()/screenScaleRatio;
+                    double mouseY= currentMouseClickPos.getY()/screenScaleRatio;
+                    double width = window.getWidth();
+                    double height = window.getHeight();
+                    double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+                    double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+                    if(mouseX + width > screenWidth){
+                        mouseX = screenWidth - width - 20;
+                    }
+                    if(mouseY + height > screenHeight){
+                        mouseY = screenHeight - height - 20;
+                    }
+
+                    rootPane.getScene().getWindow().setX(mouseX);
+                    rootPane.getScene().getWindow().setY(mouseY);
+
+                    if(!window.isShowing())
+                    {
+                        window.show();
+                        Logger.getLogger(this.getClass().getName()).info("window show");
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean focus) {
+        if(!focus){
+           if(autoHideBt.isSelected()){
+               hideWindow();
+           }
         }
     }
 
@@ -302,15 +402,17 @@ public class FocusModeController implements EventHandler<ActionEvent> {
         HistoryEntry currentHistoryEntry = SystemResourceManager.getFacade().getHistory().current();
         if(currentHistoryEntry == null) return;
 
+        final String showOrigin = "显示原文";
+        final String showTranslation = "显示译文";
         final String currentState = displayTextBt.getText();
 
-        if (showOrigin.equals(currentState)) {
+        if (showOrigin.equals(currentState)) { // 需要显示原文
             textArea.setText(currentHistoryEntry.getOrigin());
-            // 下一个状态
+            // 下一个状态：显示译文
             displayTextBt.setText(showTranslation);
         } else if (showTranslation.equals(currentState)) {
             textArea.setText(currentHistoryEntry.getTranslation());
-            // 下一个状态
+            // 下一个状态：显示原文
             displayTextBt.setText(showOrigin);
         }
     }
@@ -337,8 +439,9 @@ public class FocusModeController implements EventHandler<ActionEvent> {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void translatorFacadeEvent(TranslatorProcessEvent event) {
+    public void onTranslateStartOrEnd(TranslatorProcessEvent event) {
         if (event == null) return;
+        final String showOrigin = "显示原文";
         Platform.runLater(() -> {
             if (event.isProcessStart()) { // 处理开始
 //                translateBt.setText("翻译中");
@@ -358,9 +461,9 @@ public class FocusModeController implements EventHandler<ActionEvent> {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null) return;
-        if (event.isTextType()) {
+        if (event.isTextType()) { // 文字类型
             processTranslate(event.getText());
-        } else {
+        } else {                // 图片类型
             try {
                 String text = OCRUtils.ocr(event.getImage());
                 if (text != null) {
@@ -370,12 +473,40 @@ public class FocusModeController implements EventHandler<ActionEvent> {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
             }
         }
+
+        /*
+          下面的代码for 隐匿模式
+          隐匿模式下， 自动显示
+         */
+        // 是否需要显示
+        if(autoHideBt.isSelected())
+        {
+            // 获取焦点
+            rootPane.getScene().getWindow().requestFocus();
+            // 展示
+            showWindow();
+        }
     }
 
+    /**
+     * 翻译完成时
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onComplete(TranslateCompleteEvent event) {
+    public void onTranslateComplete(TranslateCompleteEvent event) {
         if (event == null) return;
-        // 不管从哪里会回调，回到UI线程
-        Platform.runLater(() -> updateTextArea(event.getTranslation()));
+        // 回显
+        Platform.runLater(() ->  updateTextArea(event.getTranslation()) );
     }
+
+    /**
+     * 鼠标点击时
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onMouseClick(MouseClickPositionEvent event) {
+        if (event == null) return;
+        currentMouseClickPos = event.getPoint();
+    }
+
 }
