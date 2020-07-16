@@ -38,7 +38,7 @@ public class App extends Application {
     public void stop() throws Exception {
         super.stop();
         SystemResourceManager.destroy();
-        Logger.getLogger(this.getClass().getName()).info("系统资源已销毁，退出中");
+        Logger.getLogger(this.getClass().getName()).info("系统资源已销毁，现在退出");
     }
 
     @Override
@@ -75,10 +75,9 @@ public class App extends Application {
 
 
     public static void main(String[] args) {
-        String appId = "RubberTranslator";
         boolean alreadyRunning;
         try {
-            JUnique.acquireLock(appId);
+            JUnique.acquireLock("RubberTranslator");
             alreadyRunning = false;
         } catch (AlreadyLockedException e) {
             alreadyRunning = true;

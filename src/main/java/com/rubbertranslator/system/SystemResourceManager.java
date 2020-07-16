@@ -18,6 +18,7 @@ import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.utils.FileUtil;
 import com.rubbertranslator.utils.JsonUtil;
+import it.sauronsoftware.junique.JUnique;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -27,6 +28,7 @@ import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -126,13 +128,22 @@ public class SystemResourceManager {
      */
     public static void destroy() {
         Logger.getLogger(SystemResourceManager.class.getName()).info("资源销毁中");
+        // 1. 保存配置文件
         saveConfigFile();
-        textInputDestroy();
-        processFilterDestroy();
-        // TODO: 检查资源释放情况
-        // 其余模块没有资源需要手动释放
-        System.runFinalization();
-        System.exit(0);
+        // 2. 释放资源
+        try {
+            executor.shutdownNow();
+            executor.awaitTermination(1, TimeUnit.SECONDS);
+            JUnique.releaseLock("RubberTranslator");
+            textInputDestroy();
+            processFilterDestroy();
+            // TODO: 检查资源释放情况
+            // 其余模块没有资源需要手动释放
+            System.runFinalization();
+            //        System.exit(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
