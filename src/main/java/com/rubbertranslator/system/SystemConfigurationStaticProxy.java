@@ -147,6 +147,7 @@ public class SystemConfigurationStaticProxy extends SystemConfiguration{
     @Override
     public void setIncrementalCopy(Boolean incrementalCopy) {
         configuration.setIncrementalCopy(incrementalCopy);
+        SystemResourceManager.getFacade().getTextPreProcessor().setIncrementalCopy(incrementalCopy);
     }
 
     /**
