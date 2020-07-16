@@ -11,8 +11,6 @@ import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -23,8 +21,6 @@ import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +37,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/9 21:51
  */
-public class FocusModeController implements Initializable, EventHandler<ActionEvent>,ChangeListener<Boolean> {
+public class FocusModeController implements Initializable,ChangeListener<Boolean> {
 
     @FXML
     private VBox rootPane;
@@ -106,6 +102,9 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     // 屏幕缩放率
     private double screenScaleRatio;
 
+    // window stage 引用
+    private Stage appStage;
+
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -124,6 +123,16 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
      */
     private void initParams(){
         screenScaleRatio = Toolkit.getDefaultToolkit().getScreenResolution()/96.0;
+        // 延迟load
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                //初始化stage
+                appStage = (Stage) rootPane.getScene().getWindow();
+                appStage.setAlwaysOnTop(keepStageTopBt.isSelected());
+                appStage.focusedProperty().addListener(FocusModeController.this);
+            }
+        },500);
     }
 
     /**
@@ -132,13 +141,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     private void initListeners() {
         // 注册监听
         EventBus.getDefault().register(this);
-        // 延迟注册焦点监听， 直接注册会报NullPointer
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                SystemResourceManager.getStage().focusedProperty().addListener(FocusModeController.this);
-            }
-        },500);
+        // 延迟注册焦点监听， 直接注册会报NullPointer, 这部分放在 initStage函数中
     }
 
     /**
@@ -162,7 +165,6 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
 
         // 置顶
         keepStageTopBt.setSelected(configurationProxy.isKeepTop());
-        SystemResourceManager.getStage().setAlwaysOnTop(keepStageTopBt.isSelected());
 
         // 翻译引擎
         switch (configurationProxy.getCurrentTranslator()) {
@@ -190,36 +192,30 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
         textFormatMenu.setSelected(configurationProxy.isTryFormat());
         // auto hide
         autoHideBt.setSelected(configurationProxy.isAutoHide());
-        // resize
-        initWindowSize();
     }
 
-    private void initWindowSize(){
-        SystemResourceManager.getStage().setWidth(660);
-        SystemResourceManager.getStage().setHeight(400);
-    }
 
     /**
      * 点击事件
      */
     private void initClickEvents() {
-        backBt.setOnAction(this);
+        backBt.setOnAction((event -> switchToMainController()));
         translatorGroup.selectedToggleProperty().addListener(this::onTranslatorTypeChanged);
-        incrementalCopyMenu.setOnAction(this);
-        preHistoryBt.setOnAction(this);
-        nextHistoryBt.setOnAction(this);
-        clearBt.setOnAction(this);
-        keepStageTopBt.setOnAction(this);
-        autoCopyMenu.setOnAction(this);
-        autoPasteMenu.setOnAction(this);
-        copyOriginBt.setOnAction(this);
-        copyTranslationBt.setOnAction(this);
-        clipboardListenerMenu.setOnAction(this);
-        dragCopyMenu.setOnAction(this);
-        textFormatMenu.setOnAction(this);
-        translateBt.setOnAction(this);
-        displayTextBt.setOnAction(this);
-        autoHideBt.setOnAction(this);
+        incrementalCopyMenu.setOnAction((event -> incrementCopy(incrementalCopyMenu.isSelected())));
+        preHistoryBt.setOnAction((event -> previousHistory()));
+        nextHistoryBt.setOnAction((event -> nextHistory()));
+        clearBt.setOnAction((event -> clearText()));
+        keepStageTopBt.setOnAction((event -> keepTop(keepStageTopBt.isSelected())));
+        autoCopyMenu.setOnAction((event -> autoCopy(autoCopyMenu.isSelected())));
+        autoPasteMenu.setOnAction((event -> autoPaste(autoPasteMenu.isSelected())));
+        copyOriginBt.setOnAction((event -> copyOriginText()));
+        copyTranslationBt.setOnAction((event -> copyTranslationText()));
+        clipboardListenerMenu.setOnAction((event -> clipboardListenerSwitch(clipboardListenerMenu.isSelected())));
+        dragCopyMenu.setOnAction((event -> dragCopyListenerSwitch(dragCopyMenu.isSelected())));
+        textFormatMenu.setOnAction((event -> textFormat(textFormatMenu.isSelected())));
+        translateBt.setOnAction((event -> triggerTranslate()));
+        displayTextBt.setOnAction((event -> displayText()));
+        autoHideBt.setOnAction((event -> autoHideMode(autoHideBt.isSelected())));
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
@@ -238,53 +234,15 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
 
     public void switchToMainController() {
         try {
-            SystemResourceManager.getStage().setScene(App.loadScene(ControllerFxmlPath.MAIN_CONTROLLER_FXML));
+                App.loadScene(ControllerFxmlPath.MAIN_CONTROLLER_FXML);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void handle(ActionEvent actionEvent) {
-        Object source = actionEvent.getSource();
-        if (source == backBt) {   // 返回
-            switchToMainController();
-        } else if (source == clearBt) {    // 清空文本
-            clearText();
-        } else if (source == keepStageTopBt) {    // 置顶
-            keepTop(keepStageTopBt.isSelected());
-        } else if (source == incrementalCopyMenu) {    // 增量复制
-            incrementCopy(incrementalCopyMenu.isSelected());
-        } else if (source == preHistoryBt) {       // 前一个历史
-            previousHistory();
-        } else if (source == nextHistoryBt) {  // 后一个历史
-            nextHistory();
-        } else if (source == autoCopyMenu) {   // 自动复制
-            autoCopy(autoCopyMenu.isSelected());
-        } else if (source == autoPasteMenu) {  // 自动粘贴
-            autoPaste(autoPasteMenu.isSelected());
-        } else if (source == textFormatMenu) { // 文本格式化
-            textFormat(textFormatMenu.isSelected());
-        } else if (source == copyOriginBt) {    // 复制原文
-            copyOriginText();
-        } else if (source == copyTranslationBt) {  // 复制译文
-            copyTranslationText();
-        } else if (source == clipboardListenerMenu) { // 剪切板
-            clipboardListenerSwitch(clipboardListenerMenu.isSelected());
-        } else if (source == dragCopyMenu) {   // 拖拽复制
-            dragCopyListenerSwitch(dragCopyMenu.isSelected());
-        } else if (source == translateBt) {    // 翻译
-            triggerTranslate();
-        } else if (source == displayTextBt) {    // 文本显示
-            displayText();
-        } else if(source == autoHideBt){ // 隐匿模式
-            autoHideMode(autoHideBt.isSelected());
-        }
-    }
-
     /**
      * auto hide mode
-     * @param isSelected
+     * @param isSelected 是否选中
      */
     private void autoHideMode(boolean isSelected){
         SystemResourceManager.getConfigurationProxy().setAutoHide(isSelected);
@@ -294,7 +252,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
      * 隐匿模式：hide window
      */
     private void hideWindow(){
-        Stage window  = SystemResourceManager.getStage();
+        Stage window  = appStage;
         // 回到ui线程
         Platform.runLater(()->{
             if(window.isShowing())
@@ -309,7 +267,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
      * 跟随鼠标显示，同时window不能超过界面宽度
      */
     private void showWindow(){
-        Stage window  = SystemResourceManager.getStage();
+        Stage window  = appStage;
         // 回到ui线程
         Platform.runLater(()->{
             if(currentMouseClickPos!=null)
@@ -344,7 +302,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
         if(!focus){
             if(autoHideBt.isSelected()
             &&  clipboardListenerMenu.isSelected()     // 耦合监听剪切板线程，因为触发showWindow的动作是当剪切板有新内容时
-            && ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(SystemResourceManager.getStage().getScene().getUserData())){
+            && ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData())){
                 Logger.getLogger(this.getClass().getName()).info("window hide");
                 hideWindow();
             }
@@ -370,10 +328,11 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     }
 
     /**
-     * 修改应用配置文件，并修改应用当前效果
-     * @param isKeep
+     * 是否置顶
+     * @param isKeep 置顶
      */
     private void keepTop(boolean isKeep) {
+        appStage.setAlwaysOnTop(isKeep);
         SystemResourceManager.getConfigurationProxy().setKeepTop(isKeep);
     }
 
@@ -396,18 +355,18 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     }
 
     private void autoCopy(boolean open) {
-        if (!autoCopyMenu.isSelected()) {
+        if (!open) {
             autoPasteMenu.setSelected(false);
-            SystemResourceManager.getConfigurationProxy().setAutoCopy(false);
+            SystemResourceManager.getConfigurationProxy().setAutoPaste(false);
         }
         SystemResourceManager.getConfigurationProxy().setAutoCopy(open);
     }
 
     private void autoPaste(boolean open) {
         // 自动粘贴依赖于自动复制
-        if (autoPasteMenu.isSelected()) {
+        if (open) {
             autoCopyMenu.setSelected(true);
-            SystemResourceManager.getConfigurationProxy().setAutoPaste(true);
+            SystemResourceManager.getConfigurationProxy().setAutoCopy(true);
         }
         SystemResourceManager.getConfigurationProxy().setAutoPaste(open);
     }
@@ -499,10 +458,10 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
         // 是否需要显示
         if(autoHideBt.isSelected()
                 // 耦合FOCUS界面， 避免当从FOCUS CONTROLLER切换到MAIN CONTROLLER时，main controller也有隐匿效果
-        && ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(SystemResourceManager.getStage().getScene().getUserData()))
+        && ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData()))
         {
             // 获取焦点
-            SystemResourceManager.getStage().requestFocus();
+            appStage.requestFocus();
             // 展示
             showWindow();
         }
@@ -510,7 +469,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
 
     /**
      * 翻译完成时
-     * @param event
+     * @param event event
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onTranslateComplete(TranslateCompleteEvent event) {
@@ -521,7 +480,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
 
     /**
      * 鼠标点击时
-     * @param event
+     * @param event event
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onMouseClick(MouseClickPositionEvent event) {

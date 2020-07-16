@@ -12,6 +12,7 @@ import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -39,6 +40,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -163,6 +166,9 @@ public class MainController {
     @FXML
     private MenuItem issues;
 
+    // window stage 引用
+    private Stage appStage;
+
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -171,6 +177,18 @@ public class MainController {
     public void initialize() {
         initListeners();
         initViews();
+        initParams();
+    }
+
+    private void initParams() {
+        // 延迟 load
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                appStage = (Stage) rootPane.getScene().getWindow();
+                appStage.setAlwaysOnTop(keepTopMenu.isSelected());;
+            }
+        },500);
     }
 
     private void initListeners() {
@@ -209,13 +227,7 @@ public class MainController {
         initHistoryMenu();
         // 清空
         initClearMenu();
-        // resize
-        initWindowSize();
-    }
 
-    private void initWindowSize(){
-        SystemResourceManager.getStage().setWidth(800);
-        SystemResourceManager.getStage().setHeight(600);
     }
 
 
@@ -268,6 +280,7 @@ public class MainController {
             textFormatMenu.setOnAction((actionEvent ->
                     configuration.setTryFormat(textFormatMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> {
+                appStage.setAlwaysOnTop(keepTopMenu.isSelected());
                 configuration.setKeepTop(keepTopMenu.isSelected());
             }));
 
@@ -286,9 +299,6 @@ public class MainController {
             textFormatMenu.setSelected(configuration.isTryFormat());
             // 置顶
             keepTopMenu.setSelected(configuration.isKeepTop());
-
-            // 置顶在UI模块，UI模块不在系统资源管理范围内，xxx:考虑重构
-            SystemResourceManager.getStage().setAlwaysOnTop(keepTopMenu.isSelected());
         }
 
         private void initTranslatorType(TranslatorType type) {
@@ -459,7 +469,7 @@ public class MainController {
             ButtonType cancelBt = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmBt, cancelBt);
             dialog.getDialogPane().setContent(create());
-            dialog.initOwner(SystemResourceManager.getStage());
+            dialog.initOwner(appStage);
 
             // 结果转换器
             dialog.setResultConverter(dialogButton -> {
@@ -518,7 +528,7 @@ public class MainController {
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.getExtensionFilters().add(
                             new FileChooser.ExtensionFilter("css文件", "*.css"));
-                    File newFile = fileChooser.showOpenDialog(SystemResourceManager.getStage());
+                    File newFile = fileChooser.showOpenDialog(appStage);
                     if (newFile == null) return;
                     // 应用
                     rootPane.getStylesheets().setAll(newFile.toURI().toURL().toString());
@@ -567,8 +577,9 @@ public class MainController {
             filterMenu.setOnAction((actionEvent -> {
                 try {
                     Stage stage = new Stage();
-                    Scene scene = App.loadScene(ControllerFxmlPath.FILTER_CONTROLLER_FXML);
-                    stage.initOwner(SystemResourceManager.getStage());
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainController.class.getResource(ControllerFxmlPath.FILTER_CONTROLLER_FXML));
+                    Scene scene = new Scene(fxmlLoader.load());
+                    stage.initOwner(appStage);
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
@@ -581,8 +592,9 @@ public class MainController {
             translationWordsReplacerMenu.setOnAction((actionEvent -> {
                 try {
                     Stage stage = new Stage();
-                    Scene scene = App.loadScene(ControllerFxmlPath.WORDS_REPLACER_CONTROLLER_FXML);
-                    stage.initOwner(SystemResourceManager.getStage());
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainController.class.getResource(ControllerFxmlPath.WORDS_REPLACER_CONTROLLER_FXML));
+                    Scene scene = new Scene(fxmlLoader.load());
+                    stage.initOwner(appStage);
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
@@ -598,7 +610,7 @@ public class MainController {
                 dialog.setTitle("设置");
                 dialog.setHeaderText("翻译历史数量设置");
                 dialog.setContentText("输入保存历史数量(不超过100):");
-                dialog.initOwner(SystemResourceManager.getStage());
+                dialog.initOwner(appStage);
                 // Traditional way to get the response value.
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(s -> {
@@ -658,8 +670,7 @@ public class MainController {
 
     private void switchToFocusMode(MouseEvent event) {
         try {
-            Scene scene = App.loadScene(ControllerFxmlPath.FOCUS_CONTROLLER_FXML);
-            SystemResourceManager.getStage().setScene(scene);
+            App.loadScene(ControllerFxmlPath.FOCUS_CONTROLLER_FXML);
         } catch (IOException e) {
             e.printStackTrace();
         }

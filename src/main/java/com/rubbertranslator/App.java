@@ -14,6 +14,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +24,8 @@ import java.util.logging.Logger;
  */
 public class App extends Application {
     // 主界面
-    private static Scene appScene;
+    private static Stage appStage;
+    private static Map<String,Scene> loadedSceneMap = new HashMap<>();
 
     @Override
     public void init() throws Exception {
@@ -48,24 +51,40 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         Logger.getLogger(this.getClass().getName()).info("主界面启动");
         // 避免隐式exit
+        appStage = stage;
         Platform.setImplicitExit(false);
         stage.setOnCloseRequest(windowEvent -> {
+            // 退出前，更新配置
+            updateConfig();
             Platform.exit();
         });
 
-        // 这个必须在任何ui初始化前注入
-        SystemResourceManager.setStage(stage);
         uiInit();
         stage.show();
     }
 
-    private static void uiInit() throws IOException {
-        Stage appStage = SystemResourceManager.getStage();
+    private static void updateConfig() {
+        // 1. 更新当前位置
+        SystemConfiguration configuration = SystemResourceManager.getConfigurationProxy();
+        configuration.setLastPos(new Point(
+                (int)appStage.getX(),(int)appStage.getY()
+        ));
+        // 2. 更新窗口大小
+        configuration.setLastSize(new Point(
+                (int)appStage.getWidth(),(int)appStage.getHeight()
+        ));
+        // 3. 更新窗口模式 main or focus
+        configuration.setLastFxmlPath(
+                (String) appStage.getScene().getUserData()
+        );
+    }
+
+    private static void uiInit () throws IOException {
         SystemConfiguration configuration = SystemResourceManager.getConfigurationProxy();
         // 初始化ui， load scene
         String lastFxml = configuration.getLastFxmlPath();
-        appScene = loadScene(lastFxml);
-        appStage.setScene(appScene);
+        loadScene(lastFxml);
+
         // last position
         Point lastPos = configuration.getLastPos();
         if (lastPos.getX() != 0 && lastPos.getY() != 0) {
@@ -96,11 +115,32 @@ public class App extends Application {
 
     }
 
-    public static Scene loadScene(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
-        Scene scene = new Scene(fxmlLoader.load());
-        scene.setUserData(fxml);
-        return scene;
+    /**
+     * 加载scene，并设置scene
+     * @param fxml
+     * @throws IOException
+     */
+    // TODO: 切换scene后，必须refresh，这里采用的是改变height的方法,但是这样做相当丑陋，目前也没找到相关的api可以强制刷新（准确来说，javafx不支持强制刷新，它是按照 一定间隔的脉冲来刷新的
+    private static int refreshCounter = 0;
+    public static void loadScene(String fxml) throws IOException {
+        Scene scene;
+        if(!loadedSceneMap.containsKey(fxml)){
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
+            scene = new Scene(fxmlLoader.load());
+            scene.setUserData(fxml);
+            loadedSceneMap.put(fxml,scene);
+        }else{
+            scene = loadedSceneMap.get(fxml);
+        }
+        appStage.setScene(scene);
+        // 必须refresh
+        if(refreshCounter++ % 2 == 0){
+            appStage.setWidth(appStage.getWidth()-0.5);
+        }else{
+            appStage.setWidth(appStage.getWidth()+0.5);
+        }
+        appStage.setHeight(appStage.getHeight());
+
     }
 
 

@@ -19,9 +19,7 @@ import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.utils.FileUtil;
 import com.rubbertranslator.utils.JsonUtil;
 import it.sauronsoftware.junique.JUnique;
-import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +43,6 @@ public class SystemResourceManager {
     private static DragCopyThread dragCopyThread;
     private static WindowsPlatformActiveWindowListenerThread activeWindowListenerThread;
     private static TranslatorFacade facade;
-    private static Stage appStage;
 
     // cache线程池，还是single线程池好一点？
     private static final ExecutorService executor = Executors.newCachedThreadPool();
@@ -77,18 +74,6 @@ public class SystemResourceManager {
         return facade;
     }
 
-    public static Stage getStage() {
-        return appStage;
-    }
-
-    /**
-     * 设置stage
-     * @param stage
-     */
-    public static void setStage(Stage stage)
-    {
-        appStage = stage;
-    }
 
     public static SystemConfiguration getConfigurationProxy() {
         return configurationProxy;
@@ -128,7 +113,6 @@ public class SystemResourceManager {
     public static void destroy() {
         Logger.getLogger(SystemResourceManager.class.getName()).info("资源销毁中");
         // 1. 保存配置文件
-        updateConfig();
         saveConfigFile();
         // 2. 释放资源
         try {
@@ -146,21 +130,6 @@ public class SystemResourceManager {
         }
     }
 
-    private static void updateConfig() {
-        // 1. 更新当前位置
-        configurationProxy.setLastPos(new Point(
-                (int)appStage.getX(),(int)appStage.getY()
-        ));
-        // 2. 更新窗口大小
-        configurationProxy.setLastSize(new Point(
-                (int)appStage.getWidth(),(int)appStage.getHeight()
-        ));
-        // 3. 更新窗口模式 main or focus
-        configurationProxy.setLastFxmlPath(
-                (String) appStage.getScene().getUserData()
-        );
-    }
-
     /**
      * 保存配置文件
      */
@@ -174,8 +143,6 @@ public class SystemResourceManager {
             Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE,"更新设置时出错",e);
         }
     }
-
-
 
     /**
      * 加载配置文件

@@ -21,10 +21,16 @@ open module rubbertranslator {
     requires java.management;
 
     exports com.rubbertranslator;
+    exports com.rubbertranslator.modules;
+    exports com.rubbertranslator.modules.textinput.clipboard;
+    exports com.rubbertranslator.modules.textinput.mousecopy;
     exports com.rubbertranslator.modules.filter;
     exports com.rubbertranslator.modules.textprocessor.pre;
     exports com.rubbertranslator.modules.textprocessor.post;
     exports com.rubbertranslator.modules.translate;
+    exports com.rubbertranslator.modules.translate.baidu;
+    exports com.rubbertranslator.modules.translate.youdao;
+    exports com.rubbertranslator.modules.translate.google;
     exports com.rubbertranslator.modules.history;
     exports com.rubbertranslator.modules.afterprocess;
     exports com.rubbertranslator.system;
