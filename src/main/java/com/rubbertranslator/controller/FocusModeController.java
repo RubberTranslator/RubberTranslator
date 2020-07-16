@@ -161,6 +161,8 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
 
         // 置顶
         keepStageTopBt.setSelected(configurationProxy.isKeepTop());
+        // 置顶在UI模块，UI模块不在系统资源管理范围内，xxx:考虑重构
+        App.setKeepTop(keepStageTopBt.isSelected());
         // 翻译引擎
         switch (configurationProxy.getCurrentTranslator()) {
             case GOOGLE:
@@ -315,7 +317,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
                     }
 
                     rootPane.getScene().getWindow().setX(mouseX);
-                    rootPane.getScene().getWindow().setY(mouseY);
+                    rootPane.getScene().getWindow().setY(mouseY+20);    // y 方向+一个delta，避免覆盖选中文字
 
                     if(!window.isShowing())
                     {

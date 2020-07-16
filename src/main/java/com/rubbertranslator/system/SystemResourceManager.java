@@ -167,6 +167,7 @@ public class SystemResourceManager {
         clipboardListenerThread.setRun(configuration.isOpenClipboardListener());
         dragCopyThread = new DragCopyThread();
         dragCopyThread.setRun(configuration.isDragCopy());
+        configuration.isKeepTop();
         OCRUtils.setApiKey(configuration.getBaiduOcrApiKey());
         OCRUtils.setSecretKey(configuration.getBaiduOcrSecretKey());
 

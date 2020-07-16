@@ -1,8 +1,6 @@
 package com.rubbertranslator.modules.textinput.mousecopy.listener;
 
-import com.rubbertranslator.event.MouseClickPositionEvent;
-import com.rubbertranslator.modules.textinput.mousecopy.copymethods.MouseCopyEventDispatcher;
-import org.greenrobot.eventbus.EventBus;
+import com.rubbertranslator.modules.textinput.mousecopy.copymethods.MouseEventDispatcher;
 import org.jnativehook.mouse.NativeMouseAdapter;
 import org.jnativehook.mouse.NativeMouseEvent;
 
@@ -15,7 +13,7 @@ import org.jnativehook.mouse.NativeMouseEvent;
  */
 public class GlobalMouseListener extends NativeMouseAdapter {
 
-    private final MouseCopyEventDispatcher mouseCopyEventDispatcher = new MouseCopyEventDispatcher();
+    private final MouseEventDispatcher mouseEventDispatcher = new MouseEventDispatcher();
     private boolean needDispatch = true;
 
     public boolean isNeedDispatch() {
@@ -29,14 +27,14 @@ public class GlobalMouseListener extends NativeMouseAdapter {
     @Override
     public void nativeMousePressed(NativeMouseEvent nativeEvent) {
         if(needDispatch){
-            mouseCopyEventDispatcher.pressEventDispatch(nativeEvent);
+            mouseEventDispatcher.pressEventDispatch(nativeEvent);
         }
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent nativeEvent) {
         if(needDispatch){
-            mouseCopyEventDispatcher.releaseEventDispatch(nativeEvent);
+            mouseEventDispatcher.releaseEventDispatch(nativeEvent);
         }
     }
 }

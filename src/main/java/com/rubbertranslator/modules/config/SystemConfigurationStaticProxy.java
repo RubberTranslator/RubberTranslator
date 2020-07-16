@@ -143,7 +143,7 @@ public class SystemConfigurationStaticProxy extends SystemConfiguration{
     
     @Override
     public void setIncrementalCopy(Boolean incrementalCopy) {
-        super.setIncrementalCopy(incrementalCopy);
+        configuration.setIncrementalCopy(incrementalCopy);
     }
 
     /**
@@ -178,22 +178,22 @@ public class SystemConfigurationStaticProxy extends SystemConfiguration{
      */
     @Override
     public String getStyleCssPath() {
-        return super.getStyleCssPath();
+        return configuration.getStyleCssPath();
     }
 
     @Override
     public void setStyleCssPath(String styleCssPath) {
-        super.setStyleCssPath(styleCssPath);
+        configuration.setStyleCssPath(styleCssPath);
     }
 
     @Override
     public Boolean isKeepTop() {
-        return super.isKeepTop();
+        return configuration.isKeepTop();
     }
 
     @Override
     public void setKeepTop(Boolean keepTop) {
-        super.setKeepTop(keepTop);
+        configuration.setKeepTop(keepTop);
     }
 
     /**

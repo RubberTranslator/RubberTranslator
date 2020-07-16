@@ -13,10 +13,10 @@ import java.util.List;
  * date 2020/4/28 11:51
  * 鼠标事件分发器
  */
-public class MouseCopyEventDispatcher {
+public class MouseEventDispatcher {
     private List<CopyMethod> copyMethods = new ArrayList<>();
 
-    public MouseCopyEventDispatcher() {
+    public MouseEventDispatcher() {
         // 初始化处理链
         initializeCopyMethodsChain();
     }
@@ -33,13 +33,23 @@ public class MouseCopyEventDispatcher {
 
 
     public void pressEventDispatch(NativeMouseEvent event) {
-        preDispatch(event);
+        pressEventPreDispatch(event);
         for (CopyMethod copyMethod : copyMethods) {
             copyMethod.onPressed(event);
         }
+        pressEventPostDispatch(event);
+    }
+
+    protected void pressEventPreDispatch(NativeMouseEvent event){
+
+    }
+
+    protected void pressEventPostDispatch(NativeMouseEvent event){
+
     }
 
     public void releaseEventDispatch(NativeMouseEvent event) {
+        releaseEventPreDispatch(event);
         for (CopyMethod copyMethod : copyMethods) {
             copyMethod.onRelease(event);
             if (copyMethod.isProcessed()) {
@@ -47,23 +57,17 @@ public class MouseCopyEventDispatcher {
                 break;
             }
         }
-        postDispatch(event);
+        releaseEventPostDispatch(event);
     }
 
-    /**
-     * mouse press event 分发之前
-     * @param event
-     */
-    protected void preDispatch(NativeMouseEvent event){
+    protected void releaseEventPreDispatch(NativeMouseEvent event){
 
     }
 
-    /**
-     * mouse release event 分发之后
-     * @param event
-     */
-    public void postDispatch(NativeMouseEvent event){
+    protected void releaseEventPostDispatch(NativeMouseEvent event){
         EventBus.getDefault().post(new MouseClickPositionEvent(event.getPoint()));
     }
+
+
 
 }

@@ -28,8 +28,10 @@ public class App extends Application {
     public void init() throws Exception {
         super.init();
         if(!SystemResourceManager.init()){
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"系统启动失败");
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"系统配置失败");
             System.exit(-1);
+        }else{
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"系统配置成功");
         }
     }
 
@@ -37,11 +39,12 @@ public class App extends Application {
     public void stop() throws Exception {
         super.stop();
         SystemResourceManager.destroy();
+        Logger.getLogger(this.getClass().getName()).info("系统资源已销毁，退出中");
     }
 
     @Override
     public void start(Stage stage) throws IOException {
-        Logger.getLogger(this.getClass().getName()).info("程序启动");
+        Logger.getLogger(this.getClass().getName()).info("主界面启动");
         // 避免隐式exit
         Platform.setImplicitExit(false);
 

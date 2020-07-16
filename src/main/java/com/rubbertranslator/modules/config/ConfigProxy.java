@@ -1,7 +1,5 @@
 package com.rubbertranslator.modules.config;
 
-import com.rubbertranslator.modules.config.SystemConfiguration;
-import com.rubbertranslator.modules.config.SystemConfigurationStaticProxy;
 import com.rubbertranslator.system.SystemResourceManager;
 import com.rubbertranslator.utils.FileUtil;
 import com.rubbertranslator.utils.JsonUtil;
@@ -10,7 +8,6 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
@@ -31,8 +28,8 @@ public class ConfigProxy implements MethodInterceptor {
 
     @Override
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        Object ret = method.invoke(target, args);
         if (method.getName().startsWith("set")) {
-            Object ret = method.invoke(target, args);
             SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
             String json = JsonUtil.serialize(configurationProxy.getConfiguration());
             // 使用后台线程来写入
@@ -44,8 +41,7 @@ public class ConfigProxy implements MethodInterceptor {
                     Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"更新设置时出错",e);
                 }
             });
-            return ret;
         }
-        return method.invoke(target, args);
+        return ret;
     }
 }
