@@ -21,10 +21,10 @@ import com.rubbertranslator.utils.JsonUtil;
 import it.sauronsoftware.junique.JUnique;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,7 +51,7 @@ public class SystemResourceManager {
     private static final ExecutorService executor = Executors.newCachedThreadPool();
 
     // 所有用户得操作，都应该通过configurationProxy来操作
-    private static SystemConfiguration configuration;
+    private static SystemConfiguration configurationProxy;
 
 
     // 只能通过静态方法调用此类
@@ -88,11 +88,10 @@ public class SystemResourceManager {
     public static void setStage(Stage stage)
     {
         appStage = stage;
-        uiInit(configuration);
     }
 
-    public static SystemConfiguration getConfiguration() {
-        return configuration;
+    public static SystemConfiguration getConfigurationProxy() {
+        return configurationProxy;
     }
 
 
@@ -106,19 +105,19 @@ public class SystemResourceManager {
         // 0. 设置log
         LoggerManager.configLog();
         // 1. 加载配置文件
-        configuration = loadSystemConfig();
-        if (configuration == null) return false;
+        configurationProxy = loadSystemConfig();
+        if (configurationProxy == null) return false;
         // 2.初始化facade
         facade = new TranslatorFacade();
         // 3. 启动各组件
         // ui配置在controller进行应用
-        return  textInputInit(configuration) &&
-                filterInit(configuration) &&
-                preTextProcessInit(configuration) &&
-                postTextProcessInit(configuration) &&
-                translatorInit(configuration) &&
-                historyInit(configuration) &&
-                afterProcessorInit(configuration);
+        return  textInputInit(configurationProxy) &&
+                filterInit(configurationProxy) &&
+                preTextProcessInit(configurationProxy) &&
+                postTextProcessInit(configurationProxy) &&
+                translatorInit(configurationProxy) &&
+                historyInit(configurationProxy) &&
+                afterProcessorInit(configurationProxy);
     }
 
 
@@ -129,6 +128,7 @@ public class SystemResourceManager {
     public static void destroy() {
         Logger.getLogger(SystemResourceManager.class.getName()).info("资源销毁中");
         // 1. 保存配置文件
+        updateConfig();
         saveConfigFile();
         // 2. 释放资源
         try {
@@ -146,20 +146,33 @@ public class SystemResourceManager {
         }
     }
 
+    private static void updateConfig() {
+        // 1. 更新当前位置
+        configurationProxy.setLastPos(new Point(
+                (int)appStage.getX(),(int)appStage.getY()
+        ));
+        // 2. 更新窗口大小
+        configurationProxy.setLastSize(new Point(
+                (int)appStage.getWidth(),(int)appStage.getHeight()
+        ));
+        // 3. 更新窗口模式 main or focus
+        configurationProxy.setLastFxmlPath(
+                (String) appStage.getScene().getUserData()
+        );
+    }
+
     /**
      * 保存配置文件
      */
     public static void saveConfigFile(){
-        String json = JsonUtil.serialize(configuration);
-        // 使用后台线程来写入
-        executor.execute(()->{
-            try {
-                FileUtil.writeStringToFile(new File(configJsonPath), json, StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE,"更新设置时出错",e);
-            }
-        });
-
+        // 静态代理还原
+        String json = JsonUtil.serialize(configurationProxy.getConfiguration());
+        // 使用ui线程来写入
+        try {
+            FileUtil.writeStringToFile(new File(configJsonPath), json, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE,"更新设置时出错",e);
+        }
     }
 
 
@@ -189,27 +202,11 @@ public class SystemResourceManager {
         // 原始配置记录
         SystemConfiguration configuration = gson.fromJson(configJson, SystemConfiguration.class);
         Logger.getLogger(SystemResourceManager.class.getName()).info("加载配置"+configJson);
-        return configuration;
+        // 静态代理
+        return new SystemConfigurationStaticProxy(configuration);
     }
 
-    private static boolean uiInit(SystemConfiguration configurationProxy)
-    {
-        if(appStage == null || configurationProxy == null) return false;
-        appStage.setAlwaysOnTop(configurationProxy.isKeepTop());
-        try {
-            // 回显
-            String path = configurationProxy.getStyleCssPath();
-            if (path != null) {
-                File file = new File(path);
-                if (file.exists()) {
-                    appStage.getScene().getStylesheets().setAll(file.toURI().toURL().toString());
-                }
-            }
-        } catch (MalformedURLException e) {
-            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
-        }
-        return true;
-    }
+
 
     private static boolean textInputInit(SystemConfiguration configuration) {
         clipboardListenerThread = new ClipboardListenerThread();
@@ -246,7 +243,7 @@ public class SystemResourceManager {
 
     private static boolean preTextProcessInit(SystemConfiguration preProcessConfig) {
         TextPreProcessor textPreProcessor = new TextPreProcessor();
-        textPreProcessor.setTryToFormat(preProcessConfig.isTryToFormat());
+        textPreProcessor.setTryToFormat(preProcessConfig.isTryFormat());
         textPreProcessor.setIncrementalCopy(preProcessConfig.isIncrementalCopy());
         facade.setTextPreProcessor(textPreProcessor);
         return true;

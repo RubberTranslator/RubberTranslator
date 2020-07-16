@@ -54,7 +54,7 @@ public class FilterController {
         // 总开关初始化
         openCheckBox.selectedProperty().addListener(this::onOpenCheckBoxClick);
 
-        SystemConfiguration configuration = SystemResourceManager.getConfiguration();
+        SystemConfiguration configuration = SystemResourceManager.getConfigurationProxy();
         openCheckBox.setSelected(configuration.isOpenProcessFilter());
         processList.getItems().addAll(configuration.getProcessList());
 
@@ -67,7 +67,7 @@ public class FilterController {
             for (File f : selectedFiles){
                 processList.getItems().add(f.getName());
             }
-            SystemResourceManager.getConfiguration().setProcessList(
+            SystemResourceManager.getConfigurationProxy().setProcessList(
                     processList.getItems()
             );
         }
@@ -75,7 +75,7 @@ public class FilterController {
 
 
     public <T> void onOpenCheckBoxClick(ObservableValue<? extends T> observable, T oldValue, T newValue){
-        SystemResourceManager.getConfiguration().setOpenProcessFilter((Boolean) newValue);
+        SystemResourceManager.getConfigurationProxy().setOpenProcessFilter((Boolean) newValue);
     }
 
     @FXML
@@ -85,7 +85,7 @@ public class FilterController {
         if(selectedItems != null){
             processList.getItems().removeAll(selectedItems);
             // 更新设置
-            SystemResourceManager.getConfiguration().setProcessList(
+            SystemResourceManager.getConfigurationProxy().setProcessList(
                     processList.getItems()
             );
         }

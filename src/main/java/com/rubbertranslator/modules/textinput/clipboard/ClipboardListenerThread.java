@@ -151,7 +151,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
         if (event.isProcessStart()) {
             pause();    // 事件处理开始，暂停接收新变化
         } else {
-            if (SystemResourceManager.getConfiguration().isAutoCopy()) {
+            if (SystemResourceManager.getConfigurationProxy().isAutoCopy()) {
                 // 如果当前系统开启自动复制，必须忽略本次剪切板变化，避免重复翻译
                 ignoreThisTime = true;
             }

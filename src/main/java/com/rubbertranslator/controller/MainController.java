@@ -225,7 +225,7 @@ public class MainController {
     private class BasicSettingMenu {
 
         public void init() {
-            initBasicSettingMenu(SystemResourceManager.getConfiguration());
+            initBasicSettingMenu(SystemResourceManager.getConfigurationProxy());
             Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化基础设置成功");
         }
 
@@ -266,7 +266,7 @@ public class MainController {
                 configuration.setAutoPaste(autoPasteMenu.isSelected());
             }));
             textFormatMenu.setOnAction((actionEvent ->
-                    configuration.setTryToFormat(textFormatMenu.isSelected())));
+                    configuration.setTryFormat(textFormatMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> {
                 configuration.setKeepTop(keepTopMenu.isSelected());
             }));
@@ -283,7 +283,7 @@ public class MainController {
             // 自动粘贴
             autoPasteMenu.setSelected(configuration.isAutoPaste());
             // 保持段落格式
-            textFormatMenu.setSelected(configuration.isTryToFormat());
+            textFormatMenu.setSelected(configuration.isTryFormat());
             // 置顶
             keepTopMenu.setSelected(configuration.isKeepTop());
 
@@ -306,7 +306,7 @@ public class MainController {
             }
             // 监听
             translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-                SystemConfiguration translatorConfig = SystemResourceManager.getConfiguration();
+                SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
                 if (newValue == googleTranslator) {
                     translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
                 } else if (newValue == baiduTranslator) {
@@ -357,7 +357,7 @@ public class MainController {
         private void srcDestLanguageChooseEvent(boolean isSrc, ToggleGroup languageGroup, RadioMenuItem simpleChinese, RadioMenuItem traditional,
                                                 RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
             languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
-                SystemConfiguration translatorConfig = SystemResourceManager.getConfiguration();
+                SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
                 Language language = Language.AUTO;
                 if (newValue == srcAuto) {    // 此判断多余，但是为了完整性，还是加上
                     language = Language.AUTO;
@@ -485,7 +485,7 @@ public class MainController {
 
     private class AdvancedSettingMenu {
         public void init() {
-            initAdvancedSettingMenu(SystemResourceManager.getConfiguration());
+            initAdvancedSettingMenu(SystemResourceManager.getConfigurationProxy());
             Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化高级设置成功");
         }
 
@@ -567,7 +567,7 @@ public class MainController {
             filterMenu.setOnAction((actionEvent -> {
                 try {
                     Stage stage = new Stage();
-                    Scene scene = new Scene(App.loadFXML(ControllerFxmlPath.FILTER_CONTROLLER_FXML));
+                    Scene scene = App.loadScene(ControllerFxmlPath.FILTER_CONTROLLER_FXML);
                     stage.initOwner(SystemResourceManager.getStage());
                     stage.setScene(scene);
                     stage.show();
@@ -581,7 +581,7 @@ public class MainController {
             translationWordsReplacerMenu.setOnAction((actionEvent -> {
                 try {
                     Stage stage = new Stage();
-                    Scene scene = new Scene(App.loadFXML(ControllerFxmlPath.WORDS_REPLACER_CONTROLLER_FXML));
+                    Scene scene = App.loadScene(ControllerFxmlPath.WORDS_REPLACER_CONTROLLER_FXML);
                     stage.initOwner(SystemResourceManager.getStage());
                     stage.setScene(scene);
                     stage.show();
@@ -658,10 +658,10 @@ public class MainController {
 
     private void switchToFocusMode(MouseEvent event) {
         try {
-            App.setRoot(ControllerFxmlPath.FOCUS_CONTROLLER_FXML);
-            EventBus.getDefault().unregister(this);
+            Scene scene = App.loadScene(ControllerFxmlPath.FOCUS_CONTROLLER_FXML);
+            SystemResourceManager.getStage().setScene(scene);
         } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "专注模式打开失败", e);
+            e.printStackTrace();
         }
     }
 

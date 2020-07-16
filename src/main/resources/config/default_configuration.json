@@ -1,6 +1,16 @@
 {
   "keep_top": false,
   "custom_css_path": null,
+  "last_position": {
+    "x": 0,
+    "y": 0
+  },
+  "last_size": {
+    "x": 0,
+    "y": 0
+  },
+  "last_fxml_path": "/fxml/main.fxml",
+  "auto_hide": true,
   "open_clipboard_listener": false,
   "drag_copy": false,
   "baidu_ocr_api_key": "",
