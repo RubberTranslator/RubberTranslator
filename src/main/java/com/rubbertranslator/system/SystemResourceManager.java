@@ -3,9 +3,6 @@ package com.rubbertranslator.system;
 import com.google.gson.Gson;
 import com.rubbertranslator.modules.TranslatorFacade;
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
-import com.rubbertranslator.modules.config.ConfigProxy;
-import com.rubbertranslator.modules.config.SystemConfiguration;
-import com.rubbertranslator.modules.config.SystemConfigurationStaticProxy;
 import com.rubbertranslator.modules.filter.ProcessFilter;
 import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.modules.history.TranslationHistory;
@@ -20,8 +17,8 @@ import com.rubbertranslator.modules.translate.TranslatorType;
 import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.utils.FileUtil;
+import com.rubbertranslator.utils.JsonUtil;
 import javafx.stage.Stage;
-import net.sf.cglib.proxy.Enhancer;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +49,7 @@ public class SystemResourceManager {
     private static final ExecutorService executor = Executors.newCachedThreadPool();
 
     // 所有用户得操作，都应该通过configurationProxy来操作
-    private static SystemConfiguration configurationProxy;
+    private static SystemConfiguration configuration;
 
 
     // 只能通过静态方法调用此类
@@ -89,11 +86,11 @@ public class SystemResourceManager {
     public static void setStage(Stage stage)
     {
         appStage = stage;
-        uiInit(configurationProxy);
+        uiInit(configuration);
     }
 
-    public static SystemConfiguration getConfigurationProxy() {
-        return configurationProxy;
+    public static SystemConfiguration getConfiguration() {
+        return configuration;
     }
 
 
@@ -107,19 +104,19 @@ public class SystemResourceManager {
         // 0. 设置log
         LoggerManager.configLog();
         // 1. 加载配置文件
-        configurationProxy = loadSystemConfig();
-        if (configurationProxy == null) return false;
+        configuration = loadSystemConfig();
+        if (configuration == null) return false;
         // 2.初始化facade
         facade = new TranslatorFacade();
         // 3. 启动各组件
         // ui配置在controller进行应用
-        return  textInputInit(configurationProxy) &&
-                filterInit(configurationProxy) &&
-                preTextProcessInit(configurationProxy) &&
-                postTextProcessInit(configurationProxy) &&
-                translatorInit(configurationProxy) &&
-                historyInit(configurationProxy) &&
-                afterProcessorInit(configurationProxy);
+        return  textInputInit(configuration) &&
+                filterInit(configuration) &&
+                preTextProcessInit(configuration) &&
+                postTextProcessInit(configuration) &&
+                translatorInit(configuration) &&
+                historyInit(configuration) &&
+                afterProcessorInit(configuration);
     }
 
 
@@ -128,12 +125,33 @@ public class SystemResourceManager {
      * xxx:考虑加个CountDownLatch确定线程都结束
      */
     public static void destroy() {
+        Logger.getLogger(SystemResourceManager.class.getName()).info("资源销毁中");
+        saveConfigFile();
         textInputDestroy();
         processFilterDestroy();
+        // TODO: 检查资源释放情况
         // 其余模块没有资源需要手动释放
         System.runFinalization();
         System.exit(0);
     }
+
+    /**
+     * 保存配置文件
+     */
+    public static void saveConfigFile(){
+        String json = JsonUtil.serialize(configuration);
+        // 使用后台线程来写入
+        executor.execute(()->{
+            try {
+                FileUtil.writeStringToFile(new File(configJsonPath), json, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE,"更新设置时出错",e);
+            }
+        });
+
+    }
+
+
 
     /**
      * 加载配置文件
@@ -160,25 +178,8 @@ public class SystemResourceManager {
         // 原始配置记录
         SystemConfiguration configuration = gson.fromJson(configJson, SystemConfiguration.class);
         Logger.getLogger(SystemResourceManager.class.getName()).info("加载配置"+configJson);
-        return wrapProxy(configuration);
+        return configuration;
     }
-
-    /**
-     * 为所有系统配置包装代理
-     * 每当用户修改任何系统配置，都将配置持久化
-     *  两层代理：
-     *  1. 静态代理： 设置更改后，通知后续处理模块，立马更改
-     *  2. 动态代理： 设置更改后，持久化所有设置
-     * @param configuration 系统配置
-     */
-    private static SystemConfiguration wrapProxy(SystemConfiguration configuration) {
-        SystemConfiguration systemStaticConfig = new SystemConfigurationStaticProxy(configuration);
-        SystemConfiguration systemConfiguration = (SystemConfiguration)
-                Enhancer.create(SystemConfiguration.class, new ConfigProxy(systemStaticConfig));
-        Logger.getLogger(SystemConfiguration.class.getName()).info("wrap代理完成");
-        return systemConfiguration;
-    }
-
 
     private static boolean uiInit(SystemConfiguration configurationProxy)
     {

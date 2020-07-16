@@ -84,7 +84,7 @@ public class WordsReplacerController implements Initializable {
         destCol.setCellValueFactory(new PropertyValueFactory<>("dest"));
         // 回显
         wordsPairTableView.getItems().addAll(
-                SystemResourceManager.getConfigurationProxy().getWordsPairs()
+                SystemResourceManager.getConfiguration().getWordsPairs()
         );
     }
 
@@ -116,7 +116,7 @@ public class WordsReplacerController implements Initializable {
     public void onConfirmButtonClick(){
         // 应用生效并持久化
         Set<WordsPair> set = new HashSet<>(wordsPairTableView.getItems());
-        SystemResourceManager.getConfigurationProxy().setWordsPairs(set);
+        SystemResourceManager.getConfiguration().setWordsPairs(set);
         ((Stage)(vBox.getScene().getWindow())).close();
     }
 

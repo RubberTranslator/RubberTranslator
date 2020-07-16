@@ -6,12 +6,10 @@ import it.sauronsoftware.junique.AlreadyLockedException;
 import it.sauronsoftware.junique.JUnique;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -48,7 +46,9 @@ public class App extends Application {
         Logger.getLogger(this.getClass().getName()).info("主界面启动");
         // 避免隐式exit
         Platform.setImplicitExit(false);
-        stage.setOnCloseRequest(windowEvent -> Platform.exit());
+        stage.setOnCloseRequest(windowEvent -> {
+            Platform.exit();
+        });
 
         // 这个必须在任何ui初始化前注入
         SystemResourceManager.setStage(stage);
@@ -65,22 +65,12 @@ public class App extends Application {
     }
 
 
-    public static void resizeStage(){
-        // xxx:写得不太好，可进行优化
-        if(ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(currentContentRoot)){
-            SystemResourceManager.getStage().setWidth(660);
-            SystemResourceManager.getStage().setHeight(400);
-        }else if(ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(currentContentRoot)){
-            SystemResourceManager.getStage().setWidth(800);
-            SystemResourceManager.getStage().setHeight(600);
-        }
-    }
+
 
 
     public static void setRoot(String fxml) throws IOException {
         currentContentRoot = fxml;
         appScene.setRoot(loadFXML(fxml));
-        resizeStage();
     }
 
 

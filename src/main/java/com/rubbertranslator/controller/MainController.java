@@ -8,7 +8,7 @@ import com.rubbertranslator.modules.history.HistoryEntry;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
-import com.rubbertranslator.modules.config.SystemConfiguration;
+import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -209,6 +209,13 @@ public class MainController {
         initHistoryMenu();
         // 清空
         initClearMenu();
+        // resize
+        initWindowSize();
+    }
+
+    private void initWindowSize(){
+        SystemResourceManager.getStage().setWidth(800);
+        SystemResourceManager.getStage().setHeight(600);
     }
 
 
@@ -218,7 +225,7 @@ public class MainController {
     private class BasicSettingMenu {
 
         public void init() {
-            initBasicSettingMenu(SystemResourceManager.getConfigurationProxy());
+            initBasicSettingMenu(SystemResourceManager.getConfiguration());
             Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化基础设置成功");
         }
 
@@ -299,7 +306,7 @@ public class MainController {
             }
             // 监听
             translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-                SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
+                SystemConfiguration translatorConfig = SystemResourceManager.getConfiguration();
                 if (newValue == googleTranslator) {
                     translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
                 } else if (newValue == baiduTranslator) {
@@ -350,7 +357,7 @@ public class MainController {
         private void srcDestLanguageChooseEvent(boolean isSrc, ToggleGroup languageGroup, RadioMenuItem simpleChinese, RadioMenuItem traditional,
                                                 RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
             languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
-                SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
+                SystemConfiguration translatorConfig = SystemResourceManager.getConfiguration();
                 Language language = Language.AUTO;
                 if (newValue == srcAuto) {    // 此判断多余，但是为了完整性，还是加上
                     language = Language.AUTO;
@@ -478,7 +485,7 @@ public class MainController {
 
     private class AdvancedSettingMenu {
         public void init() {
-            initAdvancedSettingMenu(SystemResourceManager.getConfigurationProxy());
+            initAdvancedSettingMenu(SystemResourceManager.getConfiguration());
             Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化高级设置成功");
         }
 

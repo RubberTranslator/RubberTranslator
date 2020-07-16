@@ -2,7 +2,7 @@ package com.rubbertranslator.controller;
 
 import com.rubbertranslator.App;
 import com.rubbertranslator.event.*;
-import com.rubbertranslator.modules.config.SystemConfiguration;
+import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.modules.history.HistoryEntry;
 import com.rubbertranslator.modules.textinput.mousecopy.copymethods.CopyRobot;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
@@ -117,6 +117,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
         initParams();
     }
 
+
     /**
      * 初始化参数
      */
@@ -143,7 +144,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
      * 回显
      */
     private void initViewsDisplay() {
-        SystemConfiguration configurationProxy = SystemResourceManager.getConfigurationProxy();
+        SystemConfiguration configurationProxy = SystemResourceManager.getConfiguration();
         // 样式加载
         try {
             // 回显
@@ -186,6 +187,13 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
         dragCopyMenu.setSelected(configurationProxy.isDragCopy());
         // 文本格式化
         textFormatMenu.setSelected(configurationProxy.isTryToFormat());
+        // resize
+        initWindowSize();
+    }
+
+    private void initWindowSize(){
+        SystemResourceManager.getStage().setWidth(660);
+        SystemResourceManager.getStage().setHeight(400);
     }
 
     /**
@@ -212,7 +220,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
-        SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
+        SystemConfiguration translatorConfig = SystemResourceManager.getConfiguration();
         if (newValue == googleTranslator) {
             translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
         } else if (newValue == baiduTranslator) {
@@ -343,11 +351,11 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     }
 
     private void clipboardListenerSwitch(boolean open) {
-        SystemResourceManager.getConfigurationProxy().setOpenClipboardListener(open);
+        SystemResourceManager.getConfiguration().setOpenClipboardListener(open);
     }
 
     private void dragCopyListenerSwitch(boolean open) {
-        SystemResourceManager.getConfigurationProxy().setDragCopy(open);
+        SystemResourceManager.getConfiguration().setDragCopy(open);
     }
 
     private void clearText() {
@@ -360,11 +368,11 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
      * @param isKeep
      */
     private void keepTop(boolean isKeep) {
-        SystemResourceManager.getConfigurationProxy().setKeepTop(isKeep);
+        SystemResourceManager.getConfiguration().setKeepTop(isKeep);
     }
 
     private void incrementCopy(boolean openIncrementCopy) {
-        SystemResourceManager.getConfigurationProxy().setIncrementalCopy(openIncrementCopy);
+        SystemResourceManager.getConfiguration().setIncrementalCopy(openIncrementCopy);
     }
 
     private void previousHistory() {
@@ -384,22 +392,22 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     private void autoCopy(boolean open) {
         if (!autoCopyMenu.isSelected()) {
             autoPasteMenu.setSelected(false);
-            SystemResourceManager.getConfigurationProxy().setAutoPaste(false);
+            SystemResourceManager.getConfiguration().setAutoPaste(false);
         }
-        SystemResourceManager.getConfigurationProxy().setAutoCopy(open);
+        SystemResourceManager.getConfiguration().setAutoCopy(open);
     }
 
     private void autoPaste(boolean open) {
         // 自动粘贴依赖于自动复制
         if (autoPasteMenu.isSelected()) {
             autoCopyMenu.setSelected(true);
-            SystemResourceManager.getConfigurationProxy().setAutoCopy(true);
+            SystemResourceManager.getConfiguration().setAutoCopy(true);
         }
-        SystemResourceManager.getConfigurationProxy().setAutoPaste(open);
+        SystemResourceManager.getConfiguration().setAutoPaste(open);
     }
 
     private void textFormat(boolean open) {
-        SystemResourceManager.getConfigurationProxy().setTryToFormat(open);
+        SystemResourceManager.getConfiguration().setTryToFormat(open);
     }
 
     private void displayText() {
