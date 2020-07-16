@@ -14,7 +14,6 @@ open module rubbertranslator {
     requires jna;
     requires jna.platform;
     requires org.objectweb.asm;
-    requires cglib;
     requires jnativehook;
     requires okhttp3;
     requires junique;

@@ -40,6 +40,8 @@ public class App extends Application {
         super.stop();
         SystemResourceManager.destroy();
         Logger.getLogger(this.getClass().getName()).info("系统资源已销毁，现在退出");
+        // TODO:强制退出
+        System.exit(0);
     }
 
     @Override

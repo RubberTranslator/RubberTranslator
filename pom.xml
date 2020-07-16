@@ -52,12 +52,12 @@
             <version>2.8.6</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/cglib/cglib -->
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>3.3.0</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/cglib/cglib &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>cglib</groupId>-->
+<!--            <artifactId>cglib</artifactId>-->
+<!--            <version>3.3.0</version>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
         <dependency>
@@ -132,10 +132,10 @@
                     <target>11</target>
                     <release>11</release>
                     <!-- runtime options-->
-                    <options>
-                        <option>--add-opens</option>
-                        <option>java.base/java.lang=cglib</option>
-                    </options>
+<!--                    <options>-->
+<!--                        <option>&#45;&#45;add-opens</option>-->
+<!--                        <option>java.base/java.lang=cglib</option>-->
+<!--                    </options>-->
                     <!--jlink-->
                     <stripDebug>true</stripDebug>
                     <compress>2</compress>
