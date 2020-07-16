@@ -134,7 +134,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                rootPane.getScene().getWindow().focusedProperty().addListener(FocusModeController.this);
+                SystemResourceManager.getStage().focusedProperty().addListener(FocusModeController.this);
             }
         },500);
     }
@@ -158,11 +158,10 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
         }
 
-
         // 置顶
         keepStageTopBt.setSelected(configurationProxy.isKeepTop());
-        // 置顶在UI模块，UI模块不在系统资源管理范围内，xxx:考虑重构
-        App.setKeepTop(keepStageTopBt.isSelected());
+        SystemResourceManager.getStage().setAlwaysOnTop(keepStageTopBt.isSelected());
+
         // 翻译引擎
         switch (configurationProxy.getCurrentTranslator()) {
             case GOOGLE:
@@ -279,7 +278,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     private void hideWindow(){
         if(autoHideBt.isSelected())
         {
-            Stage window  = (Stage) rootPane.getScene().getWindow();
+            Stage window  = SystemResourceManager.getStage();
             // 回到ui线程
             Platform.runLater(()->{
                 if(window.isShowing())
@@ -298,7 +297,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
     private void showWindow(){
         if(autoHideBt.isSelected())
         {
-            Stage window  = (Stage) rootPane.getScene().getWindow();
+            Stage window  = SystemResourceManager.getStage();
             // 回到ui线程
             Platform.runLater(()->{
                 if(currentMouseClickPos!=null)
@@ -316,8 +315,8 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
                         mouseY = screenHeight - height - 20;
                     }
 
-                    rootPane.getScene().getWindow().setX(mouseX);
-                    rootPane.getScene().getWindow().setY(mouseY+20);    // y 方向+一个delta，避免覆盖选中文字
+                    window.setX(mouseX);
+                    window.setY(mouseY+20);    // y 方向+一个delta，避免覆盖选中文字
 
                     if(!window.isShowing())
                     {
@@ -356,9 +355,12 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
         SystemResourceManager.getFacade().clear();
     }
 
+    /**
+     * 修改应用配置文件，并修改应用当前效果
+     * @param isKeep
+     */
     private void keepTop(boolean isKeep) {
-        App.setKeepTop(isKeep);
-        SystemResourceManager.getConfigurationProxy().setKeepTop(keepStageTopBt.isSelected());
+        SystemResourceManager.getConfigurationProxy().setKeepTop(isKeep);
     }
 
     private void incrementCopy(boolean openIncrementCopy) {
@@ -484,7 +486,7 @@ public class FocusModeController implements Initializable, EventHandler<ActionEv
         if(autoHideBt.isSelected())
         {
             // 获取焦点
-            rootPane.getScene().getWindow().requestFocus();
+            SystemResourceManager.getStage().requestFocus();
             // 展示
             showWindow();
         }

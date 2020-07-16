@@ -261,8 +261,6 @@ public class MainController {
             textFormatMenu.setOnAction((actionEvent ->
                     configuration.setTryToFormat(textFormatMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> {
-                // XXX: UI模块的相关功能，没有静态代理管理，需要手动界面生效功能，然后动态代理自动持久化设置
-                App.setKeepTop(keepTopMenu.isSelected());
                 configuration.setKeepTop(keepTopMenu.isSelected());
             }));
 
@@ -283,7 +281,7 @@ public class MainController {
             keepTopMenu.setSelected(configuration.isKeepTop());
 
             // 置顶在UI模块，UI模块不在系统资源管理范围内，xxx:考虑重构
-            App.setKeepTop(keepTopMenu.isSelected());
+            SystemResourceManager.getStage().setAlwaysOnTop(keepTopMenu.isSelected());
         }
 
         private void initTranslatorType(TranslatorType type) {
@@ -454,7 +452,7 @@ public class MainController {
             ButtonType cancelBt = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmBt, cancelBt);
             dialog.getDialogPane().setContent(create());
-            dialog.initOwner(rootPane.getScene().getWindow());
+            dialog.initOwner(SystemResourceManager.getStage());
 
             // 结果转换器
             dialog.setResultConverter(dialogButton -> {
@@ -513,7 +511,7 @@ public class MainController {
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.getExtensionFilters().add(
                             new FileChooser.ExtensionFilter("css文件", "*.css"));
-                    File newFile = fileChooser.showOpenDialog(rootPane.getScene().getWindow());
+                    File newFile = fileChooser.showOpenDialog(SystemResourceManager.getStage());
                     if (newFile == null) return;
                     // 应用
                     rootPane.getStylesheets().setAll(newFile.toURI().toURL().toString());
@@ -563,7 +561,7 @@ public class MainController {
                 try {
                     Stage stage = new Stage();
                     Scene scene = new Scene(App.loadFXML(ControllerFxmlPath.FILTER_CONTROLLER_FXML));
-                    stage.initOwner(rootPane.getScene().getWindow());
+                    stage.initOwner(SystemResourceManager.getStage());
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
@@ -577,7 +575,7 @@ public class MainController {
                 try {
                     Stage stage = new Stage();
                     Scene scene = new Scene(App.loadFXML(ControllerFxmlPath.WORDS_REPLACER_CONTROLLER_FXML));
-                    stage.initOwner(rootPane.getScene().getWindow());
+                    stage.initOwner(SystemResourceManager.getStage());
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
@@ -593,7 +591,7 @@ public class MainController {
                 dialog.setTitle("设置");
                 dialog.setHeaderText("翻译历史数量设置");
                 dialog.setContentText("输入保存历史数量(不超过100):");
-                dialog.initOwner(rootPane.getScene().getWindow());
+                dialog.initOwner(SystemResourceManager.getStage());
                 // Traditional way to get the response value.
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(s -> {

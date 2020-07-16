@@ -20,13 +20,17 @@ import com.rubbertranslator.modules.translate.TranslatorType;
 import com.rubbertranslator.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.utils.FileUtil;
+import javafx.stage.Stage;
 import net.sf.cglib.proxy.Enhancer;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -42,6 +46,7 @@ public class SystemResourceManager {
     private static DragCopyThread dragCopyThread;
     private static WindowsPlatformActiveWindowListenerThread activeWindowListenerThread;
     private static TranslatorFacade facade;
+    private static Stage appStage;
 
     // cache线程池，还是single线程池好一点？
     private static final ExecutorService executor = Executors.newCachedThreadPool();
@@ -73,6 +78,20 @@ public class SystemResourceManager {
         return facade;
     }
 
+    public static Stage getStage() {
+        return appStage;
+    }
+
+    /**
+     * 设置stage
+     * @param stage
+     */
+    public static void setStage(Stage stage)
+    {
+        appStage = stage;
+        uiInit(configurationProxy);
+    }
+
     public static SystemConfiguration getConfigurationProxy() {
         return configurationProxy;
     }
@@ -94,7 +113,7 @@ public class SystemResourceManager {
         facade = new TranslatorFacade();
         // 3. 启动各组件
         // ui配置在controller进行应用
-        return textInputInit(configurationProxy) &&
+        return  textInputInit(configurationProxy) &&
                 filterInit(configurationProxy) &&
                 preTextProcessInit(configurationProxy) &&
                 postTextProcessInit(configurationProxy) &&
@@ -102,7 +121,6 @@ public class SystemResourceManager {
                 historyInit(configurationProxy) &&
                 afterProcessorInit(configurationProxy);
     }
-
 
 
     /**
@@ -162,12 +180,30 @@ public class SystemResourceManager {
     }
 
 
+    private static boolean uiInit(SystemConfiguration configurationProxy)
+    {
+        if(appStage == null || configurationProxy == null) return false;
+        appStage.setAlwaysOnTop(configurationProxy.isKeepTop());
+        try {
+            // 回显
+            String path = configurationProxy.getStyleCssPath();
+            if (path != null) {
+                File file = new File(path);
+                if (file.exists()) {
+                    appStage.getScene().getStylesheets().setAll(file.toURI().toURL().toString());
+                }
+            }
+        } catch (MalformedURLException e) {
+            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
+        }
+        return true;
+    }
+
     private static boolean textInputInit(SystemConfiguration configuration) {
         clipboardListenerThread = new ClipboardListenerThread();
         clipboardListenerThread.setRun(configuration.isOpenClipboardListener());
         dragCopyThread = new DragCopyThread();
         dragCopyThread.setRun(configuration.isDragCopy());
-        configuration.isKeepTop();
         OCRUtils.setApiKey(configuration.getBaiduOcrApiKey());
         OCRUtils.setSecretKey(configuration.getBaiduOcrSecretKey());
 

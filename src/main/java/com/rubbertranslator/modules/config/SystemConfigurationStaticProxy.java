@@ -194,6 +194,7 @@ public class SystemConfigurationStaticProxy extends SystemConfiguration{
     @Override
     public void setKeepTop(Boolean keepTop) {
         configuration.setKeepTop(keepTop);
+        SystemResourceManager.getStage().setAlwaysOnTop(keepTop);
     }
 
     /**
