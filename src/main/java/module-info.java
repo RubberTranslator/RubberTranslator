@@ -21,18 +21,18 @@ open module rubbertranslator {
     requires java.management;
 
     exports com.rubbertranslator;
-    exports com.rubbertranslator.modules;
-    exports com.rubbertranslator.modules.textinput.clipboard;
-    exports com.rubbertranslator.modules.textinput.mousecopy;
-    exports com.rubbertranslator.modules.filter;
-    exports com.rubbertranslator.modules.textprocessor.pre;
-    exports com.rubbertranslator.modules.textprocessor.post;
-    exports com.rubbertranslator.modules.translate;
-    exports com.rubbertranslator.modules.translate.baidu;
-    exports com.rubbertranslator.modules.translate.youdao;
-    exports com.rubbertranslator.modules.translate.google;
-    exports com.rubbertranslator.modules.history;
-    exports com.rubbertranslator.modules.afterprocess;
+    exports com.rubbertranslator.mvp.modules;
+    exports com.rubbertranslator.mvp.modules.textinput.clipboard;
+    exports com.rubbertranslator.mvp.modules.textinput.mousecopy;
+    exports com.rubbertranslator.mvp.modules.filter;
+    exports com.rubbertranslator.mvp.modules.textprocessor.pre;
+    exports com.rubbertranslator.mvp.modules.textprocessor.post;
+    exports com.rubbertranslator.mvp.modules.translate;
+    exports com.rubbertranslator.mvp.modules.translate.baidu;
+    exports com.rubbertranslator.mvp.modules.translate.youdao;
+    exports com.rubbertranslator.mvp.modules.translate.google;
+    exports com.rubbertranslator.mvp.modules.history;
+    exports com.rubbertranslator.mvp.modules.afterprocess;
     exports com.rubbertranslator.system;
     exports com.rubbertranslator.event;
 }

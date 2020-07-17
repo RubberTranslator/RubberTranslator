@@ -1,6 +1,6 @@
 package com.rubbertranslator.mvp.presenter.impl;
 
-import com.rubbertranslator.modules.textprocessor.post.WordsPair;
+import com.rubbertranslator.entity.WordsPair;
 import com.rubbertranslator.mvp.presenter.ConfigPresenter;
 import com.rubbertranslator.mvp.view.IWordsReplacerView;
 

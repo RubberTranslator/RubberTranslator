@@ -1,6 +1,6 @@
 package com.rubbertranslator.mvp.presenter.impl;
 
-import com.rubbertranslator.modules.history.HistoryEntry;
+import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.view.IFocusView;
 
 public class FocusViewPresenter extends Presenter{

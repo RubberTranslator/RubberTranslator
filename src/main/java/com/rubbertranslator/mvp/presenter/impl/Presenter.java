@@ -2,12 +2,10 @@ package com.rubbertranslator.mvp.presenter.impl;
 
 import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.event.CopyOriginOrTranslationEvent;
-import com.rubbertranslator.modules.history.HistoryEntry;
-import com.rubbertranslator.modules.textinput.mousecopy.copymethods.CopyRobot;
-import com.rubbertranslator.modules.translate.TranslatorType;
+import com.rubbertranslator.enumtype.TranslatorType;
+import com.rubbertranslator.mvp.modules.history.HistoryEntry;
+import com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods.CopyRobot;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
-import org.greenrobot.eventbus.EventBus;
 
 public class Presenter extends ModelPresenter {
 
@@ -26,17 +24,22 @@ public class Presenter extends ModelPresenter {
     @Override
     public void translate(String originText) {
         super.translate(originText);
+        // 关闭剪切板监听线程，翻译未完成前，不允许更多输入
+        final boolean cptState = clipboardListenerThread.isRunning();
+        clipboardListenerThread.setRun(false);
+        // 如果开启了自动复制，那么需要跳过下一次复制
         if(configManger.getSystemConfiguration().isAutoCopy()){
-            EventBus.getDefault().post(new CopyOriginOrTranslationEvent());
+            clipboardListenerThread.ignoreThisTime();
         }
-
+        // 处理
         scene.translateStart();
         translatorFacade.process(originText, (stringPair -> {
             scene.setText(stringPair.getFirst(), stringPair.getSecond());
             // end
             scene.translateEnd();
+            // 翻译完成，重新开启输入
+            clipboardListenerThread.setRun(cptState);
         }));
-
     }
 
 
@@ -133,7 +136,7 @@ public class Presenter extends ModelPresenter {
 
     private void copyText(String text){
         // 通知clipboard，下一次复制，不要翻译
-        EventBus.getDefault().post(new CopyOriginOrTranslationEvent());
+        clipboardListenerThread.ignoreThisTime();
         CopyRobot.getInstance().copyText(text);
     }
 

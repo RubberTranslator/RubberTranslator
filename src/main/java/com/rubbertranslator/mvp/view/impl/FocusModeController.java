@@ -6,9 +6,9 @@ import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.MouseClickPositionEvent;
-import com.rubbertranslator.modules.history.HistoryEntry;
-import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
-import com.rubbertranslator.modules.translate.TranslatorType;
+import com.rubbertranslator.mvp.modules.history.HistoryEntry;
+import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
+import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.FocusViewPresenter;
 import com.rubbertranslator.mvp.view.IFocusView;
@@ -127,6 +127,9 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
 
     @Override
     public void initViews(SystemConfiguration configuration) {
+        // set window preSize
+        rootPane.setPrefSize(550,350);
+
         // 样式加载
         try {
             // 回显
@@ -170,11 +173,7 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
         textFormatMenu.setSelected(configuration.isTryFormat());
         // auto hide
         autoHideBt.setSelected(configuration.isAutoHide());
-        // resize window
-        Point lastSize = configuration.getLastSize();
-        if (lastSize.getX() != 0 && lastSize.getY() != 0) {
-            rootPane.setPrefSize(lastSize.getX(),lastSize.getY());
-        }
+
     }
 
 
@@ -356,6 +355,7 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null) return;
+        if(!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData())) return;
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
         } else {                // 图片类型

@@ -2,12 +2,12 @@ package com.rubbertranslator.mvp.presenter;
 
 import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.modules.TranslatorFacade;
-import com.rubbertranslator.modules.filter.WindowsPlatformActiveWindowListenerThread;
-import com.rubbertranslator.modules.textinput.clipboard.ClipboardListenerThread;
-import com.rubbertranslator.modules.textinput.mousecopy.DragCopyThread;
-import com.rubbertranslator.modules.translate.Language;
-import com.rubbertranslator.modules.translate.TranslatorType;
+import com.rubbertranslator.mvp.modules.TranslatorFacade;
+import com.rubbertranslator.mvp.modules.filter.WindowsPlatformActiveWindowListenerThread;
+import com.rubbertranslator.mvp.modules.textinput.clipboard.ClipboardListenerThread;
+import com.rubbertranslator.mvp.modules.textinput.mousecopy.DragCopyThread;
+import com.rubbertranslator.enumtype.Language;
+import com.rubbertranslator.enumtype.TranslatorType;
 
 /**
  * presenter

@@ -1,7 +1,7 @@
 package com.rubbertranslator.mvp.view.impl;
 
 import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.modules.textprocessor.post.WordsPair;
+import com.rubbertranslator.entity.WordsPair;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.WordsReplacerPresenter;
 import com.rubbertranslator.mvp.view.IWordsReplacerView;

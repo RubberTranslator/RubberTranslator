@@ -3,11 +3,12 @@ package com.rubbertranslator.mvp.view.impl;
 import com.rubbertranslator.App;
 import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.HistoryEntryIndex;
+import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.enumtype.SceneType;
+import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
-import com.rubbertranslator.modules.translate.Language;
-import com.rubbertranslator.modules.translate.TranslatorType;
+import com.rubbertranslator.listener.GenericCallback;
+import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.ISceneView;
@@ -229,13 +230,6 @@ public class MainController implements ISceneView {
         });
     }
 
-    private void initWindowSize(SystemConfiguration configuration){
-        Point lastSize = configuration.getLastSize();
-        if (lastSize.getX() != 0 && lastSize.getY() != 0) {
-            rootPane.setPrefSize(lastSize.getX(),lastSize.getY());
-        }
-    }
-
     @Override
     public void setText(String originText, String translatedText) {
         Platform.runLater(()->{
@@ -247,6 +241,9 @@ public class MainController implements ISceneView {
 
     @Override
     public void initViews(SystemConfiguration configuration) {
+        // set window preSize
+        rootPane.setPrefSize(600,450);
+
         // 基础设置
         new BasicSettingMenu().init(configuration);
         // 高级设置
@@ -259,8 +256,7 @@ public class MainController implements ISceneView {
         initHistoryMenu();
         // 清空
         initClearMenu();
-        // window size
-        initWindowSize(configuration);
+        // window preSize
     }
 
 
@@ -424,14 +420,6 @@ public class MainController implements ISceneView {
         }
     }
 
-    /**
-     * 高级设置
-     */
-
-    private interface ApiInfoChangedListener {
-        void onApiChanged(ApiInfo newValue);
-    }
-
     private static class ApiInfo {
         public String apiKey;
         public String secretKey;
@@ -456,9 +444,9 @@ public class MainController implements ISceneView {
         private final String dialogTitle;
         private final ApiInfo apiInfo;
         private final String titleClickUrl;
-        private final ApiInfoChangedListener listener;
+        private final GenericCallback<ApiInfo> listener;
 
-        public ApiDialog(String dialogTitle, String titleClickUrl, ApiInfo apiInfo, ApiInfoChangedListener listener) {
+        public ApiDialog(String dialogTitle, String titleClickUrl, ApiInfo apiInfo, GenericCallback<ApiInfo> listener) {
             this.dialogTitle = dialogTitle;
             this.titleClickUrl = titleClickUrl;
             this.apiInfo = apiInfo;
@@ -519,7 +507,7 @@ public class MainController implements ISceneView {
                 if ("".equals(apiKey) || "".equals(secretKey)) {
                     originTextArea.setText("Api信息不完整,请填写所有字段");
                 } else {
-                    listener.onApiChanged(new ApiInfo(apiKey, secretKey));
+                    listener.callBack(new ApiInfo(apiKey, secretKey));
                 }
             });
         }
@@ -729,6 +717,7 @@ public class MainController implements ISceneView {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event){
         if (event == null) return;
+        if(!ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(appStage.getScene().getUserData())) return;
         if(event.isTextType()){
             presenter.translate(event.getText());
         }else{

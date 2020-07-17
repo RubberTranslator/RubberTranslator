@@ -1,9 +1,9 @@
 package com.rubbertranslator.system;
 
 import com.google.gson.annotations.SerializedName;
-import com.rubbertranslator.modules.textprocessor.post.WordsPair;
-import com.rubbertranslator.modules.translate.Language;
-import com.rubbertranslator.modules.translate.TranslatorType;
+import com.rubbertranslator.entity.WordsPair;
+import com.rubbertranslator.enumtype.Language;
+import com.rubbertranslator.enumtype.TranslatorType;
 
 import java.awt.*;
 import java.io.Serializable;

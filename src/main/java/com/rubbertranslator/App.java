@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +27,9 @@ public class App extends Application {
     private static Stage appStage;
     // 配置
     private static SystemConfiguration configuration;
+    // scene
+    private static Map<String,Scene> cacheScene = new HashMap<>();
+
 
     @Override
     public void init() throws Exception {
@@ -34,7 +39,7 @@ public class App extends Application {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "系统配置失败");
             System.exit(-1);
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "系统配置成功");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "系统配置成功");
         }
     }
 
@@ -108,9 +113,15 @@ public class App extends Application {
      */
     public static void loadScene(String fxml) throws IOException
     {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
-        Scene scene = new Scene(fxmlLoader.load());
-        scene.setUserData(fxml);
+        Scene scene;
+        if(!cacheScene.containsKey(fxml)){
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
+            scene = new Scene(fxmlLoader.load());
+            scene.setUserData(fxml);
+            cacheScene.put(fxml,scene);
+        }else{
+            scene = cacheScene.get(fxml);
+        }
         appStage.setScene(scene);
     }
 

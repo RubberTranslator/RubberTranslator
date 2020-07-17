@@ -1,6 +1,6 @@
 package com.rubbertranslator.mvp.presenter.impl;
 
-import com.rubbertranslator.modules.translate.Language;
+import com.rubbertranslator.enumtype.Language;
 
 public class MainViewPresenter extends Presenter{
     @Override

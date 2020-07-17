@@ -1,6 +1,6 @@
 package com.rubbertranslator.mvp.view;
 
-import com.rubbertranslator.modules.history.HistoryEntry;
+import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 
 /**
  * focusView
