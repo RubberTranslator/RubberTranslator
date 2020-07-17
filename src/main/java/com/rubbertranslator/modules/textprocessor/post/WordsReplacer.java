@@ -62,13 +62,13 @@ public class WordsReplacer {
         words.removeIf(Objects::isNull);
         wordsPairs.addAll(words);
     }
-
+    // set
     public String replace(String text) {
         if (!openWordsReplacer) return text;
         String src, dest;
         for (WordsPair wordsPair : wordsPairs) {
-            src = wordsPair.getSrc();
-            dest = wordsPair.getDest();
+            src = wordsPair.getFirst();
+            dest = wordsPair.getSecond();
             text = doReplace(src, dest, text);
         }
         return text;

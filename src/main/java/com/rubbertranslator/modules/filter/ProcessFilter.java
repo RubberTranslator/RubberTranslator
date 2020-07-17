@@ -37,6 +37,10 @@ public class ProcessFilter {
     // 过滤名单
     private final Set<String> filterList = new HashSet<>();
 
+    public Set<String> getFilterList() {
+        return filterList;
+    }
+
     /**
      * 添加过滤
      *
@@ -53,6 +57,12 @@ public class ProcessFilter {
      */
     public void addFilterList(Collection<String> list) {
         this.filterList.addAll(list);
+    }
+
+    public void removeFilter(String processName){this.filterList.remove(processName);}
+
+    public void removeFilterLists(Collection<String> list){
+        this.filterList.removeAll(list);
     }
 
     public void setFilterList(Collection<String> list) {

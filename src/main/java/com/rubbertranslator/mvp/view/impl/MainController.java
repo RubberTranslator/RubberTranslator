@@ -1,13 +1,16 @@
-package com.rubbertranslator.controller;
+package com.rubbertranslator.mvp.view.impl;
 
 import com.rubbertranslator.App;
+import com.rubbertranslator.entity.ControllerFxmlPath;
+import com.rubbertranslator.enumtype.HistoryEntryIndex;
+import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.event.TranslateCompleteEvent;
-import com.rubbertranslator.event.TranslatorProcessEvent;
-import com.rubbertranslator.modules.history.HistoryEntry;
 import com.rubbertranslator.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.modules.translate.Language;
 import com.rubbertranslator.modules.translate.TranslatorType;
+import com.rubbertranslator.mvp.presenter.PresenterFactory;
+import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
+import com.rubbertranslator.mvp.view.ISceneView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
@@ -24,7 +27,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -50,7 +52,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/6 20:49
  */
-public class MainController {
+public class MainController implements ISceneView {
 
     @FXML
     private AnchorPane rootPane;
@@ -169,6 +171,8 @@ public class MainController {
     // window stage 引用
     private Stage appStage;
 
+    // presenter
+    private MainViewPresenter presenter;
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -176,17 +180,18 @@ public class MainController {
     @FXML
     public void initialize() {
         initListeners();
-        initViews();
         initParams();
     }
 
     private void initParams() {
+        presenter = (MainViewPresenter) PresenterFactory.getPresenter(SceneType.MAIN_SCENE);
+        SystemResourceManager.initPresenter(presenter);
+        presenter.setView(this);
         // 延迟 load
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 appStage = (Stage) rootPane.getScene().getWindow();
-                appStage.setAlwaysOnTop(keepTopMenu.isSelected());;
             }
         },500);
     }
@@ -196,29 +201,56 @@ public class MainController {
         EventBus.getDefault().register(this);
     }
 
-    /**
-     * translatorEvent事件接收
-     * @param event translatorEvent事件接收
-     */
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void translatorFacadeEvent(TranslatorProcessEvent event) {
-        if(event == null) return;
+
+    @Override
+    public void switchScene(SceneType type) {
+        App.switchScene(type);
+    }
+
+    @Override
+    public void setKeepTop(boolean isKeep) {
+        appStage.setAlwaysOnTop(isKeep);
+    }
+
+    @Override
+    public void translateStart() {
         Platform.runLater(()->{
-            if(event.isProcessStart()){ // 处理开始
-                translateBt.setText("翻译中");
-                translateBt.setDisable(true);
-            }else{      // 处理结束
-                translateBt.setText("翻译");
-                translateBt.setDisable(false);
-            }
+            translateBt.setText("翻译中");
+            translateBt.setDisable(true);
+        });
+
+    }
+
+    @Override
+    public void translateEnd() {
+        Platform.runLater(()->{
+            translateBt.setText("翻译");
+            translateBt.setDisable(false);
         });
     }
 
-    private void initViews() {
+    private void initWindowSize(SystemConfiguration configuration){
+        Point lastSize = configuration.getLastSize();
+        if (lastSize.getX() != 0 && lastSize.getY() != 0) {
+            rootPane.setPrefSize(lastSize.getX(),lastSize.getY());
+        }
+    }
+
+    @Override
+    public void setText(String originText, String translatedText) {
+        Platform.runLater(()->{
+            originTextArea.setText(originText);
+            translatedTextArea.setText(translatedText);
+        });
+
+    }
+
+    @Override
+    public void initViews(SystemConfiguration configuration) {
         // 基础设置
-        new BasicSettingMenu().init();
+        new BasicSettingMenu().init(configuration);
         // 高级设置
-        new AdvancedSettingMenu().init();
+        new AdvancedSettingMenu().init(configuration);
         // 帮助
         initHelpingMenu();
         // 专注模式
@@ -227,7 +259,24 @@ public class MainController {
         initHistoryMenu();
         // 清空
         initClearMenu();
+        // window size
+        initWindowSize(configuration);
+    }
 
+
+    @Override
+    public void autoCopy(boolean isOpen) {
+        if (!isOpen) {
+            autoPasteMenu.setSelected(false);
+        }
+    }
+
+    @Override
+    public void autoPaste(boolean isOpen) {
+        // 自动粘贴依赖于自动复制
+        if (isOpen) {
+            autoCopyMenu.setSelected(true);
+        }
     }
 
 
@@ -236,9 +285,8 @@ public class MainController {
      */
     private class BasicSettingMenu {
 
-        public void init() {
-            initBasicSettingMenu(SystemResourceManager.getConfigurationProxy());
-            Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化基础设置成功");
+        public void init(SystemConfiguration configuration) {
+            initBasicSettingMenu(configuration);
         }
 
         /**
@@ -255,33 +303,22 @@ public class MainController {
         private void initBasicSettingOthers(final SystemConfiguration configuration) {
             // 设置onActionListener
             clipboardListenerMenu.setOnAction((actionEvent) ->
-                    configuration.setOpenClipboardListener(clipboardListenerMenu.isSelected())
+                    presenter.clipboardSwitch(clipboardListenerMenu.isSelected())
             );
-
             dragCopyMenu.setOnAction((actionEvent) ->
-                    configuration.setDragCopy(dragCopyMenu.isSelected()));
+                    presenter.dragCopySwitch(dragCopyMenu.isSelected()));
             incrementalCopyMenu.setOnAction((actionEvent ->
-                    configuration.setIncrementalCopy(incrementalCopyMenu.isSelected())));
+                  presenter.incrementalCopySwitch(incrementalCopyMenu.isSelected())));
             autoCopyMenu.setOnAction((actionEvent -> {
-                if (!autoCopyMenu.isSelected()) {
-                    autoPasteMenu.setSelected(false);
-                    configuration.setAutoPaste(false);
-                }
-                configuration.setAutoCopy(autoCopyMenu.isSelected());
+                presenter.autoCopySwitch(autoCopyMenu.isSelected());
             }));
             autoPasteMenu.setOnAction((actionEvent -> {
-                // 自动粘贴依赖于自动复制
-                if (autoPasteMenu.isSelected()) {
-                    autoCopyMenu.setSelected(true);
-                    configuration.setAutoCopy(true);
-                }
-                configuration.setAutoPaste(autoPasteMenu.isSelected());
+               presenter.autoPasteSwitch(autoPasteMenu.isSelected());
             }));
             textFormatMenu.setOnAction((actionEvent ->
-                    configuration.setTryFormat(textFormatMenu.isSelected())));
+                    presenter.textFormatSwitch(textFormatMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> {
-                appStage.setAlwaysOnTop(keepTopMenu.isSelected());
-                configuration.setKeepTop(keepTopMenu.isSelected());
+                presenter.setKeepTop(keepTopMenu.isSelected());
             }));
 
             // ui回显
@@ -316,13 +353,12 @@ public class MainController {
             }
             // 监听
             translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-                SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
                 if (newValue == googleTranslator) {
-                    translatorConfig.setCurrentTranslator(TranslatorType.GOOGLE);
+                    presenter.setTranslatorType(TranslatorType.GOOGLE);
                 } else if (newValue == baiduTranslator) {
-                    translatorConfig.setCurrentTranslator(TranslatorType.BAIDU);
+                    presenter.setTranslatorType(TranslatorType.BAIDU);
                 } else if (newValue == youdaoTranslator) {
-                    translatorConfig.setCurrentTranslator(TranslatorType.YOUDAO);
+                    presenter.setTranslatorType(TranslatorType.YOUDAO);
                 } else {
                     oldValue.setSelected(true);
                 }
@@ -364,10 +400,10 @@ public class MainController {
             }
         }
 
+
         private void srcDestLanguageChooseEvent(boolean isSrc, ToggleGroup languageGroup, RadioMenuItem simpleChinese, RadioMenuItem traditional,
                                                 RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
             languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
-                SystemConfiguration translatorConfig = SystemResourceManager.getConfigurationProxy();
                 Language language = Language.AUTO;
                 if (newValue == srcAuto) {    // 此判断多余，但是为了完整性，还是加上
                     language = Language.AUTO;
@@ -383,11 +419,7 @@ public class MainController {
                     language = Language.JAPANESE;
                 }
 
-                if (isSrc) {
-                    translatorConfig.setSourceLanguage(language);
-                } else {
-                    translatorConfig.setDestLanguage(language);
-                }
+                presenter.setTranslatorLanguage(isSrc,language);
             });
         }
     }
@@ -494,12 +526,7 @@ public class MainController {
     }
 
     private class AdvancedSettingMenu {
-        public void init() {
-            initAdvancedSettingMenu(SystemResourceManager.getConfigurationProxy());
-            Logger.getLogger(BasicSettingMenu.class.getName()).info("初始化高级设置成功");
-        }
-
-        private void initAdvancedSettingMenu(SystemConfiguration configuration) {
+        public void init(SystemConfiguration configuration) {
             initOCR(configuration);
             initProcessFilter();
             initWordsReplacer();
@@ -663,33 +690,19 @@ public class MainController {
 
     private void initFocusModeMenu() {
         Label label = new Label("专注模式");
-        label.setOnMouseClicked((this::switchToFocusMode));
+        label.setOnMouseClicked((event -> presenter.switchScene(SceneType.FOCUS_SCENE)));
         focusMenu.setText("");
         focusMenu.setGraphic(label);
-    }
-
-    private void switchToFocusMode(MouseEvent event) {
-        try {
-            App.loadScene(ControllerFxmlPath.FOCUS_CONTROLLER_FXML);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void initHistoryMenu() {
         Label pre = new Label("上一条");
         Label next = new Label("下一条");
         pre.setOnMouseClicked((event -> {
-            HistoryEntry entry = SystemResourceManager.getFacade().getHistory().previous();
-            if (entry != null) {
-                updateTextArea(entry.getOrigin(), entry.getTranslation());
-            }
+            presenter.setHistoryEntry(HistoryEntryIndex.PRE_HISTORY);
         }));
         next.setOnMouseClicked(event -> {
-            HistoryEntry entry = SystemResourceManager.getFacade().getHistory().next();
-            if (entry != null) {
-                updateTextArea(entry.getOrigin(), entry.getTranslation());
-            }
+           presenter.setHistoryEntry(HistoryEntryIndex.NEXT_HISTORY);
         });
         preHistoryMenu.setText("");
         nextHistoryMenu.setText("");
@@ -700,36 +713,16 @@ public class MainController {
     private void initClearMenu() {
         Label label = new Label("清空");
         label.setOnMouseClicked((event -> {
-            updateTextArea("", "");
-            // 通知facade清空后续模块
-            SystemResourceManager.getFacade().clear();
+            presenter.clearText();
         }));
         clearMenu.setText("");
         clearMenu.setGraphic(label);
     }
 
 
-    /**
-     * 翻译文本控制区域
-     *
-     * @param origin      原文
-     * @param translation 译文
-     */
-    private void updateTextArea(String origin, String translation) {
-        originTextArea.setText(origin);
-        translatedTextArea.setText(translation);
-    }
-
-
     @FXML
     public void onBtnTranslateClick() {
-        String originText = originTextArea.getText();
-        processTranslate(originText);
-    }
-
-
-    private void processTranslate(String text) {
-        SystemResourceManager.getFacade().process(text);
+        presenter.translate(originTextArea.getText());
     }
 
 
@@ -737,27 +730,16 @@ public class MainController {
     public void onClipboardContentInput(ClipboardContentInputEvent event){
         if (event == null) return;
         if(event.isTextType()){
-            processTranslate(event.getText());
+            presenter.translate(event.getText());
         }else{
             try {
                 String text = OCRUtils.ocr(event.getImage());
                 if (text != null) {
-                    processTranslate(text);
+                    presenter.translate(text);
                 }
             } catch (IOException e) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
             }
         }
     }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onComplete(TranslateCompleteEvent event) {
-        if (event == null) return;
-        // 不管从哪里会回调，回到UI线程
-        Platform.runLater(() -> {
-            updateTextArea(event.getOrigin(), event.getTranslation());
-        });
-    }
-
-
 }

@@ -1,14 +1,13 @@
 package com.rubbertranslator.modules;
 
-import com.rubbertranslator.event.TranslateCompleteEvent;
+import com.rubbertranslator.entity.Pair;
+import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.modules.afterprocess.AfterProcessor;
-import com.rubbertranslator.event.TranslatorProcessEvent;
 import com.rubbertranslator.modules.history.TranslationHistory;
 import com.rubbertranslator.modules.textprocessor.post.TextPostProcessor;
 import com.rubbertranslator.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.modules.translate.TranslatorFactory;
 import com.rubbertranslator.system.SystemResourceManager;
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -36,23 +35,10 @@ public class TranslatorFacade {
     private AfterProcessor afterProcessor;
     // 创建线程池（使用了预定义的配置）
     private final ExecutorService executor;
-    // 翻译过程管理事件
-    private final TranslatorProcessEvent translatorProcessEvent = new TranslatorProcessEvent();
-    // 翻译完成事件
-    private final TranslateCompleteEvent translateCompleteEvent = new TranslateCompleteEvent();
 
     public TranslatorFacade() {
         history = new TranslationHistory();
         executor = SystemResourceManager.getExecutor();
-    }
-
-
-    /**
-     * 后置所有模块清理
-     */
-    public void clear() {
-        // 前置模块 --增量复制功能 buffer清理
-        this.textPreProcessor.cleanBuffer();
     }
 
     public AfterProcessor getAfterProcessor() {
@@ -101,18 +87,20 @@ public class TranslatorFacade {
      * @param text 原文
      *             失败 null
      */
-    public void process(String text ) {
+    public void process(String text, GenericCallback<Pair<String>> callback) {
         Callable<String> callable = new FacadeCallable(text);
-        FutureTask<String> task = new FacadeFutureTask(callable);
+        FutureTask<String> task = new FacadeFutureTask(callable,callback);
         executor.execute(task);
     }
 
     private class FacadeFutureTask extends FutureTask<String> {
         private final FacadeCallable callable;
+        private GenericCallback<Pair<String>> callback;
 
-        public FacadeFutureTask(Callable<String> callable) {
+        public FacadeFutureTask(Callable<String> callable,GenericCallback<Pair<String>> callback) {
             super(callable);
             this.callable = (FacadeCallable) callable;
+            this.callback = callback;
         }
 
         @Override
@@ -120,9 +108,7 @@ public class TranslatorFacade {
             try {
                 String result = get();  // 译文（如果有的话）
                 String processedOrigin = callable.getProcessedOrigin(); // 原文
-                translateCompleteEvent.setOrigin(processedOrigin);
-                translateCompleteEvent.setTranslation(result);
-                EventBus.getDefault().post(translateCompleteEvent);
+                callback.callBack(new Pair<>(processedOrigin,result));
             } catch (InterruptedException | ExecutionException e) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
             }
@@ -152,17 +138,11 @@ public class TranslatorFacade {
         public String call() {
             if (origin == null || "".equals(origin)) return null;
             // facade处理开始
-//            ModuleMediator.getInstance().facadeCallStart();
-            translatorProcessEvent.start();
-            EventBus.getDefault().post(translatorProcessEvent);
-
             String translation = null;
             try {
                 // text保存处理后的文本
                 processedOrigin = textPreProcessor.process(origin);
                 // 重新初始化lastOrigin
-                // lastOrigin 保存最后格式化后的原文
-                // lastOrigin = processedOrigin;
                 translation = translatorFactory.translate(processedOrigin);
                 // 后置处理
                 translation = textPostProcessor.process(processedOrigin, translation);
@@ -171,9 +151,6 @@ public class TranslatorFacade {
                 translation = afterProcessor.process(translation);
             } catch (NullPointerException e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
-            } finally {
-                translatorProcessEvent.end();
-                EventBus.getDefault().post(translatorProcessEvent);
             }
             return translation;
         }

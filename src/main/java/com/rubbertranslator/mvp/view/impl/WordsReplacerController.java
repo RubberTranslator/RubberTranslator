@@ -1,7 +1,12 @@
-package com.rubbertranslator.controller;
+package com.rubbertranslator.mvp.view.impl;
 
-import com.rubbertranslator.system.SystemResourceManager;
+import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.modules.textprocessor.post.WordsPair;
+import com.rubbertranslator.mvp.presenter.PresenterFactory;
+import com.rubbertranslator.mvp.presenter.impl.WordsReplacerPresenter;
+import com.rubbertranslator.mvp.view.IWordsReplacerView;
+import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.system.SystemResourceManager;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +28,7 @@ import java.util.Set;
  * @version 1.0
  * date 2020/5/13 8:53
  */
-public class WordsReplacerController implements Initializable {
+public class WordsReplacerController implements Initializable, IWordsReplacerView {
     @FXML
     private VBox vBox;
     @FXML   //
@@ -33,9 +38,18 @@ public class WordsReplacerController implements Initializable {
     @FXML
     private TableColumn<WordsPair,String> destCol;
 
+    private WordsReplacerPresenter presenter;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        presenter = (WordsReplacerPresenter) PresenterFactory.getPresenter(SceneType.WORDS_REPLACE_SCENE);
+        SystemResourceManager.initPresenter(presenter);
+        presenter.setView(this);
+    }
+
+
+    @Override
+    public void initViews(SystemConfiguration configuration) {
         // placeholder
         Label label = new Label("当前替换词组为空");
         label.setFont(Font.font(16));
@@ -64,7 +78,7 @@ public class WordsReplacerController implements Initializable {
                         alert.showAndWait();
                     }else{
                         t.getTableView().getItems().get(
-                                t.getTablePosition().getRow()).setSrc(newValue);
+                                t.getTablePosition().getRow()).setFirst(newValue);
                     }
 
                 });
@@ -74,17 +88,17 @@ public class WordsReplacerController implements Initializable {
                     String newValue = t.getNewValue();
                     if(!"".equals(newValue)){
                         t.getTableView().getItems().get(
-                                t.getTablePosition().getRow()).setDest(newValue);
+                                t.getTablePosition().getRow()).setSecond(newValue);
                     }
 
                 });
 
         // 单元格数据绑定
-        sourceCol.setCellValueFactory(new PropertyValueFactory<>("src"));
-        destCol.setCellValueFactory(new PropertyValueFactory<>("dest"));
+        sourceCol.setCellValueFactory(new PropertyValueFactory<>("first"));
+        destCol.setCellValueFactory(new PropertyValueFactory<>("second"));
         // 回显
         wordsPairTableView.getItems().addAll(
-                SystemResourceManager.getConfigurationProxy().getWordsPairs()
+                configuration.getWordsPairs()
         );
     }
 
@@ -96,7 +110,7 @@ public class WordsReplacerController implements Initializable {
      */
     private boolean checkDuplicateItem(String text){
         return wordsPairTableView.getItems().parallelStream().anyMatch(
-                wordsPair -> wordsPair.getSrc().equals(text)
+                wordsPair -> wordsPair.getSecond().equals(text)
         );
     }
 
@@ -116,10 +130,12 @@ public class WordsReplacerController implements Initializable {
     public void onConfirmButtonClick(){
         // 应用生效并持久化
         Set<WordsPair> set = new HashSet<>(wordsPairTableView.getItems());
-        SystemResourceManager.getConfigurationProxy().setWordsPairs(set);
-        ((Stage)(vBox.getScene().getWindow())).close();
+        presenter.apply(set);
+
     }
 
-
-
+    @Override
+    public void apply() {
+        ((Stage)(vBox.getScene().getWindow())).close();
+    }
 }

@@ -1,4 +1,4 @@
-package com.rubbertranslator.controller;
+package com.rubbertranslator.entity;
 
 /**
  * @author Raven

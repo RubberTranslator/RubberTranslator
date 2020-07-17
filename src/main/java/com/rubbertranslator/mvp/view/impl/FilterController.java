@@ -1,5 +1,9 @@
-package com.rubbertranslator.controller;
+package com.rubbertranslator.mvp.view.impl;
 
+import com.rubbertranslator.enumtype.SceneType;
+import com.rubbertranslator.mvp.presenter.PresenterFactory;
+import com.rubbertranslator.mvp.presenter.impl.FilterViewPresenter;
+import com.rubbertranslator.mvp.view.IFilterView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.beans.value.ObservableValue;
@@ -13,13 +17,14 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Raven
  * @version 1.0
  * date 2020/5/12 21:12
  */
-public class FilterController {
+public class FilterController implements IFilterView {
     @FXML
     private VBox vBox;
     @FXML   // processList
@@ -31,6 +36,8 @@ public class FilterController {
     @FXML
     private Button removeBt;
 
+    private FilterViewPresenter presenter;
+
     // 文件选择器
     private FileChooser fileChooser = new FileChooser();
     {
@@ -39,9 +46,16 @@ public class FilterController {
         );
     }
 
-
     @FXML
     public void initialize() {
+        presenter = (FilterViewPresenter) PresenterFactory.getPresenter(SceneType.FILTER_SCENE);
+        SystemResourceManager.initPresenter(presenter);
+        presenter.setView(this);
+    }
+
+
+    @Override
+    public void initViews(SystemConfiguration configuration) {
         // 进程list初始化
         // 开启多选模式
         processList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -54,28 +68,20 @@ public class FilterController {
         // 总开关初始化
         openCheckBox.selectedProperty().addListener(this::onOpenCheckBoxClick);
 
-        SystemConfiguration configuration = SystemResourceManager.getConfigurationProxy();
         openCheckBox.setSelected(configuration.isOpenProcessFilter());
         processList.getItems().addAll(configuration.getProcessList());
-
     }
 
     @FXML
     public void onAddButtonClick(){
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(vBox.getScene().getWindow());
-        if(selectedFiles != null){
-            for (File f : selectedFiles){
-                processList.getItems().add(f.getName());
-            }
-            SystemResourceManager.getConfigurationProxy().setProcessList(
-                    processList.getItems()
-            );
-        }
+        List<String> collect = selectedFiles.stream().map(File::getName).collect(Collectors.toList());
+        presenter.addFilterList(collect);
     }
 
 
     public <T> void onOpenCheckBoxClick(ObservableValue<? extends T> observable, T oldValue, T newValue){
-        SystemResourceManager.getConfigurationProxy().setOpenProcessFilter((Boolean) newValue);
+        presenter.setOpenProcessFilter((Boolean) newValue);
     }
 
     @FXML
@@ -83,12 +89,17 @@ public class FilterController {
         ObservableList<String> selectedItems =
                 processList.getSelectionModel().getSelectedItems();
         if(selectedItems != null){
-            processList.getItems().removeAll(selectedItems);
-            // 更新设置
-            SystemResourceManager.getConfigurationProxy().setProcessList(
-                    processList.getItems()
-            );
+            presenter.removeFilterList(selectedItems);;
         }
     }
 
+    @Override
+    public void addFilterProcesses(List<String> processNames) {
+        processList.getItems().addAll(processNames);
+    }
+
+    @Override
+    public void removeFilterProcesses(List<String> processNames) {
+        processList.getItems().removeAll(processNames);
+    }
 }

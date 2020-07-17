@@ -3,9 +3,7 @@ package com.rubbertranslator.modules.textinput.clipboard;
 
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.CopyOriginOrTranslationEvent;
-import com.rubbertranslator.event.TranslatorProcessEvent;
 import com.rubbertranslator.modules.filter.ProcessFilter;
-import com.rubbertranslator.system.SystemResourceManager;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -121,43 +119,13 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
 
 
     public void setRun(boolean run) {
-        if (run) {
-            resumeRun();
-        } else {
-            pause();
-        }
-    }
-
-    private void pause() {
-        running = false;
-    }
-
-    private void resumeRun() {
-        running = true;
+        running = run;
     }
 
     public void exit() {
         blocker.dead();
     }
 
-    /**
-     * translatorProcessEvent事件接收 翻译过程开始或结束
-     *
-     * @param event translatorEvent事件接收
-     */
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void translatorProcessEvent(TranslatorProcessEvent event) {
-        if (event == null) return;
-        if (event.isProcessStart()) {
-            pause();    // 事件处理开始，暂停接收新变化
-        } else {
-            if (SystemResourceManager.getConfigurationProxy().isAutoCopy()) {
-                // 如果当前系统开启自动复制，必须忽略本次剪切板变化，避免重复翻译
-                ignoreThisTime = true;
-            }
-            resumeRun();
-        }
-    }
 
     /**
      * 用户复制原文或译文时，为了避免重复翻译，监听线程需要忽略本次剪切板变化
