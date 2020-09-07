@@ -13,6 +13,7 @@ public class Presenter extends ModelPresenter {
     public void setTranslatorType(TranslatorType type) {
         super.setTranslatorType(type);
         translatorFacade.getTranslatorFactory().setEngineType(type);
+        configManger.getSystemConfiguration().setCurrentTranslator(type);
     }
 
     @Override

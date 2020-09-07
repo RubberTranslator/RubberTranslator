@@ -17,6 +17,7 @@ import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -206,6 +208,7 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
     private void initListeners() {
         // 注册监听
         EventBus.getDefault().register(this);
+
     }
 
 
@@ -379,7 +382,7 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
         && ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData()))
         {
             // 获取焦点
-            appStage.requestFocus();
+//            appStage.requestFocus();
             // 展示
             showWindow();
         }
