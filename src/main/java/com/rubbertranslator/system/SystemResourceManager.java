@@ -1,6 +1,5 @@
 package com.rubbertranslator.system;
 
-import com.google.gson.Gson;
 import com.rubbertranslator.mvp.modules.TranslatorFacade;
 import com.rubbertranslator.mvp.modules.afterprocess.AfterProcessor;
 import com.rubbertranslator.mvp.modules.filter.ProcessFilter;
@@ -18,13 +17,7 @@ import com.rubbertranslator.mvp.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.mvp.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
 import com.rubbertranslator.mvp.presenter.ConfigPresenter;
-import com.rubbertranslator.utils.FileUtil;
 import it.sauronsoftware.junique.JUnique;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -37,13 +30,10 @@ import java.util.logging.Logger;
  * 系统资源管理
  */
 public class SystemResourceManager {
-    // 新配置文件路径 更改为用户home目录
-    public static String configJsonPath = System.getProperty("user.home") + "/RubberTranslator/config/configuration.json";
     private static ClipboardListenerThread clipboardListenerThread;
     private static DragCopyThread dragCopyThread;
     private static WindowsPlatformActiveWindowListenerThread activeWindowListenerThread;
     private static SystemConfigurationManager configManager;
-    private static SystemConfiguration configuration;
     private static TranslatorFacade facade;
 
     // cache线程池，还是single线程池好一点？
@@ -69,7 +59,10 @@ public class SystemResourceManager {
     public static SystemConfiguration init() {
         LoggerManager.configLog();
         facade = new TranslatorFacade();
-        initSystemConfig();
+        configManager = new SystemConfigurationManager();
+        configManager.init();
+
+        SystemConfiguration configuration = configManager.getSystemConfiguration();
         textInputInit(configuration);
         filterInit(configuration);
         preTextProcessInit(configuration);
@@ -88,7 +81,7 @@ public class SystemResourceManager {
     public static void destroy() {
         Logger.getLogger(SystemResourceManager.class.getName()).info("资源销毁中");
         // 1. 保存配置文件
-        configManager.saveConfigFile(configJsonPath);
+        configManager.saveConfigFile();
         // 2. 释放资源
         try {
             executor.shutdownNow();
@@ -114,35 +107,7 @@ public class SystemResourceManager {
             ((ModelPresenter) presenter).setClipboardListenerThread(clipboardListenerThread);
             ((ModelPresenter) presenter).setDragCopyThread(dragCopyThread);
         }
-        // 注入config manager
-        configManager = new SystemConfigurationManager(configuration);
         presenter.setConfigManger(configManager);
-
-    }
-
-    /**
-     * 加载配置文件
-     */
-    private static boolean initSystemConfig() {
-        // 加载本地配置
-        File file = new File(configJsonPath);
-        String configJson;
-        try {
-            if (!file.exists()) {
-                InputStream resourceAsStream = SystemResourceManager.class.getResourceAsStream("/config/default_configuration.json");
-                FileUtil.copyInputStreamToFile(resourceAsStream, file);
-            }
-            configJson = FileUtil.readFileToString(file, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            Logger.getLogger(SystemResourceManager.class.getName()).severe(e.getLocalizedMessage());
-            return false;
-        }
-        // json --> object
-        Gson gson = new Gson();
-        // 原始配置记录
-        configuration = gson.fromJson(configJson, SystemConfiguration.class);
-        Logger.getLogger(SystemResourceManager.class.getName()).info("加载配置" + configJson);
-        return true;
     }
 
 

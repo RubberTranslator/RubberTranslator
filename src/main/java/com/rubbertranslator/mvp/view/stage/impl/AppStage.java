@@ -2,6 +2,7 @@ package com.rubbertranslator.mvp.view.stage.impl;
 
 import com.rubbertranslator.App;
 import com.rubbertranslator.entity.ControllerFxmlPath;
+import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
@@ -170,4 +171,9 @@ public class AppStage{
         appStage.setScene(scene);
     }
 
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void setKeepTop(SetKeepTopEvent event){
+       appStage.setAlwaysOnTop(event.isKeepTop());
+    }
 }

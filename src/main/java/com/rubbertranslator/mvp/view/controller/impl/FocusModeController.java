@@ -1,11 +1,10 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
-import com.rubbertranslator.App;
 import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.event.MouseClickPositionEvent;
+import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
@@ -16,7 +15,6 @@ import com.rubbertranslator.mvp.view.controller.IFocusView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,19 +22,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,7 +38,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/9 21:51
  */
-public class FocusModeController implements Initializable,ChangeListener<Boolean>, IFocusView {
+public class FocusModeController implements Initializable,IFocusView {
     @FXML
     private VBox rootPane;
 
@@ -101,21 +94,8 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
     @FXML   // 复制译文
     private Button copyTranslationBt;
 
-    @FXML   // 隐匿模式开关
-    private ToggleButton autoHideBt;
-
-    // 辅助变量，记录鼠标点击位置
-    private Point currentMouseClickPos;
-    // 屏幕缩放率
-    private double screenScaleRatio;
-
-    // window stage 引用
-    private Stage appStage;
-
     // presenter
     private FocusViewPresenter presenter;
-
-
 
 
     /**
@@ -128,6 +108,10 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
         initListeners();
     }
 
+    /**
+     * 初始化view，根据配置，回显view
+     * @param configuration
+     */
     @Override
     public void initViews(SystemConfiguration configuration) {
         // set window preSize
@@ -174,9 +158,6 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
         dragCopyMenu.setSelected(configuration.isDragCopy());
         // 文本格式化
         textFormatMenu.setSelected(configuration.isTryFormat());
-        // auto hide
-        autoHideBt.setSelected(configuration.isAutoHide());
-
     }
 
 
@@ -184,23 +165,10 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
      * 初始化参数
      */
     private void initParams(){
-        screenScaleRatio = Toolkit.getDefaultToolkit().getScreenResolution()/96.0;
         presenter = (FocusViewPresenter) PresenterFactory.getPresenter(SceneType.FOCUS_SCENE);
         // 拿到presenter，首先注入mode模块，所有mode由systemresource持有
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
-
-        // 延迟load
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                //初始化stage
-                appStage = (Stage) rootPane.getScene().getWindow();
-                appStage.setAlwaysOnTop(keepStageTopBt.isSelected());
-                appStage.focusedProperty().addListener(FocusModeController.this);
-            }
-        },500);
-
     }
 
     /**
@@ -232,7 +200,6 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
         textFormatMenu.setOnAction((event -> presenter.textFormatSwitch(textFormatMenu.isSelected())));
         translateBt.setOnAction((event -> presenter.translate(textArea.getText())));
         displayTextBt.setOnAction((event -> presenter.switchBetweenOriginAndTranslatedText()));
-        autoHideBt.setOnAction((event -> presenter.autoHideWindow(autoHideBt.isSelected())));
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
@@ -247,78 +214,14 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
             oldValue.setSelected(true);
         }
     }
-
-    /**
-     * 隐匿模式：hide window
-     */
-    @Override
-    public void hideWindow(){
-        Stage window  = appStage;
-        // 回到ui线程
-        Platform.runLater(()->{
-            if(window.isShowing())
-            {
-                window.hide();
-            }
-        });
-    }
-
     @Override
     public void setKeepTop(boolean isKeep) {
-        appStage.setAlwaysOnTop(isKeep);
+        EventBus.getDefault().post(new SetKeepTopEvent(isKeep));
     }
 
     @Override
     public void switchScene(SceneType type) {
         EventBus.getDefault().post(new SwitchSceneEvent(type));
-    }
-
-    /**
-     * 隐匿模式：show window
-     * 跟随鼠标显示，同时window不能超过界面宽度
-     */
-    @Override
-    public void showWindow(){
-        Stage window  = appStage;
-        // 回到ui线程
-        Platform.runLater(()->{
-            if(currentMouseClickPos!=null)
-            {
-                double mouseX = currentMouseClickPos.getX()/screenScaleRatio;
-                double mouseY= currentMouseClickPos.getY()/screenScaleRatio;
-                double width = window.getWidth();
-                double height = window.getHeight();
-                double screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
-                double screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
-                if(mouseX + width > screenWidth){
-                    mouseX = screenWidth - width - 20;
-                }
-                if(mouseY + height > screenHeight){
-                    mouseY = screenHeight - height - 20;
-                }
-
-                window.setX(mouseX);
-                window.setY(mouseY+20);    // y 方向+一个delta，避免覆盖选中文字
-
-                if(!window.isShowing())
-                {
-                    window.show();
-                    Logger.getLogger(this.getClass().getName()).info("window show");
-                }
-            }
-        });
-    }
-
-    @Override
-    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean focus) {
-        if(!focus){
-            if(autoHideBt.isSelected()
-            &&  clipboardListenerMenu.isSelected()     // 耦合监听剪切板线程，因为触发showWindow的动作是当剪切板有新内容时
-            && ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData())){
-                Logger.getLogger(this.getClass().getName()).info("window hide");
-                hideWindow();
-            }
-        }
     }
 
     @Override
@@ -358,7 +261,8 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null) return;
-        if(!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData())) return;
+        if(!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(rootPane.getScene().getUserData()))
+            return;
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
         } else {                // 图片类型
@@ -371,31 +275,6 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
             }
         }
-
-        /*
-          下面的代码for 隐匿模式
-          隐匿模式下， 自动显示
-         */
-        // 是否需要显示
-        if(autoHideBt.isSelected()
-                // 耦合FOCUS界面， 避免当从FOCUS CONTROLLER切换到MAIN CONTROLLER时，main controller也有隐匿效果
-        && ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData()))
-        {
-            // 获取焦点
-//            appStage.requestFocus();
-            // 展示
-            showWindow();
-        }
-    }
-
-    /**
-     * 鼠标点击时
-     * @param event event
-     */
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onMouseClick(MouseClickPositionEvent event) {
-        if (event == null) return;
-        currentMouseClickPos = event.getPoint();
     }
 
     @Override

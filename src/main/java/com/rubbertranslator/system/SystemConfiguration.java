@@ -30,8 +30,6 @@ public class SystemConfiguration implements Serializable {
     private Point lastSize;
     @SerializedName("last_fxml_path")
     private String lastFxmlPath;
-    @SerializedName("auto_hide")
-    private Boolean isAutoHide;
 
     /**
      * 文本输入
@@ -161,14 +159,6 @@ public class SystemConfiguration implements Serializable {
 
     public void setLastFxmlPath(String lastFxmlPath) {
         this.lastFxmlPath = lastFxmlPath;
-    }
-
-    public Boolean isAutoHide() {
-        return isAutoHide;
-    }
-
-    public void setAutoHide(Boolean autoHide) {
-        isAutoHide = autoHide;
     }
 
     public Boolean isOpenClipboardListener() {

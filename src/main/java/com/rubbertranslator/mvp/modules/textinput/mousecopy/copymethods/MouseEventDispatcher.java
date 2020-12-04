@@ -1,7 +1,5 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
-import com.rubbertranslator.event.MouseClickPositionEvent;
-import org.greenrobot.eventbus.EventBus;
 import org.jnativehook.mouse.NativeMouseEvent;
 
 import java.util.ArrayList;
@@ -65,7 +63,6 @@ public class MouseEventDispatcher {
     }
 
     protected void releaseEventPostDispatch(NativeMouseEvent event){
-        EventBus.getDefault().post(new MouseClickPositionEvent(event.getPoint()));
     }
 
 

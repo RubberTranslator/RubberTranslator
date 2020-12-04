@@ -6,6 +6,7 @@ import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
+import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
@@ -210,7 +211,7 @@ public class MainController implements ISceneView {
 
     @Override
     public void setKeepTop(boolean isKeep) {
-        appStage.setAlwaysOnTop(isKeep);
+        EventBus.getDefault().post(new SetKeepTopEvent(isKeep));
     }
 
     @Override
