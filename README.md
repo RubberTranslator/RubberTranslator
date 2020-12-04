@@ -14,7 +14,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 **安装：**
 
-本项目目前仅支持Windows平台，Linux之后会支持，但是Mac平台由于本人没有Mac电脑，所以无法支持，但是java是跨平台的，所以有mac电脑又有兴趣的朋友可自行打包。
+本项目目前仅支持Windows平台。 不过java是跨平台的，有兴趣的朋友可自行打包。
 
 1. 点击[Releases](https://github.com/ravenxrz/RubberTranslator/releases)界面下载对应平台安装包即可。
 2. 考虑到github国内下载速度较慢，可从[这里下载](https://ravenxrz.lanzous.com/b01bezbcf)
