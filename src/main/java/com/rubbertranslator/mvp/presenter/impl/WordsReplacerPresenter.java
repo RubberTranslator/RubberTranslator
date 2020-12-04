@@ -2,7 +2,7 @@ package com.rubbertranslator.mvp.presenter.impl;
 
 import com.rubbertranslator.entity.WordsPair;
 import com.rubbertranslator.mvp.presenter.ConfigPresenter;
-import com.rubbertranslator.mvp.view.IWordsReplacerView;
+import com.rubbertranslator.mvp.view.controller.IWordsReplacerView;
 
 import java.util.Set;
 

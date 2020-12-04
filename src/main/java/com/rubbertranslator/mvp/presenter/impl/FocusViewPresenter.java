@@ -1,7 +1,7 @@
 package com.rubbertranslator.mvp.presenter.impl;
 
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
-import com.rubbertranslator.mvp.view.IFocusView;
+import com.rubbertranslator.mvp.view.controller.IFocusView;
 
 public class FocusViewPresenter extends Presenter{
     public void autoHideWindow(boolean hide){

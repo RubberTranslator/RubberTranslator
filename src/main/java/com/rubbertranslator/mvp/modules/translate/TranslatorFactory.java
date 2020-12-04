@@ -32,17 +32,8 @@ public class TranslatorFactory {
         instanceTranslatorEngine(TranslatorType.YOUDAO);
     }
 
-
-    public Language getSourceLanguage() {
-        return sourceLanguage;
-    }
-
     public void setSourceLanguage(Language sourceLanguage) {
         this.sourceLanguage = sourceLanguage;
-    }
-
-    public Language getDestLanguage() {
-        return destLanguage;
     }
 
     public void setDestLanguage(Language destLanguage) {
@@ -54,10 +45,6 @@ public class TranslatorFactory {
     }
 
     public String translate(String text){
-        // lazy load
-//        if(!translatorEngineMap.containsKey(engineType)){
-//            instanceTranslatorEngine(engineType);
-//        }
         // 首先使用当前首选的翻译引擎翻译
         String result = null;
         AbstractTranslator currentEngine = translatorEngineMap.get(engineType);
@@ -85,18 +72,8 @@ public class TranslatorFactory {
     }
 
     /**
-     * 取回指定type的translator
-     * @param type 翻译类型
-     * @return translator
-     *          null 如果没有该translator
-     */
-    public AbstractTranslator getTranslator(TranslatorType type){
-        return translatorEngineMap.get(type);
-    }
-
-    /**
      * 用户没有主动添加翻译引擎，则采用默认设置
-     * @param type
+     * @param type 翻译引擎类型
      */
     private void instanceTranslatorEngine(TranslatorType type){
         // 翻译接口多的话，可以改用反射+映射关系表

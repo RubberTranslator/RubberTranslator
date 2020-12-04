@@ -61,7 +61,7 @@ public class SystemResourceManager {
 
 
     /**
-     * 初始化系统资源
+     * 初始化系统资源, 并返回系统配置类
      *
      * @return true 初始化成功
      * false 初始化失败

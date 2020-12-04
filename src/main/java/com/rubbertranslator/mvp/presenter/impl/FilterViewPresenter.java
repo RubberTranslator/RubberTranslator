@@ -1,7 +1,7 @@
 package com.rubbertranslator.mvp.presenter.impl;
 
 import com.rubbertranslator.mvp.modules.filter.ProcessFilter;
-import com.rubbertranslator.mvp.view.IFilterView;
+import com.rubbertranslator.mvp.view.controller.IFilterView;
 
 import java.util.List;
 

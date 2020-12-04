@@ -33,6 +33,9 @@ open module rubbertranslator {
     exports com.rubbertranslator.mvp.modules.translate.google;
     exports com.rubbertranslator.mvp.modules.history;
     exports com.rubbertranslator.mvp.modules.afterprocess;
+    exports com.rubbertranslator.mvp.presenter;
+    exports com.rubbertranslator.mvp.presenter.impl;
     exports com.rubbertranslator.system;
     exports com.rubbertranslator.event;
+    exports com.rubbertranslator.enumtype;
 }

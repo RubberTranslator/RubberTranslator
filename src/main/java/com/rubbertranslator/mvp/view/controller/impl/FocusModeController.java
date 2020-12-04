@@ -1,4 +1,4 @@
-package com.rubbertranslator.mvp.view.impl;
+package com.rubbertranslator.mvp.view.controller.impl;
 
 import com.rubbertranslator.App;
 import com.rubbertranslator.entity.ControllerFxmlPath;
@@ -6,18 +6,18 @@ import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.MouseClickPositionEvent;
+import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.FocusViewPresenter;
-import com.rubbertranslator.mvp.view.IFocusView;
+import com.rubbertranslator.mvp.view.controller.IFocusView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -25,7 +25,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -115,6 +114,8 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
 
     // presenter
     private FocusViewPresenter presenter;
+
+
 
 
     /**
@@ -208,7 +209,6 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
     private void initListeners() {
         // 注册监听
         EventBus.getDefault().register(this);
-
     }
 
 
@@ -231,8 +231,8 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
         dragCopyMenu.setOnAction((event -> presenter.dragCopySwitch(dragCopyMenu.isSelected())));
         textFormatMenu.setOnAction((event -> presenter.textFormatSwitch(textFormatMenu.isSelected())));
         translateBt.setOnAction((event -> presenter.translate(textArea.getText())));
-        displayTextBt.setOnAction((event -> ((FocusViewPresenter)presenter).switchBetweenOriginAndTranslatedText()));
-        autoHideBt.setOnAction((event -> ((FocusViewPresenter)presenter).autoHideWindow(autoHideBt.isSelected())));
+        displayTextBt.setOnAction((event -> presenter.switchBetweenOriginAndTranslatedText()));
+        autoHideBt.setOnAction((event -> presenter.autoHideWindow(autoHideBt.isSelected())));
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
@@ -270,7 +270,7 @@ public class FocusModeController implements Initializable,ChangeListener<Boolean
 
     @Override
     public void switchScene(SceneType type) {
-        App.switchScene(type);
+        EventBus.getDefault().post(new SwitchSceneEvent(type));
     }
 
     /**

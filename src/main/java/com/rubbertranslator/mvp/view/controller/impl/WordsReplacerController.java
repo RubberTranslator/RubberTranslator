@@ -1,10 +1,10 @@
-package com.rubbertranslator.mvp.view.impl;
+package com.rubbertranslator.mvp.view.controller.impl;
 
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.entity.WordsPair;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.WordsReplacerPresenter;
-import com.rubbertranslator.mvp.view.IWordsReplacerView;
+import com.rubbertranslator.mvp.view.controller.IWordsReplacerView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.collections.ObservableList;

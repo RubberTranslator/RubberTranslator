@@ -1,13 +1,13 @@
 package com.rubbertranslator.mvp.presenter;
 
 import com.rubbertranslator.system.SystemConfigurationManager;
-import com.rubbertranslator.mvp.view.ISceneView;
+import com.rubbertranslator.mvp.view.controller.ISceneView;
 
 public abstract class ConfigPresenter {
     protected ISceneView scene;
 
     public void setView(ISceneView view){
-        if(configManger == null) throw new NullPointerException("inject config first");
+        if(configManger == null) throw new NullPointerException("  config first");
         this.scene = view;
         view.initViews(configManger.getSystemConfiguration());
     }

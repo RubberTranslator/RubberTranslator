@@ -1,7 +1,7 @@
-package com.rubbertranslator.mvp.view;
+package com.rubbertranslator.mvp.view.controller;
 
 import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.mvp.view.IView;
 
 /**
  * view 接口
@@ -28,7 +28,7 @@ public interface ISceneView extends IView {
 
     /**
      * 下面两个接口，可修复，两个的功能，主要是bind copy &　paste动作，因为paste依赖copy
-     * @param isOpen
+     * @param isOpen 是否打开，true开头，false，关闭
      */
     default void autoCopy(boolean isOpen){}
 

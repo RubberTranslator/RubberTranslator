@@ -41,13 +41,13 @@ public class TranslationHistory {
     }
 
     public HistoryEntry previous(){
-        if(historyList.size() == 0) return null;
+        if(historyList.size() == 0) return new HistoryEntry("","");
         historyCursor = Math.min(historyList.size()-1,Math.max(historyCursor - 1, 0));
         return historyList.get(historyCursor);
     }
 
     public HistoryEntry next(){
-        if(historyList.size() == 0) return null;
+        if(historyList.size() == 0) return new HistoryEntry("","");
         historyCursor = Math.max(0,Math.min(historyCursor+1,historyList.size()-1));
         return historyList.get(historyCursor);
     }

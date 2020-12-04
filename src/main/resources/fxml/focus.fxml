@@ -9,41 +9,42 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="focus" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.mvp.view.impl.FocusModeController">
-   <children>
-      <TextArea id="translationArea" fx:id="textArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10000.0" prefWidth="10000.0" wrapText="true" VBox.vgrow="ALWAYS">
-         <font>
-            <Font size="20.0" />
-         </font></TextArea>
-      <FlowPane columnHalignment="CENTER" hgap="5.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0">
-         <children>
-            <Button fx:id="backBt" mnemonicParsing="false" text="返回" />
-            <Button fx:id="translateBt" mnemonicParsing="false" text="翻译" />
-            <ToggleButton fx:id="googleTranslator" mnemonicParsing="false" text="谷歌" textAlignment="CENTER">
-               <toggleGroup>
-                  <ToggleGroup fx:id="translatorGroup" />
-               </toggleGroup>
-            </ToggleButton>
-            <ToggleButton fx:id="baiduTranslator" mnemonicParsing="false" text="百度" toggleGroup="$translatorGroup" />
-            <ToggleButton fx:id="youdaoTranslator" mnemonicParsing="false" text="有道" toggleGroup="$translatorGroup" />
-            <ToggleButton fx:id="incrementalCopyMenu" mnemonicParsing="false" text="增量" />
-            <Button fx:id="preHistoryBt" mnemonicParsing="false" text="上一条" />
-            <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条" />
-            <Button fx:id="clearBt" mnemonicParsing="false" text="清空" />
-            <ToggleButton fx:id="keepStageTopBt" mnemonicParsing="false" text="置顶" />
-            <Button fx:id="displayTextBt" mnemonicParsing="false" text="显示原文" />
-            <Button fx:id="copyOriginBt" mnemonicParsing="false" text="复制原文" />
-            <Button fx:id="copyTranslationBt" mnemonicParsing="false" text="复制译文" />
-            <ToggleButton fx:id="autoCopyMenu" mnemonicParsing="false" text="自动复制" />
-            <ToggleButton fx:id="autoPasteMenu" mnemonicParsing="false" text="自动粘贴" />
-            <ToggleButton fx:id="textFormatMenu" mnemonicParsing="false" text="文本格式化" />
-            <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="剪切板" />
-            <ToggleButton fx:id="dragCopyMenu" mnemonicParsing="false" text="拖拽" />
-            <ToggleButton fx:id="autoHideBt" mnemonicParsing="false" text="隐匿" />
-         </children>
-         <VBox.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </VBox.margin>
-      </FlowPane>
-   </children>
+<VBox id="focus" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="650.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.rubbertranslator.mvp.view.controller.impl.FocusModeController">
+   <TextArea id="translationArea" fx:id="textArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+             prefHeight="10000.0" prefWidth="10000.0" wrapText="true" VBox.vgrow="ALWAYS">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </TextArea>
+   <FlowPane columnHalignment="CENTER" hgap="5.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0">
+      <VBox.margin>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+      </VBox.margin>
+      <Button fx:id="backBt" mnemonicParsing="false" text="返回"/>
+      <Button fx:id="translateBt" mnemonicParsing="false" text="翻译"/>
+      <ToggleButton fx:id="googleTranslator" mnemonicParsing="false" text="谷歌" textAlignment="CENTER">
+         <toggleGroup>
+            <ToggleGroup fx:id="translatorGroup"/>
+         </toggleGroup>
+      </ToggleButton>
+      <ToggleButton fx:id="baiduTranslator" mnemonicParsing="false" text="百度" toggleGroup="$translatorGroup"/>
+      <ToggleButton fx:id="youdaoTranslator" mnemonicParsing="false" text="有道" toggleGroup="$translatorGroup"/>
+      <ToggleButton fx:id="incrementalCopyMenu" mnemonicParsing="false" text="增量"/>
+      <Button fx:id="preHistoryBt" mnemonicParsing="false" text="上一条"/>
+      <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条"/>
+      <Button fx:id="clearBt" mnemonicParsing="false" text="清空"/>
+      <ToggleButton fx:id="keepStageTopBt" mnemonicParsing="false" text="置顶"/>
+      <Button fx:id="displayTextBt" mnemonicParsing="false" text="显示原文"/>
+      <Button fx:id="copyOriginBt" mnemonicParsing="false" text="复制原文"/>
+      <Button fx:id="copyTranslationBt" mnemonicParsing="false" text="复制译文"/>
+      <ToggleButton fx:id="autoCopyMenu" mnemonicParsing="false" text="自动复制"/>
+      <ToggleButton fx:id="autoPasteMenu" mnemonicParsing="false" text="自动粘贴"/>
+      <ToggleButton fx:id="textFormatMenu" mnemonicParsing="false" text="文本格式化"/>
+      <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="剪切板"/>
+      <ToggleButton fx:id="dragCopyMenu" mnemonicParsing="false" text="拖拽"/>
+      <ToggleButton fx:id="autoHideBt" mnemonicParsing="false" text="隐匿"/>
+   </FlowPane>
 </VBox>

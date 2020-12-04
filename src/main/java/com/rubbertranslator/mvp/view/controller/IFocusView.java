@@ -1,4 +1,4 @@
-package com.rubbertranslator.mvp.view;
+package com.rubbertranslator.mvp.view.controller;
 
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 

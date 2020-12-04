@@ -1,9 +1,9 @@
-package com.rubbertranslator.mvp.view.impl;
+package com.rubbertranslator.mvp.view.controller.impl;
 
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.FilterViewPresenter;
-import com.rubbertranslator.mvp.view.IFilterView;
+import com.rubbertranslator.mvp.view.controller.IFilterView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.beans.value.ObservableValue;
@@ -89,7 +89,7 @@ public class FilterController implements IFilterView {
         ObservableList<String> selectedItems =
                 processList.getSelectionModel().getSelectedItems();
         if(selectedItems != null){
-            presenter.removeFilterList(selectedItems);;
+            presenter.removeFilterList(selectedItems);
         }
     }
 

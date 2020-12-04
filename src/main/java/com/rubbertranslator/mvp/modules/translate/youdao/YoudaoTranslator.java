@@ -58,6 +58,8 @@ public class YoudaoTranslator extends AbstractTranslator {
             if (translationResult != null) {
                 Logger.getLogger(this.getClass().getName()).info(translationResult.toString());
                 translatedText = mergeTranslatedText(translationResult);
+            } else{
+                throw new IOException();
             }
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "有道翻译失败", e);

@@ -1,17 +1,17 @@
-package com.rubbertranslator.mvp.view.impl;
+package com.rubbertranslator.mvp.view.controller.impl;
 
-import com.rubbertranslator.App;
 import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
+import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
-import com.rubbertranslator.mvp.view.ISceneView;
+import com.rubbertranslator.mvp.view.controller.ISceneView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
@@ -205,7 +205,7 @@ public class MainController implements ISceneView {
 
     @Override
     public void switchScene(SceneType type) {
-        App.switchScene(type);
+        EventBus.getDefault().post(new SwitchSceneEvent(type));
     }
 
     @Override
@@ -298,24 +298,13 @@ public class MainController implements ISceneView {
 
         private void initBasicSettingOthers(final SystemConfiguration configuration) {
             // 设置onActionListener
-            clipboardListenerMenu.setOnAction((actionEvent) ->
-                    presenter.clipboardSwitch(clipboardListenerMenu.isSelected())
-            );
-            dragCopyMenu.setOnAction((actionEvent) ->
-                    presenter.dragCopySwitch(dragCopyMenu.isSelected()));
-            incrementalCopyMenu.setOnAction((actionEvent ->
-                  presenter.incrementalCopySwitch(incrementalCopyMenu.isSelected())));
-            autoCopyMenu.setOnAction((actionEvent -> {
-                presenter.autoCopySwitch(autoCopyMenu.isSelected());
-            }));
-            autoPasteMenu.setOnAction((actionEvent -> {
-               presenter.autoPasteSwitch(autoPasteMenu.isSelected());
-            }));
-            textFormatMenu.setOnAction((actionEvent ->
-                    presenter.textFormatSwitch(textFormatMenu.isSelected())));
-            keepTopMenu.setOnAction((actionEvent -> {
-                presenter.setKeepTop(keepTopMenu.isSelected());
-            }));
+            clipboardListenerMenu.setOnAction((actionEvent) -> presenter.clipboardSwitch(clipboardListenerMenu.isSelected()));
+            dragCopyMenu.setOnAction((actionEvent) -> presenter.dragCopySwitch(dragCopyMenu.isSelected()));
+            incrementalCopyMenu.setOnAction((actionEvent -> presenter.incrementalCopySwitch(incrementalCopyMenu.isSelected())));
+            autoCopyMenu.setOnAction((actionEvent -> presenter.autoCopySwitch(autoCopyMenu.isSelected())));
+            autoPasteMenu.setOnAction((actionEvent -> presenter.autoPasteSwitch(autoPasteMenu.isSelected())));
+            textFormatMenu.setOnAction((actionEvent -> presenter.textFormatSwitch(textFormatMenu.isSelected())));
+            keepTopMenu.setOnAction((actionEvent -> presenter.setKeepTop(keepTopMenu.isSelected())));
 
             // ui回显
             // 监听剪切板
@@ -686,12 +675,8 @@ public class MainController implements ISceneView {
     private void initHistoryMenu() {
         Label pre = new Label("上一条");
         Label next = new Label("下一条");
-        pre.setOnMouseClicked((event -> {
-            presenter.setHistoryEntry(HistoryEntryIndex.PRE_HISTORY);
-        }));
-        next.setOnMouseClicked(event -> {
-           presenter.setHistoryEntry(HistoryEntryIndex.NEXT_HISTORY);
-        });
+        pre.setOnMouseClicked((event -> presenter.setHistoryEntry(HistoryEntryIndex.PRE_HISTORY)));
+        next.setOnMouseClicked(event -> presenter.setHistoryEntry(HistoryEntryIndex.NEXT_HISTORY));
         preHistoryMenu.setText("");
         nextHistoryMenu.setText("");
         preHistoryMenu.setGraphic(pre);
@@ -700,9 +685,7 @@ public class MainController implements ISceneView {
 
     private void initClearMenu() {
         Label label = new Label("清空");
-        label.setOnMouseClicked((event -> {
-            presenter.clearText();
-        }));
+        label.setOnMouseClicked((event -> presenter.clearText()));
         clearMenu.setText("");
         clearMenu.setGraphic(label);
     }
