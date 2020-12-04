@@ -41,6 +41,32 @@ public class FileUtil {
     }
 
     /**
+     * 从文件输入流中读取字符串
+     * @param in
+     * @param encoding
+     * @return
+     * @throws IOException
+     */
+    public static String readInputStreamToString(InputStream in, Charset encoding) throws IOException {
+        Reader reader = null;
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            reader = new InputStreamReader(in,encoding);
+            br = new BufferedReader(reader);
+            String line;
+            while((line = br.readLine())!= null){
+                sb.append(line);
+            }
+        } finally {
+            if(br != null) br.close();
+            if(reader!=null) reader.close();
+            if(in != null) in.close();
+        }
+        return sb.toString();
+    }
+
+    /**
      * 从文件读字符串
      * @param file 文件
      * @param encoding 文件编码
@@ -62,9 +88,9 @@ public class FileUtil {
                 sb.append(line);
             }
         } finally {
-            if(in != null) in.close();
             if(br != null) br.close();
             if(reader!=null) reader.close();
+            if(in != null) in.close();
         }
         return sb.toString();
     }

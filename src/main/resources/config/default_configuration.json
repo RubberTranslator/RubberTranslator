@@ -31,5 +31,6 @@
   "you_dao_translator_secret_key": "",
   "history_num": 10,
   "auto_copy": false,
-  "auto_paste": false
+  "auto_paste": false,
+  "test_field": true
 }

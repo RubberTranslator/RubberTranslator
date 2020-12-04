@@ -1,4 +1,5 @@
 package com.rubbertranslator.mvp.modules.log;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +31,11 @@ public class LoggerManager {
 
         //设置保存路径
         logPath.append(logFilePath).append("/").append(sdf.format(new Date())).append(".log");
+        File dir = new File(logPath.toString());
+        if(!dir.getParentFile().exists()){
+            dir.getParentFile().mkdirs();
+        }
+
         //将输出handler加入logger
         try {
             FileHandler fileHandler = new FileHandler(logPath.toString(), true);
