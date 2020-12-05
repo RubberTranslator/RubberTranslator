@@ -60,7 +60,7 @@ public class SystemResourceManager {
         LoggerManager.configLog();
         facade = new TranslatorFacade();
         configManager = new SystemConfigurationManager();
-        configManager.init();
+        if(!configManager.init()) return null;
 
         SystemConfiguration configuration = configManager.getSystemConfiguration();
         textInputInit(configuration);

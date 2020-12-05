@@ -5,6 +5,8 @@ import com.rubbertranslator.utils.FileUtil;
 import com.rubbertranslator.utils.JsonUtil;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -24,9 +26,9 @@ public class SystemConfigurationManager {
      * 持久化配置文件到json
      * 需要 systemConfiguration 和  configJsonPath 不为空
      */
-    public void saveConfigFile(){
-        if (systemConfiguration == null || configJsonPath == null){
-            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE,"更新设置时出错，" +
+    public void saveConfigFile() {
+        if (systemConfiguration == null || configJsonPath == null) {
+            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "更新设置时出错，" +
                     "配置类或配置文件路径为空");
             return;
         }
@@ -36,7 +38,7 @@ public class SystemConfigurationManager {
         try {
             FileUtil.writeStringToFile(new File(configJsonPath), json, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE,"更新设置时出错",e);
+            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "更新设置时出错", e);
         }
     }
 
@@ -45,46 +47,46 @@ public class SystemConfigurationManager {
      */
     public boolean init() {
         String curVersion = getCurrentVersion();
-        if(null == curVersion) return false;
+        if (null == curVersion) return false;
 
         // 初始化configJson文件路径
         configJsonPath = getConfigJsonPath(curVersion);
 
-        if(isCorrectConfigFileExist(configJsonPath)){       // 如果当前版本配置文件已经存在
+        if (isCorrectConfigFileExist(configJsonPath)) {       // 如果当前版本配置文件已经存在
             systemConfiguration = generateConfigFromExistFile(configJsonPath);
-        }else{      // 不存在
+        } else {      // 不存在
             SystemConfiguration defaultConfig = generateDefaultConfig();
             // 读取配置文件路径下的最大版本号文件
             File dir = new File(configJsonPath).getParentFile();
-            String maxVersionConfigFileName =  getMaxVersionConfigPath(dir);
-            if(maxVersionConfigFileName == null){   // 不存在旧的config文件。
+            String maxOldVersion = getMaxVersionFromOldConfigFiles(dir);
+            if (maxOldVersion == null) {   // 不存在旧的config文件。
                 // 直接序列化默认config即可
                 systemConfiguration = defaultConfig;
-                saveConfigFile();
-            }else{      // 存在旧的config文件
-                String maxVersionConfigFilePath = getConfigJsonPath(maxVersionConfigFileName);
+            } else {      // 存在旧的config文件
+                String maxVersionConfigFilePath = getConfigJsonPath(maxOldVersion);
                 SystemConfiguration oldConfig = generateConfigFromExistFile(maxVersionConfigFilePath);
                 systemConfiguration = mergeConfig(defaultConfig, oldConfig);
-                saveConfigFile();
             }
+            saveConfigFile();
         }
 
-        return systemConfiguration == null;
+        return systemConfiguration != null;
     }
 
 
     /**
      * 取得当前软件版本
+     *
      * @return 版本号。 如 v2.0.0
      */
-    private String getCurrentVersion(){
+    private String getCurrentVersion() {
         String version = null;
         try {
             InputStream resourceAsStream = SystemResourceManager.class.getResourceAsStream("/version_control/version.txt");
             version = FileUtil.readInputStreamToString(resourceAsStream, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"系统版本号缺失，无法打开软件，请向开发者联系");
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "系统版本号缺失，无法打开软件，请向开发者联系");
             return null;
         }
         return version;
@@ -93,21 +95,23 @@ public class SystemConfigurationManager {
 
     /**
      * 根据软件版本，得到配置json文件路径
+     *
      * @param version
      * @return 当前配置json文件路径
      */
-    private String getConfigJsonPath(String version){
-        String tmpPath = configJsonDir + "/configuration-" + version +".json";
-        Logger.getLogger(this.getClass().getName()).log(Level.FINE,"当前配置文件路径"+tmpPath);
+    private String getConfigJsonPath(String version) {
+        String tmpPath = configJsonDir + "/configuration-" + version + ".json";
+        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "当前配置文件路径" + tmpPath);
         return tmpPath;
     }
 
     /**
      * 当前版本对应配置文件是否存在
+     *
      * @param configPath
      * @return
      */
-    private boolean isCorrectConfigFileExist(String configPath){
+    private boolean isCorrectConfigFileExist(String configPath) {
         File file = new File(configPath);
         return file.exists();
     }
@@ -115,6 +119,7 @@ public class SystemConfigurationManager {
 
     /**
      * 从已存在的对应版本的配置文件中生成配置
+     *
      * @param configJsonPath
      */
     private SystemConfiguration generateConfigFromExistFile(String configJsonPath) {
@@ -138,10 +143,11 @@ public class SystemConfigurationManager {
 
     /**
      * 生成默认配置类
+     *
      * @return 成功 默认配置类
-     *         失败 null
+     * 失败 null
      */
-    private SystemConfiguration generateDefaultConfig(){
+    private SystemConfiguration generateDefaultConfig() {
         // 加载本地配置
         String configJson = null;
         SystemConfiguration configuration;
@@ -161,34 +167,81 @@ public class SystemConfigurationManager {
     }
 
     /**
-     * 取得当前目录下的最大版本号文件路径
+     * 取得配置目录目录下的最大版本号
+     *
      * @return 成功，返回最大版本号
-     *          失败， 返回null
+     * 失败， 返回null
      */
-    private String getMaxVersionConfigPath(File dir){
+    private String getMaxVersionFromOldConfigFiles(File dir) {
         File[] files = dir.listFiles(File::isFile);
-        if(files.length == 0) return null;
+        if (files.length == 0) return null;
 
         String[] fileNames = new String[files.length];
-        for(int i = 0;i<fileNames.length;i++){
-            String tmpName =  files[i].getName();
+        for (int i = 0; i < fileNames.length; i++) {
+            String tmpName = files[i].getName();
             int startOffset = tmpName.indexOf("-");
             // if(startOffset == -1)?
-            fileNames[i] = tmpName.substring(startOffset+1);
+            fileNames[i] = tmpName.substring(startOffset + 1);
         }
         // 排序
         Arrays.sort(fileNames);
         // 返回最大的版本号
-        return fileNames[fileNames.length-1];
+        return fileNames[fileNames.length - 1].replace(".json","");
     }
 
     /**
      * 升级程序，核心方法，在baseConfig的基础上，合并来自oldConfig中已经有的字段
+     *
      * @param baseConfig
      * @param oldConfig
      * @return 最终配置类
      */
     private SystemConfiguration mergeConfig(SystemConfiguration baseConfig, SystemConfiguration oldConfig) {
+        Class<?> clz = SystemConfiguration.class;
+        // 枚举成员函数
+        Method[] methods = clz.getMethods();
+        for (Method m : methods) {
+            int startOffset = 0;
+            Class<?> classType = m.getReturnType();
+
+            // 确定偏移量,方便后续将get方法转为set方法
+            String methodName = m.getName();
+            if(!isIncludeMethod(methodName)) continue;
+            if (methodName.startsWith("is")) {
+                startOffset = 2;
+            } else if (methodName.startsWith("get")) {
+                startOffset = 3;
+            }
+            try {
+                // 调用对应的get方法
+                Object result = m.invoke(oldConfig);
+                if (result != null) {
+                    String setMethodName = "set" + methodName.substring(startOffset);
+                    Logger.getLogger(this.getClass().getName()).fine("合并："+setMethodName);
+                    Method setMethod = clz.getMethod(setMethodName, classType);
+                    // 调用对应的set方法
+                    setMethod.invoke(baseConfig, result);
+                }
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+        }
+        Logger.getLogger(this.getClass().getName()).info("合并配置成功");
         return baseConfig;
+    }
+
+    /**
+     * 是否是包含在内的method
+     * @param methodName
+     * @return
+     */
+    private boolean isIncludeMethod(String methodName){
+        return methodName.startsWith("is") ||
+                (
+                        methodName.startsWith("get") &&
+                    !methodName.equals("getClass") &&
+                    !methodName.equals("getConfiguration")
+                );
     }
 }
