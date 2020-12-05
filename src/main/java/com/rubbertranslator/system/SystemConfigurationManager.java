@@ -58,6 +58,8 @@ public class SystemConfigurationManager {
             SystemConfiguration defaultConfig = generateDefaultConfig();
             // 读取配置文件路径下的最大版本号文件
             File dir = new File(configJsonPath).getParentFile();
+            // 不存在则创建
+            if(!dir.exists()) dir.mkdirs();
             String maxOldVersion = getMaxVersionFromOldConfigFiles(dir);
             if (maxOldVersion == null) {   // 不存在旧的config文件。
                 // 直接序列化默认config即可
