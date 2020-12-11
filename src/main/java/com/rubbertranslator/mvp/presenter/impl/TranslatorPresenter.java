@@ -7,7 +7,7 @@ import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods.CopyRobot;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
 
-public class Presenter extends ModelPresenter {
+public class TranslatorPresenter extends ModelPresenter {
 
     @Override
     public void setTranslatorType(TranslatorType type) {
@@ -105,6 +105,7 @@ public class Presenter extends ModelPresenter {
         scene.autoCopy(isOpen);
         if(!isOpen){
             translatorFacade.getAfterProcessor().setAutoPaste(false);
+            configManger.getSystemConfiguration().setAutoPaste(false);
         }
         translatorFacade.getAfterProcessor().setAutoCopy(isOpen);
         configManger.getSystemConfiguration().setAutoCopy(isOpen);
@@ -116,6 +117,7 @@ public class Presenter extends ModelPresenter {
         scene.autoPaste(isOpen);
         if(isOpen){
            translatorFacade.getAfterProcessor().setAutoCopy(true);
+           configManger.getSystemConfiguration().setAutoCopy(true);
         }
         translatorFacade.getAfterProcessor().setAutoPaste(isOpen);
         configManger.getSystemConfiguration().setAutoPaste(isOpen);

@@ -2,7 +2,7 @@ package com.rubbertranslator.mvp.presenter.impl;
 
 import com.rubbertranslator.enumtype.Language;
 
-public class MainViewPresenter extends Presenter{
+public class MainViewPresenter extends TranslatorPresenter {
     @Override
     public void setTranslatorLanguage(boolean isSrc, Language language) {
         super.setTranslatorLanguage(isSrc, language);

@@ -31,8 +31,6 @@ public class AppStage{
     private Stage appStage;
     // 配置
     private SystemConfiguration configuration;
-    // scenes
-    private Map<String, Scene> cacheScene = new HashMap<>();
 
     public AppStage(Stage stage) {
         appStage = stage;
@@ -160,14 +158,9 @@ public class AppStage{
     public void loadScene(String fxml) throws IOException
     {
         Scene scene;
-        if(!cacheScene.containsKey(fxml)){
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
-            scene = new Scene(fxmlLoader.load());
-            scene.setUserData(fxml);
-            cacheScene.put(fxml,scene);
-        }else{
-            scene = cacheScene.get(fxml);
-        }
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
+        scene = new Scene(fxmlLoader.load());
+        scene.setUserData(fxml);
         appStage.setScene(scene);
     }
 
