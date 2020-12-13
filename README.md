@@ -14,171 +14,34 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 [点这里，看视频介绍](https://www.bilibili.com/video/BV1aA411t7pY)
 
-## 1. 基础功能
-
-### 1.1 手动翻译
-
-作为翻译软件最基础的功能，RubberTranslator也是支持手动翻译的，如：
-
-![](https://s3.ax1x.com/2020/12/06/DXaoWt.gif)
-
-### 1.2 翻译引擎选择&源/目标语言设置
-
-![](https://s3.ax1x.com/2020/12/06/DXd9S0.gif)
-
-默认支持，谷歌翻译，百度翻译和有道翻译。（百度和有道翻译需要配置API信息才可以使用，详情可参看：[ocr,百度，有道配置](https://github.com/ravenxrz/RubberTranslator/wiki/OCR%EF%BC%8C%E7%99%BE%E5%BA%A6%E5%92%8C%E6%9C%89%E9%81%93%E9%85%8D%E7%BD%AE)
-
-### 1.3 文本格式化
-
-文本格式化是用来做什么的呢？我们平常在阅读pdf文档的时候，经常有这样的一个问题，从pdf中拷贝的文本粘贴到其它地方会多出很多换行，如：
-
-![](https://s3.ax1x.com/2020/12/06/DXdAw4.png)
-
-可以看到，因为多出很多空行，翻译会变得非常的不准确，一般来说，我们会手动替换掉所有的换行符，RubberTranslator默认开启”文本格式化“功能，可以用来解决问题，在替换掉换行符的同时，**尽量保持分段格式**，功能展示：
-
-![](https://s3.ax1x.com/2020/12/06/DXdeYR.gif)
-
-*注意：谷歌翻译引擎不支持保持分段格式。*
-
-### 1.4 监听剪切板
-
-开启监听剪切板功能，只要PC剪贴板中有新文本或图片时，RubberTranslator会自动翻译，也就是说只要有”复制“(Ctrl+C或鼠标复制）动作，RubberTranslator就会复制。如：
-
-![](https://s3.ax1x.com/2020/12/06/DXdmf1.gif)
-
-### 1.5 拖拽复制
-
-每次都手动进行复制显得过于麻烦，所以拖拽复制可以实现自动复制，拖拽复制在以下两种情况下会触发：
-
-1. 鼠标双击；
-2. 鼠标点击->移动一定距离->释放。如果移动距离过近，则不会触发复制。
-
-配置监听剪切板功能，即可实现自动翻译。演示：
-
-双击：
-
-![](https://s3.ax1x.com/2020/12/06/DXduSx.gif)
-
-拖拽：
-
-![](https://s3.ax1x.com/2020/12/06/DXdQOO.gif)
-
-### 1.6 自动复制
-
-自动复制用于自动复制译文，RubberTranslator在翻译完一段文本后，会自动将文本放入到系统剪切板中，此时用户通过”粘贴“功能即可在任何地方输入译文了。演示：
-
-![](https://s3.ax1x.com/2020/12/06/DXdwX8.gif)
-
-### 1.7 自动粘贴
-
-自动粘贴用于就地替换原文，如下：
-
-![](https://s3.ax1x.com/2020/12/06/DXdBnS.gif)
-
-### 1.8 增量复制
-
-增量复制用于解决阅读过程中，”文本翻页“的情况，如：
-
-![](https://s3.ax1x.com/2020/12/06/DXdD0g.gif)
-
-### 1.9 OCR翻译
-
-对于一些无法复制的pdf文本，可以通过ocr进行翻译，如：
-
-![](https://s3.ax1x.com/2020/12/06/DXdI74.gif)
-
-ocr功能需要配置百度ocr api key。[ocr,百度，有道配置](https://github.com/ravenxrz/RubberTranslator/wiki/OCR%EF%BC%8C%E7%99%BE%E5%BA%A6%E5%92%8C%E6%9C%89%E9%81%93%E9%85%8D%E7%BD%AE)
-
-### 1.10 历史记录
-
-RubberTranslation也支持历史记录，默认支持10条内的记录，可在高级设置中进行修改。
-
-### 1.11 专注模式
-
-专注模式只保留译文，整体布局更为紧凑，适合在阅读论文时使用。
-
-![](https://s3.ax1x.com/2020/12/06/DXdq91.png)
-
-### 1.12 翻译接力
-
-一直使用同一个翻译引擎时，可能会出现翻译失败的情况，在这种情况下，RubberTranslato会自动选择下一个翻译引擎进行翻译。
-
-## 2. 高级功能
-
-### 1. 过滤器
-
-此功能暂时仅限Widnows平台。
-
-过滤器用于设置不需要进行复制翻译的程序，考虑一个场景，在看论文时，我们需要在浏览器中搜寻一些资料，但是我们并不需要自动翻译浏览器中的内容，这时就可以将浏览器加入我们的过滤名单中。
-
-操作：高级设置->过滤器,点击添加，找到浏览器的exe文件(快捷方式也可以）即可：
-
-![](https://s3.ax1x.com/2020/12/06/DXdL1x.png)
-
-### 2. 翻译文本替换
-
-这个功能用于将译文中的特定词组替换为自己想要的词组，可以用于替换为专有名词。举个例子，在计算机数据结构或算法上，有一个术语叫做binary search，一般中文称为二分查找，而使用翻译引擎翻译，则会被翻译为二进制搜索，这让人非常的别扭。通过”翻译文本替换“功能，我们可以还原为二分查找。
-
-先看，没有添加词组前：
-
-![](https://s3.ax1x.com/2020/12/06/DXdXjK.gif)
-
-再看添加词组后：
-
-![](https://s3.ax1x.com/2020/12/06/DXwpAH.gif)
-
-**支持java正则表达式。**
-
-### 3. 历史记录数量设置
-
-可以设置历史记录的数量，历史记录并不会持久化到硬盘上，每次启动程序都会清空，所有历史记录都会保留在内存中，所以不建议将历史记录数量设置过大。
-
-### 4. 自定义样式
-
-RubberTranslator支持自定义css样式。 如，设置护眼模式，更改字体大小的css：
-
-```css
-#main {
-    -fx-font-size: 10pt;
-}
-
-#focus{
-}
-
-.text-area {
-	-fx-font-size: 10pt;
-}
-
-.text-area .content{
-    -fx-background-color: rgb(199,237,204);
-}
-
-
-```
-
-效果：
-
-![](https://s3.ax1x.com/2020/12/06/DXw9Nd.png)
-
-更多可设置效果，请参考
-
-https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html
-
-### 5. 隐匿模式 - 已废弃
-
-在专模式下，有隐匿模式的按钮：
-
-![image-20200716155015949](https://s3.ax1x.com/2020/12/06/DXwi9I.png)
-
-此功能提供 “在失去焦点时，自动隐藏窗口”功能，**阅读文章时非常有用**。效果如下：
-
-![](https://s3.ax1x.com/2020/12/06/DXwZDS.gif)
-
-### 6. OCR 百度和有道APi设置
-
-[ocr,百度，有道配置](https://github.com/ravenxrz/RubberTranslator/wiki/OCR%EF%BC%8C%E7%99%BE%E5%BA%A6%E5%92%8C%E6%9C%89%E9%81%93%E9%85%8D%E7%BD%AE)
-
-## 3. 常见问题
+<iframe id="spkj" src="//player.bilibili.com/player.html?aid=328159803&bvid=BV1aA411t7pY&cid=191459816&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width=100%> </iframe>
+!!!
+
+<script type="text/javascript">  
+document.getElementById("spkj").style.height=document.getElementById("spkj").scrollWidth*0.76+"px";
+</script>
+
+!!!
+
+[请点这里看更多文字介绍](https://ravenxrz.gitee.io/archives/a79932ef.html)
+
+## 1. Features
+
+1. 手动翻译
+2. 有道翻译、谷歌翻译、百度翻译
+3. **文本格式化，解决pdf复制的分段问题**
+4. 监听剪切板翻译，选中任意文本，执行【复制】操作，自动翻译文本
+5. **拖拽复制，选中任意文本，自动执行[Ctrl+C]行为，结合【监听剪切板翻译】功能，可自动翻译选中文本。**
+6. 自动翻译，翻译文本后，自动将【译文】放置到系统剪切板，后续只用【Ctrl+V】即可粘贴译文
+7. 自动粘贴，选中任意文本，自动替换为译文。
+8. **增量翻译，阅读文献时，经常会遇到一段文本分置在两页，增量问题可以自动将这段文本合并翻译**
+9. **OCR翻译**
+10. 翻译历史
+11. 专注模式
+12. 过滤器，设定【拖拽复制】的过滤程序，避免在所有程序中均触发【拖拽复制】
+13. **翻译文本替换，部分专业词汇如果由翻译引擎来翻译，将显得十分生涩，使用本功能，可自定义将【生涩的翻译词组】替换为【自己想要的词组】**
+
+## 2. FAQ
 
 ### 1. 安装后无法打开？
 
@@ -196,9 +59,12 @@ https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html
 
 ### 4. OCR、百度、有道翻译引擎无效？
 
-这三个功能需要用户自行配置App key & secret key。请参考：[ocr,百度，有道配置](https://github.com/ravenxrz/RubberTranslator/wiki/OCR%EF%BC%8C%E7%99%BE%E5%BA%A6%E5%92%8C%E6%9C%89%E9%81%93%E9%85%8D%E7%BD%AE)
+这三个功能需要用户自行配置App key & secret key。请参考：[ocr,百度，有道配置](https://ravenxrz.gitee.io/archives/2d8a0c3e.html)
 
+## 3. BUG 反馈或建议
 
+1. 欢迎提issue
+2. QQ群：118149802
 
 ## 4. 请我喝杯咖啡
 
