@@ -14,15 +14,6 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 [点这里，看视频介绍](https://www.bilibili.com/video/BV1aA411t7pY)
 
-<iframe id="spkj" src="//player.bilibili.com/player.html?aid=328159803&bvid=BV1aA411t7pY&cid=191459816&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width=100%> </iframe>
-!!!
-
-<script type="text/javascript">  
-document.getElementById("spkj").style.height=document.getElementById("spkj").scrollWidth*0.76+"px";
-</script>
-
-!!!
-
 [请点这里看更多文字介绍](https://ravenxrz.gitee.io/archives/a79932ef.html)
 
 ## 1. Features
