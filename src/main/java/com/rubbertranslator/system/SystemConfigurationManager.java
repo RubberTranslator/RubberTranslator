@@ -97,12 +97,20 @@ public class SystemConfigurationManager {
 
     /**
      * 根据软件版本，得到配置json文件路径
-     *
+     * 对于旧版本的configuration文件， 文件名为 configuration.json, 所以以空字符串来区别新旧版本
+     * 新版本为 configuration-vx.x.x.json
      * @param version
      * @return 当前配置json文件路径
      */
     private String getConfigJsonPath(String version) {
-        String tmpPath = configJsonDir + "/configuration-" + version + ".json";
+        String tmpPath;
+        if("".equals(version)){
+            // v2.0.0-beta3 之前
+            tmpPath =  configJsonDir +"/configuration.json";
+        }else{
+            // v2.0.0-beta3 之后（包含）
+            tmpPath = configJsonDir + "/configuration-" + version + ".json";
+        }
         Logger.getLogger(this.getClass().getName()).log(Level.FINE, "当前配置文件路径" + tmpPath);
         return tmpPath;
     }
@@ -171,7 +179,7 @@ public class SystemConfigurationManager {
     /**
      * 取得配置目录目录下的最大版本号
      *
-     * @return 成功，返回最大版本号
+     * @return 成功，返回最大版本号， 若为旧版本(v2.0.0-beta3之前），版本号统一为空 ""
      * 失败， 返回null
      */
     private String getMaxVersionFromOldConfigFiles(File dir) {
@@ -182,8 +190,12 @@ public class SystemConfigurationManager {
         for (int i = 0; i < fileNames.length; i++) {
             String tmpName = files[i].getName();
             int startOffset = tmpName.indexOf("-");
-            // if(startOffset == -1)?
-            fileNames[i] = tmpName.substring(startOffset + 1);
+             if(startOffset == -1){
+                 // 旧版本RubberTranslator v2.0.0-beta3之前
+                 fileNames[i] = "";
+             }else{
+                 fileNames[i] = tmpName.substring(startOffset + 1);
+             }
         }
         // 排序
         Arrays.sort(fileNames);
