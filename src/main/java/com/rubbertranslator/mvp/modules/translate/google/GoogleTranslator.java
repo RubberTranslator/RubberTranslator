@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class GoogleTranslator extends AbstractTranslator {
 
     // 采用正则表达式从html中抽取翻译结果--可能会失效
-    private final Pattern translationPattern = Pattern.compile("<div class=\"result-container\">(.*?)</div>");
+    private final Pattern translationPattern = Pattern.compile("<div class=\"result-container\">([\\s\\S]*?)</div>");
 
     //https://translate.google.com/m?sl=auto&tl=zh-TW&hl=en&mui=tl
     @Override

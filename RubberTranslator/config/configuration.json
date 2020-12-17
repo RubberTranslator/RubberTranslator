@@ -1,0 +1,33 @@
+{
+  "keep_top": false,
+  "last_position": {
+    "x": 653,
+    "y": 218
+  },
+  "last_size": {
+    "x": 613,
+    "y": 485
+  },
+  "last_fxml_path": "/fxml/main.fxml",
+  "open_clipboard_listener": false,
+  "drag_copy": false,
+  "baidu_ocr_api_key": "",
+  "baidu_ocr_secret_key": "",
+  "open_process_filter": true,
+  "process_list": [],
+  "auto_copy": true,
+  "auto_paste": false,
+  "try_format": true,
+  "incremental_copy": false,
+  "open_words_replacer": true,
+  "case_insensitive": false,
+  "words_pairs": [],
+  "current_translator": "GOOGLE",
+  "source_language": "AUTO",
+  "dest_language": "CHINESE_SIMPLIFIED",
+  "baidu_translator_api_key": "",
+  "baidu_translator_secret_key": "",
+  "you_dao_translator_api_key": "",
+  "you_dao_translator_secret_key": "",
+  "history_num": 10
+}
