@@ -68,6 +68,7 @@ public class SystemConfigurationManager {
                 String maxVersionConfigFilePath = getConfigJsonPath(maxOldVersion);
                 SystemConfiguration oldConfig = generateConfigFromExistFile(maxVersionConfigFilePath);
                 systemConfiguration = mergeConfig(defaultConfig, oldConfig);
+                Logger.getLogger(this.getClass().getName()).info("merge with "+maxOldVersion);
             }
             saveConfigFile();
         }

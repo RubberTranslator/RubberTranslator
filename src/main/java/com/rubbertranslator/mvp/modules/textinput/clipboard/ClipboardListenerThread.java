@@ -74,7 +74,6 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                     ignoreThisTime = false;
                     break;
                 }
-                Logger.getLogger(this.getClass().getName()).info("剪切板有新内容");
                 processClipboard(contents);
             } catch (Exception e) {
                 if (waitTime < maxWaitTime) {
@@ -96,12 +95,14 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
             if (processFilter != null && !processFilter.check()) {
                 textInputEvent.setText(paste);
                 EventBus.getDefault().post(textInputEvent);
+                Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:"+paste);
             }
         } else if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
             Image paste = (Image) t.getTransferData(DataFlavor.imageFlavor);
             if (processFilter != null && !processFilter.check()) {
                 textInputEvent.setImage(paste);
                 EventBus.getDefault().post(textInputEvent);
+                Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:"+"图片输入");
             }
         }
     }

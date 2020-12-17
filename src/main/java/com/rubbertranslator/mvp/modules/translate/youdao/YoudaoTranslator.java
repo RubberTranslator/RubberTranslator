@@ -56,8 +56,8 @@ public class YoudaoTranslator extends AbstractTranslator {
             YoudaoTranslationResult translationResult = doTranslate(
                     langMap.get(source), langMap.get(dest), text);
             if (translationResult != null) {
-                Logger.getLogger(this.getClass().getName()).info(translationResult.toString());
                 translatedText = mergeTranslatedText(translationResult);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
             } else{
                 throw new IOException();
             }
