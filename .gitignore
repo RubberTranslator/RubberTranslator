@@ -36,3 +36,4 @@ test
 
 # custom files or dirs
 configuration-*.json
+*.log
