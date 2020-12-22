@@ -64,7 +64,14 @@ public class WordsReplacer {
         wordsPairs.addAll(words);
     }
     // set
+
+    /**
+     * 使用词组替换text
+     * @param text
+     * @return failed: null
+     */
     public String replace(String text) {
+        if(text == null) return text;
         if (!openWordsReplacer) return text;
         String src, dest;
         for (WordsPair wordsPair : wordsPairs) {

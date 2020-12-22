@@ -81,7 +81,7 @@ public class FocusModeController implements Initializable,IFocusView {
     private Button nextHistoryBt;
 
     @FXML   // 保持置顶
-    private ToggleButton keepStageTopBt;
+    private ToggleButton keepStageTopMenu;
 
     @FXML   // 清空
     private Button clearBt;
@@ -132,7 +132,7 @@ public class FocusModeController implements Initializable,IFocusView {
         }
 
         // 置顶
-        keepStageTopBt.setSelected(configuration.isKeepTop());
+        keepStageTopMenu.setSelected(configuration.isKeepTop());
 
         // 翻译引擎
         switch (configuration.getCurrentTranslator()) {
@@ -165,7 +165,7 @@ public class FocusModeController implements Initializable,IFocusView {
      * 初始化参数
      */
     private void initParams(){
-        presenter = (FocusViewPresenter) PresenterFactory.getPresenter(SceneType.FOCUS_SCENE);
+        presenter = PresenterFactory.getPresenter(SceneType.FOCUS_SCENE);
         // 拿到presenter，首先注入mode模块，所有mode由systemresource持有
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
@@ -190,7 +190,7 @@ public class FocusModeController implements Initializable,IFocusView {
         preHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.PRE_HISTORY)));
         nextHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.NEXT_HISTORY)));
         clearBt.setOnAction((event -> presenter.clearText()));
-        keepStageTopBt.setOnAction((event -> presenter.setKeepTop(keepStageTopBt.isSelected())));
+        keepStageTopMenu.setOnAction((event -> presenter.setKeepTop(keepStageTopMenu.isSelected())));
         autoCopyMenu.setOnAction((event -> presenter.autoCopySwitch(autoCopyMenu.isSelected())));
         autoPasteMenu.setOnAction((event -> presenter.autoPasteSwitch(autoPasteMenu.isSelected())));
         copyOriginBt.setOnAction((event -> presenter.copyOriginText()));

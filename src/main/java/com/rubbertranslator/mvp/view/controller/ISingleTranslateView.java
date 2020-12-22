@@ -7,16 +7,7 @@ import com.rubbertranslator.mvp.view.IView;
  * view 接口
  * mainView
  */
-public interface ISceneView extends IView {
-
-    default void translateStart(){}
-
-    default void translateEnd(){}
-
-
-    default void setKeepTop(boolean isKeep){}
-
-    default void switchScene(SceneType type){}
+public interface ISingleTranslateView extends ITranslateView {
 
     /**
      * 设置翻译文本

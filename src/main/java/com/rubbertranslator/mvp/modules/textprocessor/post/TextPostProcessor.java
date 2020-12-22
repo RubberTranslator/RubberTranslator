@@ -21,6 +21,12 @@ public class TextPostProcessor {
     }
 
 
+    /**
+     * 文本后期处理
+     * @param origin
+     * @param translation
+     * @return  failed: null
+     */
     public String process(String origin,String translation){
         // 译文词组替换
         translation = replacer.replace(translation);

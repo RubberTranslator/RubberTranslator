@@ -6,8 +6,9 @@ import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods.CopyRobot;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
+import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 
-public class TranslatorPresenter extends ModelPresenter {
+public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateView> {
 
     @Override
     public void setTranslatorType(TranslatorType type) {
@@ -19,7 +20,7 @@ public class TranslatorPresenter extends ModelPresenter {
     @Override
     public void switchScene(SceneType sceneType) {
         super.switchScene(sceneType);
-        scene.switchScene(sceneType);
+        view.switchScene(sceneType);
     }
 
     @Override
@@ -33,37 +34,16 @@ public class TranslatorPresenter extends ModelPresenter {
             clipboardListenerThread.ignoreThisTime();
         }
         // 处理
-        scene.translateStart();
-        translatorFacade.process(originText, (stringPair -> {
-            scene.setText(stringPair.getFirst(), stringPair.getSecond());
+        view.translateStart();
+        translatorFacade.singleTranslate(originText, (stringPair -> {
+            view.setText(stringPair.getFirst(), stringPair.getSecond());
             // end
-            scene.translateEnd();
+            view.translateEnd();
             // 翻译完成，重新开启输入
             clipboardListenerThread.setRun(cptState);
         }));
     }
 
-
-    @Override
-    public void clipboardSwitch(boolean isOpen) {
-        super.clipboardSwitch(isOpen);
-        clipboardListenerThread.setRun(isOpen);
-        configManger.getSystemConfiguration().setOpenClipboardListener(isOpen);
-    }
-
-    @Override
-    public void dragCopySwitch(boolean isOpen) {
-        super.dragCopySwitch(isOpen);
-        dragCopyThread.setRun(isOpen);
-        configManger.getSystemConfiguration().setDragCopy(isOpen);
-    }
-
-    @Override
-    public void incrementalCopySwitch(boolean isOpen) {
-        super.incrementalCopySwitch(isOpen);
-        translatorFacade.getTextPreProcessor().setIncrementalCopy(isOpen);
-        configManger.getSystemConfiguration().setIncrementalCopy(isOpen);
-    }
 
     @Override
     public void setHistoryEntry(HistoryEntryIndex index) {
@@ -82,27 +62,27 @@ public class TranslatorPresenter extends ModelPresenter {
                 entry = translatorFacade.getHistory().current();
                 break;
         }
-        scene.setText(entry.getOrigin(),entry.getTranslation());
+        view.setText(entry.getOrigin(),entry.getTranslation());
     }
 
     @Override
     public void setKeepTop(boolean isKeep) {
         super.setKeepTop(isKeep);
-        scene.setKeepTop(isKeep);
+        view.setKeepTop(isKeep);
         configManger.getSystemConfiguration().setKeepTop(isKeep);
     }
 
     @Override
     public void clearText() {
         super.clearText();
-        scene.setText("","");
+        view.setText("","");
         translatorFacade.getTextPreProcessor().cleanBuffer();
     }
 
     @Override
     public void autoCopySwitch(boolean isOpen) {
         super.autoCopySwitch(isOpen);
-        scene.autoCopy(isOpen);
+        view.autoCopy(isOpen);
         if(!isOpen){
             translatorFacade.getAfterProcessor().setAutoPaste(false);
             configManger.getSystemConfiguration().setAutoPaste(false);
@@ -114,7 +94,7 @@ public class TranslatorPresenter extends ModelPresenter {
     @Override
     public void autoPasteSwitch(boolean isOpen) {
         super.autoPasteSwitch(isOpen);
-        scene.autoPaste(isOpen);
+        view.autoPaste(isOpen);
         if(isOpen){
            translatorFacade.getAfterProcessor().setAutoCopy(true);
            configManger.getSystemConfiguration().setAutoCopy(true);

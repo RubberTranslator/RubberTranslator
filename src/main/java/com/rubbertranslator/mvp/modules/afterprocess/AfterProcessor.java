@@ -40,7 +40,8 @@ public class AfterProcessor {
         this.autoPaste = autoPaste;
     }
 
-    public String process(String text){
+    public void process(String text){
+        if(text == null) return;
         if(autoCopy){
             Logger.getLogger(this.getClass().getName()).info("set clipboard:"+ text);
             CopyRobot.getInstance().copyText(text);
@@ -48,6 +49,6 @@ public class AfterProcessor {
                 CopyRobot.getInstance().triggerPaste();
             }
         }
-        return text;
+        return;
     }
 }

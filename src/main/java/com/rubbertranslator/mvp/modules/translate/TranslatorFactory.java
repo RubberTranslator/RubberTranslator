@@ -66,6 +66,18 @@ public class TranslatorFactory {
         return null;
     }
 
+    /**
+     * 通过指定类型翻译
+     * @param type
+     * @param text
+     * @return failed: null
+     */
+    public String translateByType(TranslatorType type, String text){
+        // 首先使用当前首选的翻译引擎翻译
+        AbstractTranslator currentEngine = translatorEngineMap.get(type);
+        return currentEngine.translate(sourceLanguage,destLanguage,text);
+    }
+
 
     public void addTranslator(TranslatorType type, AbstractTranslator translator){
         translatorEngineMap.put(type,translator);

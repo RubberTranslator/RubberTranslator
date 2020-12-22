@@ -3,10 +3,11 @@ package com.rubbertranslator.mvp.presenter.impl;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.view.controller.IFocusView;
 
-public class FocusViewPresenter extends TranslatorPresenter {
+public class FocusViewPresenter extends SingleTranslatePresenter {
+
     public void switchBetweenOriginAndTranslatedText() {
-        if(scene == null) throw new NullPointerException();
+        if(view == null) throw new NullPointerException();
         HistoryEntry entry = translatorFacade.getHistory().current();
-        ((IFocusView)scene).switchBetweenOriginAndTranslatedText(entry);
+        ((IFocusView)view).switchBetweenOriginAndTranslatedText(entry);
     }
 }

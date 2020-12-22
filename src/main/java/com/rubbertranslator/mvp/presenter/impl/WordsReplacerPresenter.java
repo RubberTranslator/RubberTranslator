@@ -6,11 +6,11 @@ import com.rubbertranslator.mvp.view.controller.IWordsReplacerView;
 
 import java.util.Set;
 
-public class WordsReplacerPresenter extends ModelPresenter {
+public class WordsReplacerPresenter extends ModelPresenter<IWordsReplacerView> {
     public void apply(Set<WordsPair> set){
         configManger.getSystemConfiguration().setWordsPairs(set);
         translatorFacade.getTextPostProcessor().getReplacer().setWordsPairs(set);
         // update view
-        ((IWordsReplacerView)scene).apply();
+        view.apply();
     }
 }

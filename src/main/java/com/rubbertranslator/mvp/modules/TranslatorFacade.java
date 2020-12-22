@@ -1,6 +1,7 @@
 package com.rubbertranslator.mvp.modules;
 
 import com.rubbertranslator.entity.Pair;
+import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.mvp.modules.afterprocess.AfterProcessor;
 import com.rubbertranslator.mvp.modules.history.TranslationHistory;
@@ -79,36 +80,53 @@ public class TranslatorFacade {
 
 
     /**
-     * 处理整个翻译过程
-     * 最终处理结果会通过ranslatorFacadeListener#onComplete(java.lang.String, java.lang.String)回调
-     * 成功：回调原文+译文
-     * 失败：回调原文+null
-     *
+     * 处理整个翻译过程 -- 单翻译
      * @param text 原文
-     *             失败 null
+     * @param callback 回调接口
      */
-    public void process(String text, GenericCallback<Pair<String>> callback) {
-        Callable<String> callable = new FacadeCallable(text);
-        FutureTask<String> task = new FacadeFutureTask(callable,callback);
+    public void singleTranslate(String text, GenericCallback<Pair<String,String>> callback) {
+        Callable<Pair<String,String>> callable = new RelayTranslateCall(text);
+        FutureTask<Pair<String,String>> task = new FacadeTask(callable,callback);
         executor.execute(task);
     }
 
-    private class FacadeFutureTask extends FutureTask<String> {
-        private final FacadeCallable callable;
-        private GenericCallback<Pair<String>> callback;
 
-        public FacadeFutureTask(Callable<String> callable,GenericCallback<Pair<String>> callback) {
+    /**
+     * 处理整个翻译 -- 多翻译
+     * @param text 原文
+     * @param callback 回调接口
+     */
+    public void multiTranslate(String text, GenericCallback<Pair<TranslatorType,String>> callback){
+        Callable<Pair<TranslatorType,String>> googleCall = new SingleTranslateCall(text,TranslatorType.GOOGLE);
+        Callable<Pair<TranslatorType,String>> baiduCall = new SingleTranslateCall(text,TranslatorType.BAIDU);
+        Callable<Pair<TranslatorType,String>> youdaoCall = new SingleTranslateCall(text,TranslatorType.YOUDAO);
+
+        FutureTask<Pair<TranslatorType,String>> googleTask = new FacadeTask(googleCall,callback);
+        FutureTask<Pair<TranslatorType,String>> baiduTask = new FacadeTask(baiduCall,callback);
+        FutureTask<Pair<TranslatorType,String>> youdaoTask = new FacadeTask(youdaoCall,callback);
+
+        // exec
+        executor.execute(googleTask);
+        executor.execute(baiduTask);
+        executor.execute(youdaoTask);
+    }
+
+
+
+    private class FacadeTask<T> extends FutureTask<T> {
+
+        private GenericCallback<T> callback;
+
+        public FacadeTask(Callable<T> callable, GenericCallback<T> callback) {
             super(callable);
-            this.callable = (FacadeCallable) callable;
             this.callback = callback;
         }
 
         @Override
         protected void done() {
             try {
-                String result = get();  // 译文（如果有的话）
-                String processedOrigin = callable.getProcessedOrigin(); // 原文
-                callback.callBack(new Pair<>(processedOrigin,result));
+                T result = get();  // 获取结果
+                callback.callBack(result);
             } catch (InterruptedException | ExecutionException e) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
             }
@@ -116,43 +134,75 @@ public class TranslatorFacade {
         }
     }
 
-    private class FacadeCallable implements Callable<String> {
+    /**
+     * 接力翻译 -- 即 若google翻译失败，自动使用百度翻译
+     * 如果都失败，返回 “” 空字符串
+     */
+    private class RelayTranslateCall implements Callable<Pair<String,String>> {
         // 原文
         private String origin = "";
-        // 格式处理后的原文
-        private String processedOrigin = "";
 
-        public String getProcessedOrigin() {
-            return processedOrigin;
-        }
-
-        public String getOrigin() {
-            return origin;
-        }
-
-        public FacadeCallable(String text) {
+        public RelayTranslateCall(String text) {
             this.origin = text;
         }
 
         @Override
-        public String call() {
+        public Pair<String,String> call() {
             if (origin == null || "".equals(origin)) return null;
             // facade处理开始
             String translation = null;
             try {
                 // text保存处理后的文本
-                processedOrigin = textPreProcessor.process(origin);
+                origin = textPreProcessor.process(origin);
                 // 重新初始化lastOrigin
-                translation = translatorFactory.translate(processedOrigin);
+                translation = translatorFactory.translate(origin);
                 // 后置处理
-                translation = textPostProcessor.process(processedOrigin, translation);
+                translation = textPostProcessor.process(origin, translation);
                 // 记录翻译历史
-                history.addHistory(processedOrigin, translation);
-                translation = afterProcessor.process(translation);
+                history.addHistory(origin, translation);
+                afterProcessor.process(translation);
             } catch (NullPointerException e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
             }
-            return translation;
+            return new Pair<>(origin, translation == null ? "" : translation);
+        }
+    }
+
+
+    /**
+     *  单翻译 --按照指定类型翻译
+     *  如果翻译不成功，直接返回 "" 空字符串
+     */
+    private class SingleTranslateCall implements Callable<Pair<TranslatorType,String>>{
+
+        private String origin = ""; // 原文
+
+        TranslatorType type;    // 当前类型
+
+        public SingleTranslateCall(String origin, TranslatorType type) {
+            this.origin = origin;
+            this.type = type;
+        }
+
+        @Override
+        public Pair<TranslatorType, String> call() throws Exception {
+            if (origin == null || "".equals(origin)) return null;
+            // facade处理开始
+            String translation = null;
+            try {
+                // text保存处理后的文本
+                origin = textPreProcessor.process(origin);
+                // 重新初始化lastOrigin
+                translation = translatorFactory.translateByType(type,origin);
+                // 后置处理
+                translation = textPostProcessor.process(origin, translation);
+                // 记录翻译历史
+                history.addHistory(origin, translation);
+                afterProcessor.process(translation);
+            } catch (NullPointerException e) {
+                Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
+            }
+            return new Pair<>(type,  translation == null ? "" : translation);
         }
     }
 }

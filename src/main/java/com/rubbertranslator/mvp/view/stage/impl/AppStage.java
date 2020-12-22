@@ -16,8 +16,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -134,6 +132,9 @@ public class AppStage{
                     break;
                 case FOCUS_SCENE:
                     loadScene(ControllerFxmlPath.FOCUS_CONTROLLER_FXML);
+                    break;
+                case COMPARE_SCENE:
+                    loadScene(ControllerFxmlPath.COMPARE_CONTROLLER_FXML);
                     break;
                 case FILTER_SCENE:
                     loadScene(ControllerFxmlPath.FILTER_CONTROLLER_FXML);

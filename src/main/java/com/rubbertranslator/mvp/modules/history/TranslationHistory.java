@@ -26,6 +26,7 @@ public class TranslationHistory {
     }
 
     public void addHistory(String origin, String translation){
+        if(translation == null) return;
         historyList.append(new HistoryEntry(origin,translation));
         historyCursor = historyList.size()-1;
     }

@@ -1,36 +1,33 @@
 package com.rubbertranslator.entity;
-
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Objects;
 
-public class Pair<T> implements Comparable<Pair<T>> {
+public class Pair<F,S> implements Comparable<Pair<F,S>> {
 //    @SerializedName("first")
-    protected T first;
+    protected F first;
 //    @SerializedName("second")
-    protected T second;
+    protected S second;
 
     public Pair() {
     }
 
-    public Pair(T first, T second) {
+    public Pair(F first, S second) {
         this.first = first;
         this.second = second;
     }
 
-    public T getFirst() {
+    public F getFirst() {
         return first;
     }
 
-    public void setFirst(T first) {
+    public void setFirst(F first) {
         this.first = first;
     }
 
-    public T getSecond() {
+    public S getSecond() {
         return second;
     }
 
-    public void setSecond(T second) {
+    public void setSecond(S second) {
         this.second = second;
     }
 
@@ -42,7 +39,7 @@ public class Pair<T> implements Comparable<Pair<T>> {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Pair<T> other = (Pair<T>) obj;
+        Pair<F,S> other = (Pair<F,S>) obj;
         if (first != null && !first.equals(other.first)) {
             return false;
         }
@@ -58,10 +55,11 @@ public class Pair<T> implements Comparable<Pair<T>> {
     }
 
     @Override
-    public int compareTo(Pair<T> o) {
+    public int compareTo(Pair<F,S> o) {
         if(Objects.equals(o,this)){
             return 0;
         }
         return -1;
     }
+
 }

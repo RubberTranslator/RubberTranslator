@@ -29,6 +29,7 @@ public class ParagraphIndentProcessor {
      * @return 增加了缩进的文本
      */
     public String process(String origin, String text){
+        if(text == null) return null;
         if(!autoIndent) return  text;
         if(!origin.contains("\n")) return text;
 

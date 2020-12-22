@@ -1,38 +1,43 @@
 package com.rubbertranslator.mvp.presenter;
 
 import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.mvp.presenter.impl.FilterViewPresenter;
-import com.rubbertranslator.mvp.presenter.impl.FocusViewPresenter;
-import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
-import com.rubbertranslator.mvp.presenter.impl.WordsReplacerPresenter;
+import com.rubbertranslator.mvp.presenter.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class PresenterFactory {
 
-    private static final Map<SceneType,ConfigPresenter> presenterMap = new HashMap<>();
+    private static final Map<SceneType, BasePresenter> presenterMap = new HashMap<>();
 
-    public static ConfigPresenter getPresenter(SceneType type){
-        ConfigPresenter presenter;
+    public static <T extends BasePresenter> T getPresenter(SceneType type){
+        T presenter;
         if(!presenterMap.containsKey(type)){
             switch(type){
                 case MAIN_SCENE:
-                    presenter = new MainViewPresenter();
+                    presenter = (T) new MainViewPresenter();
                     presenterMap.put(SceneType.MAIN_SCENE,presenter);
+                    break;
                 case FOCUS_SCENE:
-                    presenter = new FocusViewPresenter();
+                    presenter = (T) new FocusViewPresenter();
                     presenterMap.put(SceneType.FOCUS_SCENE,presenter);
+                    break;
+                case COMPARE_SCENE:
+                    presenter = (T) new MultiTranslatePresenter();
+                    presenterMap.put(SceneType.COMPARE_SCENE,presenter);
+                    break;
                 case FILTER_SCENE:
-                    presenter = new FilterViewPresenter();
+                    presenter = (T) new FilterViewPresenter();
                     presenterMap.put(SceneType.FILTER_SCENE,presenter);
+                    break;
                 case WORDS_REPLACE_SCENE:
-                    presenter = new WordsReplacerPresenter();
+                    presenter = (T) new WordsReplacerPresenter();
                     presenterMap.put(SceneType.WORDS_REPLACE_SCENE,presenter);
+                    break;
                 default:
                     break;
             }
         }
-        return presenterMap.get(type);
+        return (T) presenterMap.get(type);
     }
 }

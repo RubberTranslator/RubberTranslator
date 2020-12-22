@@ -12,7 +12,7 @@ import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
-import com.rubbertranslator.mvp.view.controller.ISceneView;
+import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
@@ -54,7 +54,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/6 20:49
  */
-public class MainController implements ISceneView {
+public class MainController implements ISingleTranslateView {
 
     @FXML
     private AnchorPane rootPane;
@@ -130,7 +130,10 @@ public class MainController implements ISceneView {
 
     // 专注模式
     @FXML
-    private Menu focusMenu;
+    private Menu focusModeMenu;
+    // 对比模式
+    @FXML
+    private Menu compareModeMenu;
 
     // 历史记录
     @FXML
@@ -253,6 +256,8 @@ public class MainController implements ISceneView {
         initHelpingMenu();
         // 专注模式
         initFocusModeMenu();
+        // 对比模式
+        initCompareModeMenu();
         // 历史
         initHistoryMenu();
         // 清空
@@ -669,8 +674,15 @@ public class MainController implements ISceneView {
     private void initFocusModeMenu() {
         Label label = new Label("专注模式");
         label.setOnMouseClicked((event -> presenter.switchScene(SceneType.FOCUS_SCENE)));
-        focusMenu.setText("");
-        focusMenu.setGraphic(label);
+        focusModeMenu.setText("");
+        focusModeMenu.setGraphic(label);
+    }
+
+    private void initCompareModeMenu(){
+        Label label = new Label("对比模式");
+        label.setOnMouseClicked((event -> presenter.switchScene(SceneType.COMPARE_SCENE)));
+        compareModeMenu.setText("");
+        compareModeMenu.setGraphic(label);
     }
 
     private void initHistoryMenu() {

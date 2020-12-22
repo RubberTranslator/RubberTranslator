@@ -16,7 +16,7 @@ import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.mvp.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.mvp.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
-import com.rubbertranslator.mvp.presenter.ConfigPresenter;
+import com.rubbertranslator.mvp.presenter.BasePresenter;
 import it.sauronsoftware.junique.JUnique;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -98,7 +98,7 @@ public class SystemResourceManager {
         }
     }
 
-    public static void initPresenter(ConfigPresenter presenter) {
+    public static void initPresenter(BasePresenter presenter) {
         if (presenter instanceof ModelPresenter) {
             // 注入facade
             ((ModelPresenter) presenter).setTranslatorFacade(facade);

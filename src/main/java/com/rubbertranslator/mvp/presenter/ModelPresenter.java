@@ -1,18 +1,19 @@
 package com.rubbertranslator.mvp.presenter;
 
 import com.rubbertranslator.enumtype.HistoryEntryIndex;
+import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.enumtype.SceneType;
+import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.mvp.modules.TranslatorFacade;
 import com.rubbertranslator.mvp.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.mvp.modules.textinput.clipboard.ClipboardListenerThread;
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.DragCopyThread;
-import com.rubbertranslator.enumtype.Language;
-import com.rubbertranslator.enumtype.TranslatorType;
+import com.rubbertranslator.mvp.view.IView;
 
 /**
  * presenter
  */
-public abstract class ModelPresenter extends ConfigPresenter{
+public abstract class ModelPresenter<View extends IView> extends BasePresenter<View> {
     // 所有mode层class
     protected ClipboardListenerThread clipboardListenerThread;
     protected DragCopyThread dragCopyThread;
@@ -40,28 +41,34 @@ public abstract class ModelPresenter extends ConfigPresenter{
     }
 
     public void switchScene(SceneType sceneType){
-        if(scene == null) throw new NullPointerException("inject scene first");
+        if(view == null) throw new NullPointerException("inject scene first");
     }
 
     public void setKeepTop(boolean isKeep){
-        if(configManger == null || scene == null) throw new NullPointerException("inject facade or view first");
+        if(configManger == null || view == null) throw new NullPointerException("inject facade or view first");
     }
 
     public void translate(String originText){
-        if(translatorFacade == null || scene == null) throw new NullPointerException("inject facade or view first");
+        if(translatorFacade == null || view == null) throw new NullPointerException("inject facade or view first");
     }
 
 
     public void clipboardSwitch(boolean isOpen){
         if(clipboardListenerThread == null) throw new NullPointerException("inject clpTread first");
+        clipboardListenerThread.setRun(isOpen);
+        configManger.getSystemConfiguration().setOpenClipboardListener(isOpen);
     }
 
     public void dragCopySwitch(boolean isOpen) {
         if(dragCopyThread == null) throw new NullPointerException("inject dragCopyThread first");
+        dragCopyThread.setRun(isOpen);
+        configManger.getSystemConfiguration().setDragCopy(isOpen);
     }
 
     public void incrementalCopySwitch(boolean isOpen){
         if(translatorFacade == null) throw new NullPointerException("inject facade first");
+        translatorFacade.getTextPreProcessor().setIncrementalCopy(isOpen);
+        configManger.getSystemConfiguration().setIncrementalCopy(isOpen);
     }
 
     public void setTranslatorLanguage(boolean isSrc, Language language){
@@ -73,7 +80,7 @@ public abstract class ModelPresenter extends ConfigPresenter{
     }
 
     public void clearText(){
-        if(translatorFacade == null || scene == null) throw new NullPointerException("inject vars first");
+        if(translatorFacade == null || view == null) throw new NullPointerException("inject vars first");
     }
 
     public void autoCopySwitch(boolean isOpen){

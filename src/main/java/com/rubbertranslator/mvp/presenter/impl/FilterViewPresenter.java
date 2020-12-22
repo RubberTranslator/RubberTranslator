@@ -6,27 +6,25 @@ import com.rubbertranslator.mvp.view.controller.IFilterView;
 
 import java.util.List;
 
-public class FilterViewPresenter extends ModelPresenter {
+public class FilterViewPresenter extends ModelPresenter<IFilterView> {
 
     public void addFilterList(List<String> processNames){
         ProcessFilter processFilter = clipboardListenerThread.getProcessFilter();
         processFilter.addFilterList(processNames);
         configManger.getSystemConfiguration().setProcessList(List.copyOf(processFilter.getFilterList()));
-        ((IFilterView)scene).addFilterProcesses(processNames);
+        view.addFilterProcesses(processNames);
     }
 
     public void removeFilterList(List<String> processNames){
         ProcessFilter processFilter = clipboardListenerThread.getProcessFilter();
         processFilter.removeFilterLists(processNames);
         configManger.getSystemConfiguration().setProcessList(List.copyOf(processFilter.getFilterList()));
-        ((IFilterView)scene).removeFilterProcesses(processNames);
-
+        view.removeFilterProcesses(processNames);
     }
 
     public void setOpenProcessFilter(boolean isOpen)
     {
         configManger.getSystemConfiguration().setOpenProcessFilter(isOpen);
         clipboardListenerThread.getProcessFilter().setOpen(isOpen);
-
     }
 }

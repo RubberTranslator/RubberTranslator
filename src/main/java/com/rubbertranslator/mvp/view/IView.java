@@ -1,5 +1,6 @@
 package com.rubbertranslator.mvp.view;
 
+import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.system.SystemConfiguration;
 
 public interface IView {

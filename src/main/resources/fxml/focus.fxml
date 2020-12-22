@@ -30,7 +30,7 @@
             <Button fx:id="preHistoryBt" mnemonicParsing="false" text="上一条" />
             <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条" />
             <Button fx:id="clearBt" mnemonicParsing="false" text="清空" />
-            <ToggleButton fx:id="keepStageTopBt" mnemonicParsing="false" text="置顶" />
+            <ToggleButton fx:id="keepStageTopMenu" mnemonicParsing="false" text="置顶" />
             <Button fx:id="displayTextBt" mnemonicParsing="false" text="显示原文" />
             <Button fx:id="copyOriginBt" mnemonicParsing="false" text="复制原文" />
             <Button fx:id="copyTranslationBt" mnemonicParsing="false" text="复制译文" />
