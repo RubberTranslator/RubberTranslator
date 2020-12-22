@@ -33,3 +33,6 @@ test
 *.msi
 *.deb
 *.rpm
+
+# custom files or dirs
+configuration-*.json
