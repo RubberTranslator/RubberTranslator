@@ -13,11 +13,13 @@ import com.rubbertranslator.mvp.view.controller.IMultiTranslateView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,6 +77,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         presenter =  PresenterFactory.getPresenter(SceneType.COMPARE_SCENE);
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
+        presenter.initView();
     }
 
     private void initClickEvents() {
@@ -125,6 +128,22 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         dragCopyMenu.setSelected(configuration.isDragCopy());
         // 文本格式化
         textFormatMenu.setSelected(configuration.isTryFormat());
+
+    }
+
+    @Override
+    public void delayInitViews() {
+        // bind translate shortcut
+        rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            final KeyCombination keyComb = new KeyCodeCombination(KeyCode.T,
+                    KeyCombination.CONTROL_DOWN);
+            public void handle(KeyEvent ke) {
+                if (keyComb.match(ke)) {
+                    translateBt.fire();
+                    ke.consume(); // <-- stops passing the event to next node
+                }
+            }
+        });
     }
 
     @Override
@@ -163,12 +182,15 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         switch(type){
             case GOOGLE:
                 googleTextArea.setText(translatedText);
+                googleTextArea.end();
                 break;
             case BAIDU:
                 baiduTextArea.setText(translatedText);
+                baiduTextArea.end();
                 break;
             case YOUDAO:
                 youdaoTextArea.setText(translatedText);
+                youdaoTextArea.end();
                 break;
             default:
                 break;

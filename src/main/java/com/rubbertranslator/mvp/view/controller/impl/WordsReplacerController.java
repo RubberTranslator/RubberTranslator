@@ -42,9 +42,10 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        presenter = (WordsReplacerPresenter) PresenterFactory.getPresenter(SceneType.WORDS_REPLACE_SCENE);
+        presenter = PresenterFactory.getPresenter(SceneType.WORDS_REPLACE_SCENE);
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
+        presenter.initView();
     }
 
 

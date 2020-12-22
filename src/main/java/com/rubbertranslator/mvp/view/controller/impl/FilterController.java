@@ -51,6 +51,7 @@ public class FilterController implements IFilterView {
         presenter = (FilterViewPresenter) PresenterFactory.getPresenter(SceneType.FILTER_SCENE);
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
+        presenter.initView();
     }
 
 

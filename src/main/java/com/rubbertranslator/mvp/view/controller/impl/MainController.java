@@ -16,6 +16,7 @@ import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -29,6 +30,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -169,7 +171,7 @@ public class MainController implements ISingleTranslateView {
     @FXML
     private MenuItem homePage;
     @FXML
-    private MenuItem wiki;
+    private MenuItem useAge;
     @FXML
     private MenuItem issues;
 
@@ -192,11 +194,11 @@ public class MainController implements ISingleTranslateView {
         presenter = (MainViewPresenter) PresenterFactory.getPresenter(SceneType.MAIN_SCENE);
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
+        presenter.initView();
         // 延迟 load
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                appStage = (Stage) rootPane.getScene().getWindow();
             }
         },500);
     }
@@ -239,6 +241,8 @@ public class MainController implements ISingleTranslateView {
         Platform.runLater(()->{
             originTextArea.setText(originText);
             translatedTextArea.setText(translatedText);
+            originTextArea.end();
+            translatedTextArea.end();
         });
 
     }
@@ -265,6 +269,23 @@ public class MainController implements ISingleTranslateView {
         // window preSize
     }
 
+    @Override
+    public void delayInitViews() {
+        // inject appStage
+        appStage = (Stage) rootPane.getScene().getWindow();
+
+        // bind key short for "translate button"
+        rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            final KeyCombination keyComb = new KeyCodeCombination(KeyCode.T,
+                    KeyCombination.CONTROL_DOWN);
+            public void handle(KeyEvent ke) {
+                if (keyComb.match(ke)) {
+                    translateBt.fire();
+                    ke.consume(); // <-- stops passing the event to next node
+                }
+            }
+        });
+    }
 
     @Override
     public void autoCopy(boolean isOpen) {
@@ -654,9 +675,9 @@ public class MainController implements ISingleTranslateView {
             }
         });
         // wiki
-        wiki.setOnAction((actionEvent) -> {
+        useAge.setOnAction((actionEvent) -> {
             try {
-                Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/wiki"));
+                Desktop.getDesktop().browse(new URI("https://ravenxrz.gitee.io/archives/a79932ef.html"));
             } catch (IOException | URISyntaxException e) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "使用帮助打开失败", e);
             }
@@ -727,4 +748,6 @@ public class MainController implements ISingleTranslateView {
             }
         }
     }
+
+
 }

@@ -16,11 +16,13 @@ import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -160,6 +162,20 @@ public class FocusModeController implements Initializable,IFocusView {
         textFormatMenu.setSelected(configuration.isTryFormat());
     }
 
+    @Override
+    public void delayInitViews() {
+        // bind short cut for translateBt
+        rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            final KeyCombination keyComb = new KeyCodeCombination(KeyCode.T,
+                    KeyCombination.CONTROL_DOWN);
+            public void handle(KeyEvent ke) {
+                if (keyComb.match(ke)) {
+                    translateBt.fire();
+                    ke.consume(); // <-- stops passing the event to next node
+                }
+            }
+        });
+    }
 
     /**
      * 初始化参数
@@ -169,6 +185,7 @@ public class FocusModeController implements Initializable,IFocusView {
         // 拿到presenter，首先注入mode模块，所有mode由systemresource持有
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
+        presenter.initView();
     }
 
     /**
@@ -299,5 +316,6 @@ public class FocusModeController implements Initializable,IFocusView {
     @Override
     public void setText(String originText, String translatedText) {
         textArea.setText(translatedText);
+        textArea.end();
     }
 }

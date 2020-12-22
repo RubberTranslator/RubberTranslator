@@ -89,7 +89,7 @@
                 <Menu mnemonicParsing="false" text="帮助">
                   <items>
                         <MenuItem fx:id="homePage" mnemonicParsing="false" text="项目主页" />
-                    <MenuItem fx:id="wiki" mnemonicParsing="false" text="使用方法" />
+                    <MenuItem fx:id="useAge" mnemonicParsing="false" text="使用方法" />
                         <MenuItem fx:id="issues" mnemonicParsing="false" text="反馈" />
                   </items>
                 </Menu>
@@ -110,7 +110,7 @@
                   <Font size="20.0" />
                </font>
             </TextArea>
-            <Button fx:id="translateBt" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBtnTranslateClick" text="翻译" />
+            <Button fx:id="translateBt" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBtnTranslateClick" text="翻译(Ctrl+T)" />
          </children>
          <cursor>
             <Cursor fx:constant="DEFAULT" />
