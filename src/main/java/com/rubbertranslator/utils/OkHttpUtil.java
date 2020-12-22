@@ -18,10 +18,6 @@ public class OkHttpUtil {
             .readTimeout(3,TimeUnit.SECONDS)
             .build();
 
-    public static OkHttpClient getInstance() {
-        return client;
-    }
-
     /**
      * 同步请求
      *

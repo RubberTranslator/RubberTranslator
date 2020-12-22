@@ -82,14 +82,14 @@ public class SystemConfigurationManager {
      *
      * @return 版本号。 如 v2.0.0
      */
-    private String getCurrentVersion() {
+    public static String getCurrentVersion() {
         String version = null;
         try {
             InputStream resourceAsStream = SystemResourceManager.class.getResourceAsStream("/version_control/version.txt");
             version = FileUtil.readInputStreamToString(resourceAsStream, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "系统版本号缺失，无法打开软件，请向开发者联系");
+            Logger.getLogger(SystemConfigurationManager.class.getName()).log(Level.SEVERE, "系统版本号缺失，无法打开软件，请向开发者联系");
             return null;
         }
         return version;

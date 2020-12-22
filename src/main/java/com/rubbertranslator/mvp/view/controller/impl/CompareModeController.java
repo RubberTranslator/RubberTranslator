@@ -129,6 +129,15 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         // 文本格式化
         textFormatMenu.setSelected(configuration.isTryFormat());
 
+        // textArea
+        if("".equals(configuration.getBaiduTranslatorApiKey())||
+            "".equals(configuration.getBaiduTranslatorSecretKey())){
+            baiduTextArea.setPromptText("您当前未配置百度Api，无法使用百度翻译");
+        }
+        if("".equals(configuration.getYouDaoTranslatorApiKey())||
+            "".equals(configuration.getYouDaoTranslatorSecretKey())){
+            youdaoTextArea.setPromptText("您当前未配置有道Api，无法使用有道翻译");
+        }
     }
 
     @Override
