@@ -22,7 +22,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
     // 动态等待时间
     private long waitTime = 50;
     // 跳过本次变化监听
-    private boolean ignoreThisTime = false;
+    private volatile boolean ignoreThisTime = false;
     // 消息通知事件
     private final ClipboardContentInputEvent textInputEvent = new ClipboardContentInputEvent();
     // 过滤器
@@ -73,6 +73,8 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                     Logger.getLogger(this.getClass().getName()).info("本次已忽略");
                     ignoreThisTime = false;
                     break;
+                }else{
+                    Logger.getLogger(this.getClass().getName()).info("本次正常处理");
                 }
                 processClipboard(contents);
             } catch (Exception e) {
