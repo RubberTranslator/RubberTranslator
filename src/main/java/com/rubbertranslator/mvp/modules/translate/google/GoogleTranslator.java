@@ -23,25 +23,26 @@ public class GoogleTranslator extends AbstractTranslator {
     private final String patternUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/misc/google-api-pattern.txt";
 
     // 采用正则表达式从html中抽取翻译结果--可能会失效
-//    private volatile String patternStr = "<div class=\"result-container\">([\\s\\S]*?)</div>";
-    private volatile String patternStr = "";
+    private volatile String patternStr = "<div class=\"result-container\">([\\s\\S]*?)</div>";
+
     private volatile Pattern translationPattern = Pattern.compile(patternStr);
 
     public GoogleTranslator() {
-
+        updatePattern();
     }
 
     /**
-     * 更新
+     * 更新Google翻译结果html的正则提取模式
      */
     private void updatePattern(){
        new Thread(() -> {
            String tempPatternStr = OkHttpUtil.get(patternUrl,null);
-           Logger.getLogger(this.getClass().getName(),"remote google pattern:"+patternStr);
+           if(tempPatternStr == null) return;
+           Logger.getLogger(this.getClass().getName()).info("remote pattern:"+tempPatternStr);
            if(!patternStr.equals(tempPatternStr)) {
-               if(tempPatternStr != null){
-                 translationPattern = Pattern.compile(patternStr);
-              }
+               translationPattern = Pattern.compile(patternStr);
+           }else{
+               Logger.getLogger(this.getClass().getName(),"远端pattern和本地pattern相同");
            }
        }).start();
     }
