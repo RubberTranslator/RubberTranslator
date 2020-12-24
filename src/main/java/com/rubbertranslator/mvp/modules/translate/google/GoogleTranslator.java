@@ -40,9 +40,11 @@ public class GoogleTranslator extends AbstractTranslator {
            if(tempPatternStr == null) return;
            Logger.getLogger(this.getClass().getName()).info("remote pattern:"+tempPatternStr);
            if(!patternStr.equals(tempPatternStr)) {
+               Logger.getLogger(this.getClass().getName()).info("remote pattern有更新，正在更新Pattern");
+               patternStr = tempPatternStr;
                translationPattern = Pattern.compile(patternStr);
            }else{
-               Logger.getLogger(this.getClass().getName(),"远端pattern和本地pattern相同");
+               Logger.getLogger(this.getClass().getName()).info("远端和本地端Google Pattern相同，无需更新");
            }
        }).start();
     }
