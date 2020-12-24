@@ -4,7 +4,6 @@ import com.rubbertranslator.mvp.view.stage.impl.AppStage;
 import com.rubbertranslator.utils.AppSingletonUtil;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
