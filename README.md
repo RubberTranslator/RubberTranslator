@@ -14,7 +14,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 [点这里，看视频介绍](https://www.bilibili.com/video/BV1aA411t7pY)
 
-[请点这里看更多文字介绍](https://ravenxrz.gitee.io/archives/a79932ef.html)
+[此页无法查看过多gif，更多文字介绍点这里](https://ravenxrz.gitee.io/archives/a79932ef.html)
 
 ## 1. Features
 
@@ -29,9 +29,27 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 9. **OCR翻译**
 10. 翻译历史
 11. **专注模式**
+
+<img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20201224112341042.png" alt="image-20201224112341042" style="zoom:50%;" />
+
 12. **多翻译引擎对照模式**
+
+![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/compare.gif)
+
 13. 过滤器，设定【拖拽复制】的过滤程序，避免在所有程序中均触发【拖拽复制】
 14. **翻译文本替换，部分专业词汇如果由翻译引擎来翻译，将显得十分晦涩难懂，使用本功能，可自定义将【晦涩的翻译词组】替换为【自己想要的词组】**
+
+举个例子， 在数据结构或算法中，binary search 应该翻译成“二分查找”，但是如果直接使用翻译引擎翻译，将会得到：
+
+<img src="D:\坚果云同步\图库\image-20201224112518290.png" alt="image-20201224112518290" style="zoom:50%;" />
+
+此时可以添加“替换词组”：
+
+<img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20201224112619645.png" alt="image-20201224112558604" style="zoom:50%;" />
+
+最后重新翻译：
+
+<img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20201224112640280.png" alt="image-20201224112640280" style="zoom:50%;" />
 
 ## 2. FAQ
 
