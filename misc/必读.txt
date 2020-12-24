@@ -14,7 +14,8 @@ RubberTranslator-v3.0.0
 1. 新增【自动更新】检测功能
 2. 增添【对比模式】
 3. 增添【CTRL+T】翻译快捷键
-4. 修复部分bug
+4. Google翻译运行期加载【正则抓取模式】，降低Google翻译失效问题。
+5. 修复部分bug
 
 2020-12-23
 RubberTranslator-v3.0.0-beta1
