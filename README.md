@@ -41,7 +41,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 举个例子， 在数据结构或算法中，binary search 应该翻译成“二分查找”，但是如果直接使用翻译引擎翻译，将会得到二进制搜索：
 
-<img src="https://pic.downk.cc/item/5fe40b683ffa7d37b34a24a1.png" alt="image-20201224112518290" height="400;" />
+<img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/5fe40b683ffa7d37b34a24a1.png" alt="image-20201224112518290" height="400;" />
 
 此时可以添加“替换词组”：
 
