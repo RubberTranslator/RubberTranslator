@@ -2,9 +2,6 @@ package com.rubbertranslator.utils;
 
 import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.system.SystemConfigurationManager;
-import okhttp3.Request;
-
-import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -25,26 +22,17 @@ public class UpdateUtils {
         }
 
         // get remote version
-        Request request = new Request.Builder()
-                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
-                .addHeader("Content-Type","text/plain; charset=utf-8")
-                .url(versionUrl)
-                .build();
-
         String remoteVersion = null;
-        try {
-            remoteVersion = OkHttpUtil.syncRequest(request);
-            if(remoteVersion == null){
-                callback.callBack(false);
-                return;
-            }
-            Logger.getLogger(UpdateUtils.class.getName()).info("remote version:" + remoteVersion);
-        } catch (IOException e) {
-            e.printStackTrace();
+        remoteVersion = OkHttpUtil.get(versionUrl,null);
+        if(remoteVersion == null){
+            callback.callBack(false);
+            return;
         }
+
+        Logger.getLogger(UpdateUtils.class.getName()).info("remote version:" + remoteVersion);
         // compare
         if(localVersion.compareTo(remoteVersion) < 0){
-            Logger.getLogger(UpdateUtils.class.getName()).info("new version:" + remoteVersion);
+            Logger.getLogger(UpdateUtils.class.getName()).info("new version released");
             callback.callBack(true);
         }else{
             callback.callBack(false);
