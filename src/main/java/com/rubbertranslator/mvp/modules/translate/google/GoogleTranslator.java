@@ -3,13 +3,11 @@ package com.rubbertranslator.mvp.modules.translate.google;
 import com.rubbertranslator.mvp.modules.translate.AbstractTranslator;
 import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.utils.OkHttpUtil;
-import okhttp3.Request;
-
 import java.io.IOException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -41,7 +39,7 @@ public class GoogleTranslator extends AbstractTranslator {
      * @param dest   目标语言
      * @param text   需要翻译的文本
      * @return 成功，翻译后的文本
-     *          失败,null
+     * 失败,null
      */
     @Override
     public String translate(Language source, Language dest, String text) {
@@ -70,18 +68,12 @@ public class GoogleTranslator extends AbstractTranslator {
      */
     private String doTranslate(String source, String dest, String text) throws IOException {
         String result = null;
-        try{
-            String pageUrl = String.format("https://translate.google.cn/m?sl=%s&tl=%s&q=%s",
-                    source, dest, URLEncoder.encode(text, StandardCharsets.UTF_8));
-            Request request = new Request.Builder()
-                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
-                    .url(pageUrl)
-                    .get()
-                    .build();
-            result = OkHttpUtil.syncRequest(request);
-        }catch (SocketException | SocketTimeoutException e){
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,e.getLocalizedMessage(),e);
-        }
+        String pageUrl = "https://translate.google.cn/m";
+        Map<String, String> param = new HashMap<>();
+        param.put("sl", source);
+        param.put("tl", dest);
+        param.put("q", URLEncoder.encode(text, StandardCharsets.UTF_8));
+        result = OkHttpUtil.get(pageUrl, param);
         return result;
     }
 

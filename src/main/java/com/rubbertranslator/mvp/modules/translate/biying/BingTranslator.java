@@ -50,17 +50,18 @@ public class BingTranslator extends AbstractTranslator {
 
     private String doTranslate(String source, String dest, String text) throws IOException {
         // 暂时无法支持
-        String url = "";
-        RequestBody body = new FormBody.Builder()
-                .add("fromLang",source)
-                .add("to",dest)
-                .add("text",text)
-                .build();
-        Request request = new Request.Builder()
-                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
-                .url(url)
-                .post(body)
-                .build();
-        return OkHttpUtil.syncRequest(request);
+//        String url = "";
+//        RequestBody body = new FormBody.Builder()
+//                .add("fromLang",source)
+//                .add("to",dest)
+//                .add("text",text)
+//                .build();
+//        Request request = new Request.Builder()
+//                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
+//                .url(url)
+//                .post(body)
+//                .build();
+//        return OkHttpUtil.get(request);
+        return null;
     }
 }

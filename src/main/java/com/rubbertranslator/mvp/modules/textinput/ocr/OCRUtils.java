@@ -2,15 +2,14 @@ package com.rubbertranslator.mvp.modules.textinput.ocr;
 
 import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Raven
@@ -47,11 +46,10 @@ public class OCRUtils {
         // 请求
         final String ocrUrl = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic";
         String result;
-        RequestBody requestBody = new FormBody.Builder()
-                .add("access_token", token)
-                .add("image", convertToBase64Encode(image))
-                .build();
-        result = OkHttpUtil.syncPostRequest(ocrUrl, requestBody);
+        Map<String,String> param = new HashMap<>();
+        param.put("access_token",token);
+        param.put("image", convertToBase64Encode(image));
+        result = OkHttpUtil.post(ocrUrl, param);
         if (result != null) {
             OCRResult ocrResult = JsonUtil.deserialize(result, OCRResult.class);
             if (ocrResult == null) result = null;
@@ -87,13 +85,11 @@ public class OCRUtils {
     private static String getToken() throws IOException {
         String result;
         final String tokenUrl = "https://aip.baidubce.com/oauth/2.0/token";
-        RequestBody requestBody = new FormBody.Builder()
-                .add("grant_type", "client_credentials")
-                .add("client_id", API_KEY)
-                .add("client_secret", SECRET_KEY)
-                .build();
-        result = OkHttpUtil.syncPostRequest(tokenUrl, requestBody);
-//        Logger.getLogger(OCRUtils.class.getName()).log(Level.INFO, result);
+        Map<String,String> param = new HashMap<>();
+        param.put("grant_type", "client_credentials");
+        param.put("client_id", API_KEY);
+        param.put("client_secret", SECRET_KEY);
+        result = OkHttpUtil.get(tokenUrl, param);
         return result;
     }
 

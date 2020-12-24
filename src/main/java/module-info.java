@@ -16,7 +16,7 @@ open module rubbertranslator {
     requires org.objectweb.asm;
     requires jnativehook;
     requires okhttp3;
-    requires junique;
+//    requires junique;
     requires eventbus;
     requires java.management;
 

@@ -5,10 +5,9 @@ import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.utils.DigestUtil;
 import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,24 +52,19 @@ public class BaiduTranslator extends AbstractTranslator {
     public String translate(Language source, Language dest, String text) {
         // 百度中文特殊处理
         String translatedText = null;
-        try {
-            BaiduTranslationResult baiduTranslateResult = doTranslate(
-                    langMap.get(source), langMap.get(dest), text);
-            if (baiduTranslateResult != null) {
-                translatedText = mergeTranslatedText(baiduTranslateResult);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
-            } else{
-                throw new IOException();
-            }
-        } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "百度翻译失败", e);
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
+        BaiduTranslationResult baiduTranslateResult = doTranslate(
+                langMap.get(source), langMap.get(dest), text);
+        if (baiduTranslateResult != null) {
+            translatedText = mergeTranslatedText(baiduTranslateResult);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
+        } else {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "百度翻译失败");
         }
         return translatedText;
     }
 
-    private BaiduTranslationResult doTranslate(String source, String dest, String text) throws IOException {
-        if(appKey == null || secretKey == null) return null;
+    private BaiduTranslationResult doTranslate(String source, String dest, String text) {
+        if (appKey == null || secretKey == null) return null;
         String URL = "https://fanyi-api.baidu.com/api/trans/vip/translate";
         // 随机数
         String salt = String.valueOf(System.currentTimeMillis());
@@ -78,19 +72,22 @@ public class BaiduTranslator extends AbstractTranslator {
         String src = appKey + text + salt + secretKey;
         String sign = DigestUtil.md5(src);
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("q", text)
-                .add("from", source)
-                .add("to", dest)
-                .add("appid", appKey)
-                .add("salt", salt)
-                .add("sign", sign)
-                .build();
-        String json = OkHttpUtil.syncPostRequest(URL, requestBody);
+        Map<String, String> param = new HashMap<>();
+        param.put("q", text);
+        param.put("from", source);
+        param.put("to", dest);
+        param.put("appid", appKey);
+        param.put("salt", salt);
+        param.put("sign", sign);
+        String json = OkHttpUtil.post(URL, param);
+        if (json == null) {
+            return null;
+        }
         BaiduTranslationResult deserialize = JsonUtil.deserialize(json, BaiduTranslationResult.class);
         if (deserialize != null && deserialize.getErrorCode() == null) {
             return deserialize;
         } else {
+            Logger.getLogger(this.getClass().getName()).info(json);
             return null;
         }
     }
@@ -107,7 +104,7 @@ public class BaiduTranslator extends AbstractTranslator {
             sb.append(item.getDst()).append("\n");
         }
         // 删除最后的"\n"
-        sb.delete(sb.length()-1,sb.length());
+        sb.delete(sb.length() - 1, sb.length());
         return sb.toString();
     }
 

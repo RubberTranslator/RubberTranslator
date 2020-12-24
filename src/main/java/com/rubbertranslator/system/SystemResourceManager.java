@@ -17,7 +17,6 @@ import com.rubbertranslator.mvp.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.mvp.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
 import com.rubbertranslator.mvp.presenter.BasePresenter;
-import it.sauronsoftware.junique.JUnique;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -86,7 +85,7 @@ public class SystemResourceManager {
         try {
             executor.shutdownNow();
             executor.awaitTermination(1, TimeUnit.SECONDS);
-            JUnique.releaseLock("RubberTranslator");
+//            JUnique.releaseLock("RubberTranslator");
             textInputDestroy();
             processFilterDestroy();
             // TODO: 检查资源释放情况

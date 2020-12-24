@@ -9,6 +9,11 @@
 2. 讨论群：118149802
 
 [Changelogs]
+2020-12-23
+RubberTranslator-v3.0.0-beta1
+1. 修复【剪切板监听】失灵bug
+2. 新增【自动更新】检测功能
+
 2020-12-22
 RubberTranslator-v3.0.0-beta1
 1. 增添【对比模式】

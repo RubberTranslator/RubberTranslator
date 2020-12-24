@@ -5,11 +5,9 @@ import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.utils.DigestUtil;
 import com.rubbertranslator.utils.JsonUtil;
 import com.rubbertranslator.utils.OkHttpUtil;
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
-
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,48 +49,61 @@ public class YoudaoTranslator extends AbstractTranslator {
      */
     @Override
     public String translate(Language source, Language dest, String text) {
+        if(text == null) return null;
         String translatedText = null;
-        try {
-            YoudaoTranslationResult translationResult = doTranslate(
-                    langMap.get(source), langMap.get(dest), text);
-            if (translationResult != null) {
-                translatedText = mergeTranslatedText(translationResult);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
-            } else{
-                throw new IOException();
-            }
-        } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "有道翻译失败", e);
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
+        YoudaoTranslationResult translationResult = doTranslate(
+                langMap.get(source), langMap.get(dest), text);
+        if (translationResult != null) {
+            translatedText = mergeTranslatedText(translationResult);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
+        }else{
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "有道翻译失败");
         }
         return translatedText;
     }
 
-    private YoudaoTranslationResult doTranslate(String source, String dest, String text) throws IOException {
+    private YoudaoTranslationResult doTranslate(String source, String dest, String text) {
         if (appKey == null || secretKey == null) return null;
-        String curtime = String.valueOf(System.currentTimeMillis() / 1000);
+//        String curtime = String.valueOf(System.currentTimeMillis() / 1000);
+//        String salt = String.valueOf(System.currentTimeMillis());
+//        String signStr = appKey + truncate(text) + salt + curtime + secretKey;
+//        String sign = DigestUtil.sha256(signStr);
+//
+//        Map<String, String> param = new HashMap<>();
+//        param.put("from", source);
+//        param.put("to", dest);
+//        param.put("signType", "v3");
+//        param.put("curtime", curtime);
+//        param.put("appKey", appKey);
+//        param.put("q", text);
+//        param.put("salt", salt);
+//        param.put("sign", sign);
+        Logger.getLogger(this.getClass().getName()).info("youdao try to tranlsate:"+text);
+        final String URL = "https://openapi.youdao.com/api";
+
+        Map<String,String> params = new HashMap<String,String>();
         String salt = String.valueOf(System.currentTimeMillis());
+        params.put("from", source);
+        params.put("to", dest);
+        params.put("signType", "v3");
+        String curtime = String.valueOf(System.currentTimeMillis() / 1000);
+        params.put("curtime", curtime);
         String signStr = appKey + truncate(text) + salt + curtime + secretKey;
         String sign = DigestUtil.sha256(signStr);
+        params.put("appKey", appKey);
+        params.put("q", text);
+        params.put("salt", salt);
+        params.put("sign", sign);
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("from", source)
-                .add("to", dest)
-                .add("signType", "v3")
-                .add("curtime", curtime)
-                .add("appKey", appKey)
-                .add("q", text)
-                .add("salt", salt)
-                .add("sign", sign)
-                .build();
-
-        String URL = "https://openapi.youdao.com/api";
-        String json = OkHttpUtil.syncPostRequest(URL, requestBody);
-        Logger.getLogger(this.getClass().getName()).info(json);
+        String json = OkHttpUtil.post(URL, params);
+        if(json == null){
+            return null;
+        }
         YoudaoTranslationResult deserialize = JsonUtil.deserialize(json, YoudaoTranslationResult.class);
         if ("0".equals(deserialize.getErrorCode())) {
             return deserialize;
         } else {
+            Logger.getLogger(this.getClass().getName()).info(json);
             return null;
         }
     }
