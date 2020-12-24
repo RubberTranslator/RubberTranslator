@@ -28,7 +28,7 @@ public class UpdateUtils {
             callback.callBack(false);
             return;
         }
-
+        remoteVersion = remoteVersion.split("\n")[0];
         Logger.getLogger(UpdateUtils.class.getName()).info("remote version:" + remoteVersion);
         // compare
         if(localVersion.compareTo(remoteVersion) < 0){
