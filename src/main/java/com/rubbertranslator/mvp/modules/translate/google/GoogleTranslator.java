@@ -20,8 +20,31 @@ import java.util.regex.Pattern;
  */
 public class GoogleTranslator extends AbstractTranslator {
 
+    private final String patternUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/misc/google-api-pattern.txt";
+
     // 采用正则表达式从html中抽取翻译结果--可能会失效
-    private final Pattern translationPattern = Pattern.compile("<div class=\"result-container\">([\\s\\S]*?)</div>");
+//    private volatile String patternStr = "<div class=\"result-container\">([\\s\\S]*?)</div>";
+    private volatile String patternStr = "";
+    private volatile Pattern translationPattern = Pattern.compile(patternStr);
+
+    public GoogleTranslator() {
+
+    }
+
+    /**
+     * 更新
+     */
+    private void updatePattern(){
+       new Thread(() -> {
+           String tempPatternStr = OkHttpUtil.get(patternUrl,null);
+           Logger.getLogger(this.getClass().getName(),"remote google pattern:"+patternStr);
+           if(!patternStr.equals(tempPatternStr)) {
+               if(tempPatternStr != null){
+                 translationPattern = Pattern.compile(patternStr);
+              }
+           }
+       }).start();
+    }
 
     //https://translate.google.com/m?sl=auto&tl=zh-TW&hl=en&mui=tl
     @Override

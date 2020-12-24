@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * 检查更新工具类
  */
 public class UpdateUtils {
-    private static final String versionUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/version.txt";
+    private static final String versionUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/misc/version.txt";
     public static void checkUpdate(GenericCallback<Boolean> callback){
         // get local version
         String localVersion = SystemConfigurationManager.getCurrentVersion();
