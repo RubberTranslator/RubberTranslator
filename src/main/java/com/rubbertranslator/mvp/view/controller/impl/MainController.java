@@ -231,7 +231,7 @@ public class MainController implements ISingleTranslateView {
     @Override
     public void translateEnd() {
         Platform.runLater(()->{
-            translateBt.setText("翻译");
+            translateBt.setText("翻译(Ctrl+T)");
             translateBt.setDisable(false);
         });
     }
