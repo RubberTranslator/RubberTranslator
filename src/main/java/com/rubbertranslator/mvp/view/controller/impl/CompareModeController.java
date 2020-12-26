@@ -191,15 +191,12 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         switch(type){
             case GOOGLE:
                 googleTextArea.setText(translatedText);
-                googleTextArea.end();
                 break;
             case BAIDU:
                 baiduTextArea.setText(translatedText);
-                baiduTextArea.end();
                 break;
             case YOUDAO:
                 youdaoTextArea.setText(translatedText);
-                youdaoTextArea.end();
                 break;
             default:
                 break;

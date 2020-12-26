@@ -316,6 +316,5 @@ public class FocusModeController implements Initializable,IFocusView {
     @Override
     public void setText(String originText, String translatedText) {
         textArea.setText(translatedText);
-        textArea.end();
     }
 }

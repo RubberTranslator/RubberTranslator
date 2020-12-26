@@ -241,8 +241,6 @@ public class MainController implements ISingleTranslateView {
         Platform.runLater(()->{
             originTextArea.setText(originText);
             translatedTextArea.setText(translatedText);
-            originTextArea.end();
-            translatedTextArea.end();
         });
 
     }

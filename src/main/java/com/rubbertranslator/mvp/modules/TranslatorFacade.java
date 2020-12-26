@@ -161,7 +161,7 @@ public class TranslatorFacade {
                 // 记录翻译历史
                 history.addHistory(origin, translation);
                 afterProcessor.process(translation);
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
             }
             return new Pair<>(origin, translation == null ? "" : translation);
@@ -199,7 +199,7 @@ public class TranslatorFacade {
                 // 记录翻译历史
                 history.addHistory(origin, translation);
                 afterProcessor.process(translation);
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
             }
             return new Pair<>(type,  translation == null ? "" : translation);
