@@ -1,6 +1,7 @@
 package com.rubbertranslator.mvp.presenter.impl;
 
 import com.rubbertranslator.enumtype.Language;
+import com.rubbertranslator.enumtype.TextAreaCursorPos;
 
 public class MainViewPresenter extends SingleTranslatePresenter {
 
@@ -14,6 +15,13 @@ public class MainViewPresenter extends SingleTranslatePresenter {
             configManger.getSystemConfiguration().setDestLanguage(language);
             translatorFacade.getTranslatorFactory().setDestLanguage(language);
         }
+    }
 
+
+    @Override
+    public void setTextCursorPos(TextAreaCursorPos pos) {
+        super.setTextCursorPos(pos);
+        configManger.getSystemConfiguration().setTextAreaCursorPos(pos);
+        view.setTextAreaCursorPos(pos);
     }
 }

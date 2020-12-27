@@ -1,9 +1,6 @@
 package com.rubbertranslator.mvp.presenter;
 
-import com.rubbertranslator.enumtype.HistoryEntryIndex;
-import com.rubbertranslator.enumtype.Language;
-import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.enumtype.TranslatorType;
+import com.rubbertranslator.enumtype.*;
 import com.rubbertranslator.mvp.modules.TranslatorFacade;
 import com.rubbertranslator.mvp.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.mvp.modules.textinput.clipboard.ClipboardListenerThread;
@@ -73,6 +70,10 @@ public abstract class ModelPresenter<View extends IView> extends BasePresenter<V
 
     public void setTranslatorLanguage(boolean isSrc, Language language){
         if(configManger == null || translatorFacade == null) throw new NullPointerException("inject vars first");
+    }
+
+    public void setTextCursorPos(TextAreaCursorPos pos){
+        if(configManger == null) throw new NullPointerException("inject vars first");
     }
 
     public void setHistoryEntry(HistoryEntryIndex index){

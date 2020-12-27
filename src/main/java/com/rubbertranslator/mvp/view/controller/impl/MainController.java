@@ -1,10 +1,7 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
 import com.rubbertranslator.entity.ControllerFxmlPath;
-import com.rubbertranslator.enumtype.HistoryEntryIndex;
-import com.rubbertranslator.enumtype.Language;
-import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.enumtype.TranslatorType;
+import com.rubbertranslator.enumtype.*;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
@@ -30,7 +27,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -46,8 +46,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -129,6 +127,13 @@ public class MainController implements ISingleTranslateView {
     private RadioMenuItem textFormatMenu;
     @FXML // 置顶
     private RadioMenuItem keepTopMenu;
+    @FXML  // 翻译后文本光标位置
+    private ToggleGroup textCursorPosGroup;
+    @FXML
+    private RadioMenuItem cursorStart;
+    @FXML
+    private RadioMenuItem cursorEnd;
+
 
     // 专注模式
     @FXML
@@ -178,6 +183,9 @@ public class MainController implements ISingleTranslateView {
     // window stage 引用
     private Stage appStage;
 
+    // 当前翻译后光标位置
+    private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
+
     // presenter
     private MainViewPresenter presenter;
 
@@ -191,16 +199,10 @@ public class MainController implements ISingleTranslateView {
     }
 
     private void initParams() {
-        presenter = (MainViewPresenter) PresenterFactory.getPresenter(SceneType.MAIN_SCENE);
+        presenter = PresenterFactory.getPresenter(SceneType.MAIN_SCENE);
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
         presenter.initView();
-        // 延迟 load
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-            }
-        },500);
     }
 
     private void initListeners() {
@@ -221,7 +223,7 @@ public class MainController implements ISingleTranslateView {
 
     @Override
     public void translateStart() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             translateBt.setText("翻译中");
             translateBt.setDisable(true);
         });
@@ -230,15 +232,19 @@ public class MainController implements ISingleTranslateView {
 
     @Override
     public void translateEnd() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             translateBt.setText("翻译(Ctrl+T)");
             translateBt.setDisable(false);
+            if (cursorPos == TextAreaCursorPos.END) {
+                originTextArea.end();
+                translatedTextArea.end();
+            }
         });
     }
 
     @Override
     public void setText(String originText, String translatedText) {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             originTextArea.setText(originText);
             translatedTextArea.setText(translatedText);
         });
@@ -248,7 +254,7 @@ public class MainController implements ISingleTranslateView {
     @Override
     public void initViews(SystemConfiguration configuration) {
         // set window preSize
-        rootPane.setPrefSize(600,450);
+        rootPane.setPrefSize(600, 450);
 
         // 基础设置
         new BasicSettingMenu().init(configuration);
@@ -276,6 +282,7 @@ public class MainController implements ISingleTranslateView {
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.T,
                     KeyCombination.CONTROL_DOWN);
+
             public void handle(KeyEvent ke) {
                 if (keyComb.match(ke)) {
                     translateBt.fire();
@@ -300,6 +307,10 @@ public class MainController implements ISingleTranslateView {
         }
     }
 
+    @Override
+    public void setTextAreaCursorPos(TextAreaCursorPos pos) {
+        cursorPos = pos;
+    }
 
     /**
      * 基础设置
@@ -330,6 +341,13 @@ public class MainController implements ISingleTranslateView {
             autoPasteMenu.setOnAction((actionEvent -> presenter.autoPasteSwitch(autoPasteMenu.isSelected())));
             textFormatMenu.setOnAction((actionEvent -> presenter.textFormatSwitch(textFormatMenu.isSelected())));
             keepTopMenu.setOnAction((actionEvent -> presenter.setKeepTop(keepTopMenu.isSelected())));
+            textCursorPosGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue == cursorStart) {
+                    presenter.setTextCursorPos(TextAreaCursorPos.START);
+                } else if (newValue == cursorEnd) {
+                    presenter.setTextCursorPos(TextAreaCursorPos.END);
+                }
+            });
 
             // ui回显
             // 监听剪切板
@@ -346,6 +364,14 @@ public class MainController implements ISingleTranslateView {
             textFormatMenu.setSelected(configuration.isTryFormat());
             // 置顶
             keepTopMenu.setSelected(configuration.isKeepTop());
+            // 翻译后文本光标位置
+            if (configuration.getTextAreaCursorPos() == TextAreaCursorPos.START) {
+                cursorPos = TextAreaCursorPos.START;
+                cursorStart.setSelected(true);
+            } else {
+                cursorPos = TextAreaCursorPos.END;
+                cursorEnd.setSelected(true);
+            }
         }
 
         private void initTranslatorType(TranslatorType type) {
@@ -429,7 +455,7 @@ public class MainController implements ISingleTranslateView {
                     language = Language.JAPANESE;
                 }
 
-                presenter.setTranslatorLanguage(isSrc,language);
+                presenter.setTranslatorLanguage(isSrc, language);
             });
         }
     }
@@ -697,7 +723,7 @@ public class MainController implements ISingleTranslateView {
         focusModeMenu.setGraphic(label);
     }
 
-    private void initCompareModeMenu(){
+    private void initCompareModeMenu() {
         Label label = new Label("对比模式");
         label.setOnMouseClicked((event -> presenter.switchScene(SceneType.COMPARE_SCENE)));
         compareModeMenu.setText("");
@@ -730,12 +756,12 @@ public class MainController implements ISingleTranslateView {
 
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onClipboardContentInput(ClipboardContentInputEvent event){
+    public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null) return;
-        if(!ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(appStage.getScene().getUserData())) return;
-        if(event.isTextType()){
+        if (!ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(appStage.getScene().getUserData())) return;
+        if (event.isTextType()) {
             presenter.translate(event.getText());
-        }else{
+        } else {
             try {
                 String text = OCRUtils.ocr(event.getImage());
                 if (text != null) {

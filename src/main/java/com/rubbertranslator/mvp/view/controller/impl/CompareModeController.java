@@ -2,6 +2,7 @@ package com.rubbertranslator.mvp.view.controller.impl;
 
 import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.SceneType;
+import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
@@ -19,8 +20,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -62,8 +67,12 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     @FXML
     private ToggleButton dragCopyMenu;
 
+    // window stage 引用
+    private Stage appStage;
 
-    MultiTranslatePresenter presenter;
+    private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
+
+    private MultiTranslatePresenter presenter;
 
 
     @Override
@@ -74,7 +83,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     }
 
     private void initParams() {
-        presenter =  PresenterFactory.getPresenter(SceneType.COMPARE_SCENE);
+        presenter = PresenterFactory.getPresenter(SceneType.COMPARE_SCENE);
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
         presenter.initView();
@@ -101,7 +110,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     @Override
     public void initViews(SystemConfiguration configuration) {
         // set window preSize
-        rootPane.setPrefSize(550,600);
+        rootPane.setPrefSize(550, 600);
 
         // 样式加载
         try {
@@ -130,22 +139,27 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         textFormatMenu.setSelected(configuration.isTryFormat());
 
         // textArea
-        if("".equals(configuration.getBaiduTranslatorApiKey())||
-            "".equals(configuration.getBaiduTranslatorSecretKey())){
+        if ("".equals(configuration.getBaiduTranslatorApiKey()) ||
+                "".equals(configuration.getBaiduTranslatorSecretKey())) {
             baiduTextArea.setPromptText("您当前未配置百度Api，无法使用百度翻译");
         }
-        if("".equals(configuration.getYouDaoTranslatorApiKey())||
-            "".equals(configuration.getYouDaoTranslatorSecretKey())){
+        if ("".equals(configuration.getYouDaoTranslatorApiKey()) ||
+                "".equals(configuration.getYouDaoTranslatorSecretKey())) {
             youdaoTextArea.setPromptText("您当前未配置有道Api，无法使用有道翻译");
         }
+        // 翻译后位置
+        cursorPos = configuration.getTextAreaCursorPos();
     }
 
     @Override
     public void delayInitViews() {
+        appStage = (Stage) rootPane.getScene().getWindow();
+
         // bind translate shortcut
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.T,
                     KeyCombination.CONTROL_DOWN);
+
             public void handle(KeyEvent ke) {
                 if (keyComb.match(ke)) {
                     translateBt.fire();
@@ -167,15 +181,20 @@ public class CompareModeController implements Initializable, IMultiTranslateView
 
     @Override
     public void translateStart() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             translateBt.setDisable(true);
         });
     }
 
     @Override
     public void translateEnd() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             translateBt.setDisable(false);
+            if (cursorPos == TextAreaCursorPos.END) {
+                googleTextArea.end();
+                baiduTextArea.end();
+                youdaoTextArea.end();
+            }
         });
     }
 
@@ -188,7 +207,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
 
     @Override
     public void setTranslateResult(TranslatorType type, String translatedText) {
-        switch(type){
+        switch (type) {
             case GOOGLE:
                 googleTextArea.setText(translatedText);
                 break;
@@ -207,8 +226,12 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null) return;
-        if(!ControllerFxmlPath.COMPARE_CONTROLLER_FXML.equals(rootPane.getScene().getUserData()))
+        if (!ControllerFxmlPath.COMPARE_CONTROLLER_FXML.equals(
+                appStage.getScene().getUserData()
+        )) {
             return;
+        }
+
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
         } else {                // 图片类型

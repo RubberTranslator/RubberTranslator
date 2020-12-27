@@ -3,6 +3,7 @@ package com.rubbertranslator.system;
 import com.google.gson.annotations.SerializedName;
 import com.rubbertranslator.entity.WordsPair;
 import com.rubbertranslator.enumtype.Language;
+import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.enumtype.TranslatorType;
 
 import java.awt.*;
@@ -116,6 +117,11 @@ public class SystemConfiguration implements Serializable {
     @SerializedName("history_num")
     private Integer historyNum;
 
+    /**
+     * 其它
+     */
+    @SerializedName("textarea_cursor_pos")
+    private TextAreaCursorPos textAreaCursorPos;
 
     public SystemConfiguration getConfiguration(){
         return this;
@@ -327,5 +333,13 @@ public class SystemConfiguration implements Serializable {
 
     public void setHistoryNum(Integer historyNum) {
         this.historyNum = historyNum;
+    }
+
+    public TextAreaCursorPos getTextAreaCursorPos() {
+        return textAreaCursorPos;
+    }
+
+    public void setTextAreaCursorPos(TextAreaCursorPos textAreaCursorPos) {
+        this.textAreaCursorPos = textAreaCursorPos;
     }
 }

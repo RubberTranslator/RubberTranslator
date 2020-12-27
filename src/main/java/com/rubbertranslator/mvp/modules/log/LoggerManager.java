@@ -34,6 +34,13 @@ public class LoggerManager {
         File dir = new File(logPath.toString());
         if(!dir.getParentFile().exists()){
             dir.getParentFile().mkdirs();
+        }else{
+            File[] logs = dir.getParentFile().listFiles();
+            if(logs != null){
+                for(File log: logs){
+                    if(log.exists()) log.delete();
+                }
+            }
         }
 
         //将输出handler加入logger

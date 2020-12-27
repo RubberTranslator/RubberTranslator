@@ -78,7 +78,6 @@ public class YoudaoTranslator extends AbstractTranslator {
 //        param.put("q", text);
 //        param.put("salt", salt);
 //        param.put("sign", sign);
-        Logger.getLogger(this.getClass().getName()).info("youdao try to tranlsate:"+text);
         final String URL = "https://openapi.youdao.com/api";
 
         Map<String,String> params = new HashMap<String,String>();

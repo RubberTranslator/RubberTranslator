@@ -32,5 +32,5 @@
   "history_num": 10,
   "auto_copy": false,
   "auto_paste": false,
-  "test_field": true
+  "textarea_cursor_pos": "START"
 }

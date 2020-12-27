@@ -69,6 +69,16 @@
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <RadioMenuItem fx:id="textFormatMenu" mnemonicParsing="false" selected="true" text="文本格式化" />
                         <RadioMenuItem fx:id="keepTopMenu" mnemonicParsing="false" text="置顶" />
+                        <Menu mnemonicParsing="false" text="翻译后文本区光标">
+                          <items>
+                              <RadioMenuItem fx:id="cursorStart" mnemonicParsing="false" text="放置于前">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="textCursorPosGroup" />
+                                 </toggleGroup>
+                              </RadioMenuItem>
+                              <RadioMenuItem fx:id="cursorEnd" mnemonicParsing="false" text="放置于后" toggleGroup="$textCursorPosGroup" />
+                          </items>
+                        </Menu>
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="高级设置">

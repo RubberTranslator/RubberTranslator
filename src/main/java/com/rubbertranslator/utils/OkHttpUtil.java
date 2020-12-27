@@ -57,7 +57,7 @@ public class OkHttpUtil {
                 result = Objects.requireNonNull(response.body()).string();
             }
         } catch (Exception e) {
-            Logger.getLogger(OkHttpClient.class.getName()).log(Level.SEVERE, "post请求失败");
+            Logger.getLogger(OkHttpClient.class.getName()).log(Level.SEVERE, "get请求失败");
             Logger.getLogger(OkHttpClient.class.getName()).log(Level.SEVERE, e.getLocalizedMessage());
         }
         return result;
@@ -109,9 +109,9 @@ public class OkHttpUtil {
                                 .sslSocketFactory(Objects.requireNonNull(sslSocketFactory()), x509TrustManager())
                                 .retryOnConnectionFailure(false)
                                 .connectionPool(pool())
-                                .connectTimeout(30, TimeUnit.SECONDS)
-                                .readTimeout(30, TimeUnit.SECONDS)
-                                .writeTimeout(30, TimeUnit.SECONDS)
+                                .connectTimeout(3, TimeUnit.SECONDS)
+                                .readTimeout(3, TimeUnit.SECONDS)
+                                .writeTimeout(3, TimeUnit.SECONDS)
                                 .build();
                     }
                 }

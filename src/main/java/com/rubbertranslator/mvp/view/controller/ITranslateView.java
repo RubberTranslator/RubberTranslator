@@ -1,6 +1,7 @@
 package com.rubbertranslator.mvp.view.controller;
 
 import com.rubbertranslator.enumtype.SceneType;
+import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.mvp.view.IView;
 
 public interface ITranslateView extends IView {
@@ -15,4 +16,6 @@ public interface ITranslateView extends IView {
     default void translateStart(){}
 
     default void translateEnd(){}
+
+    default void setTextAreaCursorPos(TextAreaCursorPos pos){}
 }

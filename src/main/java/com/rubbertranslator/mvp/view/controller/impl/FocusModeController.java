@@ -3,6 +3,7 @@ package com.rubbertranslator.mvp.view.controller.impl;
 import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.SceneType;
+import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
@@ -24,9 +25,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -40,7 +44,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/9 21:51
  */
-public class FocusModeController implements Initializable,IFocusView {
+public class FocusModeController implements Initializable, IFocusView {
     @FXML
     private VBox rootPane;
 
@@ -96,8 +100,13 @@ public class FocusModeController implements Initializable,IFocusView {
     @FXML   // 复制译文
     private Button copyTranslationBt;
 
+    // window stage 引用
+    private Stage appStage;
+
     // presenter
     private FocusViewPresenter presenter;
+
+    private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
 
 
     /**
@@ -112,12 +121,13 @@ public class FocusModeController implements Initializable,IFocusView {
 
     /**
      * 初始化view，根据配置，回显view
+     *
      * @param configuration
      */
     @Override
     public void initViews(SystemConfiguration configuration) {
         // set window preSize
-        rootPane.setPrefSize(550,350);
+        rootPane.setPrefSize(550, 350);
 
         // 样式加载
         try {
@@ -160,14 +170,19 @@ public class FocusModeController implements Initializable,IFocusView {
         dragCopyMenu.setSelected(configuration.isDragCopy());
         // 文本格式化
         textFormatMenu.setSelected(configuration.isTryFormat());
+        // 翻译后位置
+        cursorPos = configuration.getTextAreaCursorPos();
     }
 
     @Override
     public void delayInitViews() {
+        appStage = (Stage) rootPane.getScene().getWindow();
+
         // bind short cut for translateBt
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.T,
                     KeyCombination.CONTROL_DOWN);
+
             public void handle(KeyEvent ke) {
                 if (keyComb.match(ke)) {
                     translateBt.fire();
@@ -180,7 +195,7 @@ public class FocusModeController implements Initializable,IFocusView {
     /**
      * 初始化参数
      */
-    private void initParams(){
+    private void initParams() {
         presenter = PresenterFactory.getPresenter(SceneType.FOCUS_SCENE);
         // 拿到presenter，首先注入mode模块，所有mode由systemresource持有
         SystemResourceManager.initPresenter(presenter);
@@ -221,7 +236,7 @@ public class FocusModeController implements Initializable,IFocusView {
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
         if (newValue == googleTranslator) {
-           presenter.setTranslatorType(TranslatorType.GOOGLE);
+            presenter.setTranslatorType(TranslatorType.GOOGLE);
         } else if (newValue == baiduTranslator) {
             presenter.setTranslatorType(TranslatorType.BAIDU);
         } else if (newValue == youdaoTranslator) {
@@ -231,6 +246,7 @@ public class FocusModeController implements Initializable,IFocusView {
             oldValue.setSelected(true);
         }
     }
+
     @Override
     public void setKeepTop(boolean isKeep) {
         EventBus.getDefault().post(new SetKeepTopEvent(isKeep));
@@ -274,11 +290,10 @@ public class FocusModeController implements Initializable,IFocusView {
     }
 
 
-
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null) return;
-        if(!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(rootPane.getScene().getUserData()))
+        if (!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData()))
             return;
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
@@ -296,7 +311,7 @@ public class FocusModeController implements Initializable,IFocusView {
 
     @Override
     public void translateStart() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             translateBt.setDisable(true);
             displayTextBt.setDisable(true);
         });
@@ -305,11 +320,14 @@ public class FocusModeController implements Initializable,IFocusView {
     @Override
     public void translateEnd() {
         final String showOrigin = "显示原文";
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             translateBt.setDisable(false);
             // displayBt reinitialize
             displayTextBt.setText(showOrigin);
             displayTextBt.setDisable(false);
+            if(cursorPos == TextAreaCursorPos.END){
+                textArea.end();
+            }
         });
     }
 
