@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox fx:id="vBox" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.mvp.view.controller.impl.WordsReplacerController">
+   <children>
+      <TableView fx:id="wordsPairTableView" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+        <columns>
+          <TableColumn fx:id="sourceCol" prefWidth="300.0" text="译文" />
+          <TableColumn fx:id="destCol" prefWidth="300.0" text="替换为" />
+        </columns>
+      </TableView>
+      <HBox alignment="CENTER_RIGHT" spacing="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onAddButtonClick" text="添加" />
+            <Button mnemonicParsing="false" onAction="#onRemoveButtonClick" text="删除" />
+            <Button mnemonicParsing="false" onAction="#onConfirmButtonClick" text="确定" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

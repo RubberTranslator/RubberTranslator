@@ -1,139 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0d891872-8b43-44fe-b59b-075883a17171" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_1stleg_jnativehook_2_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okhttp3_okhttp_4_6_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okio_okio_2_6_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_platform_4_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_greenrobot_eventbus_3_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_annotations_13_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_1_3_71.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_common_1_3_70.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_win_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_8_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RubberTranslator/.idea/RubberTranslator.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RubberTranslator/RubberTranslator.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/RubberTranslator.iml" beforeDir="false" />
+    <list default="true" id="5032b922-3a91-4ef5-affe-87e2ab0c9a72" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_1stleg_jnativehook_2_1_02.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_62.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okhttp3_okhttp_4_6_02.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okio_okio_2_6_02.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_4_1_02.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_platform_4_1_02.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_greenrobot_eventbus_3_1_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_annotations_13_02.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_1_3_712.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_common_1_3_702.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_112.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_112.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_112.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_112.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_112.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_win_112.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_112.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_112.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_8_0_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/Launcher.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/GenericCallback.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/OkHttpUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/UpdateUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/jvm.config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RubberTranslator.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/misc/google-api-pattern.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/misc/version.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/misc/必读.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/modular-packing.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-linux.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/App.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/entity/ControllerFxmlPath.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/entity/Pair.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/entity/WordsPair.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/enumtype/HistoryEntryIndex.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/enumtype/Language.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/enumtype/SceneType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/enumtype/TextAreaCursorPos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/enumtype/TranslatorType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/enumtype/WordType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/event/ActiveWindowChangeEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/event/ClipboardContentInputEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/event/SetKeepTopEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/event/SwitchSceneEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/listener/GenericCallback.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/TranslatorFacade.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/afterprocess/AfterProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/filter/ProcessFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/filter/WindowsPlatformActiveWindowListenerThread.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/history/HistoryEntry.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/history/LimitedLinkedList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/history/TranslationHistory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/log/LoggerManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/log/MyFileHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/clipboard/ClipboardListenerThread.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/DragCopyThread.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/CopyMethod.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/CopyRobot.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/DoubleClickCopyMethod.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/MouseEventDispatcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/MouseMoveCopyMethod.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/listener/GlobalMouseListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/ocr/OCRResult.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/ocr/OCRTokenEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textinput/ocr/OCRUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/post/ParagraphIndentProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/post/TextPostProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/post/WordsReplacer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/pre/RedundantLineBreakProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/pre/TextPreProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/translate/AbstractTranslator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/translate/TranslatorFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/translate/baidu/BaiduTranslationResult.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/translate/baidu/BaiduTranslator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/translate/biying/BingTranslator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/translate/google/GoogleTranslator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/translate/youdao/YoudaoTranslationResult.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/modules/translate/youdao/YoudaoTranslator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/presenter/BasePresenter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/presenter/ModelPresenter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/presenter/PresenterFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/presenter/impl/FilterViewPresenter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/presenter/impl/FocusViewPresenter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/presenter/impl/MainViewPresenter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/presenter/impl/MultiTranslatePresenter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/presenter/impl/SingleTranslatePresenter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/presenter/impl/WordsReplacerPresenter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/IView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/IFilterView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/IFocusView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/IMultiTranslateView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/ISingleTranslateView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/ITranslateView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/IWordsReplacerView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/impl/CompareModeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/impl/FilterController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/impl/FocusModeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/impl/MainController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/controller/impl/WordsReplacerController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/mvp/view/stage/impl/AppStage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/system/SystemConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/system/SystemConfigurationManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/system/SystemResourceManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/utils/AppSingletonUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/utils/DigestUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/utils/FileUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/utils/JsonUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/utils/OkHttpUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rubbertranslator/utils/UpdateUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config/default_configuration.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/css/style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/compare.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/focus.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/main.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/setting_filter.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/setting_words_replacer.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/log/log.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/version_control/version.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.idea/RubberTranslator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.idea/RubberTranslator.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/.mvn/jvm.config" beforeDir="false" afterPath="$PROJECT_DIR$/Main/.mvn/jvm.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/Main/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/Main/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/RubberTranslator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/Main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/misc/google-api-pattern.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Main/misc/google-api-pattern.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/misc/version.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Main/misc/version.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/misc/必读.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Main/misc/必读.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/modular-packing.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Main/modular-packing.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/package-linux.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Main/package-linux.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/package.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Main/package.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/entity/ControllerFxmlPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/entity/ControllerFxmlPath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/entity/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/entity/Pair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/entity/WordsPair.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/entity/WordsPair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/enumtype/HistoryEntryIndex.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/enumtype/HistoryEntryIndex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/enumtype/Language.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/enumtype/Language.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/enumtype/SceneType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/enumtype/SceneType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/enumtype/TextAreaCursorPos.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/enumtype/TextAreaCursorPos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/enumtype/TranslatorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/enumtype/TranslatorType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/enumtype/WordType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/enumtype/WordType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/event/ActiveWindowChangeEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/event/ActiveWindowChangeEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/event/ClipboardContentInputEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/event/ClipboardContentInputEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/event/SetKeepTopEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/event/SetKeepTopEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/event/SwitchSceneEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/event/SwitchSceneEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/listener/GenericCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/listener/GenericCallback.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/TranslatorFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/TranslatorFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/afterprocess/AfterProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/afterprocess/AfterProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/filter/ProcessFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/filter/ProcessFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/filter/WindowsPlatformActiveWindowListenerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/filter/WindowsPlatformActiveWindowListenerThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/history/HistoryEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/history/HistoryEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/history/LimitedLinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/history/LimitedLinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/history/TranslationHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/history/TranslationHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/log/LoggerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/log/LoggerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/log/MyFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/log/MyFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/clipboard/ClipboardListenerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/clipboard/ClipboardListenerThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/DragCopyThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/DragCopyThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/CopyMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/CopyMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/CopyRobot.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/CopyRobot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/DoubleClickCopyMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/DoubleClickCopyMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/MouseEventDispatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/MouseEventDispatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/MouseMoveCopyMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/copymethods/MouseMoveCopyMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/listener/GlobalMouseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/listener/GlobalMouseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/ocr/OCRResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/ocr/OCRResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/ocr/OCRTokenEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/ocr/OCRTokenEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textinput/ocr/OCRUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/ocr/OCRUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/post/ParagraphIndentProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/post/ParagraphIndentProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/post/TextPostProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/post/TextPostProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/post/WordsReplacer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/post/WordsReplacer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/pre/RedundantLineBreakProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/pre/RedundantLineBreakProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/pre/TextPreProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textprocessor/pre/TextPreProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/translate/AbstractTranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/AbstractTranslator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/translate/TranslatorFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/TranslatorFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/translate/baidu/BaiduTranslationResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/baidu/BaiduTranslationResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/translate/baidu/BaiduTranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/baidu/BaiduTranslator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/translate/biying/BingTranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/biying/BingTranslator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/translate/google/GoogleTranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/google/GoogleTranslator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/translate/youdao/YoudaoTranslationResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/youdao/YoudaoTranslationResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/modules/translate/youdao/YoudaoTranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/youdao/YoudaoTranslator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/presenter/BasePresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/presenter/BasePresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/presenter/ModelPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/presenter/ModelPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/presenter/PresenterFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/presenter/PresenterFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/presenter/impl/FilterViewPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/presenter/impl/FilterViewPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/presenter/impl/FocusViewPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/presenter/impl/FocusViewPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/presenter/impl/MainViewPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/presenter/impl/MainViewPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/presenter/impl/MultiTranslatePresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/presenter/impl/MultiTranslatePresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/presenter/impl/SingleTranslatePresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/presenter/impl/SingleTranslatePresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/presenter/impl/WordsReplacerPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/presenter/impl/WordsReplacerPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/IView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/IView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/IFilterView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/IFilterView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/IFocusView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/IFocusView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/IMultiTranslateView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/IMultiTranslateView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/ISingleTranslateView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/ISingleTranslateView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/ITranslateView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/ITranslateView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/IWordsReplacerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/IWordsReplacerView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/impl/CompareModeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/impl/CompareModeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/impl/FilterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/impl/FilterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/impl/FocusModeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/impl/FocusModeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/impl/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/impl/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/controller/impl/WordsReplacerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/impl/WordsReplacerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/mvp/view/stage/impl/AppStage.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/stage/impl/AppStage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/system/SystemConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/system/SystemConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/system/SystemConfigurationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/system/SystemConfigurationManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/system/SystemResourceManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/system/SystemResourceManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/utils/AppSingletonUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/utils/AppSingletonUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/utils/DigestUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/utils/DigestUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/utils/FileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/utils/FileUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/utils/JsonUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/utils/JsonUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/utils/OkHttpUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/utils/OkHttpUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/com/rubbertranslator/utils/UpdateUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/utils/UpdateUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/java/module-info.bak" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/module-info.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/resources/config/default_configuration.json" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/config/default_configuration.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/resources/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/resources/fxml/compare.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/fxml/compare.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/resources/fxml/focus.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/fxml/focus.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/resources/fxml/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/fxml/main.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/resources/fxml/setting_filter.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/fxml/setting_filter.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/resources/fxml/setting_words_replacer.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/fxml/setting_words_replacer.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/resources/log/log.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/log/log.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RubberTranslator/src/main/resources/version_control/version.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/version_control/version.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,21 +160,29 @@
     <option name="showVisibilityIcons" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Launcher/src/main/java" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.30804598" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\RubberTranslator\Launcher\src\main\java" />
+      <recent name="E:\RubberTranslator\Launcher" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Main">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.rubbertranslator.App" />
-      <module name="RubberTranslator" />
+      <module name="Main" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.rubbertranslator.*" />
@@ -177,8 +193,63 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="Launcher" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Main" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
@@ -201,9 +272,33 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="441" y="129" key="SettingsEditor" timestamp="1609399804733">
+    <state x="742" y="245" key="FileChooserDialogImpl" timestamp="1609767495539">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609399804733" />
+    <state x="742" y="245" key="FileChooserDialogImpl/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767495539" />
+    <state width="1878" height="285" key="GridCell.Tab.0.bottom" timestamp="1609767734682">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="285" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767734682" />
+    <state width="1878" height="285" key="GridCell.Tab.0.center" timestamp="1609767734682">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="285" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767734682" />
+    <state width="1878" height="285" key="GridCell.Tab.0.left" timestamp="1609767734682">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="285" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767734682" />
+    <state width="1878" height="285" key="GridCell.Tab.0.right" timestamp="1609767734682">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="285" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767734682" />
+    <state x="441" y="129" key="SettingsEditor" timestamp="1609767868730">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767868730" />
+    <state x="595" y="216" key="new project wizard" timestamp="1609767523837">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="595" y="216" key="new project wizard/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767523837" />
   </component>
 </project>

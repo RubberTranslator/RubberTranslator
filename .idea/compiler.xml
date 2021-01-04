@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="RubberTranslator" />
+        <module name="Main" />
+        <module name="Launcher" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
-      <module name="RubberTranslator" target="8" />
+      <module name="Launcher" target="8" />
+      <module name="Main" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

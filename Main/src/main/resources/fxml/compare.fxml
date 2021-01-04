@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<VBox fx:id="rootPane" alignment="CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.mvp.view.controller.impl.CompareModeController">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="谷歌翻译">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Text>
+      <TextArea fx:id="googleTextArea" promptText="谷歌翻译/手动输入" wrapText="true" VBox.vgrow="ALWAYS">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextArea>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="百度翻译">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Text>
+      <TextArea fx:id="baiduTextArea" promptText="百度翻译" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextArea>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="有道翻译">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Text>
+      <TextArea fx:id="youdaoTextArea" promptText="有道翻译" wrapText="true" VBox.vgrow="ALWAYS">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextArea>
+      <FlowPane hgap="5.0" vgap="5.0">
+         <children>
+            <Button fx:id="backBt" mnemonicParsing="false" text="返回" />
+            <Button fx:id="translateBt" text="翻译" />
+            <Button fx:id="clearBt" mnemonicParsing="false" text="清空" />
+            <ToggleButton fx:id="keepStageTopMenu" mnemonicParsing="false" text="置顶" />
+            <ToggleButton fx:id="incrementalCopyMenu" mnemonicParsing="false" text="增量" />
+            <ToggleButton fx:id="textFormatMenu" mnemonicParsing="false" text="文本格式化" />
+            <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="剪切板" />
+            <ToggleButton fx:id="dragCopyMenu" mnemonicParsing="false" text="拖拽" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </FlowPane>
+   </children>
+</VBox>
