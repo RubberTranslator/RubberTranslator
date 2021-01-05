@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class OkHttpUtil {
 
-    private static OkHttpClient okHttpClient = OkHttpConfiguration.getInstance();
+    public static OkHttpClient okHttpClient = OkHttpConfiguration.getInstance();
 
     /**
      * get

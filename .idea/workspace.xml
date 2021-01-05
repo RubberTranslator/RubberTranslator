@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Launcher:jar" />
+      <artifact name="Main:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5032b922-3a91-4ef5-affe-87e2ab0c9a72" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Launcher_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Main_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/package.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/DownloadUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/stage/impl/AppStage.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/stage/impl/AppStage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/src/main/resources/version_control/version.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/version_control/version.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Launcher/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/Launcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/OkHttpUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/OkHttpUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +29,13 @@
   </component>
   <component name="CompilerWorkspaceConfiguration">
     <option name="PARALLEL_COMPILATION" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -32,20 +53,23 @@
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Launcher/src/main/java" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.30804598" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\RubberTranslator\Launcher\src\main\java" />
+      <recent name="E:\RubberTranslator" />
+      <recent name="E:\RubberTranslator\Launcher\target\Launcher\app" />
+      <recent name="E:\RubberTranslator\Launcher\target\Launcher" />
       <recent name="E:\RubberTranslator\Launcher" />
+      <recent name="E:\RubberTranslator\Launcher\target" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="Application.Launcher">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.rubbertranslator.App" />
       <module name="Main" />
@@ -59,8 +83,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
+    <configuration name="DownloadTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DownloadTest" />
+      <module name="Launcher" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Launcher" />
       <module name="Launcher" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -115,8 +146,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Launcher" />
+        <item itemvalue="Application.DownloadTest" />
         <item itemvalue="Application.App" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -131,7 +163,9 @@
       <option name="presentableId" value="Default" />
       <updated>1609399734684</updated>
       <workItem from="1609399735906" duration="68000" />
-      <workItem from="1609810614942" duration="2263000" />
+      <workItem from="1609810614942" duration="4755000" />
+      <workItem from="1609815421543" duration="33000" />
+      <workItem from="1609815506972" duration="2572000" />
     </task>
     <servers />
   </component>
@@ -139,57 +173,73 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="766" y="260" key="#com.intellij.ide.util.MemberChooser" timestamp="1609813822743">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="766" y="260" key="#com.intellij.ide.util.MemberChooser/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609813822743" />
+    <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1609815804377">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815804377" />
     <state x="742" y="245" key="FileChooserDialogImpl" timestamp="1609767495539">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="742" y="245" key="FileChooserDialogImpl/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767495539" />
-    <state width="1878" height="367" key="GridCell.Tab.0.bottom" timestamp="1609812711282">
+    <state width="1878" height="262" key="GridCell.Tab.0.bottom" timestamp="1609818030890">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="367" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609812711282" />
-    <state width="1878" height="367" key="GridCell.Tab.0.center" timestamp="1609812711282">
+    <state width="1878" height="262" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818030890" />
+    <state width="1878" height="262" key="GridCell.Tab.0.center" timestamp="1609818030890">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="367" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609812711282" />
-    <state width="1878" height="367" key="GridCell.Tab.0.left" timestamp="1609812711282">
+    <state width="1878" height="262" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818030890" />
+    <state width="1878" height="262" key="GridCell.Tab.0.left" timestamp="1609818030890">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="367" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609812711282" />
-    <state width="1878" height="367" key="GridCell.Tab.0.right" timestamp="1609812711282">
+    <state width="1878" height="262" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818030890" />
+    <state width="1878" height="262" key="GridCell.Tab.0.right" timestamp="1609818030890">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="367" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609812711282" />
-    <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1609812583845">
+    <state width="1878" height="262" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818030890" />
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1609815407319">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609812583845" />
-    <state width="1878" height="352" key="GridCell.Tab.1.center" timestamp="1609812583844">
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815407319" />
+    <state width="1878" height="352" key="GridCell.Tab.1.center" timestamp="1609815407319">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609812583844" />
-    <state width="1878" height="352" key="GridCell.Tab.1.left" timestamp="1609812583844">
+    <state width="1878" height="352" key="GridCell.Tab.1.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815407319" />
+    <state width="1878" height="352" key="GridCell.Tab.1.left" timestamp="1609815407319">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609812583844" />
-    <state width="1878" height="352" key="GridCell.Tab.1.right" timestamp="1609812583845">
+    <state width="1878" height="352" key="GridCell.Tab.1.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815407319" />
+    <state width="1878" height="352" key="GridCell.Tab.1.right" timestamp="1609815407319">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609812583845" />
-    <state x="441" y="129" key="SettingsEditor" timestamp="1609767868730">
+    <state width="1878" height="352" key="GridCell.Tab.1.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815407319" />
+    <state x="441" y="129" key="SettingsEditor" timestamp="1609816227004">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767868730" />
+    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609816227004" />
+    <state x="355" y="140" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1609813783218">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="355" y="140" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609813783217" />
     <state x="595" y="216" key="new project wizard" timestamp="1609767523837">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="595" y="216" key="new project wizard/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767523837" />
+    <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1609816418195">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609816418195" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Launcher/src/main/java/Main.java</url>
-          <line>67</line>
+          <url>file://$PROJECT_DIR$/Launcher/src/main/java/Launcher.java</url>
+          <line>71</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

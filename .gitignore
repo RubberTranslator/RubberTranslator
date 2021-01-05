@@ -38,3 +38,4 @@ test
 configuration-*.json
 *.log
 *.lck
+out/

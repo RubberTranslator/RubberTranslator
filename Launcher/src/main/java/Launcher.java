@@ -12,28 +12,32 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sun.rmi.runtime.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Main extends Application {
+public class Launcher extends Application {
 
     // 主进程handler
     private Process mainProcess;
 
     // 主进程可执行文件路径
-    private final String mainProcessPath = "E:\\RubberTranslator\\Main\\target\\Main\\Main.exe";
+    private final String mainProcessPath = "./Main.exe";
+
+    // 更新文件路径
+    private final String updateUrl = "https://github.com/ravenxrz/RubberTranslator/releases/latest/download/Main.jar";
+
+    // 更新文件放置路径
+    private final String mainProcessJarDir = "./app";
 
     //  进度条弹窗
+    private Text title;
     private Text percentageText;
-
     private ProgressBar bar;
 
 
@@ -95,7 +99,7 @@ public class Main extends Application {
             UpdateUtils.checkUpdate(localVersion, hasUpdate -> {
                 if (hasUpdate) {
                     Platform.runLater(this::remindUserToUpdateDialog);
-                }else{
+                } else {
                     // 无需更新，直接退出
                     System.exit(0);
                 }
@@ -118,6 +122,9 @@ public class Main extends Application {
         try {
             if (optional.get() == confirmBt) {
                 doUpdate();
+            } else {
+                // 无需更新
+                System.exit(0);
             }
         } catch (Exception ignored) {
         }
@@ -136,21 +143,26 @@ public class Main extends Application {
      * 创建更新过程弹窗
      */
     private void showUpdatingProgressDialog() {
-        Text text = new Text("更新中...");
-        text.setFont(new Font(16));
+        title = new Text("更新中,请勿关闭此窗口");
+        title.setFont(new Font(16));
 
         bar = new ProgressBar(0);
         percentageText = new Text("0.0%");
         HBox hBox = new HBox(5, bar, percentageText);
         hBox.setAlignment(Pos.CENTER);
 
-        VBox vBox = new VBox(5, text, hBox);
+        VBox vBox = new VBox(5, title, hBox);
         vBox.setAlignment(Pos.CENTER);
         vBox.setPadding(new Insets(10, 20, 10, 20));
 
         Scene scene = new Scene(vBox);
         Stage appStage = new Stage();
         appStage.setScene(scene);
+
+        appStage.setOnCloseRequest(event -> {
+            System.exit(-1);
+        });
+
         appStage.show();
     }
 
@@ -165,6 +177,31 @@ public class Main extends Application {
      * 开启下载
      */
     private void downLoadNewVersion() {
+        DownloadUtil.get().download(updateUrl, mainProcessJarDir, new DownloadUtil.OnDownloadListener() {
+            @Override
+            public void onDownloadSuccess() {
+                Platform.runLater(()->{
+                    title.setText("下载完成，正在启动");
+                    runMainProgram();
+                    System.exit(0);
+                });
+            }
 
+            @Override
+            public void onDownloading(double progress) {
+                Platform.runLater(()->{
+                    bar.setProgress(progress);
+                    percentageText.setText(String.format("%.2f%%",progress * 100));
+                });
+            }
+
+            @Override
+            public void onDownloadFailed() {
+                Platform.runLater(()->{
+                    title.setText("更新失败，请手动下载并替换");
+                });
+            }
+        });
     }
 }
+
