@@ -39,5 +39,4 @@ configuration-*.json
 *.log
 *.lck
 out/
-
 .idea/

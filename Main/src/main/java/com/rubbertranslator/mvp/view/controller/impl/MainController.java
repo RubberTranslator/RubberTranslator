@@ -11,6 +11,7 @@ import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.system.SystemConfigurationManager;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -179,6 +180,8 @@ public class MainController implements ISingleTranslateView {
     private MenuItem useAge;
     @FXML
     private MenuItem issues;
+    @FXML
+    private MenuItem versionText;
 
     // window stage 引用
     private Stage appStage;
@@ -714,6 +717,8 @@ public class MainController implements ISingleTranslateView {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "issues打开失败", e);
             }
         }));
+        // versionText
+        versionText.setText(SystemConfigurationManager.getCurrentVersion());
     }
 
     private void initFocusModeMenu() {

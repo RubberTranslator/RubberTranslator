@@ -171,6 +171,7 @@ public class Launcher extends Application {
         Optional optional = dialog.showAndWait();
         try {
             if (optional.get() == confirmBt) {
+                Logger.getLogger(this.getClass().getName()).info("正在更新...");
                 doUpdate();
             } else {
                 // 无需更新
@@ -243,12 +244,13 @@ public class Launcher extends Application {
                     Path tmpPath = Paths.get(tmpDir + File.separator + "Main.jar");
                     Path targetPath = Paths.get(targetDir + File.separator + "Main.jar");
                     try {
-//                        Files.copy(tmpPath,targetPath,REPLACE_EXISTING, ATOMIC_MOVE);
+//                        Files.copy(tmpPath, targetPath, REPLACE_EXISTING, ATOMIC_MOVE);
                         Files.move(tmpPath, targetPath, REPLACE_EXISTING, ATOMIC_MOVE);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
                     }
-
+                    Logger.getLogger(this.getClass().getName()).info("update success");
                     runMainProgram();
                     System.exit(0);
                 });

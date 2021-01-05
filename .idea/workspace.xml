@@ -7,7 +7,14 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5032b922-3a91-4ef5-affe-87e2ab0c9a72" name="Default Changelist" comment="" />
+    <list default="true" id="5032b922-3a91-4ef5-affe-87e2ab0c9a72" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/Launcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/impl/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/controller/impl/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/src/main/resources/config/misc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/config/misc.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/src/main/resources/fxml/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/fxml/main.fxml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,7 +70,7 @@
       <recent name="E:\RubberTranslator\Launcher\target" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Launcher">
+  <component name="RunManager" selected="Application.App">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.rubbertranslator.App" />
       <module name="Main" />
@@ -86,6 +93,13 @@
     </configuration>
     <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Launcher" />
+      <module name="Launcher" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Test" />
       <module name="Launcher" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -140,8 +154,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Launcher" />
         <item itemvalue="Application.App" />
+        <item itemvalue="Application.Test" />
+        <item itemvalue="Application.Launcher" />
         <item itemvalue="Application.DownloadTest" />
       </list>
     </recent_temporary>
@@ -163,7 +178,7 @@
       <workItem from="1609818572793" duration="52000" />
       <workItem from="1609818639928" duration="266000" />
       <workItem from="1609827301137" duration="6054000" />
-      <workItem from="1609833932123" duration="4041000" />
+      <workItem from="1609833932123" duration="7910000" />
     </task>
     <servers />
   </component>
@@ -191,22 +206,22 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="742" y="245" key="FileChooserDialogImpl/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767495539" />
-    <state width="1878" height="352" key="GridCell.Tab.0.bottom" timestamp="1609837824065">
+    <state width="1878" height="352" key="GridCell.Tab.0.bottom" timestamp="1609843731010">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837824065" />
-    <state width="1878" height="352" key="GridCell.Tab.0.center" timestamp="1609837824065">
+    <state width="1878" height="352" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609843731010" />
+    <state width="1878" height="352" key="GridCell.Tab.0.center" timestamp="1609843731010">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837824065" />
-    <state width="1878" height="352" key="GridCell.Tab.0.left" timestamp="1609837824065">
+    <state width="1878" height="352" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609843731010" />
+    <state width="1878" height="352" key="GridCell.Tab.0.left" timestamp="1609843731010">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837824065" />
-    <state width="1878" height="352" key="GridCell.Tab.0.right" timestamp="1609837824065">
+    <state width="1878" height="352" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609843731010" />
+    <state width="1878" height="352" key="GridCell.Tab.0.right" timestamp="1609843731010">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837824065" />
+    <state width="1878" height="352" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609843731010" />
     <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1609837438033">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
