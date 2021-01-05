@@ -14,6 +14,7 @@
 RubberTranslator-v3.2.0-beta
 1. 增加热更新
 2. 减少压缩包大小
+3. 增加帮助-version显示
 
 2020-12-27
 RubberTranslator-v3.1.0
