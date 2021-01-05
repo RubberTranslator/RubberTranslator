@@ -37,7 +37,7 @@ public class Launcher extends Application {
     // 主进程handler
     private Process mainProcess;
 
-    private final String mainDir = "E:\\RubberTranslator\\out\\RubberTranslator";
+    private final String mainDir = ".";
 
     private final String mainProcessPath;
 
