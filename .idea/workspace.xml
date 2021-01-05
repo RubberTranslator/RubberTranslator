@@ -8,19 +8,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5032b922-3a91-4ef5-affe-87e2ab0c9a72" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Launcher_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Main_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Launcher/package.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/DownloadUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_1stleg_jnativehook_2_1_02.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_62.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okhttp3_okhttp_4_6_02.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okio_okio_2_6_02.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_4_1_02.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_platform_4_1_02.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_greenrobot_eventbus_3_1_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_annotations_13_02.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_1_3_712.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_common_1_3_702.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_112.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_112.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_112.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_112.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_112.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_win_112.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_112.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_112.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_8_0_12.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Launcher/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/Launcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/OkHttpUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/OkHttpUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/UpdateUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/UpdateUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/misc/必读.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Main/misc/必读.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/google/GoogleTranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/google/GoogleTranslator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +79,7 @@
       <recent name="E:\RubberTranslator\Launcher\target" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Launcher">
+  <component name="RunManager" selected="Application.App">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.rubbertranslator.App" />
       <module name="Main" />
@@ -146,9 +156,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.App" />
         <item itemvalue="Application.Launcher" />
         <item itemvalue="Application.DownloadTest" />
-        <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
   </component>
@@ -165,7 +175,8 @@
       <workItem from="1609399735906" duration="68000" />
       <workItem from="1609810614942" duration="4755000" />
       <workItem from="1609815421543" duration="33000" />
-      <workItem from="1609815506972" duration="2572000" />
+      <workItem from="1609815506972" duration="2839000" />
+      <workItem from="1609818572793" duration="52000" />
     </task>
     <servers />
   </component>
@@ -229,6 +240,10 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="595" y="216" key="new project wizard/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767523837" />
+    <state x="623" y="258" width="672" height="678" key="search.everywhere.popup" timestamp="1609818353055">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="623" y="258" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818353055" />
     <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1609816418195">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>

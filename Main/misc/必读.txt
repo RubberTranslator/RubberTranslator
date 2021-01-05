@@ -1,5 +1,5 @@
 [首次安装]
-解压本安装包到任意不含中文路径的目录即可，点击RubberTranslator.exe文件启动程序。
+解压本安装包到任意不含中文路径的目录即可，点击Launcher.exe文件启动程序。
 
 [更新软件]
 下载安装包后，解压到之前安装包的路径替换原文件即可。
@@ -11,7 +11,7 @@
 [Changelogs]
 2021-1-5
 RubberTranslator-v3.2.0-beta
-1. 增加热更新测试
+1. 增加热更新
 
 2020-12-27
 RubberTranslator-v3.1.0

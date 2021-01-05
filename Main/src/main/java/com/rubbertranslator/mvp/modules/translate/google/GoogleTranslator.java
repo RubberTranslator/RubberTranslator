@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 public class GoogleTranslator extends AbstractTranslator {
 
-    private final String patternUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/misc/google-api-pattern.txt";
+    private final String patternUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/Main/misc/google-api-pattern.txt";
 
     // 采用正则表达式从html中抽取翻译结果--可能会失效
     private volatile String patternStr = "<div class=\"result-container\">([\\s\\S]*?)</div>";

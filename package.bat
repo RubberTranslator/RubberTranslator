@@ -1,6 +1,7 @@
 :: 清空文件夹
 rm -rf out/Launcher
 rm -rf out/Main
+rm -rf out/RubberTranslator
 
 :: Launcher package
 jpackage --name Launcher --input out/artifacts/Launcher_jar  --main-jar Launcher.jar  ^

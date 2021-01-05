@@ -7,7 +7,7 @@
  * 检查更新工具类
  */
 public class UpdateUtils {
-    private static final String versionUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/misc/version.txt";
+    private static final String versionUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/Main/misc/version.txt";
 
     public static void checkUpdate(String localVersion, GenericCallback<Boolean> callback) {
         // get local version
