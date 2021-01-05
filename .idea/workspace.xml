@@ -8,17 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5032b922-3a91-4ef5-affe-87e2ab0c9a72" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/Protocol.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/entity/Protocol.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Main/src/main/resources/config/misc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Main_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/LoggerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Launcher/Launcher.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/Launcher.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/Launcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/UpdateUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/UpdateUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/google/GoogleTranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/google/GoogleTranslator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/stage/impl/AppStage.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/stage/impl/AppStage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/system/SystemConfigurationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/system/SystemConfigurationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/src/main/resources/version_control/version.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/Main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/Main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/misc/google-api-pattern.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/misc/version.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/misc/必读.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/src/main/resources/config/misc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/config/misc.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +63,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
       <recent name="com.rubbertranslator.entity" />
       <recent name="com.rubbertranslator.enumtype" />
     </key>
@@ -174,7 +175,7 @@
       <workItem from="1609818572793" duration="52000" />
       <workItem from="1609818639928" duration="266000" />
       <workItem from="1609827301137" duration="6054000" />
-      <workItem from="1609833932123" duration="2248000" />
+      <workItem from="1609833932123" duration="3703000" />
     </task>
     <servers />
   </component>
@@ -186,10 +187,10 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="766" y="260" key="#com.intellij.ide.util.MemberChooser/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609829064754" />
-    <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1609815804377">
+    <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1609836520443">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815804377" />
+    <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609836520443" />
     <state x="691" y="301" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1609830604258">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
@@ -202,46 +203,46 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="742" y="245" key="FileChooserDialogImpl/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767495539" />
-    <state width="1878" height="352" key="GridCell.Tab.0.bottom" timestamp="1609835967101">
+    <state width="1878" height="352" key="GridCell.Tab.0.bottom" timestamp="1609837657939">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835967101" />
-    <state width="1878" height="352" key="GridCell.Tab.0.center" timestamp="1609835967101">
+    <state width="1878" height="352" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837657939" />
+    <state width="1878" height="352" key="GridCell.Tab.0.center" timestamp="1609837657939">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835967101" />
-    <state width="1878" height="352" key="GridCell.Tab.0.left" timestamp="1609835967101">
+    <state width="1878" height="352" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837657939" />
+    <state width="1878" height="352" key="GridCell.Tab.0.left" timestamp="1609837657939">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835967101" />
-    <state width="1878" height="352" key="GridCell.Tab.0.right" timestamp="1609835967101">
+    <state width="1878" height="352" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837657939" />
+    <state width="1878" height="352" key="GridCell.Tab.0.right" timestamp="1609837657939">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835967101" />
-    <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1609833781484">
+    <state width="1878" height="352" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837657939" />
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1609837438033">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609833781484" />
-    <state width="1878" height="352" key="GridCell.Tab.1.center" timestamp="1609833781484">
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837438033" />
+    <state width="1878" height="352" key="GridCell.Tab.1.center" timestamp="1609837438033">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609833781484" />
-    <state width="1878" height="352" key="GridCell.Tab.1.left" timestamp="1609833781484">
+    <state width="1878" height="352" key="GridCell.Tab.1.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837438033" />
+    <state width="1878" height="352" key="GridCell.Tab.1.left" timestamp="1609837438033">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609833781484" />
-    <state width="1878" height="352" key="GridCell.Tab.1.right" timestamp="1609833781484">
+    <state width="1878" height="352" key="GridCell.Tab.1.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837438033" />
+    <state width="1878" height="352" key="GridCell.Tab.1.right" timestamp="1609837438033">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609833781484" />
+    <state width="1878" height="352" key="GridCell.Tab.1.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837438033" />
     <state x="759" y="256" key="RollbackChangesDialog" timestamp="1609829248874">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="759" y="256" key="RollbackChangesDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609829248874" />
-    <state x="441" y="129" key="SettingsEditor" timestamp="1609836194959">
+    <state x="441" y="129" key="SettingsEditor" timestamp="1609836522189">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609836194959" />
+    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609836522189" />
     <state x="93" y="123" width="1733" height="863" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1609834305251">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
@@ -262,10 +263,10 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="626" y="261" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609831159021" />
-    <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1609816418195">
+    <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1609836410962">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609816418195" />
+    <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609836410962" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/RubberTranslator$Launcher.ic" NAME="Launcher Coverage Results" MODIFIED="1609831029365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

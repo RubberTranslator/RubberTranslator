@@ -37,7 +37,7 @@ public class Launcher extends Application {
     // 主进程handler
     private Process mainProcess;
 
-    private final String mainDir = ".";
+    private final String mainDir = "E:\\RubberTranslator\\out\\RubberTranslator";
 
     private final String mainProcessPath;
 
@@ -65,8 +65,13 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        initLog();
         runMainProgram();
         checkUpdate();
+    }
+
+    private void initLog() {
+        LoggerManager.configLog();
     }
 
 
@@ -120,20 +125,24 @@ public class Launcher extends Application {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out));
 
         try {
-            bw.write(Protocol.LOCAL_VERSION + "\n"); bw.flush();
+            bw.write(Protocol.LOCAL_VERSION + "\n");
+            bw.flush();
             localVersion = br.readLine().split("\n")[0];
-            Logger.getLogger(this.getClass().getName()).info("local version:"+localVersion);
+            Logger.getLogger(this.getClass().getName()).info("local version:" + localVersion);
 
-            bw.write(Protocol.REMOTE_VERSION_URL+"\n"); bw.flush();
+            bw.write(Protocol.REMOTE_VERSION_URL + "\n");
+            bw.flush();
             remoteVersionUrl = br.readLine().split("\n")[0];
-            Logger.getLogger(this.getClass().getName()).info("remote version url:"+remoteVersionUrl);
+            Logger.getLogger(this.getClass().getName()).info("remote version url:" + remoteVersionUrl);
 
-            bw.write(Protocol.REMOTE_TARGET_FILE_URL+"\n"); bw.flush();
+            bw.write(Protocol.REMOTE_TARGET_FILE_URL + "\n");
+            bw.flush();
             remoteFileUrl = br.readLine().split("\n")[0];
-            Logger.getLogger(this.getClass().getName()).info("remote file url:"+remoteFileUrl);
+            Logger.getLogger(this.getClass().getName()).info("remote file url:" + remoteFileUrl);
 
             // end
-            bw.write(Protocol.END+"\n");bw.flush();
+            bw.write(Protocol.END + "\n");
+            bw.flush();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -227,17 +236,19 @@ public class Launcher extends Application {
         DownloadUtil.get().download(remoteFileUrl, tmpDir.getAbsolutePath(), new DownloadUtil.OnDownloadListener() {
             @Override
             public void onDownloadSuccess() {
-                // move from "app/tmp" --> "app"
-                Path tmpPath = Paths.get(tmpDir + File.separator + "Main.jar");
-                Path targetPath = Paths.get(targetDir + File.separator + "Main.jar");
-                try {
-                    Files.move(tmpPath, targetPath, REPLACE_EXISTING, ATOMIC_MOVE);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
                 Platform.runLater(() -> {
                     title.setText("下载完成，正在启动");
+
+                    // move from "app/tmp" --> "app", 不应该放在UI线程
+                    Path tmpPath = Paths.get(tmpDir + File.separator + "Main.jar");
+                    Path targetPath = Paths.get(targetDir + File.separator + "Main.jar");
+                    try {
+//                        Files.copy(tmpPath,targetPath,REPLACE_EXISTING, ATOMIC_MOVE);
+                        Files.move(tmpPath, targetPath, REPLACE_EXISTING, ATOMIC_MOVE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     runMainProgram();
                     System.exit(0);
                 });
