@@ -2,7 +2,8 @@
 解压本安装包到任意不含中文路径的目录即可，点击Launcher.exe文件启动程序。
 
 [更新软件]
-下载安装包后，解压到之前安装包的路径替换原文件即可。
+1. 目前已支持热更新(beta).
+2. 如果热更新失败，请下载全量压缩包，解压到之前安装包的路径替换原文件即可。
 
 [问题反馈或建议]
 1. Github issuse: https://github.com/ravenxrz/RubberTranslator/issues
@@ -12,6 +13,7 @@
 2021-1-5
 RubberTranslator-v3.2.0-beta
 1. 增加热更新
+2. 减少压缩包大小
 
 2020-12-27
 RubberTranslator-v3.1.0
