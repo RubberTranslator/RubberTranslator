@@ -8,29 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5032b922-3a91-4ef5-affe-87e2ab0c9a72" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_1stleg_jnativehook_2_1_02.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_62.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okhttp3_okhttp_4_6_02.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okio_okio_2_6_02.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_4_1_02.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_platform_4_1_02.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_greenrobot_eventbus_3_1_12.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_annotations_13_02.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_1_3_712.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_common_1_3_702.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_112.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_112.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_112.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_112.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_112.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_win_112.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_112.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_112.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_8_0_12.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Launcher/src/main/java/Protocol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/entity/Protocol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Main/src/main/resources/config/misc.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/Launcher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Launcher/src/main/java/UpdateUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/src/main/java/UpdateUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/misc/必读.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Main/misc/必读.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/google/GoogleTranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/translate/google/GoogleTranslator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/stage/impl/AppStage.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/view/stage/impl/AppStage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/system/SystemConfigurationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/system/SystemConfigurationManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/src/main/resources/version_control/version.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +39,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1mPeciVxniusMZwVXAaJOYRVMu7" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
@@ -71,6 +62,10 @@
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.rubbertranslator.entity" />
+      <recent name="com.rubbertranslator.enumtype" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\RubberTranslator" />
       <recent name="E:\RubberTranslator\Launcher\target\Launcher\app" />
@@ -79,7 +74,7 @@
       <recent name="E:\RubberTranslator\Launcher\target" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="Application.Launcher">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.rubbertranslator.App" />
       <module name="Main" />
@@ -156,8 +151,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.App" />
         <item itemvalue="Application.Launcher" />
+        <item itemvalue="Application.App" />
         <item itemvalue="Application.DownloadTest" />
       </list>
     </recent_temporary>
@@ -177,6 +172,9 @@
       <workItem from="1609815421543" duration="33000" />
       <workItem from="1609815506972" duration="2839000" />
       <workItem from="1609818572793" duration="52000" />
+      <workItem from="1609818639928" duration="266000" />
+      <workItem from="1609827301137" duration="6054000" />
+      <workItem from="1609833932123" duration="2248000" />
     </task>
     <servers />
   </component>
@@ -184,80 +182,92 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="766" y="260" key="#com.intellij.ide.util.MemberChooser" timestamp="1609813822743">
+    <state x="766" y="260" key="#com.intellij.ide.util.MemberChooser" timestamp="1609829064754">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="766" y="260" key="#com.intellij.ide.util.MemberChooser/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609813822743" />
+    <state x="766" y="260" key="#com.intellij.ide.util.MemberChooser/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609829064754" />
     <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1609815804377">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815804377" />
+    <state x="691" y="301" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1609830604258">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="691" y="301" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609830604258" />
+    <state x="93" y="123" width="1733" height="863" key="DiffContextDialog" timestamp="1609834305251">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="93" y="123" width="1733" height="863" key="DiffContextDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609834305251" />
     <state x="742" y="245" key="FileChooserDialogImpl" timestamp="1609767495539">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="742" y="245" key="FileChooserDialogImpl/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767495539" />
-    <state width="1878" height="262" key="GridCell.Tab.0.bottom" timestamp="1609818030890">
+    <state width="1878" height="352" key="GridCell.Tab.0.bottom" timestamp="1609835967101">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="262" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818030890" />
-    <state width="1878" height="262" key="GridCell.Tab.0.center" timestamp="1609818030890">
+    <state width="1878" height="352" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835967101" />
+    <state width="1878" height="352" key="GridCell.Tab.0.center" timestamp="1609835967101">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="262" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818030890" />
-    <state width="1878" height="262" key="GridCell.Tab.0.left" timestamp="1609818030890">
+    <state width="1878" height="352" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835967101" />
+    <state width="1878" height="352" key="GridCell.Tab.0.left" timestamp="1609835967101">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="262" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818030890" />
-    <state width="1878" height="262" key="GridCell.Tab.0.right" timestamp="1609818030890">
+    <state width="1878" height="352" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835967101" />
+    <state width="1878" height="352" key="GridCell.Tab.0.right" timestamp="1609835967101">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="262" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818030890" />
-    <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1609815407319">
+    <state width="1878" height="352" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835967101" />
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1609833781484">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815407319" />
-    <state width="1878" height="352" key="GridCell.Tab.1.center" timestamp="1609815407319">
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609833781484" />
+    <state width="1878" height="352" key="GridCell.Tab.1.center" timestamp="1609833781484">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815407319" />
-    <state width="1878" height="352" key="GridCell.Tab.1.left" timestamp="1609815407319">
+    <state width="1878" height="352" key="GridCell.Tab.1.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609833781484" />
+    <state width="1878" height="352" key="GridCell.Tab.1.left" timestamp="1609833781484">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815407319" />
-    <state width="1878" height="352" key="GridCell.Tab.1.right" timestamp="1609815407319">
+    <state width="1878" height="352" key="GridCell.Tab.1.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609833781484" />
+    <state width="1878" height="352" key="GridCell.Tab.1.right" timestamp="1609833781484">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609815407319" />
-    <state x="441" y="129" key="SettingsEditor" timestamp="1609816227004">
+    <state width="1878" height="352" key="GridCell.Tab.1.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609833781484" />
+    <state x="759" y="256" key="RollbackChangesDialog" timestamp="1609829248874">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609816227004" />
-    <state x="355" y="140" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1609813783218">
+    <state x="759" y="256" key="RollbackChangesDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609829248874" />
+    <state x="441" y="129" key="SettingsEditor" timestamp="1609836194959">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="355" y="140" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609813783217" />
+    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609836194959" />
+    <state x="93" y="123" width="1733" height="863" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1609834305251">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="93" y="123" width="1733" height="863" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609834305251" />
+    <state x="93" y="123" width="1733" height="863" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1609834679611">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="93" y="123" width="1733" height="863" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609834679611" />
+    <state x="355" y="140" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1609835152553">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="355" y="140" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835152553" />
     <state x="595" y="216" key="new project wizard" timestamp="1609767523837">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="595" y="216" key="new project wizard/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767523837" />
-    <state x="623" y="258" width="672" height="678" key="search.everywhere.popup" timestamp="1609818353055">
+    <state x="626" y="261" width="672" height="678" key="search.everywhere.popup" timestamp="1609831159021">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="623" y="258" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609818353055" />
+    <state x="626" y="261" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609831159021" />
     <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1609816418195">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609816418195" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Launcher/src/main/java/Launcher.java</url>
-          <line>71</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/RubberTranslator$Launcher.ic" NAME="Launcher Coverage Results" MODIFIED="1609831029365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

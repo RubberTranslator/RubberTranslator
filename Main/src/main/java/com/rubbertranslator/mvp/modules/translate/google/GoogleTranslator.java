@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -20,7 +21,17 @@ import java.util.regex.Pattern;
  */
 public class GoogleTranslator extends AbstractTranslator {
 
-    private final String patternUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/Main/misc/google-api-pattern.txt";
+    private String patternUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/Main/misc/google-api-pattern.txt" ;
+    {
+        try {
+            Properties props = new Properties();
+            props.load(this.getClass().getResourceAsStream("/config/misc.properties"));
+            patternUrl = props.getProperty("google-api-pattern-url");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // 采用正则表达式从html中抽取翻译结果--可能会失效
     private volatile String patternStr = "<div class=\"result-container\">([\\s\\S]*?)</div>";

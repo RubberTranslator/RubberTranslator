@@ -7,9 +7,8 @@
  * 检查更新工具类
  */
 public class UpdateUtils {
-    private static final String versionUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/Main/misc/version.txt";
 
-    public static void checkUpdate(String localVersion, GenericCallback<Boolean> callback) {
+    public static void checkUpdate(String localVersion, String remoteVersionUrl, GenericCallback<Boolean> callback) {
         // get local version
         if (localVersion == null) {
             callback.callBack(false);
@@ -18,7 +17,7 @@ public class UpdateUtils {
 
         // get remote version
         String remoteVersion = null;
-        remoteVersion = OkHttpUtil.get(versionUrl, null);
+        remoteVersion = OkHttpUtil.get(remoteVersionUrl, null);
         if (remoteVersion == null) {
             callback.callBack(false);
             return;
