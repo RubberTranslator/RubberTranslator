@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,14 +12,24 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sun.rmi.runtime.Log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.Buffer;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main extends Application {
 
     // 主进程handler
-    Process mainProcess;
+    private Process mainProcess;
+
+    // 主进程可执行文件路径
+    private final String mainProcessPath = "E:\\RubberTranslator\\Main\\target\\Main\\Main.exe";
 
     //  进度条弹窗
     private Text percentageText;
@@ -33,27 +44,69 @@ public class Main extends Application {
     }
 
 
-    void runMainProgram(){
+    /**
+     * 执行主程序
+     */
+    void runMainProgram() {
         try {
-            mainProcess =  new ProcessBuilder("E:\\RubberTranslator\\Main\\target\\Main\\Main.exe").start();
+            mainProcess = new ProcessBuilder(mainProcessPath).start();
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "启动主进程失败");
+            System.exit(-1);
         }
     }
 
+    /**
+     * 获取本地version
+     *
+     * @return 成功 version
+     * 失败 null
+     */
+    private String getLocalVersion() {
+        // 从子进程中获取
+        BufferedInputStream in = new BufferedInputStream(mainProcess.getInputStream());
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        try {
+            String version = br.readLine().split("\n")[0];
+            return version;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 两层try-catch，有没有更好的写法？
+            try {
+                br.close();
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     void checkUpdate() {
-//        UpdateUtils.checkUpdate("v3.0.0-release", hasUpdate -> {
-//            if (hasUpdate) {
-//                Platform.runLater(this::remindUserToUpdate);
-//            }
-//        });
-        remindUserToUpdate();
+        new Thread(() -> {
+            String localVersion = getLocalVersion();
+            if (localVersion == null) {
+                Logger.getLogger(this.getClass().getName()).severe("获取本地version失败");
+                System.exit(-1);
+            }
+            // 获取localVersion
+            UpdateUtils.checkUpdate(localVersion, hasUpdate -> {
+                if (hasUpdate) {
+                    Platform.runLater(this::remindUserToUpdateDialog);
+                }else{
+                    // 无需更新，直接退出
+                    System.exit(0);
+                }
+            });
+        }).start();
     }
 
     /**
      * 显示【提示用户更新】弹窗
      */
-    private void remindUserToUpdate() {
+    private void remindUserToUpdateDialog() {
         Dialog dialog = new Dialog();
         // 确定和取消
         ButtonType confirmBt = new ButtonType("确定", ButtonBar.ButtonData.OK_DONE);
@@ -61,15 +114,22 @@ public class Main extends Application {
         dialog.getDialogPane().getButtonTypes().addAll(confirmBt, cancelBt);
         dialog.setTitle("检测到新版本");
         dialog.setContentText("RubberTranslator已发布新版本，点击【确定】下载新版本");
-        Optional<ButtonType> optional = dialog.showAndWait();
+        Optional optional = dialog.showAndWait();
         try {
             if (optional.get() == confirmBt) {
-                showUpdatingProgressDialog();
-                terminateMainProgram();
-                downLoadNewVersion();
+                doUpdate();
             }
         } catch (Exception ignored) {
         }
+    }
+
+    /**
+     * 执行update
+     */
+    void doUpdate() {
+        showUpdatingProgressDialog();
+        terminateMainProgram();
+        downLoadNewVersion();
     }
 
     /**
@@ -98,7 +158,7 @@ public class Main extends Application {
      * 关闭RubberTranslator主程序
      */
     private void terminateMainProgram() {
-
+        mainProcess.destroy();
     }
 
     /**

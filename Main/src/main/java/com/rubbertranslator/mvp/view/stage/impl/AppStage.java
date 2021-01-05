@@ -5,8 +5,8 @@ import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.system.SystemConfiguration;
+import com.rubbertranslator.system.SystemConfigurationManager;
 import com.rubbertranslator.system.SystemResourceManager;
-import com.rubbertranslator.utils.UpdateUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,7 +19,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.awt.*;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -47,17 +49,33 @@ public class AppStage {
         initSysConfig();
         initViews();
         registerEvent();
-        checkUpdate();
+        sendVersionInfoToLauncher();
     }
 
-    private void checkUpdate() {
-        new Thread(() -> UpdateUtils.checkUpdate(aBoolean -> {
-            if (aBoolean) {
-                // remind user to update
-                Platform.runLater(this::remindUserToUpdate);
+    private void sendVersionInfoToLauncher() {
+        new Thread(() -> {
+            String localVersion = SystemConfigurationManager.getCurrentVersion();
+            if (localVersion == null) {
+                Logger.getLogger(AppStage.class.getName()).severe("get local version error");
+                return;
             }
-        })).start();
+            // send
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+            try {
+                bw.write(localVersion);
+                bw.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    bw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
+
 
     private void remindUserToUpdate() {
         Dialog dialog = new Dialog();

@@ -14,7 +14,6 @@ public class App extends Application {
 
     private AppStage appStage;
 
-
     @Override
     public void start(Stage stage) {
         Logger.getLogger(this.getClass().getName()).info("主界面启动");
