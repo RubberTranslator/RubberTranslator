@@ -29,6 +29,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 9. **OCR翻译**
 10. 翻译历史
 11. **专注模式**
+12. 热更新(beta)
 
 <img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20201224112341042.png" alt="image-20201224112341042" height="400;" />
 
@@ -59,7 +60,9 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 ### 2. 翻译时段落识别问题，一段话被拆分为多段？
 
-![image-20200516104744264](https://s3.ax1x.com/2020/12/06/DXwK4s.png)
+![DXwK4s](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/DXwK4s.png)
+
+
 
 这和RubberTranslator在格式化复制的文本时的处理机制有关，RubberTranslator在识别多段文本的原理是，判断当前是否有 英文或中文的句号在末尾， 如果在末尾则换行。所以可以看到，原文在parameter后面有句号，RubberTranslator进行了断行。
 
@@ -83,16 +86,17 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 <table>     
     <tr>        
         <td >
-            <center><img src="https://s3.ax1x.com/2020/12/06/DXwQCn.png" ><br>微信
+            <center><img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/DXwQCn.png" width="300"><br>微信
             </center>
         </td>        
         <td >
-            <center><img src="https://s3.ax1x.com/2020/12/06/DXwl3q.png"  ><br>支付宝
+            <center><img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/DXwQCn-1609901526157.png" width="300" ><br>支付宝
             </center>
         </td>    
     </tr>      
     <tr>         
 </table>
+
 
 
 ## 开源许可
