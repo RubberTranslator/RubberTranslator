@@ -9,11 +9,30 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView> {
 
+    private boolean oldAutoPaste = false;
+
+    private boolean oldAutoCopy = false;
+
+
     @Override
     public void switchScene(SceneType sceneType) {
         super.switchScene(sceneType);
         view.switchScene(sceneType);
         view.destroy();
+    }
+
+    public void closeAndSaveAutoCopyPaste(){
+        oldAutoCopy = configManger.getSystemConfiguration().isAutoCopy();
+        oldAutoPaste = configManger.getSystemConfiguration().isAutoPaste();
+        translatorFacade.getAfterProcessor().setAutoCopy(false);
+        translatorFacade.getAfterProcessor().setAutoPaste(false);
+    }
+
+    public void restoreAutoCopyPasteConfig(){
+        configManger.getSystemConfiguration().setAutoCopy(oldAutoCopy);
+        configManger.getSystemConfiguration().setAutoPaste(oldAutoPaste);
+        translatorFacade.getAfterProcessor().setAutoCopy(oldAutoCopy);
+        translatorFacade.getAfterProcessor().setAutoPaste(oldAutoPaste);
     }
 
     @Override

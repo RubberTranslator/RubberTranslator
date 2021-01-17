@@ -90,12 +90,15 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         initParams();
         initClickEvents();
         initListeners();
+        // close auto paste and copy
+        presenter.closeAndSaveAutoCopyPaste();
     }
 
     @Override
     public void destroy() {
         // 注册监听
         EventBus.getDefault().unregister(this);
+        presenter.restoreAutoCopyPasteConfig();
     }
 
 
