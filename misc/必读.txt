@@ -10,6 +10,12 @@
 2. 讨论群：118149802
 
 [Changelogs]
+2020-1-17
+RubberTranslator-v3.2.1-beta
+1. 修复无限递归翻译的bug
+2. 修复重复翻译的bug
+3. api信息设置后立即生效，无需重启
+
 2021-1-5
 RubberTranslator-v3.2.0-beta
 1. 增加热更新
