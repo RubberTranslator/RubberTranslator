@@ -236,8 +236,6 @@ public class AppStage {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
         scene = new Scene(fxmlLoader.load());
         scene.setUserData(fxml);
-        Scene oldScene = appStage.getScene();
-        if(oldScene != null) oldScene.setUserData("");
         appStage.setScene(scene);
     }
 

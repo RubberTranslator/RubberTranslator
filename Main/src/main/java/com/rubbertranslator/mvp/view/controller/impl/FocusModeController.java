@@ -104,9 +104,6 @@ public class FocusModeController implements Initializable, IFocusView {
     // window stage 引用
     private Stage appStage;
 
-    // 当前Scene , 用于防止本scene已经被stage移除，但是依然监听来自clipboard的文本
-    private Scene scene;
-
     private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
 
     // 是否继续接受来自clipboard的文本
@@ -115,15 +112,24 @@ public class FocusModeController implements Initializable, IFocusView {
     // presenter
     private FocusViewPresenter presenter;
 
-
     /**
      * 组件初始化完成后，会调用这个方法
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        start();
+    }
+
+    @Override
+    public void start() {
         initParams();
         initClickEvents();
         initListeners();
+    }
+
+    @Override
+    public void destroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -183,8 +189,7 @@ public class FocusModeController implements Initializable, IFocusView {
 
     @Override
     public void delayInitViews() {
-        scene = rootPane.getScene();
-        appStage = (Stage) scene.getWindow();
+        appStage = (Stage) rootPane.getScene().getWindow();
 
         // bind short cut for translateBt
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -301,7 +306,7 @@ public class FocusModeController implements Initializable, IFocusView {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null || !keepGetTextFromClipboard) return;
-        if (!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(scene.getUserData()))
+        if (!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData()))
             return;
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());

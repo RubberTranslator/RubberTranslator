@@ -6,6 +6,7 @@ import com.rubbertranslator.mvp.modules.filter.WindowsPlatformActiveWindowListen
 import com.rubbertranslator.mvp.modules.textinput.clipboard.ClipboardListenerThread;
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.DragCopyThread;
 import com.rubbertranslator.mvp.view.IView;
+import com.rubbertranslator.mvp.view.controller.ITranslateView;
 
 /**
  * presenter

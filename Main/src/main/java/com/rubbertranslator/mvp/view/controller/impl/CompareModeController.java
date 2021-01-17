@@ -72,9 +72,6 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     // window stage 引用
     private Stage appStage;
 
-    // 当前Scene , 用于防止本scene已经被stage移除，但是依然监听来自clipboard的文本
-    private Scene scene;
-
     // 当前翻译后文本区cursor position
     private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
 
@@ -83,16 +80,24 @@ public class CompareModeController implements Initializable, IMultiTranslateView
 
     private MultiTranslatePresenter presenter;
 
-
-
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        start();
+    }
+
+    @Override
+    public void start() {
         initParams();
         initClickEvents();
         initListeners();
     }
+
+    @Override
+    public void destroy() {
+        // 注册监听
+        EventBus.getDefault().unregister(this);
+    }
+
 
     private void initParams() {
         presenter = PresenterFactory.getPresenter(SceneType.COMPARE_SCENE);
@@ -165,8 +170,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
 
     @Override
     public void delayInitViews() {
-        scene = rootPane.getScene();
-        appStage = (Stage) scene.getWindow();
+        appStage = (Stage) rootPane.getScene().getWindow();
 
         // bind translate shortcut
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -243,7 +247,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         if (event == null ||
                 !keepGetTextFromClipboard) return;
         if (!ControllerFxmlPath.COMPARE_CONTROLLER_FXML.equals(
-                scene.getUserData()
+                appStage.getScene().getUserData()
         )) {
             return;
         }

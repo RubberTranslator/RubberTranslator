@@ -21,6 +21,7 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
     public void switchScene(SceneType sceneType) {
         super.switchScene(sceneType);
         view.switchScene(sceneType);
+        view.destroy();
     }
 
     @Override

@@ -191,9 +191,6 @@ public class MainController implements ISingleTranslateView {
     // window stage 引用
     private Stage appStage;
 
-    // 当前Scene , 用于防止本scene已经被stage移除，但是依然监听来自clipboard的文本
-    private Scene scene;
-
     // 当前翻译后光标位置
     private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
 
@@ -208,8 +205,18 @@ public class MainController implements ISingleTranslateView {
      */
     @FXML
     public void initialize() {
+        start();
+    }
+
+    @Override
+    public void start() {
         initListeners();
         initParams();
+    }
+
+    @Override
+    public void destroy() {
+        EventBus.getDefault().unregister(this);
     }
 
     private void initParams() {
@@ -223,7 +230,6 @@ public class MainController implements ISingleTranslateView {
         // 注册翻译事件模型
         EventBus.getDefault().register(this);
     }
-
 
     @Override
     public void switchScene(SceneType type) {
@@ -292,8 +298,7 @@ public class MainController implements ISingleTranslateView {
     @Override
     public void delayInitViews() {
         // inject appStage
-        scene = rootPane.getScene();
-        appStage = (Stage) scene.getWindow();
+        appStage = (Stage) rootPane.getScene().getWindow();
 
         // bind key short for "translate button"
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -690,7 +695,7 @@ public class MainController implements ISingleTranslateView {
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null ||
                 !keepGetTextFromClipboard) return;
-        if (!ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(scene.getUserData())) return;
+        if (!ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(appStage.getScene().getUserData())) return;
         if (event.isTextType()) {
             presenter.translate(event.getText());
         } else {

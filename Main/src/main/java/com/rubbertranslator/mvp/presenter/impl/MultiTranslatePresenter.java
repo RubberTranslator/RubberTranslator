@@ -13,6 +13,7 @@ public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView>
     public void switchScene(SceneType sceneType) {
         super.switchScene(sceneType);
         view.switchScene(sceneType);
+        view.destroy();
     }
 
     @Override

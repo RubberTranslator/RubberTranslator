@@ -7,6 +7,10 @@ import com.rubbertranslator.mvp.view.IView;
 public interface ITranslateView extends IView {
     default void setKeepTop(boolean isKeep){}
 
+    default void start(){}
+
+    default void destroy(){}
+
     /**
      * 切换场景
      * @param type
