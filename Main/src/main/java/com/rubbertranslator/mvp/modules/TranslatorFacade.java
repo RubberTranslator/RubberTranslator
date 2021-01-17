@@ -81,41 +81,42 @@ public class TranslatorFacade {
 
     /**
      * 处理整个翻译过程 -- 单翻译
-     * @param text 原文
+     *
+     * @param text     原文
      * @param callback 回调接口
      */
-    public void singleTranslate(String text, GenericCallback<Pair<String,String>> callback) {
-        Callable<Pair<String,String>> callable = new RelayTranslateCall(text);
-        FutureTask<Pair<String,String>> task = new FacadeTask(callable,callback);
+    public void singleTranslate(String text, GenericCallback<Pair<String, String>> callback) {
+        Callable<Pair<String, String>> callable = new RelayTranslateCall(text);
+        FacadeTask task = new FacadeTask(callable, callback);
         executor.execute(task);
     }
 
 
     /**
      * 处理整个翻译 -- 多翻译
-     * @param text 原文
+     *
+     * @param text     原文
      * @param callback 回调接口
      */
-    public void multiTranslate(String text, GenericCallback<Pair<TranslatorType,String>> callback){
-        Callable<Pair<TranslatorType,String>> googleCall = new SingleTranslateCall(text,TranslatorType.GOOGLE);
-        Callable<Pair<TranslatorType,String>> baiduCall = new SingleTranslateCall(text,TranslatorType.BAIDU);
-        Callable<Pair<TranslatorType,String>> youdaoCall = new SingleTranslateCall(text,TranslatorType.YOUDAO);
+    public void multiTranslate(String text, GenericCallback<Pair<TranslatorType, String>> callback) {
+        Callable<Pair<TranslatorType, String>> googleCall = new SingleTranslateCall(text, TranslatorType.GOOGLE);
+        Callable<Pair<TranslatorType, String>> baiduCall = new SingleTranslateCall(text, TranslatorType.BAIDU);
+        Callable<Pair<TranslatorType, String>> youdaoCall = new SingleTranslateCall(text, TranslatorType.YOUDAO);
 
-        FutureTask<Pair<TranslatorType,String>> googleTask = new FacadeTask(googleCall,callback);
-        FutureTask<Pair<TranslatorType,String>> baiduTask = new FacadeTask(baiduCall,callback);
-        FutureTask<Pair<TranslatorType,String>> youdaoTask = new FacadeTask(youdaoCall,callback);
+        FacadeTask googleTask = new FacadeTask(googleCall, callback);
+        FacadeTask baiduTask = new FacadeTask(baiduCall, callback);
+        FacadeTask youdaoTask = new FacadeTask(youdaoCall, callback);
 
         // exec
-        executor.execute(googleTask);
         executor.execute(baiduTask);
         executor.execute(youdaoTask);
+        executor.execute(googleTask);
     }
 
 
+    private static class FacadeTask<T> extends FutureTask<T> {
 
-    private class FacadeTask<T> extends FutureTask<T> {
-
-        private GenericCallback<T> callback;
+        private final GenericCallback<T> callback;
 
         public FacadeTask(Callable<T> callable, GenericCallback<T> callback) {
             super(callable);
@@ -138,7 +139,7 @@ public class TranslatorFacade {
      * 接力翻译 -- 即 若google翻译失败，自动使用百度翻译
      * 如果都失败，返回 “” 空字符串
      */
-    private class RelayTranslateCall implements Callable<Pair<String,String>> {
+    private class RelayTranslateCall implements Callable<Pair<String, String>> {
         // 原文
         private String origin = "";
 
@@ -147,7 +148,7 @@ public class TranslatorFacade {
         }
 
         @Override
-        public Pair<String,String> call() {
+        public Pair<String, String> call() {
             if (origin == null || "".equals(origin)) return null;
             // facade处理开始
             String translation = null;
@@ -155,7 +156,7 @@ public class TranslatorFacade {
                 // text保存处理后的文本
                 origin = textPreProcessor.process(origin);
                 // 重新初始化lastOrigin
-                translation = translatorFactory.translate(origin);
+                translation = translatorFactory.relayTranslate(origin);
                 // 后置处理
                 translation = textPostProcessor.process(origin, translation);
                 // 记录翻译历史
@@ -170,10 +171,10 @@ public class TranslatorFacade {
 
 
     /**
-     *  单翻译 --按照指定类型翻译
-     *  如果翻译不成功，直接返回 "" 空字符串
+     * 单翻译 --按照指定类型翻译
+     * 如果翻译不成功，直接返回 "" 空字符串
      */
-    private class SingleTranslateCall implements Callable<Pair<TranslatorType,String>>{
+    private class SingleTranslateCall implements Callable<Pair<TranslatorType, String>> {
 
         private String origin = ""; // 原文
 
@@ -185,7 +186,7 @@ public class TranslatorFacade {
         }
 
         @Override
-        public Pair<TranslatorType, String> call() throws Exception {
+        public Pair<TranslatorType, String> call() {
             if (origin == null || "".equals(origin)) return null;
             // facade处理开始
             String translation = null;
@@ -193,7 +194,7 @@ public class TranslatorFacade {
                 // text保存处理后的文本
                 origin = textPreProcessor.process(origin);
                 // 重新初始化lastOrigin
-                translation = translatorFactory.translateByType(type,origin);
+                translation = translatorFactory.translateByType(type, origin);
                 // 后置处理
                 translation = textPostProcessor.process(origin, translation);
                 // 记录翻译历史
@@ -202,7 +203,7 @@ public class TranslatorFacade {
             } catch (Exception e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
             }
-            return new Pair<>(type,  translation == null ? "" : translation);
+            return new Pair<>(type, translation == null ? "" : translation);
         }
     }
 }

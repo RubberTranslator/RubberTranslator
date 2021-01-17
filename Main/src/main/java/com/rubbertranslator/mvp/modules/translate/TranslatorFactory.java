@@ -44,7 +44,7 @@ public class TranslatorFactory {
         engineType = type;
     }
 
-    public String translate(String text){
+    public String relayTranslate(String text){
         // 首先使用当前首选的翻译引擎翻译
         String result = null;
         AbstractTranslator currentEngine = translatorEngineMap.get(engineType);
@@ -81,6 +81,10 @@ public class TranslatorFactory {
 
     public void addTranslator(TranslatorType type, AbstractTranslator translator){
         translatorEngineMap.put(type,translator);
+    }
+
+    public AbstractTranslator getTranslator(TranslatorType type){
+        return translatorEngineMap.get(type);
     }
 
     /**

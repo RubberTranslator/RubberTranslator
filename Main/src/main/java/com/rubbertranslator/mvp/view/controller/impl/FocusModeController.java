@@ -20,6 +20,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -103,10 +104,16 @@ public class FocusModeController implements Initializable, IFocusView {
     // window stage 引用
     private Stage appStage;
 
-    // presenter
-    private FocusViewPresenter presenter;
+    // 当前Scene , 用于防止本scene已经被stage移除，但是依然监听来自clipboard的文本
+    private Scene scene;
 
     private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
+
+    // 是否继续接受来自clipboard的文本
+    private boolean keepGetTextFromClipboard = true;
+
+    // presenter
+    private FocusViewPresenter presenter;
 
 
     /**
@@ -176,7 +183,8 @@ public class FocusModeController implements Initializable, IFocusView {
 
     @Override
     public void delayInitViews() {
-        appStage = (Stage) rootPane.getScene().getWindow();
+        scene = rootPane.getScene();
+        appStage = (Stage) scene.getWindow();
 
         // bind short cut for translateBt
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -292,8 +300,8 @@ public class FocusModeController implements Initializable, IFocusView {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
-        if (event == null) return;
-        if (!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData()))
+        if (event == null || !keepGetTextFromClipboard) return;
+        if (!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(scene.getUserData()))
             return;
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
@@ -312,6 +320,7 @@ public class FocusModeController implements Initializable, IFocusView {
     @Override
     public void translateStart() {
         Platform.runLater(() -> {
+            keepGetTextFromClipboard = false;
             translateBt.setDisable(true);
             displayTextBt.setDisable(true);
         });
@@ -321,11 +330,12 @@ public class FocusModeController implements Initializable, IFocusView {
     public void translateEnd() {
         final String showOrigin = "显示原文";
         Platform.runLater(() -> {
+            keepGetTextFromClipboard = true;
             translateBt.setDisable(false);
             // displayBt reinitialize
             displayTextBt.setText(showOrigin);
             displayTextBt.setDisable(false);
-            if(cursorPos == TextAreaCursorPos.END){
+            if (cursorPos == TextAreaCursorPos.END) {
                 textArea.end();
             }
         });

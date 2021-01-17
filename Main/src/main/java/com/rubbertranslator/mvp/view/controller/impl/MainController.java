@@ -1,5 +1,6 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
+import com.rubbertranslator.entity.ApiInfo;
 import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.*;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
@@ -10,6 +11,7 @@ import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
+import com.rubbertranslator.mvp.view.custom.ApiDialog;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemConfigurationManager;
 import com.rubbertranslator.system.SystemResourceManager;
@@ -183,11 +185,20 @@ public class MainController implements ISingleTranslateView {
     @FXML
     private MenuItem versionText;
 
+    /**
+     * -------------------------其他辅助变量-----------------------------
+     */
     // window stage 引用
     private Stage appStage;
 
+    // 当前Scene , 用于防止本scene已经被stage移除，但是依然监听来自clipboard的文本
+    private Scene scene;
+
     // 当前翻译后光标位置
     private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
+
+    // 是否继续接受来自clipboard的文本
+    private boolean keepGetTextFromClipboard = true;
 
     // presenter
     private MainViewPresenter presenter;
@@ -227,6 +238,7 @@ public class MainController implements ISingleTranslateView {
     @Override
     public void translateStart() {
         Platform.runLater(() -> {
+            keepGetTextFromClipboard = false;
             translateBt.setText("翻译中");
             translateBt.setDisable(true);
         });
@@ -236,6 +248,7 @@ public class MainController implements ISingleTranslateView {
     @Override
     public void translateEnd() {
         Platform.runLater(() -> {
+            keepGetTextFromClipboard = true;
             translateBt.setText("翻译(Ctrl+T)");
             translateBt.setDisable(false);
             if (cursorPos == TextAreaCursorPos.END) {
@@ -279,7 +292,8 @@ public class MainController implements ISingleTranslateView {
     @Override
     public void delayInitViews() {
         // inject appStage
-        appStage = (Stage) rootPane.getScene().getWindow();
+        scene = rootPane.getScene();
+        appStage = (Stage) scene.getWindow();
 
         // bind key short for "translate button"
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -463,98 +477,6 @@ public class MainController implements ISingleTranslateView {
         }
     }
 
-    private static class ApiInfo {
-        public String apiKey;
-        public String secretKey;
-
-        public ApiInfo(String apiKey, String secretKey) {
-            this.apiKey = apiKey;
-            this.secretKey = secretKey;
-        }
-
-        public String getApiKey() {
-            return apiKey;
-        }
-
-        public String getSecretKey() {
-            return secretKey;
-        }
-    }
-
-
-    private class ApiDialog {
-
-        private final String dialogTitle;
-        private final ApiInfo apiInfo;
-        private final String titleClickUrl;
-        private final GenericCallback<ApiInfo> listener;
-
-        public ApiDialog(String dialogTitle, String titleClickUrl, ApiInfo apiInfo, GenericCallback<ApiInfo> listener) {
-            this.dialogTitle = dialogTitle;
-            this.titleClickUrl = titleClickUrl;
-            this.apiInfo = apiInfo;
-            this.listener = listener;
-        }
-
-        public TextField apiKeyTf;
-        public TextField secretKeyTf;
-
-        private Node create() {
-            // 主内容
-            VBox vBox = new VBox();
-            vBox.setAlignment(Pos.CENTER);
-            vBox.setSpacing(10);
-            // 26、13、171
-            Label title = new Label(dialogTitle);
-            title.setStyle("-fx-text-fill: #2196f3;" +
-                    "-fx-font-weight: bold");
-            title.setOnMouseClicked((event -> {
-                try {
-                    Desktop.getDesktop().browse(new URI(titleClickUrl));
-                } catch (IOException | URISyntaxException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "错误url:" + titleClickUrl, e);
-                }
-            }));
-            Label apiKeyLabel = new Label("API_KEY");
-            apiKeyTf = new TextField();
-            apiKeyTf.setText(apiInfo.getApiKey());
-            Label secretLabel = new Label("SECRET_KEY");
-            secretKeyTf = new TextField();
-            secretKeyTf.setText(apiInfo.getSecretKey());
-            vBox.getChildren().addAll(title, apiKeyLabel, apiKeyTf, secretLabel, secretKeyTf);
-            return vBox;
-        }
-
-        public void showDialog() {
-            Dialog<ApiInfo> dialog = new Dialog<>();
-            // 确定和取消
-            ButtonType confirmBt = new ButtonType("确定", ButtonBar.ButtonData.OK_DONE);
-            ButtonType cancelBt = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
-            dialog.getDialogPane().getButtonTypes().addAll(confirmBt, cancelBt);
-            dialog.getDialogPane().setContent(create());
-            dialog.initOwner(appStage);
-
-            // 结果转换器
-            dialog.setResultConverter(dialogButton -> {
-                if (dialogButton == confirmBt) {
-                    return new ApiInfo(apiKeyTf.getText(), secretKeyTf.getText());
-                }
-                return null;
-            });
-            // 处理结果
-            Optional<ApiInfo> result = dialog.showAndWait();
-            result.ifPresent(ocrInfo -> {
-                // 获取更新
-                String apiKey = ocrInfo.apiKey;
-                String secretKey = ocrInfo.secretKey;
-                if ("".equals(apiKey) || "".equals(secretKey)) {
-                    originTextArea.setText("Api信息不完整,请填写所有字段");
-                } else {
-                    listener.callBack(new ApiInfo(apiKey, secretKey));
-                }
-            });
-        }
-    }
 
     private class AdvancedSettingMenu {
         public void init(SystemConfiguration configuration) {
@@ -599,14 +521,16 @@ public class MainController implements ISingleTranslateView {
         }
 
         private void initOCR(SystemConfiguration configuration) {
-            ocrMenu.setOnAction((actionEvent -> new ApiDialog("百度OCR",  // 标题
-                    "https://ai.baidu.com/tech/ocr",
-                    new ApiInfo(configuration.getBaiduOcrApiKey(), configuration.getBaiduOcrSecretKey()),   // 回显所需信息
-                    (newValue) -> {   // 用户确定后的回调
-                        configuration.setBaiduOcrApiKey(newValue.getApiKey().trim());
-                        configuration.setBaiduOcrSecretKey(newValue.getSecretKey().trim());
-                    })
-                    .showDialog()));
+            ocrMenu.setOnAction((actionEvent ->
+                    new ApiDialog("百度OCR",  // 标题
+                            "https://ai.baidu.com/tech/ocr",
+                            new ApiInfo(configuration.getBaiduOcrApiKey(), configuration.getBaiduOcrSecretKey()) /*  回显所需信息  */,
+                            appStage,
+                            apiInfo -> {
+                                if (apiInfo == null) return;
+                                presenter.setOcrApi(apiInfo);
+                            })
+                            .showDialog()));
         }
 
         /**
@@ -616,17 +540,19 @@ public class MainController implements ISingleTranslateView {
             baiduApiMenu.setOnAction((actionEvent -> new ApiDialog("百度翻译",  // 标题
                     "http://api.fanyi.baidu.com/",
                     new ApiInfo(configuration.getBaiduTranslatorApiKey(), configuration.getBaiduTranslatorSecretKey()),   // 回显所需信息
-                    (newValue) -> {   // 用户确定后的回调
-                        configuration.setBaiduTranslatorApiKey(newValue.getApiKey().trim());
-                        configuration.setBaiduTranslatorSecretKey(newValue.getSecretKey().trim());
+                    appStage,
+                    apiInfo -> {   // 用户确定后的回调
+                        if (apiInfo == null) return;
+                        presenter.setBaiduTranslatorApi(apiInfo);
                     })
                     .showDialog()));
             youdaoApiMenu.setOnAction((actionEvent -> new ApiDialog("有道翻译", // 标题
                     "https://ai.youdao.com/?keyfrom=old-openapi",
                     new ApiInfo(configuration.getYouDaoTranslatorApiKey(), configuration.getYouDaoTranslatorSecretKey()),   // 回显所需信息
-                    (newValue) -> {   // 用户确定后的回调
-                        configuration.setYouDaoTranslatorApiKey(newValue.getApiKey().trim());
-                        configuration.setYouDaoTranslatorSecretKey(newValue.getSecretKey().trim());
+                    appStage,
+                    apiInfo -> {   // 用户确定后的回调
+                        if (apiInfo == null) return;
+                        presenter.setYoudaoTranslatorApi(apiInfo);
                     })
                     .showDialog()));
         }
@@ -762,8 +688,9 @@ public class MainController implements ISingleTranslateView {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
-        if (event == null) return;
-        if (!ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(appStage.getScene().getUserData())) return;
+        if (event == null ||
+                !keepGetTextFromClipboard) return;
+        if (!ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(scene.getUserData())) return;
         if (event.isTextType()) {
             presenter.translate(event.getText());
         } else {

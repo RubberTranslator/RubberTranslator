@@ -17,6 +17,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
@@ -29,6 +30,7 @@ import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import sun.rmi.runtime.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,9 +72,19 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     // window stage 引用
     private Stage appStage;
 
+    // 当前Scene , 用于防止本scene已经被stage移除，但是依然监听来自clipboard的文本
+    private Scene scene;
+
+    // 当前翻译后文本区cursor position
     private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
 
+    // 是否继续接受来自clipboard的文本
+    private boolean keepGetTextFromClipboard = true;
+
     private MultiTranslatePresenter presenter;
+
+
+
 
 
     @Override
@@ -153,7 +165,8 @@ public class CompareModeController implements Initializable, IMultiTranslateView
 
     @Override
     public void delayInitViews() {
-        appStage = (Stage) rootPane.getScene().getWindow();
+        scene = rootPane.getScene();
+        appStage = (Stage) scene.getWindow();
 
         // bind translate shortcut
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -182,6 +195,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     @Override
     public void translateStart() {
         Platform.runLater(() -> {
+            keepGetTextFromClipboard = false;
             translateBt.setDisable(true);
         });
     }
@@ -189,6 +203,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     @Override
     public void translateEnd() {
         Platform.runLater(() -> {
+            keepGetTextFromClipboard = true;
             translateBt.setDisable(false);
             if (cursorPos == TextAreaCursorPos.END) {
                 googleTextArea.end();
@@ -225,9 +240,10 @@ public class CompareModeController implements Initializable, IMultiTranslateView
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
-        if (event == null) return;
+        if (event == null ||
+                !keepGetTextFromClipboard) return;
         if (!ControllerFxmlPath.COMPARE_CONTROLLER_FXML.equals(
-                appStage.getScene().getUserData()
+                scene.getUserData()
         )) {
             return;
         }
