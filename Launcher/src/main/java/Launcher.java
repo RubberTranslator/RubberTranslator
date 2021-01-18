@@ -18,6 +18,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,13 +40,21 @@ public class Launcher extends Application {
 
     private final String mainDir = ".";
 
-    private final String mainProcessPath;
+    private String mainProcessPath;
 
     private final String mainProcessJarDir;
 
     {
-        // 主进程可执行文件路径
-        mainProcessPath = mainDir + File.separator + "Main.exe";
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.startsWith("win")) {
+            // 主进程可执行文件路径
+            mainProcessPath = mainDir + File.separator + "Main.exe";
+        } else if (os.startsWith("linux")) {
+            mainProcessPath = "/home/raven/Projects/RubberTranslator/out/RubberTranslator/bin/Main";
+        } else {  // mac?
+
+        }
+
 
         // 更新文件临时放置路径
         mainProcessJarDir = mainDir + File.separator + "app/tmp";
