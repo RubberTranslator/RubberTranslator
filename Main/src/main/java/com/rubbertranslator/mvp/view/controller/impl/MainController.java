@@ -625,7 +625,7 @@ public class MainController implements ISingleTranslateView {
         //
         homePage.setOnAction((actionEvent) ->
         {
-            // 这里用new Thread有点蠢，不过
+            // 这里用new Thread有点蠢，不过为了避免为卡死，暂时这样吧
             if(Desktop.isDesktopSupported()){
                 new Thread(()->{
                     try {

@@ -12,13 +12,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sun.rmi.runtime.Log;
 
 import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,29 +38,36 @@ public class Launcher extends Application {
     // 主进程handler
     private Process mainProcess;
 
-    private final String mainDir = ".";
+    private String mainDir = ".";
 
-    private String mainProcessPath;
+    private String mainExePath;
 
-    private final String mainProcessJarDir;
+    private String tmpUpdateJarPath;
+
+    private String targetJarPath;
 
     {
         String os = System.getProperty("os.name").toLowerCase();
         if (os.startsWith("win")) {
             // 主进程可执行文件路径
-            mainProcessPath = mainDir + File.separator + "Main.exe";
+            mainExePath = mainDir + File.separator + "Main.exe";
+            targetJarPath = mainDir + File.separator + "app/Main.jar";
+            // 更新文件临时放置路径
+            tmpUpdateJarPath = mainDir + File.separator + "app/tmp/Main.jar";
         } else if (os.startsWith("linux")) {
-            mainProcessPath = "/home/raven/Projects/RubberTranslator/out/RubberTranslator/bin/Main";
+            mainExePath = mainDir + File.separator + "Main";
+            targetJarPath = mainDir + File.separator + "../lib/app/Main.jar";
+            tmpUpdateJarPath = mainDir + File.separator + "../lib/app/tmp/Main.jar";
         } else {  // mac?
 
         }
 
-
-        // 更新文件临时放置路径
-        mainProcessJarDir = mainDir + File.separator + "app/tmp";
-
     }
 
+    // socket
+    private ServerSocket socket;
+
+    // 版本信息
     private String localVersion;
     private String remoteVersionUrl;
     // 更新文件路径
@@ -75,8 +82,17 @@ public class Launcher extends Application {
     @Override
     public void start(Stage primaryStage) {
         initLog();
+        initSocket();
         runMainProgram();
         checkUpdate();
+    }
+
+    private void initSocket() {
+        try {
+            socket = new ServerSocket(6789);
+        } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
+        }
     }
 
     private void initLog() {
@@ -87,23 +103,35 @@ public class Launcher extends Application {
     /**
      * 执行主程序
      */
-    void runMainProgram() {
+    private void runMainProgram() {
         try {
-            mainProcess = new ProcessBuilder(mainProcessPath).start();
+            mainProcess = new ProcessBuilder(mainExePath).start();
         } catch (IOException e) {
             e.printStackTrace();
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "启动主进程失败");
-            System.exit(-1);
+            destroy(-1);
         }
     }
 
+    private void destroy(int status) {
+        try {
+            if (socket != null) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            System.exit(status);
+        }
 
-    void checkUpdate() {
+    }
+
+    private void checkUpdate() {
         new Thread(() -> {
             setNecessaryInfos();
             if (localVersion == null) {
                 Logger.getLogger(this.getClass().getName()).severe("获取本地version失败");
-                System.exit(-1);
+                destroy(-1);
             }
             // 获取localVersion
             UpdateUtils.checkUpdate(localVersion, remoteVersionUrl, hasUpdate -> {
@@ -111,7 +139,7 @@ public class Launcher extends Application {
                     Platform.runLater(this::remindUserToUpdateDialog);
                 } else {
                     // 无需更新，直接退出
-                    System.exit(0);
+                    destroy(0);
                 }
             });
         }).start();
@@ -127,13 +155,14 @@ public class Launcher extends Application {
      * 失败 null
      */
     private void setNecessaryInfos() {
-        // 从子进程中获取
-        BufferedInputStream in = new BufferedInputStream(mainProcess.getInputStream());
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        BufferedOutputStream out = new BufferedOutputStream(mainProcess.getOutputStream());
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out));
-
+        Socket client = null;
+        BufferedReader br = null;
+        BufferedWriter bw = null;
         try {
+            client = socket.accept();
+            br = new BufferedReader(new InputStreamReader(new BufferedInputStream(new DataInputStream(client.getInputStream()))));
+            bw = new BufferedWriter(new OutputStreamWriter(new BufferedOutputStream(new DataOutputStream(client.getOutputStream()))));
+
             bw.write(Protocol.LOCAL_VERSION + "\n");
             bw.flush();
             localVersion = br.readLine().split("\n")[0];
@@ -152,13 +181,14 @@ public class Launcher extends Application {
             // end
             bw.write(Protocol.END + "\n");
             bw.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | NullPointerException e) {
+            Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
         } finally {
             // 两层try-catch，有没有更好的写法？
             try {
-                br.close();
-                bw.close();
+                if (br != null) br.close();
+                if (bw != null) bw.close();
+                if (client != null) client.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -184,7 +214,7 @@ public class Launcher extends Application {
                 doUpdate();
             } else {
                 // 无需更新
-                System.exit(0);
+                destroy(0);
             }
         } catch (Exception ignored) {
         }
@@ -220,7 +250,7 @@ public class Launcher extends Application {
         appStage.setScene(scene);
 
         appStage.setOnCloseRequest(event -> {
-            System.exit(-1);
+            destroy(-1);
         });
 
         appStage.show();
@@ -237,31 +267,31 @@ public class Launcher extends Application {
      * 开启下载
      */
     private void downloadNewVersion() {
-        File tmpDir = new File(mainProcessJarDir);
-        if (!tmpDir.exists()) {
-            tmpDir.mkdirs();
+        File tmpUpdateJarFile = new File(tmpUpdateJarPath);
+        // 创建文件夹
+        File tmpUpdateJarDir = tmpUpdateJarFile.getParentFile();
+        if (!tmpUpdateJarDir.exists()) {
+            tmpUpdateJarDir.mkdirs();
         }
-        File targetDir = tmpDir.getParentFile();
 
-        DownloadUtil.get().download(remoteFileUrl, tmpDir.getAbsolutePath(), new DownloadUtil.OnDownloadListener() {
+        DownloadUtil.get().download(remoteFileUrl, tmpUpdateJarDir.getAbsolutePath(), new DownloadUtil.OnDownloadListener() {
             @Override
             public void onDownloadSuccess() {
                 Platform.runLater(() -> {
                     title.setText("下载完成，正在启动");
+                    // 检查是否是zip文件
 
-                    // move from "app/tmp" --> "app", 不应该放在UI线程
-                    Path tmpPath = Paths.get(tmpDir + File.separator + "Main.jar");
-                    Path targetPath = Paths.get(targetDir + File.separator + "Main.jar");
+                    // move from "tmp" --> "current dir", 不应该放在UI线程
+                    Path tmpPath = Paths.get(tmpUpdateJarPath);
+                    Path targetPath = Paths.get(targetJarPath);
                     try {
-//                        Files.copy(tmpPath, targetPath, REPLACE_EXISTING, ATOMIC_MOVE);
                         Files.move(tmpPath, targetPath, REPLACE_EXISTING, ATOMIC_MOVE);
                     } catch (IOException e) {
-                        e.printStackTrace();
                         Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
                     }
                     Logger.getLogger(this.getClass().getName()).info("update success");
                     runMainProgram();
-                    System.exit(0);
+                    destroy(0);
                 });
             }
 

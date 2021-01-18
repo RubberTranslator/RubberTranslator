@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.awt.*;
 import java.io.*;
+import java.net.Socket;
 import java.net.URI;
 import java.util.Optional;
 import java.util.Properties;
@@ -54,12 +55,17 @@ public class AppStage {
 
     private void sendNecessaryInfosToLauncher() {
         new Thread(() -> {
-            // send
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            String type;
-            Properties props = new Properties();
+            BufferedWriter bw = null;
+            BufferedReader br = null;
+            Socket server = null;
             try {
+                server = new Socket("127.0.0.1", 6789);
+                // send
+                bw = new BufferedWriter(new OutputStreamWriter(new DataOutputStream(server.getOutputStream())));
+                br = new BufferedReader(new InputStreamReader(new DataInputStream(server.getInputStream())));
+
+                String type;
+                Properties props = new Properties();
                 props.load(this.getClass().getResourceAsStream("/config/misc.properties"));
                 type = br.readLine().split("\n")[0];
                 Logger.getLogger(this.getClass().getName()).info(type);
@@ -67,15 +73,15 @@ public class AppStage {
                     if (type.startsWith(Protocol.LOCAL_VERSION)) {
                         String localVersion = props.getProperty("local-version");
                         Logger.getLogger(this.getClass().getName()).info(localVersion);
-                        bw.write(localVersion+"\n");
+                        bw.write(localVersion + "\n");
                     } else if (type.startsWith(Protocol.REMOTE_VERSION_URL)) {
                         String remoteVersionUrl = props.getProperty("remote-version-url");
                         Logger.getLogger(this.getClass().getName()).info(remoteVersionUrl);
-                        bw.write(remoteVersionUrl+"\n");
+                        bw.write(remoteVersionUrl + "\n");
                     } else if (type.startsWith(Protocol.REMOTE_TARGET_FILE_URL)) {
                         String remoteTargetFileUrl = props.getProperty("remote-target-file-url");
                         Logger.getLogger(this.getClass().getName()).info(remoteTargetFileUrl);
-                        bw.write(remoteTargetFileUrl+"\n");
+                        bw.write(remoteTargetFileUrl + "\n");
                     }
                     bw.flush();
                     type = br.readLine().split("\n")[0];
@@ -85,8 +91,9 @@ public class AppStage {
                 e.printStackTrace();
             } finally {
                 try {
-                    bw.close();
-                    br.close();
+                    if (bw != null) bw.close();
+                    if (br != null) br.close();
+                    if (server != null) server.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
