@@ -118,7 +118,7 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
 
     @FXML
     public void onAddButtonClick(){
-        wordsPairTableView.getItems().add(new WordsPair("译文样例","替换样例"));
+        wordsPairTableView.getItems().add(new WordsPair("译文样例(支持java正则表达式)","替换样例"));
     }
 
     @FXML

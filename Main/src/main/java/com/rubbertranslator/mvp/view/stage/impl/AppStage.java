@@ -94,26 +94,6 @@ public class AppStage {
         }).start();
     }
 
-
-    private void remindUserToUpdate() {
-        Dialog dialog = new Dialog();
-        // 确定和取消
-        ButtonType confirmBt = new ButtonType("确定", ButtonBar.ButtonData.OK_DONE);
-        ButtonType cancelBt = new ButtonType("取消", ButtonBar.ButtonData.CANCEL_CLOSE);
-        dialog.getDialogPane().getButtonTypes().addAll(confirmBt, cancelBt);
-        dialog.setTitle("检测到新版本");
-        dialog.setContentText("RubberTranslator已发布新版本，点击【确定】访问下载列表");
-        dialog.initOwner(appStage);
-        Optional<ButtonType> optional = dialog.showAndWait();
-        try {
-            if (optional.get() == confirmBt) {
-                Desktop.getDesktop().browse(new URI("https://ravenxrz.lanzous.com/b01bezbcf"));
-            }
-        } catch (Exception e) {
-        }
-
-    }
-
     /**
      * 初始化系统配置，同时得到系统配置类引用，方便后续的其它初始化
      */

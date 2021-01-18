@@ -45,9 +45,6 @@ public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView>
     @Override
     public void translate(String originText) {
         super.translate(originText);
-        // 关闭剪切板监听线程，翻译未完成前，不允许更多输入
-//        final boolean cptState = clipboardListenerThread.isRunning();
-//        clipboardListenerThread.setRun(false);
         // 如果开启了自动复制，那么需要跳过下一次复制
         if(configManger.getSystemConfiguration().isAutoCopy()){
             clipboardListenerThread.ignoreThisTime();
@@ -62,7 +59,6 @@ public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView>
             if(value == TranslatorType.values().length){
                 // end
                 view.translateEnd();
-//                clipboardListenerThread.setRun(cptState);
             }
         }));
     }

@@ -249,12 +249,6 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null ||
                 !keepGetTextFromClipboard) return;
-        if (!ControllerFxmlPath.COMPARE_CONTROLLER_FXML.equals(
-                appStage.getScene().getUserData()
-        )) {
-            return;
-        }
-
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
         } else {                // 图片类型

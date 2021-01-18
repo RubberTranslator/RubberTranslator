@@ -71,7 +71,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                     Logger.getLogger(this.getClass().getName()).info("本次已忽略");
                     ignoreThisTime = false;
                     break;
-                }else{
+                } else {
                     Logger.getLogger(this.getClass().getName()).info("本次正常处理");
                 }
                 processClipboard(contents);
@@ -80,7 +80,6 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                     waitTime += 100;  // 增加100ms等待时间
                 }
                 e.printStackTrace();
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
             } finally {
                 if (waitTime > minWaitTime) {
                     waitTime -= 10;   // 减少10ms等待时间
@@ -95,14 +94,14 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
             if (processFilter != null && !processFilter.check()) {
                 textInputEvent.setText(paste);
                 EventBus.getDefault().post(textInputEvent);
-                Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:"+paste);
+                Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + paste);
             }
         } else if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
             Image paste = (Image) t.getTransferData(DataFlavor.imageFlavor);
             if (processFilter != null && !processFilter.check()) {
                 textInputEvent.setImage(paste);
                 EventBus.getDefault().post(textInputEvent);
-                Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:"+"图片输入");
+                Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + "图片输入");
             }
         }
     }
@@ -120,14 +119,13 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
         running = run;
     }
 
-    public void ignoreThisTime(){
-        Logger.getLogger(this.getClass().getName()).info("set ignore this time");
-        synchronized (this){
-            if(!ignoreThisTime) ignoreThisTime=true;
+    public void ignoreThisTime() {
+        synchronized (this) {
+            if (!ignoreThisTime) ignoreThisTime = true;
         }
     }
 
-    public boolean isRunning(){
+    public boolean isRunning() {
         return running;
     }
 

@@ -306,8 +306,6 @@ public class FocusModeController implements Initializable, IFocusView {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null || !keepGetTextFromClipboard) return;
-        if (!ControllerFxmlPath.FOCUS_CONTROLLER_FXML.equals(appStage.getScene().getUserData()))
-            return;
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
         } else {                // 图片类型

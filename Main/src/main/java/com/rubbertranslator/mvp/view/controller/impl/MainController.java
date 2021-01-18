@@ -6,7 +6,6 @@ import com.rubbertranslator.enumtype.*;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
-import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
@@ -635,7 +634,7 @@ public class MainController implements ISingleTranslateView {
         // wiki
         useAge.setOnAction((actionEvent) -> {
             try {
-                Desktop.getDesktop().browse(new URI("https://ravenxrz.gitee.io/archives/a79932ef.html"));
+                Desktop.getDesktop().browse(new URI("https://www.ravenxrz.ink/archives/a79932ef.html"));
             } catch (IOException | URISyntaxException e) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "使用帮助打开失败", e);
             }
@@ -695,7 +694,6 @@ public class MainController implements ISingleTranslateView {
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null ||
                 !keepGetTextFromClipboard) return;
-        if (!ControllerFxmlPath.MAIN_CONTROLLER_FXML.equals(appStage.getScene().getUserData())) return;
         if (event.isTextType()) {
             presenter.translate(event.getText());
         } else {

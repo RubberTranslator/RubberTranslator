@@ -27,11 +27,8 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
     @Override
     public void translate(String originText) {
         super.translate(originText);
-        // 关闭剪切板监听线程，翻译未完成前，不允许更多输入
-//        final boolean cptState = clipboardListenerThread.isRunning();
-//        clipboardListenerThread.setRun(false);
         // 如果开启了自动复制，那么需要跳过下一次复制
-        if(configManger.getSystemConfiguration().isAutoCopy()){
+        if (configManger.getSystemConfiguration().isAutoCopy()) {
             clipboardListenerThread.ignoreThisTime();
         }
         // 处理
@@ -40,8 +37,6 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
             view.setText(stringPair.getFirst(), stringPair.getSecond());
             // end
             view.translateEnd();
-            // 翻译完成，重新开启输入
-//            clipboardListenerThread.setRun(cptState);
         }));
     }
 
@@ -50,8 +45,7 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
     public void setHistoryEntry(HistoryEntryIndex index) {
         super.setHistoryEntry(index);
         HistoryEntry entry;
-        switch(index)
-        {
+        switch (index) {
             case PRE_HISTORY:
                 entry = translatorFacade.getHistory().previous();
                 break;
@@ -63,7 +57,7 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
                 entry = translatorFacade.getHistory().current();
                 break;
         }
-        view.setText(entry.getOrigin(),entry.getTranslation());
+        view.setText(entry.getOrigin(), entry.getTranslation());
     }
 
     @Override
@@ -76,7 +70,7 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
     @Override
     public void clearText() {
         super.clearText();
-        view.setText("","");
+        view.setText("", "");
         translatorFacade.getTextPreProcessor().cleanBuffer();
     }
 
@@ -84,7 +78,7 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
     public void autoCopySwitch(boolean isOpen) {
         super.autoCopySwitch(isOpen);
         view.autoCopy(isOpen);
-        if(!isOpen){
+        if (!isOpen) {
             translatorFacade.getAfterProcessor().setAutoPaste(false);
             configManger.getSystemConfiguration().setAutoPaste(false);
         }
@@ -96,9 +90,9 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
     public void autoPasteSwitch(boolean isOpen) {
         super.autoPasteSwitch(isOpen);
         view.autoPaste(isOpen);
-        if(isOpen){
-           translatorFacade.getAfterProcessor().setAutoCopy(true);
-           configManger.getSystemConfiguration().setAutoCopy(true);
+        if (isOpen) {
+            translatorFacade.getAfterProcessor().setAutoCopy(true);
+            configManger.getSystemConfiguration().setAutoCopy(true);
         }
         translatorFacade.getAfterProcessor().setAutoPaste(isOpen);
         configManger.getSystemConfiguration().setAutoPaste(isOpen);
@@ -118,7 +112,7 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
         copyText(current.getOrigin());
     }
 
-    private void copyText(String text){
+    private void copyText(String text) {
         // 通知clipboard，下一次复制，不要翻译
         clipboardListenerThread.ignoreThisTime();
         CopyRobot.getInstance().copyText(text);
