@@ -6,10 +6,23 @@
       <artifact name="Main:jar" />
     </artifacts-to-build>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5032b922-3a91-4ef5-affe-87e2ab0c9a72" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Launcher_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/Launcher_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_win_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main/src/main/resources/config/misc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/resources/config/misc.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +40,27 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="printErrorStackTraces" value="true" />
+      </MavenGeneralSettings>
+    </option>
   </component>
   <component name="ProjectId" id="1mPeciVxniusMZwVXAaJOYRVMu7" />
   <component name="ProjectLevelVcsManager">
@@ -39,34 +72,41 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/out/Main/lib/app" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.30804598" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/out/Main/lib/app" />
+      <recent name="$PROJECT_DIR$/out/Main/lib" />
+      <recent name="$PROJECT_DIR$/out/Main/bin" />
+      <recent name="$PROJECT_DIR$/out/RubberTranslator" />
+      <recent name="$PROJECT_DIR$/out/RubberTranslator/lib/app" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/out/RubberTranslator/lib/runtime" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="" />
       <recent name="com.rubbertranslator.entity" />
       <recent name="com.rubbertranslator.enumtype" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\RubberTranslator" />
-      <recent name="E:\RubberTranslator\Launcher\target\Launcher\app" />
-      <recent name="E:\RubberTranslator\Launcher\target\Launcher" />
-      <recent name="E:\RubberTranslator\Launcher" />
-      <recent name="E:\RubberTranslator\Launcher\target" />
-    </key>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="Application.Launcher">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.rubbertranslator.App" />
       <module name="Main" />
@@ -101,62 +141,49 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="Main" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="WORKING_DIRECTORY" />
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="Main" />
-      <option name="filePath" />
-      <option name="vmParameters" />
-      <option name="alternativeJrePath" />
-      <option name="programParameters" />
-      <option name="passParentEnvs" value="true" />
-      <option name="workingDirectory" />
-      <option name="isAlternativeJrePathEnabled" value="false" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="filePath" />
-      <option name="vmParameters" />
-      <option name="alternativeJrePath" />
-      <option name="programParameters" />
-      <option name="passParentEnvs" value="true" />
-      <option name="workingDirectory" />
-      <option name="isAlternativeJrePathEnabled" value="false" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="WORKING_DIRECTORY" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="/home/raven/Projects/RubberTranslator" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Launcher" />
+        <item itemvalue="Gradle./home/raven/Projects/RubberTranslator" />
         <item itemvalue="Application.App" />
         <item itemvalue="Application.Test" />
-        <item itemvalue="Application.Launcher" />
         <item itemvalue="Application.DownloadTest" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -176,97 +203,66 @@
       <workItem from="1609827301137" duration="6054000" />
       <workItem from="1609833932123" duration="8221000" />
       <workItem from="1609844999708" duration="121000" />
+      <workItem from="1610935639091" duration="722000" />
+      <workItem from="1610936366611" duration="193000" />
+      <workItem from="1610936563416" duration="1667000" />
+      <workItem from="1610938337294" duration="10865000" />
     </task>
+    <task id="LOCAL-00001" summary="添加linux打包环境">
+      <created>1610941062267</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1610941062267</updated>
+    </task>
+    <task id="LOCAL-00002" summary="linux-v3.2.1">
+      <created>1610970373245</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1610970373245</updated>
+    </task>
+    <task id="LOCAL-00003" summary="添加打包脚本">
+      <created>1610970582120</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1610970582120</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="766" y="260" key="#com.intellij.ide.util.MemberChooser" timestamp="1609829064754">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="766" y="260" key="#com.intellij.ide.util.MemberChooser/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609829064754" />
-    <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1609836520443">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="692" y="345" key="#com.intellij.ide.util.TreeClassChooserDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609836520443" />
-    <state x="691" y="301" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1609830604258">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="691" y="301" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609830604258" />
-    <state x="93" y="123" width="1733" height="863" key="DiffContextDialog" timestamp="1609834305251">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="93" y="123" width="1733" height="863" key="DiffContextDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609834305251" />
-    <state x="742" y="245" key="FileChooserDialogImpl" timestamp="1609767495539">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="742" y="245" key="FileChooserDialogImpl/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767495539" />
-    <state width="1878" height="352" key="GridCell.Tab.0.bottom" timestamp="1609843731010">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609843731010" />
-    <state width="1878" height="352" key="GridCell.Tab.0.center" timestamp="1609843731010">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609843731010" />
-    <state width="1878" height="352" key="GridCell.Tab.0.left" timestamp="1609843731010">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609843731010" />
-    <state width="1878" height="352" key="GridCell.Tab.0.right" timestamp="1609843731010">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state width="1878" height="352" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609843731010" />
-    <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1609837438033">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837438033" />
-    <state width="1878" height="352" key="GridCell.Tab.1.center" timestamp="1609837438033">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837438033" />
-    <state width="1878" height="352" key="GridCell.Tab.1.left" timestamp="1609837438033">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837438033" />
-    <state width="1878" height="352" key="GridCell.Tab.1.right" timestamp="1609837438033">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state width="1878" height="352" key="GridCell.Tab.1.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609837438033" />
-    <state x="759" y="256" key="RollbackChangesDialog" timestamp="1609829248874">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="759" y="256" key="RollbackChangesDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609829248874" />
-    <state x="441" y="129" key="SettingsEditor" timestamp="1609836522189">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609836522189" />
-    <state x="93" y="123" width="1733" height="863" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1609834305251">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="93" y="123" width="1733" height="863" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609834305251" />
-    <state x="93" y="123" width="1733" height="863" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1609834679611">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="93" y="123" width="1733" height="863" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609834679611" />
-    <state x="355" y="140" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1609835152553">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="355" y="140" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609835152553" />
-    <state x="595" y="216" key="new project wizard" timestamp="1609767523837">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="595" y="216" key="new project wizard/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609767523837" />
-    <state x="626" y="261" width="672" height="678" key="search.everywhere.popup" timestamp="1609831159021">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="626" y="261" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609831159021" />
-    <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1609836410962">
-      <screen x="0" y="30" width="1920" height="1050" />
-    </state>
-    <state x="683" y="466" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1609836410962" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="添加linux打包环境" />
+    <MESSAGE value="linux-v3.2.1" />
+    <MESSAGE value="添加打包脚本" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加打包脚本" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Launcher/src/main/java/Launcher.java</url>
+          <line>157</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/RubberTranslator$Launcher.ic" NAME="Launcher Coverage Results" MODIFIED="1609831029365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
