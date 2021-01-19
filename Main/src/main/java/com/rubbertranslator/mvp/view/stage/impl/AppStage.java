@@ -59,7 +59,7 @@ public class AppStage {
             BufferedReader br = null;
             Socket server = null;
             try {
-                server = new Socket("127.0.0.1", 6789);
+                server = new Socket("127.0.0.1", 21453);
                 // send
                 bw = new BufferedWriter(new OutputStreamWriter(new DataOutputStream(server.getOutputStream())));
                 br = new BufferedReader(new InputStreamReader(new DataInputStream(server.getInputStream())));
@@ -88,14 +88,14 @@ public class AppStage {
                     Logger.getLogger(this.getClass().getName()).info(type);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
             } finally {
                 try {
                     if (bw != null) bw.close();
                     if (br != null) br.close();
                     if (server != null) server.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
                 }
             }
         }).start();

@@ -16,9 +16,11 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,10 +37,15 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  */
 public class Launcher extends Application {
 
+    // 用于辅助判定下载文件是否是压缩文件（因为jar包其实就是一个zip文件）
+    private static final byte[] ZIP_HEADER_1 = new byte[]{80, 75, 3, 4};
+
+    private static final byte[] ZIP_HEADER_2 = new byte[]{80, 75, 5, 6};
+
     // 主进程handler
     private Process mainProcess;
 
-    private String mainDir = ".";
+    private final String mainDir = ".";
 
     private String mainExePath;
 
@@ -89,7 +96,7 @@ public class Launcher extends Application {
 
     private void initSocket() {
         try {
-            socket = new ServerSocket(6789);
+            socket = new ServerSocket(21453);
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
         }
@@ -280,18 +287,22 @@ public class Launcher extends Application {
                 Platform.runLater(() -> {
                     title.setText("下载完成，正在启动");
                     // 检查是否是zip文件
-
-                    // move from "tmp" --> "current dir", 不应该放在UI线程
-                    Path tmpPath = Paths.get(tmpUpdateJarPath);
-                    Path targetPath = Paths.get(targetJarPath);
-                    try {
-                        Files.move(tmpPath, targetPath, REPLACE_EXISTING, ATOMIC_MOVE);
-                    } catch (IOException e) {
-                        Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
+                    if (isArchiveFile(tmpUpdateJarFile)) {
+                        // move from "tmp" --> "current dir", 不应该放在UI线程
+                        Path tmpPath = Paths.get(tmpUpdateJarPath);
+                        Path targetPath = Paths.get(targetJarPath);
+                        try {
+                            Files.move(tmpPath, targetPath, REPLACE_EXISTING, ATOMIC_MOVE);
+                        } catch (IOException e) {
+                            Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
+                        }
+                        Logger.getLogger(this.getClass().getName()).info("update success");
+                        runMainProgram();
+                        destroy(0);
+                    } else {
+                        title.setText("下载失败，请手动下载");
+                        Logger.getLogger(this.getClass().getName()).info("update失败，下载文件非zip");
                     }
-                    Logger.getLogger(this.getClass().getName()).info("update success");
-                    runMainProgram();
-                    destroy(0);
                 });
             }
 
@@ -311,5 +322,36 @@ public class Launcher extends Application {
             }
         });
     }
+
+
+    /**
+     * 判断文件是否为一个压缩文件
+     *
+     * @param file
+     * @return
+     */
+    public static boolean isArchiveFile(File file) {
+        if (file == null) {
+            return false;
+        }
+
+        if (file.isDirectory()) {
+            return false;
+        }
+
+        boolean isArchive = false;
+        try (InputStream input = new FileInputStream(file)) {
+            byte[] buffer = new byte[4];
+            int length = input.read(buffer, 0, 4);
+            if (length == 4) {
+                isArchive = (Arrays.equals(ZIP_HEADER_1, buffer)) || (Arrays.equals(ZIP_HEADER_2, buffer));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return isArchive;
+    }
+
 }
 
