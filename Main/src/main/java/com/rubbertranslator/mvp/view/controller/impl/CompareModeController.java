@@ -125,7 +125,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     @Override
     public void initViews(SystemConfiguration configuration) {
         // set window preSize
-        rootPane.setPrefSize(550, 600);
+        rootPane.setPrefSize(configuration.getLastSize().getX(), configuration.getLastSize().getY());
 
         // 样式加载
         try {

@@ -1,6 +1,7 @@
 package com.rubbertranslator.system;
 
 import com.google.gson.annotations.SerializedName;
+import com.rubbertranslator.entity.WindowSize;
 import com.rubbertranslator.entity.WordsPair;
 import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.enumtype.TextAreaCursorPos;
@@ -27,7 +28,7 @@ public class SystemConfiguration implements Serializable {
     @SerializedName("last_position")
     private Point lastPos;
     @SerializedName("last_size")
-    private Point lastSize;
+    private WindowSize lastSize;
     @SerializedName("last_fxml_path")
     private String lastFxmlPath;
 
@@ -150,11 +151,11 @@ public class SystemConfiguration implements Serializable {
         this.lastPos = lastPos;
     }
 
-    public Point getLastSize() {
+    public WindowSize getLastSize() {
         return lastSize;
     }
 
-    public void setLastSize(Point lastSize) {
+    public void setLastSize(WindowSize lastSize) {
         this.lastSize = lastSize;
     }
 

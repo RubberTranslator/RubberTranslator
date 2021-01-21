@@ -136,7 +136,7 @@ public class FocusModeController implements Initializable, IFocusView {
     @Override
     public void initViews(SystemConfiguration configuration) {
         // set window preSize
-        rootPane.setPrefSize(550, 350);
+        rootPane.setPrefSize(configuration.getLastSize().getX(), configuration.getLastSize().getY());
 
         // 样式加载
         try {

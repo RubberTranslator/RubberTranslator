@@ -6,8 +6,8 @@
     "y": 0
   },
   "last_size": {
-    "x": 0,
-    "y": 0
+    "x": 600.0,
+    "y": 500.0
   },
   "last_fxml_path": "/fxml/main.fxml",
   "open_clipboard_listener": false,

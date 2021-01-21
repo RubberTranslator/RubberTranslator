@@ -3,6 +3,7 @@ package com.rubbertranslator.mvp.view.stage.impl;
 import com.rubbertranslator.App;
 import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.entity.Protocol;
+import com.rubbertranslator.entity.WindowSize;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.system.SystemConfiguration;
@@ -168,8 +169,8 @@ public class AppStage {
                 (int) appStage.getX(), (int) appStage.getY()
         ));
         // 2. 更新窗口大小
-        configuration.setLastSize(new Point(
-                (int) appStage.getWidth(), (int) appStage.getHeight()
+        configuration.setLastSize(new WindowSize(
+                appStage.getScene().getWidth(), appStage.getScene().getHeight()
         ));
         // 3. 更新窗口模式 main or focus
         configuration.setLastFxmlPath(
@@ -180,6 +181,9 @@ public class AppStage {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void switchScene(SwitchSceneEvent switchSceneEvent) {
+        // 切换场景时保存一次配置
+        updateConfig();
+        // 执行切换
         try {
             switch (switchSceneEvent.getType()) {
                 case MAIN_SCENE:
