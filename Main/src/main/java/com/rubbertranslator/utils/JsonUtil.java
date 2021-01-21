@@ -1,6 +1,7 @@
 package com.rubbertranslator.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
@@ -8,7 +9,7 @@ import java.lang.reflect.Type;
 
 public class JsonUtil {
 
-    private static final Gson mGson = new Gson();
+    private static final Gson mGson = new GsonBuilder().setPrettyPrinting().create();
 
     /**
      * 将对象准换为json字符串
