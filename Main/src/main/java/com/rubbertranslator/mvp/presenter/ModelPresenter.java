@@ -6,7 +6,8 @@ import com.rubbertranslator.mvp.modules.filter.WindowsPlatformActiveWindowListen
 import com.rubbertranslator.mvp.modules.textinput.clipboard.ClipboardListenerThread;
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.DragCopyThread;
 import com.rubbertranslator.mvp.view.IView;
-import com.rubbertranslator.mvp.view.controller.ITranslateView;
+
+import java.awt.*;
 
 /**
  * presenter
@@ -39,26 +40,30 @@ public abstract class ModelPresenter<View extends IView> extends BasePresenter<V
     }
 
     public void switchScene(SceneType sceneType){
-        if(view == null) throw new NullPointerException("inject scene first");
+        if (view == null) throw new NullPointerException("inject scene first");
     }
 
-    public void setKeepTop(boolean isKeep){
-        if(configManger == null || view == null) throw new NullPointerException("inject facade or view first");
+    public void setKeepTop(boolean isKeep) {
+        if (configManger == null || view == null) throw new NullPointerException("inject facade or view first");
     }
 
-    public void translate(String originText){
-        if(translatorFacade == null || view == null) throw new NullPointerException("inject facade or view first");
+    public void translate(String originText) {
+        if (translatorFacade == null || view == null) throw new NullPointerException("inject facade or view first");
+    }
+
+    public void translate(Image image) {
+        if (translatorFacade == null || view == null) throw new NullPointerException("inject facade or view first");
     }
 
 
-    public void clipboardSwitch(boolean isOpen){
-        if(clipboardListenerThread == null) throw new NullPointerException("inject clpTread first");
+    public void clipboardSwitch(boolean isOpen) {
+        if (clipboardListenerThread == null) throw new NullPointerException("inject clpTread first");
         clipboardListenerThread.setRun(isOpen);
         configManger.getSystemConfiguration().setOpenClipboardListener(isOpen);
     }
 
     public void dragCopySwitch(boolean isOpen) {
-        if(dragCopyThread == null) throw new NullPointerException("inject dragCopyThread first");
+        if (dragCopyThread == null) throw new NullPointerException("inject dragCopyThread first");
         dragCopyThread.setRun(isOpen);
         configManger.getSystemConfiguration().setDragCopy(isOpen);
     }

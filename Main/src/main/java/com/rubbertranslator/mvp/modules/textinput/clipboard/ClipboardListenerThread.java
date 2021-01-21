@@ -79,7 +79,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                 if (waitTime < maxWaitTime) {
                     waitTime += 100;  // 增加100ms等待时间
                 }
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "剪切板被抢占，尝试延时后重试");
             } finally {
                 if (waitTime > minWaitTime) {
                     waitTime -= 10;   // 减少10ms等待时间
@@ -93,15 +93,15 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
             String paste = (String) t.getTransferData(DataFlavor.stringFlavor);
             if (processFilter != null && !processFilter.check()) {
                 textInputEvent.setText(paste);
-                EventBus.getDefault().post(textInputEvent);
                 Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + paste);
+                EventBus.getDefault().post(textInputEvent);
             }
         } else if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
             Image paste = (Image) t.getTransferData(DataFlavor.imageFlavor);
             if (processFilter != null && !processFilter.check()) {
                 textInputEvent.setImage(paste);
-                EventBus.getDefault().post(textInputEvent);
                 Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + "图片输入");
+                EventBus.getDefault().post(textInputEvent);
             }
         }
     }
@@ -142,7 +142,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
             try {
                 this.wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ClipboardThread保活失败");
             }
         }
 

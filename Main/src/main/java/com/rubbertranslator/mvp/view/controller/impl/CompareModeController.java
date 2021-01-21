@@ -1,13 +1,11 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
-import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
-import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MultiTranslatePresenter;
 import com.rubbertranslator.mvp.view.controller.IMultiTranslateView;
@@ -17,7 +15,6 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
@@ -30,10 +27,8 @@ import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import sun.rmi.runtime.Log;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -130,7 +125,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     @Override
     public void initViews(SystemConfiguration configuration) {
         // set window preSize
-        rootPane.setPrefSize(550, 600);
+        rootPane.setPrefSize(configuration.getLastSize().getX(), configuration.getLastSize().getY());
 
         // 样式加载
         try {
@@ -252,14 +247,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
         } else {                // 图片类型
-            try {
-                String text = OCRUtils.ocr(event.getImage());
-                if (text != null) {
-                    presenter.translate(text);
-                }
-            } catch (IOException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
-            }
+            presenter.translate(event.getImage());
         }
     }
 }

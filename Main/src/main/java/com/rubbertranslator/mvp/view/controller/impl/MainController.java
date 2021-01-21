@@ -6,7 +6,6 @@ import com.rubbertranslator.enumtype.*;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
-import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
@@ -18,23 +17,18 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
@@ -275,7 +269,7 @@ public class MainController implements ISingleTranslateView {
     @Override
     public void initViews(SystemConfiguration configuration) {
         // set window preSize
-        rootPane.setPrefSize(600, 450);
+        rootPane.setPrefSize(configuration.getLastSize().getX(), configuration.getLastSize().getY());
 
         // 基础设置
         new BasicSettingMenu().init(configuration);
@@ -625,26 +619,48 @@ public class MainController implements ISingleTranslateView {
         //
         homePage.setOnAction((actionEvent) ->
         {
-            try {
-                Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator"));
-            } catch (IOException | URISyntaxException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "项目主页打开失败", e);
+            // 这里用new Thread有点蠢，不过为了避免为卡死，暂时这样吧
+            if (Desktop.isDesktopSupported()) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator"));
+                    } catch (IOException | URISyntaxException e) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "项目主页打开失败", e);
+                    }
+                }).start();
+            } else {
+                originTextArea.setText("当前平台不支持打开该页面");
             }
+
         });
         // wiki
         useAge.setOnAction((actionEvent) -> {
-            try {
-                Desktop.getDesktop().browse(new URI("https://www.ravenxrz.ink/archives/a79932ef.html"));
-            } catch (IOException | URISyntaxException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "使用帮助打开失败", e);
+            if (Desktop.isDesktopSupported()) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().browse(new URI("https://www.ravenxrz.ink/archives/a79932ef.html"));
+                    } catch (IOException | URISyntaxException e) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "使用帮助打开失败", e);
+                    }
+                }
+                ).start();
+            } else {
+                originTextArea.setText("当前平台不支持打开该页面");
             }
         });
         // issue
         issues.setOnAction((actionEvent -> {
-            try {
-                Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/issues"));
-            } catch (IOException | URISyntaxException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "issues打开失败", e);
+            if (Desktop.isDesktopSupported()) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/issues"));
+                    } catch (IOException | URISyntaxException e) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "issues打开失败", e);
+                    }
+                }
+                ).start();
+            } else {
+                originTextArea.setText("当前平台不支持打开该页面");
             }
         }));
         // versionText
@@ -697,16 +713,8 @@ public class MainController implements ISingleTranslateView {
         if (event.isTextType()) {
             presenter.translate(event.getText());
         } else {
-            try {
-                String text = OCRUtils.ocr(event.getImage());
-                if (text != null) {
-                    presenter.translate(text);
-                }
-            } catch (IOException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
-            }
+            presenter.translate(event.getImage());
         }
     }
-
 
 }

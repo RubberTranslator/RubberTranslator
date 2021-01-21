@@ -28,7 +28,7 @@ public class GoogleTranslator extends AbstractTranslator {
             props.load(this.getClass().getResourceAsStream("/config/misc.properties"));
             patternUrl = props.getProperty("google-api-pattern-url");
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Goolge翻译初始化远端pattern url失败");
         }
     }
 

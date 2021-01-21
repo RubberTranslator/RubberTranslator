@@ -21,6 +21,7 @@ import com.rubbertranslator.mvp.presenter.ModelPresenter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -60,7 +61,7 @@ public class SystemResourceManager {
         LoggerManager.configLog();
         facade = new TranslatorFacade();
         configManager = new SystemConfigurationManager();
-        if(!configManager.init()) return null;
+        if (!configManager.init()) return null;
 
         SystemConfiguration configuration = configManager.getSystemConfiguration();
         textInputInit(configuration);
@@ -86,16 +87,16 @@ public class SystemResourceManager {
         try {
             executor.shutdownNow();
             executor.awaitTermination(1, TimeUnit.SECONDS);
-//            JUnique.releaseLock("RubberTranslator");
-            textInputDestroy();
-            processFilterDestroy();
-            // TODO: 检查资源释放情况
-            // 其余模块没有资源需要手动释放
-            System.runFinalization();
-            //        System.exit(0);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "释放线程池资源失败");
         }
+//            JUnique.releaseLock("RubberTranslator");
+        textInputDestroy();
+        processFilterDestroy();
+        // TODO: 检查资源释放情况
+        // 其余模块没有资源需要手动释放
+        System.runFinalization();
+        //        System.exit(0);
     }
 
     public static void initPresenter(BasePresenter presenter) {

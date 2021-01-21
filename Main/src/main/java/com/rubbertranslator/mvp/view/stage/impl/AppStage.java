@@ -3,17 +3,14 @@ package com.rubbertranslator.mvp.view.stage.impl;
 import com.rubbertranslator.App;
 import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.entity.Protocol;
+import com.rubbertranslator.entity.WindowSize;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.system.SystemConfiguration;
-import com.rubbertranslator.system.SystemConfigurationManager;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -21,8 +18,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.awt.*;
 import java.io.*;
-import java.net.URI;
-import java.util.Optional;
+import java.net.Socket;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,12 +50,17 @@ public class AppStage {
 
     private void sendNecessaryInfosToLauncher() {
         new Thread(() -> {
-            // send
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            String type;
-            Properties props = new Properties();
+            BufferedWriter bw = null;
+            BufferedReader br = null;
+            Socket server = null;
             try {
+                server = new Socket("127.0.0.1", 21453);
+                // send
+                bw = new BufferedWriter(new OutputStreamWriter(new DataOutputStream(server.getOutputStream())));
+                br = new BufferedReader(new InputStreamReader(new DataInputStream(server.getInputStream())));
+
+                String type;
+                Properties props = new Properties();
                 props.load(this.getClass().getResourceAsStream("/config/misc.properties"));
                 type = br.readLine().split("\n")[0];
                 Logger.getLogger(this.getClass().getName()).info(type);
@@ -67,28 +68,29 @@ public class AppStage {
                     if (type.startsWith(Protocol.LOCAL_VERSION)) {
                         String localVersion = props.getProperty("local-version");
                         Logger.getLogger(this.getClass().getName()).info(localVersion);
-                        bw.write(localVersion+"\n");
+                        bw.write(localVersion + "\n");
                     } else if (type.startsWith(Protocol.REMOTE_VERSION_URL)) {
                         String remoteVersionUrl = props.getProperty("remote-version-url");
                         Logger.getLogger(this.getClass().getName()).info(remoteVersionUrl);
-                        bw.write(remoteVersionUrl+"\n");
+                        bw.write(remoteVersionUrl + "\n");
                     } else if (type.startsWith(Protocol.REMOTE_TARGET_FILE_URL)) {
                         String remoteTargetFileUrl = props.getProperty("remote-target-file-url");
                         Logger.getLogger(this.getClass().getName()).info(remoteTargetFileUrl);
-                        bw.write(remoteTargetFileUrl+"\n");
+                        bw.write(remoteTargetFileUrl + "\n");
                     }
                     bw.flush();
                     type = br.readLine().split("\n")[0];
                     Logger.getLogger(this.getClass().getName()).info(type);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
             } finally {
                 try {
-                    bw.close();
-                    br.close();
+                    if (bw != null) bw.close();
+                    if (br != null) br.close();
+                    if (server != null) server.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
                 }
             }
         }).start();
@@ -116,7 +118,7 @@ public class AppStage {
         try {
             loadScene(lastFxml);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "load last scene失败");
         }
         // last position
         Point lastPos = configuration.getLastPos();
@@ -167,8 +169,8 @@ public class AppStage {
                 (int) appStage.getX(), (int) appStage.getY()
         ));
         // 2. 更新窗口大小
-        configuration.setLastSize(new Point(
-                (int) appStage.getWidth(), (int) appStage.getHeight()
+        configuration.setLastSize(new WindowSize(
+                appStage.getScene().getWidth(), appStage.getScene().getHeight()
         ));
         // 3. 更新窗口模式 main or focus
         configuration.setLastFxmlPath(
@@ -179,6 +181,9 @@ public class AppStage {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void switchScene(SwitchSceneEvent switchSceneEvent) {
+        // 切换场景时保存一次配置
+        updateConfig();
+        // 执行切换
         try {
             switch (switchSceneEvent.getType()) {
                 case MAIN_SCENE:
@@ -201,7 +206,7 @@ public class AppStage {
                     break;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "切换scene失败");
         }
     }
 
