@@ -57,11 +57,12 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
         }
         // 处理
         view.translateStart();
+        boolean error = false;
         try {
             String text = OCRUtils.ocr(image);
             if (text == null) {
                 view.setText("OCR翻译失败，请检查API配置", "OCR翻译失败，请检查API配置");
-                view.translateEnd();
+                error = true;
             } else {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "ocr识别结果:" + text);
                 translatorFacade.singleTranslate(text, (stringPair -> {
@@ -73,7 +74,10 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
                 }));
             }
         } catch (IOException e) {
+            error = true;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
+        }
+        if (error) {
             view.translateEnd();
         }
     }

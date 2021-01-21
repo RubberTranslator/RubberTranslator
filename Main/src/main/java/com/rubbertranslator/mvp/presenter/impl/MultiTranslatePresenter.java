@@ -80,11 +80,11 @@ public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView>
         // 处理
         view.translateStart();
         String originText;
+        boolean error = false;
         try {
             originText = OCRUtils.ocr(image);
             if (originText == null) {
-                view.setTranslateResult(TranslatorType.GOOGLE, "OCR翻译失败，请检查API配置");
-                view.translateEnd();
+                error = true;
                 return;
             }
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "ocr识别结果:" + originText);
@@ -101,7 +101,11 @@ public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView>
                 }
             }));
         } catch (IOException e) {
+            error = true;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
+        }
+        if (error) {
+            view.setTranslateResult(TranslatorType.GOOGLE, "OCR翻译失败，请检查API配置");
             view.translateEnd();
         }
     }
