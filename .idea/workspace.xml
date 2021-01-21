@@ -6,23 +6,40 @@
       <artifact name="Main:jar" />
     </artifacts-to-build>
   </component>
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5032b922-3a91-4ef5-affe-87e2ab0c9a72" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Launcher_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/Launcher_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_win_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_1stleg_jnativehook_2_1_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_platform_4_1_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_greenrobot_eventbus_3_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_8_0_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Launcher/Launcher.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher/Launcher.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/Main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/Main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/listener/GlobalMouseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main/src/main/java/com/rubbertranslator/mvp/modules/textinput/mousecopy/listener/GlobalMouseListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,9 +99,9 @@
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/out/Main/lib/app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Main" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.30804598" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
@@ -106,7 +123,7 @@
       <recent name="com.rubbertranslator.enumtype" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Launcher">
+  <component name="RunManager" selected="Application.App">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.rubbertranslator.App" />
       <module name="Main" />
@@ -141,19 +158,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="/home/raven/Projects/RubberTranslator" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -168,22 +172,20 @@
         </option>
         <option name="vmOptions" value="" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.App" />
         <item itemvalue="Application.Launcher" />
         <item itemvalue="Gradle./home/raven/Projects/RubberTranslator" />
-        <item itemvalue="Application.App" />
         <item itemvalue="Application.Test" />
         <item itemvalue="Application.DownloadTest" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -252,6 +254,60 @@
     <MESSAGE value="linux-v3.2.1" />
     <MESSAGE value="添加打包脚本" />
     <option name="LAST_COMMIT_MESSAGE" value="添加打包脚本" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="416" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1611227777798">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="416" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227777798" />
+    <state x="742" y="245" key="FileChooserDialogImpl" timestamp="1611227869352">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="742" y="245" key="FileChooserDialogImpl/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227869352" />
+    <state width="1878" height="334" key="GridCell.Tab.0.bottom" timestamp="1611227912509">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="334" key="GridCell.Tab.0.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227912509" />
+    <state width="1878" height="334" key="GridCell.Tab.0.center" timestamp="1611227912509">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="334" key="GridCell.Tab.0.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227912509" />
+    <state width="1878" height="334" key="GridCell.Tab.0.left" timestamp="1611227912508">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="334" key="GridCell.Tab.0.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227912508" />
+    <state width="1878" height="334" key="GridCell.Tab.0.right" timestamp="1611227912509">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="334" key="GridCell.Tab.0.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227912509" />
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom" timestamp="1611227616823">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="352" key="GridCell.Tab.1.bottom/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227616823" />
+    <state width="1878" height="352" key="GridCell.Tab.1.center" timestamp="1611227616823">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="352" key="GridCell.Tab.1.center/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227616823" />
+    <state width="1878" height="352" key="GridCell.Tab.1.left" timestamp="1611227616822">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="352" key="GridCell.Tab.1.left/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227616822" />
+    <state width="1878" height="352" key="GridCell.Tab.1.right" timestamp="1611227616823">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1878" height="352" key="GridCell.Tab.1.right/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227616823" />
+    <state x="607" y="259" key="NewModule_or_Project.wizard" timestamp="1611227871200">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="607" y="259" key="NewModule_or_Project.wizard/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227871200" />
+    <state x="441" y="129" key="SettingsEditor" timestamp="1611227921469">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="441" y="129" key="SettingsEditor/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227921469" />
+    <state x="623" y="258" width="672" height="678" key="search.everywhere.popup" timestamp="1611227632185">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="623" y="258" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/3840.0.1440.900@0.30.1920.1050" timestamp="1611227632185" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

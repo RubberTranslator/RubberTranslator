@@ -1,10 +1,8 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.listener;
 
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods.MouseEventDispatcher;
-import org.jnativehook.GlobalScreen;
 import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseInputListener;
-import org.jnativehook.mouse.NativeMouseMotionListener;
 
 /**
  * @author Raven
