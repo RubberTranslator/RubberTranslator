@@ -1,6 +1,5 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
-import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.enumtype.TextAreaCursorPos;
@@ -9,7 +8,6 @@ import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
-import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.FocusViewPresenter;
 import com.rubbertranslator.mvp.view.controller.IFocusView;
@@ -20,7 +18,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -33,7 +30,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -309,14 +305,7 @@ public class FocusModeController implements Initializable, IFocusView {
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
         } else {                // 图片类型
-            try {
-                String text = OCRUtils.ocr(event.getImage());
-                if (text != null) {
-                    presenter.translate(text);
-                }
-            } catch (IOException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
-            }
+            presenter.translate(event.getImage());
         }
     }
 

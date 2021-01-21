@@ -5,8 +5,14 @@ import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods.CopyRobot;
+import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateView> {
 
@@ -34,12 +40,42 @@ public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateVie
         // 处理
         view.translateStart();
         translatorFacade.singleTranslate(originText, (stringPair -> {
-            view.setText(stringPair.getFirst(), stringPair.getSecond());
+            if (stringPair != null) {
+                view.setText(stringPair.getFirst(), stringPair.getSecond());
+            }
             // end
             view.translateEnd();
         }));
     }
 
+    @Override
+    public void translate(Image image) {
+        super.translate(image);
+        // 如果开启了自动复制，那么需要跳过下一次复制
+        if (configManger.getSystemConfiguration().isAutoCopy()) {
+            clipboardListenerThread.ignoreThisTime();
+        }
+        // 处理
+        view.translateStart();
+        try {
+            String text = OCRUtils.ocr(image);
+            if (text != null) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "ocr识别结果:" + text);
+                translatorFacade.singleTranslate(text, (stringPair -> {
+                    if (stringPair != null) {
+                        view.setText(stringPair.getFirst(), stringPair.getSecond());
+                    }
+                    // end
+                    view.translateEnd();
+                }));
+            } else {
+                view.translateEnd();
+            }
+        } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
+            view.translateEnd();
+        }
+    }
 
     @Override
     public void setHistoryEntry(HistoryEntryIndex index) {
