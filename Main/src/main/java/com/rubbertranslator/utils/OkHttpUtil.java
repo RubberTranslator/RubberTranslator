@@ -33,14 +33,14 @@ public class OkHttpUtil {
      * @param url     请求的url
      * @param queries 请求的参数，在浏览器？后面的数据，没有可以传null
      * @return 成功 responseBody (String)
-     *          失败 null
+     * 失败 null
      */
     public static String get(String url, Map<String, String> queries) {
         String result = null;
         StringBuilder sb = new StringBuilder(url);
         if (queries != null && queries.keySet().size() > 0) {
             boolean firstFlag = true;
-            for (Map.Entry<String,String> entry : queries.entrySet()) {
+            for (Map.Entry<String, String> entry : queries.entrySet()) {
                 if (firstFlag) {
                     sb.append("?").append(entry.getKey()).append("=").append(entry.getValue());
                     firstFlag = false;
@@ -71,7 +71,7 @@ public class OkHttpUtil {
      * @param url    请求的url
      * @param params post form 提交的参数
      * @return 成功 responseBody (String)
-     *          失败 null
+     * 失败 null
      */
     public static String post(String url, Map<String, String> params) {
         String result = null;
@@ -147,7 +147,7 @@ public class OkHttpUtil {
                 sslContext.init(null, new TrustManager[]{x509TrustManager()}, new SecureRandom());
                 return sslContext.getSocketFactory();
             } catch (NoSuchAlgorithmException | KeyManagementException e) {
-                e.printStackTrace();
+                Logger.getLogger(OkHttpUtil.class.getName(), "初始化SSL失败");
             }
             return null;
         }

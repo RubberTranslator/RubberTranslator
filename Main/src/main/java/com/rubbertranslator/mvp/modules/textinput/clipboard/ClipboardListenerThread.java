@@ -8,6 +8,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -78,7 +79,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                 if (waitTime < maxWaitTime) {
                     waitTime += 100;  // 增加100ms等待时间
                 }
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "剪切板被抢占，尝试延时后重试");
             } finally {
                 if (waitTime > minWaitTime) {
                     waitTime -= 10;   // 减少10ms等待时间
@@ -141,7 +142,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
             try {
                 this.wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ClipboardThread保活失败");
             }
         }
 

@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -114,7 +113,6 @@ public class Launcher extends Application {
         try {
             mainProcess = new ProcessBuilder(mainExePath).start();
         } catch (IOException e) {
-            e.printStackTrace();
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "启动主进程失败");
             destroy(-1);
         }
@@ -126,7 +124,7 @@ public class Launcher extends Application {
                 socket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "关闭socket失败");
         } finally {
             System.exit(status);
         }
@@ -197,7 +195,7 @@ public class Launcher extends Application {
                 if (bw != null) bw.close();
                 if (client != null) client.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "关闭通信输入、输出识别");
             }
         }
     }
@@ -347,7 +345,7 @@ public class Launcher extends Application {
                 isArchive = (Arrays.equals(ZIP_HEADER_1, buffer)) || (Arrays.equals(ZIP_HEADER_2, buffer));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(Launcher.class.getName()).log(Level.SEVERE, "判定下载文件是否为压缩(jar)包失败");
         }
 
         return isArchive;

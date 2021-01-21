@@ -6,14 +6,10 @@ import com.rubbertranslator.entity.Protocol;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.system.SystemConfiguration;
-import com.rubbertranslator.system.SystemConfigurationManager;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -22,8 +18,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
-import java.net.URI;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -123,7 +117,7 @@ public class AppStage {
         try {
             loadScene(lastFxml);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "load last scene失败");
         }
         // last position
         Point lastPos = configuration.getLastPos();
@@ -208,7 +202,7 @@ public class AppStage {
                     break;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "切换scene失败");
         }
     }
 

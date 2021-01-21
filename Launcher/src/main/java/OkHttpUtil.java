@@ -145,7 +145,7 @@ public class OkHttpUtil {
                 sslContext.init(null, new TrustManager[]{x509TrustManager()}, new SecureRandom());
                 return sslContext.getSocketFactory();
             } catch (NoSuchAlgorithmException | KeyManagementException e) {
-                e.printStackTrace();
+                Logger.getLogger(OkHttpUtil.class.getName(), "初始化SSL失败");
             }
             return null;
         }

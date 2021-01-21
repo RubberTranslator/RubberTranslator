@@ -83,6 +83,7 @@ public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView>
         try {
             originText = OCRUtils.ocr(image);
             if (originText == null) {
+                view.setTranslateResult(TranslatorType.GOOGLE, "OCR翻译失败，请检查API配置");
                 view.translateEnd();
                 return;
             }
