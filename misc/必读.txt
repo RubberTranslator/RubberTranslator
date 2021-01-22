@@ -22,6 +22,10 @@ Linux:
 
 [Changelogs]
 2020-1-22
+RubberTranslator-v3.3.2
+1. 兼容多个显示器位置记录
+
+2020-1-22
 RubberTranslator-v3.3.1(跳过v3.3.0)
 1. 新增窗口大小记录功能
 2. 新增词组批量导入与导出功能
