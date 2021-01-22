@@ -9,8 +9,10 @@ import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -164,16 +166,25 @@ public class AppStage {
      * 更新由AppStage管理着的配置，包括：当前window位置，大小和当前模式
      */
     public void updateConfig() {
-        // 1. 更新当前位置 为了避免双屏越界问题，最大横坐标为1980，最大纵坐标为1080
+        // 1. 更新当前位置 为了避免双屏越界问题
+        ObservableList<Screen> screenSizes = Screen.getScreens();
+        final double[] minScreenWidth = {Double.MAX_VALUE};
+        final double[] minScreenHeight = {Double.MAX_VALUE};
+        screenSizes.forEach(screen -> {
+            minScreenWidth[0] = Math.min(minScreenWidth[0], screen.getBounds().getWidth());
+            minScreenHeight[0] = Math.min(minScreenHeight[0], screen.getBounds().getHeight());
+        });
+
+
         double stageWidth = appStage.getWidth();
         double stageHeight = appStage.getHeight();
-        double locationX = Math.min(appStage.getX(), 1900 - stageWidth);
-        double locationY = Math.min(appStage.getY(), 900 - stageHeight);
+        double locationX = Math.min(appStage.getX(), minScreenWidth[0] - stageWidth);
+        double locationY = Math.min(appStage.getY(), minScreenHeight[0] - stageHeight);
         locationX = locationX > 0 ? locationX : 0;
         locationY = locationY > 0 ? locationY : 0;
 
         configuration.setLastPos(new Point(
-                (int)locationX, (int)locationY
+                (int) locationX, (int) locationY
         ));
         // 2. 更新窗口大小
         configuration.setLastSize(new WindowSize(
