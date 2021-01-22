@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
-      <module name="Launcher" target="8" />
+      <module name="Launcher" target="1.8" />
       <module name="Main" target="1.8" />
     </bytecodeTargetLevel>
   </component>

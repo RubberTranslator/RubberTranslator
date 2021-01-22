@@ -1,3 +1,4 @@
+Win:
 [首次安装]
 解压本安装包到任意不含中文路径的目录即可，点击Launcher.exe文件启动程序。
 
@@ -6,25 +7,35 @@
 2. 【手动更新】在https://github.com/ravenxrz/RubberTranslator/releases页面中下载Main.jar， 替换至app路径下
 3. 【手动更新】下载全量压缩包，解压到之前安装包的路径替换原文件即可
 
+Linux:
+[首次安装]
+解压本安装包到任意不含中文路径的目录即可，使用终端进入bin路径，执行./Launcher。 （如果没有执行权限，请自行添加权限 chmod + x Launcher。
+
+[更新软件]
+1. 【自动更新】已支持热更新(beta版，不一定成功）
+2. 【手动更新】在https://github.com/ravenxrz/RubberTranslator/releases页面中下载Main.jar， 替换至lib/app路径下
+2. 【手动更新】下载全量压缩包，解压到之前安装包的路径替换原文件即可
+
 [问题反馈或建议]
 1. Github issuse: https://github.com/ravenxrz/RubberTranslator/issues
 2. 讨论群：118149802
 
 [Changelogs]
 2020-1-22
-RubberTranslator-v3.3.0
+RubberTranslator-v3.3.1(跳过v3.3.0)
 1. 新增窗口大小记录功能
 2. 新增词组批量导入与导出功能
-3. 优化OCR处理
-4. json配置文件回写格式化
+3. json配置文件回写格式化
+4. 修复OCR翻译bug
 5. 修复Linux平台下打开FileChooser窗口crash的bug
 6. 热更新通信改用Socket，原因：Linux下采用父子进程输入输出流会有一些扰乱输入。
 
 
 2020-1-18
-RubberTranslator-v3.2.1
+RubberTranslator-v3.2.1（Linux版本发布！！）
 1. 去掉冗余代码
-2. 初步测试通过
+2. 初步测试通
+3. Linux版本发布
 
 2020-1-17
 RubberTranslator-v3.2.1-beta

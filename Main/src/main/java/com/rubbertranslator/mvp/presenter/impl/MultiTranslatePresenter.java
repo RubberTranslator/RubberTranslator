@@ -85,21 +85,21 @@ public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView>
             originText = OCRUtils.ocr(image);
             if (originText == null) {
                 error = true;
-                return;
+            } else {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "ocr识别结果:" + originText);
+                AtomicInteger count = new AtomicInteger();
+                translatorFacade.multiTranslate(originText, (pair -> {
+                    if (pair != null) {
+                        view.setTranslateResult(pair.getFirst(), pair.getSecond());
+                    }
+                    // 翻译完成，重新开启输入
+                    int value = count.incrementAndGet();
+                    if (value == TranslatorType.values().length) {
+                        // end
+                        view.translateEnd();
+                    }
+                }));
             }
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "ocr识别结果:" + originText);
-            AtomicInteger count = new AtomicInteger();
-            translatorFacade.multiTranslate(originText, (pair -> {
-                if (pair != null) {
-                    view.setTranslateResult(pair.getFirst(), pair.getSecond());
-                }
-                // 翻译完成，重新开启输入
-                int value = count.incrementAndGet();
-                if (value == TranslatorType.values().length) {
-                    // end
-                    view.translateEnd();
-                }
-            }));
         } catch (IOException e) {
             error = true;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ocr识别错误", e);
