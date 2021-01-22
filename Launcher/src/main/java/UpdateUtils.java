@@ -23,7 +23,11 @@ public class UpdateUtils {
             return;
         }
         remoteVersion = remoteVersion.split("\n")[0];
-        // compare
-        callback.callBack(localVersion.compareTo(remoteVersion) < 0);
+        if(remoteVersion.endsWith("beta")){
+            callback.callBack(false);
+        }else{
+            // compare
+            callback.callBack(localVersion.compareTo(remoteVersion) < 0);
+        }
     }
 }
