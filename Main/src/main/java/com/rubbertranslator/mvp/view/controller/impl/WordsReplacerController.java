@@ -16,12 +16,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.*;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -34,9 +35,9 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
     @FXML   //
     private TableView<WordsPair> wordsPairTableView;
     @FXML
-    private TableColumn<WordsPair,String> sourceCol;
+    private TableColumn<WordsPair, String> sourceCol;
     @FXML
-    private TableColumn<WordsPair,String> destCol;
+    private TableColumn<WordsPair, String> destCol;
 
     private WordsReplacerPresenter presenter;
 
@@ -65,19 +66,19 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
         sourceCol.setOnEditCommit(
                 (TableColumn.CellEditEvent<WordsPair, String> t) -> {
                     String newValue = t.getNewValue();
-                    if("".equals(newValue)){
+                    if ("".equals(newValue)) {
                         return;
                     }
-                    if(checkDuplicateItem(newValue)){
+                    if (checkDuplicateItem(newValue)) {
 //                        t.getTableView().getItems().get(
 //                                t.getTablePosition().getRow()).setSrc("存在相同key！");
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("提示");
                         alert.setHeaderText("重复元素");
-                        alert.setContentText("<<"+newValue+">>条目已存在");
+                        alert.setContentText("<<" + newValue + ">>条目已存在");
                         alert.initOwner(vBox.getScene().getWindow());
                         alert.showAndWait();
-                    }else{
+                    } else {
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setFirst(newValue);
                     }
@@ -87,7 +88,7 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
         destCol.setOnEditCommit(
                 (TableColumn.CellEditEvent<WordsPair, String> t) -> {
                     String newValue = t.getNewValue();
-                    if(!"".equals(newValue)){
+                    if (!"".equals(newValue)) {
                         t.getTableView().getItems().get(
                                 t.getTablePosition().getRow()).setSecond(newValue);
                     }
@@ -105,30 +106,128 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
 
     /**
      * 重复条目
+     *
      * @param text 需要检查的文本
      * @return true 存在重复条目
-     *          false 不存在
+     * false 不存在
      */
-    private boolean checkDuplicateItem(String text){
+    private boolean checkDuplicateItem(String text) {
         return wordsPairTableView.getItems().parallelStream().anyMatch(
                 wordsPair -> wordsPair.getSecond().equals(text)
         );
     }
 
-
     @FXML
-    public void onAddButtonClick(){
-        wordsPairTableView.getItems().add(new WordsPair("译文样例(支持java正则表达式)","替换样例"));
+    public void onImportFromTxtButtonClick() {
+        // show filechooser
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt")
+        );
+        File selectedFile = fileChooser.showOpenDialog(vBox.getScene().getWindow());
+        if (selectedFile == null) return;
+
+        List<WordsPair> wordsPairs = parseWordTxt(selectedFile);
+        wordsPairs.forEach(System.out::println);
+        // do add
+        wordsPairTableView.getItems().addAll(wordsPairs);
     }
 
     @FXML
-    public void onRemoveButtonClick(){
+    public void onExportToTxtButtonClick() {
+        Set<WordsPair> set = new HashSet<>(wordsPairTableView.getItems());
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("提示");
+        if (set.isEmpty()) {
+            alert.setHeaderText("当前词组为空");
+        } else {
+            String exportPath = System.getProperty("user.dir") + "/RubberTranslator/export/words.txt";
+            if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
+                exportPath = exportPath.replaceAll("\\\\", "/");
+            }
+            doExport(set, exportPath);
+            alert.setHeaderText("已导出至：" + exportPath);
+        }
+        alert.initOwner(vBox.getScene().getWindow());
+        alert.showAndWait();
+    }
+
+    private void doExport(Set<WordsPair> set, String exportPath) {
+        if (exportPath == null) return;
+        File file = new File(exportPath);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        BufferedWriter out = null;
+        try {
+            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+            for (WordsPair wp : set) {
+                String wpStr = wp.getFirst() + ":" + wp.getSecond();
+                out.write(wpStr + "\n");
+            }
+        } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).info(e.getLocalizedMessage());
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    /**
+     * 从txt中解析词组
+     * 词组格式
+     * 原文:译文
+     *
+     * @param file
+     * @return
+     */
+    List<WordsPair> parseWordTxt(File file) {
+        BufferedReader br = null;
+        List<WordsPair> wordsPairs = new ArrayList<>();
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] words = line.split(":|：");
+                if (words.length == 1) {
+                    continue;
+                }
+                wordsPairs.add(new WordsPair(words[0], words[1]));
+            }
+        } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).info(e.getLocalizedMessage());
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return wordsPairs;
+    }
+
+
+    @FXML
+    public void onAddButtonClick() {
+        wordsPairTableView.getItems().add(new WordsPair("译文样例(支持java正则表达式)", "替换样例"));
+    }
+
+    @FXML
+    public void onRemoveButtonClick() {
         ObservableList<WordsPair> selectedItems = wordsPairTableView.getSelectionModel().getSelectedItems();
         wordsPairTableView.getItems().removeAll(selectedItems);
     }
 
     @FXML
-    public void onConfirmButtonClick(){
+    public void onConfirmButtonClick() {
         // 应用生效并持久化
         Set<WordsPair> set = new HashSet<>(wordsPairTableView.getItems());
         presenter.apply(set);
@@ -137,6 +236,6 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
 
     @Override
     public void apply() {
-        ((Stage)(vBox.getScene().getWindow())).close();
+        ((Stage) (vBox.getScene().getWindow())).close();
     }
 }

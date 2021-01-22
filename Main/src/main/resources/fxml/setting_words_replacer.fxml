@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+
 <VBox fx:id="vBox" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.mvp.view.controller.impl.WordsReplacerController">
    <children>
       <TableView fx:id="wordsPairTableView" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -14,6 +17,8 @@
       </TableView>
       <HBox alignment="CENTER_RIGHT" spacing="10.0">
          <children>
+            <Button mnemonicParsing="false" onAction="#onImportFromTxtButtonClick" text="从txt中导入" />
+            <Button mnemonicParsing="false" onAction="#onExportToTxtButtonClick" text="导出到txt" />
             <Button mnemonicParsing="false" onAction="#onAddButtonClick" text="添加" />
             <Button mnemonicParsing="false" onAction="#onRemoveButtonClick" text="删除" />
             <Button mnemonicParsing="false" onAction="#onConfirmButtonClick" text="确定" />
