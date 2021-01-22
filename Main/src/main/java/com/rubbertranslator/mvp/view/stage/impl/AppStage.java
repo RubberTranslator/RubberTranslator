@@ -164,9 +164,9 @@ public class AppStage {
      * 更新由AppStage管理着的配置，包括：当前window位置，大小和当前模式
      */
     public void updateConfig() {
-        // 1. 更新当前位置
+        // 1. 更新当前位置 为了避免双屏越界问题，最大横坐标为1900，最大纵坐标为800
         configuration.setLastPos(new Point(
-                (int) appStage.getX(), (int) appStage.getY()
+                Math.min(Math.max((int) appStage.getX(),0),1900), Math.min(Math.max((int) appStage.getY(),0),800)
         ));
         // 2. 更新窗口大小
         configuration.setLastSize(new WindowSize(
