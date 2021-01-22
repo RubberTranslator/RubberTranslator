@@ -11,6 +11,15 @@
 2. 讨论群：118149802
 
 [Changelogs]
+2020-1-22
+RubberTranslator-v3.3.0
+1. 新增窗口大小记录功能
+2. 新增词组批量导入与导出功能
+3. 优化OCR处理
+4. json配置文件回写格式化
+5. 修复Linux平台下打开FileChooser窗口crash的bug
+6. 热更新通信改用Socket，原因：Linux下采用父子进程输入输出流会有一些扰乱输入。
+
 2020-1-18
 RubberTranslator-v3.2.1（Linux版本发布！！）
 1. 去掉冗余代码

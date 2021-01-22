@@ -111,3 +111,4 @@ configuration-*.json
 *.log
 *.lck
 out/
+RubberTranslator/export/words.txt
