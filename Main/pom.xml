@@ -6,6 +6,8 @@
     <version>1.0-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -49,7 +51,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.6</version>
+            <version>2.8.5</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
@@ -100,43 +102,43 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <release>11</release>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.3</version>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                    <release>8</release>
-                    <!-- runtime options-->
-<!--                    <options>-->
-<!--                        <option>&#45;&#45;add-opens</option>-->
-<!--                        <option>java.base/java.lang=cglib</option>-->
-<!--                    </options>-->
-                    <!--jlink-->
-                    <stripDebug>true</stripDebug>
-                    <compress>2</compress>
-                    <noHeaderFiles>true</noHeaderFiles>
-                    <noManPages>true</noManPages>
-                    <launcher>Launcher</launcher>
-                    <jlinkImageName>Launcher</jlinkImageName>
-                    <jlinkZipName>RubberTranslator</jlinkZipName>
-                    <mainClass>com.rubbertranslator.App</mainClass>
-                    <launcher>start</launcher>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>3.8.0</version>-->
+<!--                <configuration>-->
+<!--                    <release>11</release>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.openjfx</groupId>-->
+<!--                <artifactId>javafx-maven-plugin</artifactId>-->
+<!--                <version>0.0.3</version>-->
+<!--                <configuration>-->
+<!--                    <source>8</source>-->
+<!--                    <target>8</target>-->
+<!--                    <release>8</release>-->
+<!--                    &lt;!&ndash; runtime options&ndash;&gt;-->
+<!--&lt;!&ndash;                    <options>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>&#45;&#45;add-opens</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option>java.base/java.lang=cglib</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </options>&ndash;&gt;-->
+<!--                    &lt;!&ndash;jlink&ndash;&gt;-->
+<!--                    <stripDebug>true</stripDebug>-->
+<!--                    <compress>2</compress>-->
+<!--                    <noHeaderFiles>true</noHeaderFiles>-->
+<!--                    <noManPages>true</noManPages>-->
+<!--                    <launcher>Launcher</launcher>-->
+<!--                    <jlinkImageName>Launcher</jlinkImageName>-->
+<!--                    <jlinkZipName>RubberTranslator</jlinkZipName>-->
+<!--                    <mainClass>com.rubbertranslator.App</mainClass>-->
+<!--                    <launcher>start</launcher>-->
 
-                    <!-- extra args -->
-<!--                    <commandlineArgs>-XX:+UseG1GC</commandlineArgs>-->
-<!--                    <commandlineArgs>-Xms60M</commandlineArgs>-->
-                </configuration>
-            </plugin>
+<!--                    &lt;!&ndash; extra args &ndash;&gt;-->
+<!--&lt;!&ndash;                    <commandlineArgs>-XX:+UseG1GC</commandlineArgs>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <commandlineArgs>-Xms60M</commandlineArgs>&ndash;&gt;-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>
