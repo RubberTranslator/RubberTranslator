@@ -4,7 +4,7 @@ Win:
 
 [更新软件]
 1. 【自动更新】已支持热更新(beta版，不一定成功)
-2. 【手动更新】在https://github.com/ravenxrz/RubberTranslator/releases页面中下载Main.jar， 替换至app路径下
+2. 【手动更新】在https://github.com/ravenxrz/RubberTranslator/releases 页面中下载Main.jar， 替换至app路径下
 3. 【手动更新】下载全量压缩包，解压到之前安装包的路径替换原文件即可
 
 Linux:
@@ -13,7 +13,7 @@ Linux:
 
 [更新软件]
 1. 【自动更新】已支持热更新(beta版，不一定成功）
-2. 【手动更新】在https://github.com/ravenxrz/RubberTranslator/releases页面中下载Main.jar， 替换至lib/app路径下
+2. 【手动更新】在https://github.com/ravenxrz/RubberTranslator/releases 页面中下载Main.jar， 替换至lib/app路径下
 2. 【手动更新】下载全量压缩包，解压到之前安装包的路径替换原文件即可
 
 [问题反馈或建议]
@@ -21,6 +21,10 @@ Linux:
 2. 讨论群：118149802
 
 [Changelogs]
+2020-1-24
+RubberTranslator-v3.3.3
+1. 重新加入Junique库，避免重复启动多个应用实例，带来bug
+
 2020-1-22
 RubberTranslator-v3.3.2
 1. 兼容多个显示器位置记录

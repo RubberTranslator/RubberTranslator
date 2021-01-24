@@ -1,9 +1,15 @@
+# 打包流程
+# 1. 在IDEA中 Build-->Build Artifacts
+# 2. 设置jpackage和javafx mods变量到合适路径
+# 3. 执行本脚本即可
+# 注：打包后的软件包在 out/RubberTranslator 路径下
+
 # 清空文件夹
 rm -rf out/Launcher
 rm -rf out/Main
 rm -rf out/RubberTranslator
 
-# set jpackage path
+# set jpackage and jfxmod path
 jpackage=/home/raven/Downloads/jdk-14.0.2/bin/jpackage
 jfxmods_path=/home/raven/Downloads/javafx-jmods-11.0.2
 
