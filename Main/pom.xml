@@ -68,6 +68,13 @@
             <version>3.1.1</version>
         </dependency>
 
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/it.sauronsoftware/junique &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>it.sauronsoftware</groupId>-->
+<!--            <artifactId>junique</artifactId>-->
+<!--            <version>1.0.4</version>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>
