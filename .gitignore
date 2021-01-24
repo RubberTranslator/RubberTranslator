@@ -112,3 +112,4 @@ configuration-*.json
 *.lck
 out/
 RubberTranslator/export/words.txt
+!Main/libs/*.jar
