@@ -1,5 +1,7 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
+import com.rubbertranslator.utils.OSTypeUtil;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -58,11 +60,20 @@ public class CopyRobot {
      */
     public synchronized void triggerCopy(){
         // do copy action
-        robot.keyPress(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_C);
-        robot.delay(robot.getAutoDelay());
-        robot.keyRelease(KeyEvent.VK_C);
-        robot.keyRelease(KeyEvent.VK_CONTROL);
+        if(OSTypeUtil.isMac()){
+            robot.keyPress(KeyEvent.VK_META);
+            robot.keyPress(KeyEvent.VK_C);
+            robot.delay(robot.getAutoDelay());
+            robot.keyRelease(KeyEvent.VK_C);
+            robot.keyRelease(KeyEvent.VK_META);
+        }else{
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_C);
+            robot.delay(robot.getAutoDelay());
+            robot.keyRelease(KeyEvent.VK_C);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+        }
+
     }
 
     /**
