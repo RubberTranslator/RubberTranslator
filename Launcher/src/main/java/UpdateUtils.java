@@ -1,5 +1,3 @@
-package com.rubbertranslator;
-
 /**
  * @author Raven
  * @version 1.0

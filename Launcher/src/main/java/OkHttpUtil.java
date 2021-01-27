@@ -1,5 +1,3 @@
-package com.rubbertranslator;
-
 import okhttp3.*;
 
 import javax.net.ssl.SSLContext;

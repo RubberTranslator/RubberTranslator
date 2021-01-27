@@ -1,5 +1,3 @@
-package com.rubbertranslator;
-
 /**
  * 通信协议
  */

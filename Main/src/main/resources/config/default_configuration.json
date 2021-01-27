@@ -10,7 +10,7 @@
     "y": 500.0
   },
   "last_fxml_path": "/fxml/main.fxml",
-  "open_clipboard_listener": false,
+  "open_clipboard_listener": true,
   "drag_copy": false,
   "baidu_ocr_api_key": "",
   "baidu_ocr_secret_key": "",

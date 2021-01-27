@@ -1,14 +1,9 @@
-package com.rubbertranslator;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -21,7 +16,6 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +35,7 @@ public class Launcher extends Application {
     // 主进程handler
     private Process mainProcess;
 
-    private final String mainDir = ".";
+    private String mainDir = ".";
 
     private String mainExePath;
 
@@ -50,21 +44,21 @@ public class Launcher extends Application {
     private String targetJarPath;
 
     {
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.startsWith("win")) {
+        if (OSTypeUtil.isWin()) {
             // 主进程可执行文件路径
             mainExePath = mainDir + File.separator + "Main.exe";
             targetJarPath = mainDir + File.separator + "app/Main.jar";
             // 更新文件临时放置路径
             tmpUpdateJarPath = mainDir + File.separator + "app/tmp/Main.jar";
-        } else if (os.startsWith("linux")) {
+        } else if (OSTypeUtil.isLinux()) {
             mainExePath = mainDir + File.separator + "Main";
             targetJarPath = mainDir + File.separator + "../lib/app/Main.jar";
             tmpUpdateJarPath = mainDir + File.separator + "../lib/app/tmp/Main.jar";
-        } else if(os.startsWith("mac")){  // mac?
-            mainExePath =  mainDir + File.separator + "../MacOS/Main";
-            targetJarPath = mainDir + File.separator + "Main-1.0-SNAPSHOT-jfx.jar";
-            tmpUpdateJarPath = mainDir + File.separator + "tmp/Main.jar";
+        } else if (OSTypeUtil.isMac()) {  // mac?
+            initMacMainDir();
+            mainExePath = mainDir + File.separator + "Main";
+            targetJarPath = mainDir + File.separator + "../app/Main.jar";
+            tmpUpdateJarPath = mainDir + File.separator + "../app/tmp/Main.jar";
         }
 
     }
@@ -90,6 +84,17 @@ public class Launcher extends Application {
         initSocket();
         runMainProgram();
         checkUpdate();
+    }
+
+    private void initMacMainDir() {
+        String[] paths = System.getProperty("java.class.path").split(":");
+        for (String path : paths) {
+            if (path.contains("Launcher")) {
+                File dir = new File(path).getParentFile().getParentFile();
+                mainDir = dir.getAbsolutePath() + File.separator + "MacOS";
+                return;
+            }
+        }
     }
 
     private void initSocket() {
@@ -125,10 +130,8 @@ public class Launcher extends Application {
             }
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "关闭socket失败");
-        } finally {
-            System.exit(status);
         }
-
+        System.exit(status);
     }
 
     private void checkUpdate() {
@@ -284,8 +287,7 @@ public class Launcher extends Application {
             public void onDownloadSuccess() {
                 Platform.runLater(() -> {
                     title.setText("下载完成，正在启动");
-                    // 检查是否是zip文件
-                    if(tmpUpdateJarFile.length()>1024*1024){ // 大于1M就认为是正常下载的
+                    if (tmpUpdateJarFile.length() > 1024 * 1024) { // 大于1M就认为是正常下载的
                         // move from "tmp" --> "current dir", 不应该放在UI线程
                         Path tmpPath = Paths.get(tmpUpdateJarPath);
                         Path targetPath = Paths.get(targetJarPath);
@@ -295,9 +297,14 @@ public class Launcher extends Application {
                             Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
                         }
                         Logger.getLogger(this.getClass().getName()).info("update success");
-                        runMainProgram();
-                        destroy(0);
-                    }else{
+                        if(OSTypeUtil.isMac()){  // TODO: mac jpackage 打包后，不知为何通过app文件无法重启主程序。（但是通过脚本又可以)
+                            title.setText("更新已完成，请重启应用");
+                            System.exit(0);
+                        }else{
+                            runMainProgram();
+                            destroy(0);
+                        }
+                    } else {
                         title.setText("下载失败，请手动下载");
                     }
                 });

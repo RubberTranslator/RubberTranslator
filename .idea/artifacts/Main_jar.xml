@@ -14,7 +14,7 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/java/dev/jna/jna-platform/4.1.0/jna-platform-4.1.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/greenrobot/eventbus/3.2.0/eventbus-3.2.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/squareup/okhttp3/okhttp/4.6.0/okhttp-4.6.0.jar" path-in-jar="/" />
-      <element id="library" level="project" name="Maven: it.sauronsoftware:junique:1.0.4" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/it/sauronsoftware/junique/1.0.4/junique-1.0.4.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

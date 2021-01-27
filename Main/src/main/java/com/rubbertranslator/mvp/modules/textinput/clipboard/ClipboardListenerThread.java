@@ -46,19 +46,23 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
     private void init() {
         // 注册消息监听
         // 初始化剪切板监听
-        if(OSTypeUtil.isMac()){     // mac 单独处理
-           macOSProcess();
-        }else{          // win, linux 处理
+        if (OSTypeUtil.isMac()) {     // mac 单独处理
+            macOSProcess();
+        } else {          // win, linux 处理
             Transferable trans = clipboard.getContents(this);
             clipboard.setContents(trans, this);
         }
     }
 
-    private void macOSProcess(){
+    private void macOSProcess() {
+        // mac os 采用 javafx clipboard专用接口来处理
+        javafx.scene.input.Clipboard cb = javafx.scene.input.Clipboard.getSystemClipboard();
+
         String recentTextContent = null;
         Image recentImageContent = null;
         boolean firstIsText = false;
         boolean firstImageIsSet = false;
+
         // continuously perform read from clipboard
         while (true) {      // mac os 没有lostOwnership自动唤醒机制（除非获取focus)， 所以只能采用轮询方式，有点浪费cpu
             try {
@@ -66,18 +70,21 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                 if (!running) {
                     break;
                 }
-
                 Transferable t = clipboard.getContents(null);
                 if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                     firstIsText = true;     // 为了避免第一次app程序启动时，图片直接翻译的bug
 
                     String paste = (String) t.getTransferData(DataFlavor.stringFlavor);
-                    if(recentTextContent == null){      // 为了避免第一次启动，文本直接翻译的bug
+                    if (recentTextContent == null) {      // 为了避免第一次启动，文本直接翻译的bug
                         recentTextContent = paste;
                         continue;
                     }
-                    if(!Objects.equals(paste,recentTextContent)){
+                    if (!Objects.equals(paste, recentTextContent)) {
                         recentTextContent = paste;
+                        if (ignoreThisTime) {
+                            ignoreThisTime = false;
+                            continue;
+                        }
                         if (processFilter != null && !processFilter.check()) {
                             textInputEvent.setText(paste);
                             Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + paste);
@@ -86,16 +93,20 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                     }
                 } else if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
                     Image paste = (Image) t.getTransferData(DataFlavor.imageFlavor);
-                    if(!firstIsText && !firstImageIsSet){   // 为了避免第一次app程序启动时，图片直接翻译的bug
+                    if (!firstIsText && !firstImageIsSet) {   // 为了避免第一次app程序启动时，图片直接翻译的bug
                         recentImageContent = paste;
                         firstImageIsSet = true;
                         continue;
                     }
-                    if(recentImageContent == null ||        // 检测图片是否更新，如果现在的clipboard中的图片和之前的图片的宽高是一样的，就认为是相同的图片
+                    if (recentImageContent == null ||        // 检测图片是否更新，如果现在的clipboard中的图片和之前的图片的宽高是一样的，就认为是相同的图片
                             recentImageContent.getWidth(null) != paste.getWidth(null) ||
-                                    recentImageContent.getHeight(null) != paste.getHeight(null)){
+                            recentImageContent.getHeight(null) != paste.getHeight(null)) {
                         recentImageContent = paste;
                         if (processFilter != null && !processFilter.check()) {
+                            if (ignoreThisTime) {
+                                ignoreThisTime = false;
+                                continue;
+                            }
                             textInputEvent.setImage(paste);
                             Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + "图片输入");
                             EventBus.getDefault().post(textInputEvent);
@@ -111,8 +122,8 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
 
     @Override
     public void lostOwnership(Clipboard c, Transferable t) {
-        if(OSTypeUtil.isMac()){        // MAC 只能采用轮训
-           return;
+        if (OSTypeUtil.isMac()) {        // MAC 只能采用轮训
+            return;
         }
         Transferable contents;
         // 循环require clipboard owner

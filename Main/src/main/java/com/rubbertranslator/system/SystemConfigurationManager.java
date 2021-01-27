@@ -3,6 +3,7 @@ package com.rubbertranslator.system;
 import com.google.gson.Gson;
 import com.rubbertranslator.utils.FileUtil;
 import com.rubbertranslator.utils.JsonUtil;
+import com.rubbertranslator.utils.OSTypeUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +18,18 @@ import java.util.logging.Logger;
 
 public class SystemConfigurationManager {
     // 新配置文件路径 更改为用户home目录
-    public String configJsonDir = System.getProperty("user.dir") + "/RubberTranslator/config";
+    public String configJsonDir;
     public String configJsonPath = "";
     private SystemConfiguration systemConfiguration;
+
+    {
+        if (OSTypeUtil.isMac()) {
+            configJsonDir = System.getProperty("user.home") + "/RubberTranslator/config";
+        } else {
+            configJsonDir = System.getProperty("user.dir") + "/RubberTranslator/config";
+        }
+    }
+
 
     public SystemConfiguration getSystemConfiguration() {
         return systemConfiguration;

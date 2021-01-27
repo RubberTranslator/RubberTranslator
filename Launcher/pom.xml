@@ -40,7 +40,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <!-- 有Main函数的类-->
-                            <mainClass>com.rubbertranslator.Launcher</mainClass>
+                            <mainClass>Launcher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -64,7 +64,7 @@
                 <configuration>
                     <appName>RubberTranslator</appName>
                     <vendor>raven</vendor>
-                    <mainClass>com.rubbertranslator.Launcher</mainClass>
+                    <mainClass>Launcher</mainClass>
                 </configuration>
             </plugin>
         </plugins>

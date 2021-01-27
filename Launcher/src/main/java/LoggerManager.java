@@ -1,5 +1,3 @@
-package com.rubbertranslator;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -14,7 +12,15 @@ import java.util.logging.SimpleFormatter;
  * date 2020/5/8 10:49
  */
 public class LoggerManager {
-    private static final String logFilePath = System.getProperty("user.dir") + "/RubberTranslator/log";
+    private static final String logFilePath ;
+
+    static{
+        if(OSTypeUtil.isMac()){
+            logFilePath = System.getProperty("user.home") + "/RubberTranslator/log";
+        }else{
+            logFilePath = System.getProperty("user.dir") + "/RubberTranslator/log";
+        }
+    }
 
     private static Logger fileLogger = Logger.getLogger("");
 
@@ -32,12 +38,13 @@ public class LoggerManager {
 
         //设置保存路径
         logPath.append(logFilePath).append("/").append(sdf.format(new Date())).append("-launcher.log");
+        System.out.println(logPath);
         File dir = new File(logPath.toString());
         if(!dir.getParentFile().exists()){
             dir.getParentFile().mkdirs();
         }else{
             File[] logs = dir.getParentFile().listFiles();
-            if(logs != null){
+            if(logs != null && logs.length > 10){
                 for(File log: logs){
                     if(log.exists()) log.delete();
                 }
