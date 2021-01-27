@@ -5,7 +5,6 @@
 #
 
 # 拷贝Main模块到Launcher模块
-mv -f ./Main/target/jfx/native/Main.app/Contents/MacOS/Main ./Launcher/target/jfx/native/RubberTranslator.app/Contents/MacOS/
-mv -f ./Main/target/jfx/native/Main.app/Contents/Java/lib/* ./Launcher/target/jfx/native/RubberTranslator.app/Contents/Java/lib/
-mv -f ./Main/target/jfx/native/Main.app/Contents/Java/* ./Launcher/target/jfx/native/RubberTranslator.app/Contents/Java/
+cp -rf ./Main/target/jfx/native/Main.app/Contents/MacOS/Main ./Launcher/target/jfx/native/RubberTranslator.app/Contents/MacOS/
+cp -rf ./Main/target/jfx/native/Main.app/Contents/Java/* ./Launcher/target/jfx/native/RubberTranslator.app/Contents/Java/
 
