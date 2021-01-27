@@ -1,3 +1,5 @@
+package com.rubbertranslator;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -36,11 +38,6 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  */
 public class Launcher extends Application {
 
-    // 用于辅助判定下载文件是否是压缩文件（因为jar包其实就是一个zip文件）
-    private static final byte[] ZIP_HEADER_1 = new byte[]{80, 75, 3, 4};
-
-    private static final byte[] ZIP_HEADER_2 = new byte[]{80, 75, 5, 6};
-
     // 主进程handler
     private Process mainProcess;
 
@@ -64,8 +61,10 @@ public class Launcher extends Application {
             mainExePath = mainDir + File.separator + "Main";
             targetJarPath = mainDir + File.separator + "../lib/app/Main.jar";
             tmpUpdateJarPath = mainDir + File.separator + "../lib/app/tmp/Main.jar";
-        } else {  // mac?
-
+        } else if(os.startsWith("mac")){  // mac?
+            mainExePath =  mainDir + File.separator + "../MacOS/Main";
+            targetJarPath = mainDir + File.separator + "Main-1.0-SNAPSHOT-jfx.jar";
+            tmpUpdateJarPath = mainDir + File.separator + "tmp/Main.jar";
         }
 
     }
@@ -114,6 +113,7 @@ public class Launcher extends Application {
             mainProcess = new ProcessBuilder(mainExePath).start();
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "启动主进程失败");
+            e.printStackTrace();
             destroy(-1);
         }
     }
@@ -285,7 +285,7 @@ public class Launcher extends Application {
                 Platform.runLater(() -> {
                     title.setText("下载完成，正在启动");
                     // 检查是否是zip文件
-                    if (isArchiveFile(tmpUpdateJarFile)) {
+                    if(tmpUpdateJarFile.length()>1024*1024){ // 大于1M就认为是正常下载的
                         // move from "tmp" --> "current dir", 不应该放在UI线程
                         Path tmpPath = Paths.get(tmpUpdateJarPath);
                         Path targetPath = Paths.get(targetJarPath);
@@ -297,9 +297,8 @@ public class Launcher extends Application {
                         Logger.getLogger(this.getClass().getName()).info("update success");
                         runMainProgram();
                         destroy(0);
-                    } else {
+                    }else{
                         title.setText("下载失败，请手动下载");
-                        Logger.getLogger(this.getClass().getName()).info("update失败，下载文件非zip");
                     }
                 });
             }
@@ -321,35 +320,6 @@ public class Launcher extends Application {
         });
     }
 
-
-    /**
-     * 判断文件是否为一个压缩文件
-     *
-     * @param file
-     * @return
-     */
-    public static boolean isArchiveFile(File file) {
-        if (file == null) {
-            return false;
-        }
-
-        if (file.isDirectory()) {
-            return false;
-        }
-
-        boolean isArchive = false;
-        try (InputStream input = new FileInputStream(file)) {
-            byte[] buffer = new byte[4];
-            int length = input.read(buffer, 0, 4);
-            if (length == 4) {
-                isArchive = (Arrays.equals(ZIP_HEADER_1, buffer)) || (Arrays.equals(ZIP_HEADER_2, buffer));
-            }
-        } catch (IOException e) {
-            Logger.getLogger(Launcher.class.getName()).log(Level.SEVERE, "判定下载文件是否为压缩(jar)包失败");
-        }
-
-        return isArchive;
-    }
 
 }
 

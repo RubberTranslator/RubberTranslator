@@ -8,6 +8,7 @@ import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
+import com.rubbertranslator.utils.OSTypeUtil;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -47,6 +48,7 @@ public class AppStage {
         initSysConfig();
         initViews();
         registerEvent();
+
         sendNecessaryInfosToLauncher();
     }
 

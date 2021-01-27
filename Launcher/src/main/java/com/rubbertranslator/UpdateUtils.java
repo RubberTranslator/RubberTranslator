@@ -1,4 +1,4 @@
-
+package com.rubbertranslator;
 
 /**
  * @author Raven

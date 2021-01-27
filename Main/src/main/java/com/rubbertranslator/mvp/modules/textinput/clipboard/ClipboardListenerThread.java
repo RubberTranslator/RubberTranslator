@@ -52,18 +52,15 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
             Transferable trans = clipboard.getContents(this);
             clipboard.setContents(trans, this);
         }
-
     }
 
     private void macOSProcess(){
-        System.out.println("Listening to clipboard...");
-        // the first output will be when a non-empty text is detected
         String recentTextContent = null;
         Image recentImageContent = null;
         boolean firstIsText = false;
         boolean firstImageIsSet = false;
         // continuously perform read from clipboard
-        while (true) {
+        while (true) {      // mac os 没有lostOwnership自动唤醒机制（除非获取focus)， 所以只能采用轮询方式，有点浪费cpu
             try {
                 Thread.sleep(200);
                 if (!running) {
@@ -94,7 +91,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                         firstImageIsSet = true;
                         continue;
                     }
-                    if(recentImageContent == null ||        // 检测图片是否更新，如果现在的clipboard中的图片和之前的图片的宽高是一样的，就就认为是相同的图片
+                    if(recentImageContent == null ||        // 检测图片是否更新，如果现在的clipboard中的图片和之前的图片的宽高是一样的，就认为是相同的图片
                             recentImageContent.getWidth(null) != paste.getWidth(null) ||
                                     recentImageContent.getHeight(null) != paste.getHeight(null)){
                         recentImageContent = paste;
@@ -105,8 +102,8 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                         }
                     }
                 }
-            } catch (HeadlessException | UnsupportedFlavorException | IOException | InterruptedException e1) {
-                e1.printStackTrace();
+            } catch (HeadlessException | UnsupportedFlavorException | IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -133,7 +130,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                 if (!running) {
                     break;
                 }
-                processClipboard(contents);
+                dispatchCpContent(contents);
             } catch (Exception e) {
                 if (waitTime < maxWaitTime) {
                     waitTime += 100;  // 增加100ms等待时间
@@ -147,7 +144,7 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
         }
     }
 
-    private void processClipboard(Transferable t) throws IOException, UnsupportedFlavorException {
+    private void dispatchCpContent(Transferable t) throws IOException, UnsupportedFlavorException {
         if (ignoreThisTime) {
             Logger.getLogger(this.getClass().getName()).info("本次已忽略");
             ignoreThisTime = false;
