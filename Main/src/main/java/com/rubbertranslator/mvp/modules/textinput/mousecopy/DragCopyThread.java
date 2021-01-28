@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * date 2020/5/7 15:01
  */
-public class DragCopyThread extends Thread{
+public class DragCopyThread extends Thread {
     // Construct the example object.
     private final GlobalMouseListener mouseListener = new GlobalMouseListener();
 
@@ -25,34 +25,35 @@ public class DragCopyThread extends Thread{
         // 初始化后就退出，无需做保活
         /* turn off the console output */
         // Get the logger for "org.jnativehook" and set the level to off.
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
-
-        // Don't forget to disable the parent handlers.
-        logger.setUseParentHandlers(false);
-
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"There was a problem registering the native hook.",ex);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "There was a problem registering the native hook.", ex);
         }
         // Add the appropriate listeners.
         GlobalScreen.addNativeMouseListener(mouseListener);
+        Logger.getLogger(this.getClass().getName()).info("jnativehook 注册成功");
+
+        // 关闭log
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+        // Don't forget to disable the parent handlers.
+        logger.setUseParentHandlers(false);
     }
 
-    public void exit(){
+    public void exit() {
         try {
             GlobalScreen.unregisterNativeHook();
             Logger.getLogger(this.getClass().getName()).info("DragCopy exit");
         } catch (NativeHookException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,"There was a problem unregistering the native hook.",e);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "There was a problem unregistering the native hook.");
         }
     }
 
-    public void setRun(boolean run){
-        if(run){
+    public void setRun(boolean run) {
+        if (run) {
             resumeRun();
-        }else{
+        } else {
             pause();
         }
     }
