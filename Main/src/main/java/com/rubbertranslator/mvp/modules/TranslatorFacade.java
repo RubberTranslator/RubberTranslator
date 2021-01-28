@@ -192,7 +192,7 @@ public class TranslatorFacade {
             String translation = null;
             try {
                 // text保存处理后的文本
-                origin = textPreProcessor.process(origin);
+                origin = textPreProcessor.processWithType(origin, type);
                 // 重新初始化lastOrigin
                 translation = translatorFactory.translateByType(type, origin);
                 // 后置处理

@@ -50,6 +50,7 @@ public class BaiduTranslator extends AbstractTranslator {
      */
     @Override
     public String translate(Language source, Language dest, String text) {
+        if(appKey == null || secretKey == null) return null;
         // 百度中文特殊处理
         String translatedText = null;
         BaiduTranslationResult baiduTranslateResult = doTranslate(

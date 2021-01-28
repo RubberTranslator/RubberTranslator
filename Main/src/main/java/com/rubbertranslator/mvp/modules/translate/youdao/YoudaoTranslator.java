@@ -50,14 +50,15 @@ public class YoudaoTranslator extends AbstractTranslator {
      */
     @Override
     public String translate(Language source, Language dest, String text) {
-        if(text == null) return null;
+        if (appKey == null || secretKey == null) return null;
+        if (text == null) return null;
         String translatedText = null;
         YoudaoTranslationResult translationResult = doTranslate(
                 langMap.get(source), langMap.get(dest), text);
         if (translationResult != null) {
             translatedText = mergeTranslatedText(translationResult);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, translatedText);
-        }else{
+        } else {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "有道翻译失败");
         }
         return translatedText;
@@ -81,7 +82,7 @@ public class YoudaoTranslator extends AbstractTranslator {
 //        param.put("sign", sign);
         final String URL = "https://openapi.youdao.com/api";
 
-        Map<String,String> params = new HashMap<String,String>();
+        Map<String, String> params = new HashMap<String, String>();
         String salt = String.valueOf(System.currentTimeMillis());
         params.put("from", source);
         params.put("to", dest);
@@ -96,7 +97,7 @@ public class YoudaoTranslator extends AbstractTranslator {
         params.put("sign", sign);
 
         String json = OkHttpUtil.post(URL, params);
-        if(json == null){
+        if (json == null) {
             return null;
         }
         YoudaoTranslationResult deserialize = JsonUtil.deserialize(json, YoudaoTranslationResult.class);
