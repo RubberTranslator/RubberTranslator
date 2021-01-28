@@ -28,6 +28,7 @@ public class OCRResult{
 	}
 
 	public String getCombinedWords(){
+		if(wordsResult == null) return null;
 		StringBuilder words = new StringBuilder();
 		for (WordsResultItem item: wordsResult){
 			words.append(item.getWords());

@@ -31,16 +31,15 @@ ${jpackage} --name Main --input out/artifacts/Main_jar  --main-jar Main.jar  \
   --add-modules javafx.controls,javafx.graphics,javafx.fxml \
   --vendor raven
 
-## 拷贝
-# app dir
-cp -rf out/Main.app/Contents/app/*  out/Launcher.app/Contents/app/
-# MacOS dir
-cp -rf out/Main.app/Contents/MacOS/* out/Launcher.app/Contents/MacOS/
-# runtime dir
-cp -rf out/Main.app/Contents/runtime/* out/Launcher.app/Contents/runtime/
-# resource dir
-cp -rf out/Main.app/Contents/Resources out/Launcher.app/Contents/Resources/
-
-##
+### 拷贝
+## app dir
+#cp -rf out/Main.app/Contents/app/*  out/Launcher.app/Contents/app/
+## MacOS dir
+#cp -rf out/Main.app/Contents/MacOS/* out/Launcher.app/Contents/MacOS/
+## runtime dir
+#cp -rf out/Main.app/Contents/runtime/* out/Launcher.app/Contents/runtime/
+## resource dir
+#cp -rf out/Main.app/Contents/Resources out/Launcher.app/Contents/Resources/
+#
 ### 改名
 #mv out/Launcher.app out/RubberTranslator.app

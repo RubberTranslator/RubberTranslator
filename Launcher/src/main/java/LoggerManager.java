@@ -38,7 +38,6 @@ public class LoggerManager {
 
         //设置保存路径
         logPath.append(logFilePath).append("/").append(sdf.format(new Date())).append("-launcher.log");
-        System.out.println(logPath);
         File dir = new File(logPath.toString());
         if(!dir.getParentFile().exists()){
             dir.getParentFile().mkdirs();

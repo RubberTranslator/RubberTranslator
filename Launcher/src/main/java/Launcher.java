@@ -13,10 +13,13 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,6 +68,7 @@ public class Launcher extends Application {
 
     // socket
     private ServerSocket socket;
+    private Socket client = null;
 
     // 版本信息
     private String localVersion;
@@ -100,6 +104,8 @@ public class Launcher extends Application {
     private void initSocket() {
         try {
             socket = new ServerSocket(21453);
+            // 7s 等待时间
+            socket.setSoTimeout(7000);
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
         }
@@ -163,7 +169,6 @@ public class Launcher extends Application {
      * 失败 null
      */
     private void setNecessaryInfos() {
-        Socket client = null;
         BufferedReader br = null;
         BufferedWriter bw = null;
         try {
