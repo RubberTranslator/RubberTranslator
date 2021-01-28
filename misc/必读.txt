@@ -3,7 +3,7 @@ Win:
 解压本安装包到任意不含中文路径的目录即可，点击Launcher.exe文件启动程序。
 
 [更新软件]
-1. 【自动更新】已支持热更新(beta版，不一定成功)
+1. 【自动更新】已支持热更新
 2. 【手动更新】在https://github.com/ravenxrz/RubberTranslator/releases 页面中下载Main.jar， 替换至app路径下
 3. 【手动更新】下载全量压缩包，解压到之前安装包的路径替换原文件即可
 
@@ -12,15 +12,15 @@ Mac:
 点击dmg镜像，将RubberTranslator拖入到Application文件夹即可。
 
 [更新软件]
-1. [自动更新]已支持热更新(beta版，不一定成功)
-2. [手动更新] 下载全量dmg镜像，覆盖安装即可。注意：覆盖安装会覆盖之前配置，请注意备份！！！！！！
+1. [自动更新]已支持热更新
+2. [手动更新] 下载全量dmg镜像，覆盖安装即可。
 
 Linux:
 [首次安装]
 解压本安装包到任意不含中文路径的目录即可，使用终端进入bin路径，执行./Launcher。 （如果没有执行权限，请自行添加权限 chmod + x Launcher。
 
 [更新软件]
-1. 【自动更新】已支持热更新(beta版，不一定成功）
+1. 【自动更新】已支持热更新
 2. 【手动更新】在https://github.com/ravenxrz/RubberTranslator/releases 页面中下载Main.jar， 替换至lib/app路径下
 2. 【手动更新】下载全量压缩包，解压到之前安装包的路径替换原文件即可
 

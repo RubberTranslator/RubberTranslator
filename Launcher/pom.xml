@@ -23,6 +23,78 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>osx-x64</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                    <name>Mac OS X</name>
+                    <arch>x86_64</arch>
+                </os>
+            </activation>
+            <properties>
+                <!--       执行 mvn jfx:list-bundlers 看支持哪些打包方式    -->
+                <installer.bundler>mac.app</installer.bundler>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>windows-x64</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                    <arch>amd64</arch>
+                </os>
+            </activation>
+            <properties>
+                <!--       执行 mvn jfx:list-bundlers 看支持哪些打包方式    -->
+                <installer.bundler>msi</installer.bundler>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows-x86</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                    <arch>x86</arch>
+                </os>
+            </activation>
+            <properties>
+                <installer.bundler>msi</installer.bundler>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>linux-x64</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <name>Linux</name>
+                    <arch>amd64</arch>
+                </os>
+            </activation>
+            <properties>
+                <!--       执行 mvn jfx:list-bundlers 看支持哪些打包方式    -->
+                <installer.bundler>deb</installer.bundler>
+            </properties>
+        </profile>
+        <profile>
+            <id>linux-x86</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <name>Linux</name>
+                    <arch>i386</arch>
+                </os>
+            </activation>
+            <properties>
+                <!--       执行 mvn jfx:list-bundlers 看支持哪些打包方式    -->
+                <installer.bundler>deb</installer.bundler>
+            </properties>
+        </profile>
+
+    </profiles>
 
     <build>
         <plugins>
@@ -57,16 +129,17 @@
             </plugin>
 
 
-<!--            <plugin>-->
-<!--                <groupId>com.zenjava</groupId>-->
-<!--                <artifactId>javafx-maven-plugin</artifactId>-->
-<!--                <version>8.8.3</version>-->
-<!--                <configuration>-->
-<!--                    <appName>RubberTranslator</appName>-->
-<!--                    <vendor>raven</vendor>-->
-<!--                    <mainClass>Launcher</mainClass>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>8.8.3</version>
+                <configuration>
+                    <appName>RubberTranslator</appName>
+                    <vendor>raven</vendor>
+                    <mainClass>Launcher</mainClass>
+                    <bundler>${installer.bundler}</bundler>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
