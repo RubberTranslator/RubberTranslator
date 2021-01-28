@@ -297,13 +297,8 @@ public class Launcher extends Application {
                             Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
                         }
                         Logger.getLogger(this.getClass().getName()).info("update success");
-                        if(OSTypeUtil.isMac()){  // TODO: mac jpackage 打包后，不知为何通过app文件无法重启主程序。（但是通过脚本又可以)
-                            title.setText("更新已完成，请重启应用");
-                            System.exit(0);
-                        }else{
-                            runMainProgram();
-                            destroy(0);
-                        }
+                        runMainProgram();
+                        destroy(0);
                     } else {
                         title.setText("下载失败，请手动下载");
                     }

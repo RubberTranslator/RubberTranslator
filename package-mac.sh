@@ -20,8 +20,7 @@ ${jpackage} --name Launcher --input out/artifacts/Launcher_jar  --main-jar Launc
   --module-path ${jfxmods_path} \
   --main-class Launcher \
   --add-modules javafx.controls,javafx.graphics,javafx.fxml \
-  --vendor raven \
-  --java-options '--enable-preview'
+  --vendor raven
 
 # Main package
 ${jpackage} --name Main --input out/artifacts/Main_jar  --main-jar Main.jar  \
@@ -30,8 +29,7 @@ ${jpackage} --name Main --input out/artifacts/Main_jar  --main-jar Main.jar  \
   --module-path ${jfxmods_path} \
   --main-class com.rubbertranslator.App \
   --add-modules javafx.controls,javafx.graphics,javafx.fxml \
-  --vendor raven  \
-  --java-options '--enable-preview'
+  --vendor raven
 
 ## 拷贝
 # app dir

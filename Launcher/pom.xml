@@ -57,16 +57,16 @@
             </plugin>
 
 
-            <plugin>
-                <groupId>com.zenjava</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>8.8.3</version>
-                <configuration>
-                    <appName>RubberTranslator</appName>
-                    <vendor>raven</vendor>
-                    <mainClass>Launcher</mainClass>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.zenjava</groupId>-->
+<!--                <artifactId>javafx-maven-plugin</artifactId>-->
+<!--                <version>8.8.3</version>-->
+<!--                <configuration>-->
+<!--                    <appName>RubberTranslator</appName>-->
+<!--                    <vendor>raven</vendor>-->
+<!--                    <mainClass>Launcher</mainClass>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
