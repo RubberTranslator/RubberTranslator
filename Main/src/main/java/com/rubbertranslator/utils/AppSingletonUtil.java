@@ -1,7 +1,9 @@
 package com.rubbertranslator.utils;
 
-import it.sauronsoftware.junique.AlreadyLockedException;
-import it.sauronsoftware.junique.JUnique;
+import com.rubbertranslator.App;
+
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
 
 /**
  * @author Raven
@@ -9,14 +11,18 @@ import it.sauronsoftware.junique.JUnique;
  * date  2020/12/4 10:57
  */
 public class AppSingletonUtil {
-    public static boolean isAppRunning(){
-        boolean alreadyRunning;
+    public static boolean isAppRunning() {
         try {
-            JUnique.acquireLock("RubberTranslator");
-            alreadyRunning = false;
-        } catch (AlreadyLockedException e) {
-            alreadyRunning = true;
+            RandomAccessFile randomFile =
+                    new RandomAccessFile(App.class.getSimpleName() + ".class", "rw");
+
+            FileChannel channel = randomFile.getChannel();
+
+            if (channel.tryLock() == null)
+                return true;
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
-        return alreadyRunning;
+        return false;
     }
 }

@@ -21,7 +21,8 @@ import java.util.regex.Pattern;
  */
 public class GoogleTranslator extends AbstractTranslator {
 
-    private String patternUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/Main/misc/google-api-pattern.txt" ;
+    private String patternUrl = "https://cdn.jsdelivr.net/gh/ravenxrz/RubberTranslator@latest/Main/misc/google-api-pattern.txt";
+
     {
         try {
             Properties props = new Properties();
@@ -45,19 +46,19 @@ public class GoogleTranslator extends AbstractTranslator {
     /**
      * 更新Google翻译结果html的正则提取模式
      */
-    private void updatePattern(){
-       new Thread(() -> {
-           String tempPatternStr = OkHttpUtil.get(patternUrl,null);
-           if(tempPatternStr == null) return;
-           Logger.getLogger(this.getClass().getName()).info("remote pattern:"+tempPatternStr);
-           if(!patternStr.equals(tempPatternStr)) {
-               Logger.getLogger(this.getClass().getName()).info("remote pattern有更新，正在更新Pattern");
-               patternStr = tempPatternStr;
-               translationPattern = Pattern.compile(patternStr);
-           }else{
-               Logger.getLogger(this.getClass().getName()).info("远端和本地端Google Pattern相同，无需更新");
-           }
-       }).start();
+    private void updatePattern() {
+        new Thread(() -> {
+            String tempPatternStr = OkHttpUtil.get(patternUrl, null);
+            if (tempPatternStr == null) return;
+            Logger.getLogger(this.getClass().getName()).info("remote pattern:" + tempPatternStr);
+            if (!patternStr.equals(tempPatternStr)) {
+                Logger.getLogger(this.getClass().getName()).info("remote pattern有更新，正在更新Pattern");
+                patternStr = tempPatternStr;
+                translationPattern = Pattern.compile(patternStr);
+            } else {
+                Logger.getLogger(this.getClass().getName()).info("远端和本地端Google Pattern相同，无需更新");
+            }
+        }).start();
     }
 
     //https://translate.google.com/m?sl=auto&tl=zh-TW&hl=en&mui=tl
@@ -80,7 +81,7 @@ public class GoogleTranslator extends AbstractTranslator {
      */
     @Override
     public String translate(Language source, Language dest, String text) {
-        String translatedText = null;
+        String translatedText = "谷歌翻译失败，请检查网络设置（部分网络不支持谷歌翻译)";
         try {
             String html = doTranslate(langMap.get(source), langMap.get(dest), text);
             if (html != null) {

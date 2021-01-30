@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -47,18 +48,18 @@ public class Launcher extends Application {
 
     {
         String os = System.getProperty("os.name").toLowerCase();
-        if (os.startsWith("win")) {
+        if (OSTypeUtil.isWin()) {
             // 主进程可执行文件路径
             mainExePath = mainDir + File.separator + "Main.exe";
             targetJarPath = mainDir + File.separator + "app/Main.jar";
             // 更新文件临时放置路径
             tmpUpdateJarPath = mainDir + File.separator + "app/tmp/Main.jar";
-        } else if (os.startsWith("linux")) {
+        } else if (OSTypeUtil.isLinux()) {
             mainExePath = mainDir + File.separator + "Main";
             targetJarPath = mainDir + File.separator + "../lib/app/Main.jar";
             tmpUpdateJarPath = mainDir + File.separator + "../lib/app/tmp/Main.jar";
-        } else if(os.startsWith("mac")){  // mac?
-            mainExePath =  mainDir + File.separator + "../MacOS/Main";
+        } else if (OSTypeUtil.isMac()) {  // mac?
+            mainExePath = mainDir + File.separator + "../MacOS/Main";
             targetJarPath = mainDir + File.separator + "Main-1.0-SNAPSHOT-jfx.jar";
             tmpUpdateJarPath = mainDir + File.separator + "tmp/Main.jar";
         }
@@ -91,7 +92,7 @@ public class Launcher extends Application {
     private void initSocket() {
         try {
             socket = new ServerSocket(21453);
-            socket.setSoTimeout(7000);
+            socket.setSoTimeout(15000);
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
         }
@@ -281,7 +282,7 @@ public class Launcher extends Application {
                 Platform.runLater(() -> {
                     title.setText("下载完成，正在启动");
                     // 检查是否是zip文件
-                    if(tmpUpdateJarFile.length()>1024*1024){ // 大于1M就认为是正常下载的
+                    if (tmpUpdateJarFile.length() > 1024 * 1024) { // 大于1M就认为是正常下载的
                         // move from "tmp" --> "current dir", 不应该放在UI线程
                         Path tmpPath = Paths.get(tmpUpdateJarPath);
                         Path targetPath = Paths.get(targetJarPath);
@@ -293,7 +294,7 @@ public class Launcher extends Application {
                         Logger.getLogger(this.getClass().getName()).info("update success");
                         runMainProgram();
                         destroy(0);
-                    }else{
+                    } else {
                         title.setText("下载失败，请手动下载");
                     }
                 });

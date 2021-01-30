@@ -29,6 +29,13 @@ Linux:
 2. 讨论群：118149802
 
 [Changelogs]
+2020-1-30
+RubberTranslator-v3.3.3
+1. 去掉Junique库，采用自实现的【单实例】应用。
+2. 修复对比模式下增量翻译的重复翻译3次的bug
+3. 增加翻译失败时的反馈
+4. 增加Launcher的Socket延迟关闭机制，避免因为引入单实例而造成无法关闭的bug
+
 2020-1-27
 RubberTranslator-v3.3.2 for mac
 1. 新增mac版
@@ -49,7 +56,6 @@ RubberTranslator-v3.3.1(跳过v3.3.0)
 4. 修复OCR翻译bug
 5. 修复Linux平台下打开FileChooser窗口crash的bug
 6. 热更新通信改用Socket，原因：Linux下采用父子进程输入输出流会有一些扰乱输入。
-
 
 2020-1-18
 RubberTranslator-v3.2.1（Linux版本发布！！）
