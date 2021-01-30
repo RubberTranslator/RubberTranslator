@@ -43,7 +43,7 @@ public class LoggerManager {
             dir.getParentFile().mkdirs();
         }else{
             File[] logs = dir.getParentFile().listFiles();
-            if(logs != null && logs.length > 10){
+            if(logs != null){
                 for(File log: logs){
                     if(log.exists()) log.delete();
                 }

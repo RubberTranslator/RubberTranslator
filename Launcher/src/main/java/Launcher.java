@@ -47,7 +47,6 @@ public class Launcher extends Application {
     private String targetJarPath;
 
     {
-        String os = System.getProperty("os.name").toLowerCase();
         if (OSTypeUtil.isWin()) {
             // 主进程可执行文件路径
             mainExePath = mainDir + File.separator + "Main.exe";
