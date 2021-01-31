@@ -5,7 +5,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 **安装：**
 
-本项目目前支持Windows, Linux平台。 个人无mac电脑，暂时不支持mac平台，有兴趣的朋友可自行打包。
+本项目目前支持**Windows, Linux, Mac**平台。
 
 1. 点击[Releases](https://github.com/ravenxrz/RubberTranslator/releases)界面下载对应平台安装包即可。
 2. 考虑到github国内下载速度较慢，可从[这里下载](https://ravenxrz.lanzous.com/b01bezbcf)
@@ -29,7 +29,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 9. **OCR翻译**
 10. 翻译历史
 11. **专注模式**
-12. 热更新(beta)
+12. **热更新**
 
 <img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20201224112341042.png" alt="image-20201224112341042" height="400;" />
 
@@ -54,25 +54,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 ## 2. FAQ
 
-### 1. 安装后无法打开？
-
-请确保安装路径无中文。
-
-### 2. 翻译时段落识别问题，一段话被拆分为多段？
-
-![DXwK4s](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/DXwK4s.png)
-
-
-
-这和RubberTranslator在格式化复制的文本时的处理机制有关，RubberTranslator在识别多段文本的原理是，判断当前是否有 英文或中文的句号在末尾， 如果在末尾则换行。所以可以看到，原文在parameter后面有句号，RubberTranslator进行了断行。
-
-### 3. 谷歌翻译引擎下没有分段？
-
-是的，当前所使用的谷歌翻译引擎，会将所有文本连接成一行，所以，暂时没办法分段，后期会考虑更换接口。
-
-### 4. OCR、百度、有道翻译引擎无效？
-
-这三个功能需要用户自行配置App key & secret key。请参考：[ocr,百度，有道配置](https://ravenxrz.gitee.io/archives/2d8a0c3e.html)
+使用过程中遇到问题可参考：https://docs.qq.com/doc/DT2RKQU1vb2JNRlBY
 
 ## 3. BUG 反馈或建议
 
@@ -81,7 +63,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 ## 4. 请我喝杯咖啡
 
-如果觉得本软件好用，也可以请我喝杯咖啡：
+制作不易，如果您觉得本软件好用，也可以请我喝杯咖啡：
 
 <table>     
     <tr>        
