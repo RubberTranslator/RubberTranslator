@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
+import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -12,8 +13,20 @@ import java.nio.channels.FileChannel;
  */
 public class AppSingletonUtil {
 
-    private static String localFileName = "rt.lck";
+    private static String localFileName;
 
+    static{
+        if(OSTypeUtil.isMac()){
+           localFileName = System.getProperty("user.home") + "/RubberTranslator/rt.lock";
+        }else {
+            localFileName = System.getProperty("user.dir") + "/RubberTranslator/rt.lock";
+        }
+    }
+
+    /**
+     * 通过检测文件锁，来判别是否有程序已经启动，释放资源由操作系统来做
+     * @return
+     */
     public static boolean isAppRunning() {
         RandomAccessFile randomFile = null;
         FileChannel channel = null;
@@ -30,14 +43,7 @@ public class AppSingletonUtil {
             if (channel.tryLock() == null)
                 return true;
         } catch (Exception e) {
-            System.out.println(e.toString());
-        } finally {
-            try {
-                if (channel != null) channel.close();
-                if (randomFile != null) randomFile.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Logger.getLogger(AppSingletonUtil.class.getName()).severe(e.getLocalizedMessage());
         }
         return false;
     }
