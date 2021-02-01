@@ -81,7 +81,7 @@ public class GoogleTranslator extends AbstractTranslator {
      */
     @Override
     public String translate(Language source, Language dest, String text) {
-        String translatedText = "谷歌翻译失败，请检查网络设置（部分网络不支持谷歌翻译)";
+        String translatedText = null;
         try {
             String html = doTranslate(langMap.get(source), langMap.get(dest), text);
             if (html != null) {

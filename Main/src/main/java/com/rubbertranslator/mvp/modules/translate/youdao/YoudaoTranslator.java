@@ -52,7 +52,7 @@ public class YoudaoTranslator extends AbstractTranslator {
     public String translate(Language source, Language dest, String text) {
         if (appKey == null || secretKey == null) return null;
         if (text == null) return null;
-        String translatedText = "有道翻译失败，请检查api设置";
+        String translatedText = null;
         YoudaoTranslationResult translationResult = doTranslate(
                 langMap.get(source), langMap.get(dest), text);
         if (translationResult != null) {

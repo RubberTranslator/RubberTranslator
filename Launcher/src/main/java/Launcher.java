@@ -91,9 +91,10 @@ public class Launcher extends Application {
     private void initSocket() {
         try {
             socket = new ServerSocket(21453);
-            socket.setSoTimeout(15000);
+            socket.setSoTimeout(10000);
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
+            destroy(-1);
         }
     }
 
@@ -122,10 +123,8 @@ public class Launcher extends Application {
             }
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "关闭socket失败");
-        } finally {
-            System.exit(status);
         }
-
+        System.exit(status);
     }
 
     private void checkUpdate() {
@@ -185,6 +184,7 @@ public class Launcher extends Application {
             bw.flush();
         } catch (IOException | NullPointerException e) {
             Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
+            destroy(-1);
         } finally {
             // 两层try-catch，有没有更好的写法？
             try {
@@ -193,6 +193,7 @@ public class Launcher extends Application {
                 if (client != null) client.close();
             } catch (IOException e) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "关闭通信输入、输出识别");
+                destroy(-1);
             }
         }
     }
@@ -218,6 +219,7 @@ public class Launcher extends Application {
                 destroy(0);
             }
         } catch (Exception ignored) {
+            destroy(-1);
         }
     }
 

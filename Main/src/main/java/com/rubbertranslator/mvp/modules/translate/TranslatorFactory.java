@@ -63,7 +63,7 @@ public class TranslatorFactory {
                 }
             }
         }
-        return null;
+        return "翻译失败，请检查网络或相关API设置";
     }
 
     /**

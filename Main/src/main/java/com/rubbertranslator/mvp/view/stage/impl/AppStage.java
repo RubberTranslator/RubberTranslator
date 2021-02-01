@@ -8,7 +8,6 @@ import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
-import com.rubbertranslator.utils.OSTypeUtil;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -48,7 +47,6 @@ public class AppStage {
         initSysConfig();
         initViews();
         registerEvent();
-
         sendNecessaryInfosToLauncher();
     }
 
@@ -66,26 +64,26 @@ public class AppStage {
                 String type;
                 Properties props = new Properties();
                 props.load(this.getClass().getResourceAsStream("/config/misc.properties"));
-                type = br.readLine().split("\n")[0];
-                Logger.getLogger(this.getClass().getName()).info(type);
-                while (!type.equals(Protocol.END)) {
+                do {
+                    type = br.readLine().split("\n")[0];
+                    Logger.getLogger(this.getClass().getName()).info(type);
                     if (type.startsWith(Protocol.LOCAL_VERSION)) {
                         String localVersion = props.getProperty("local-version");
                         Logger.getLogger(this.getClass().getName()).info(localVersion);
                         bw.write(localVersion + "\n");
+                        bw.flush();
                     } else if (type.startsWith(Protocol.REMOTE_VERSION_URL)) {
                         String remoteVersionUrl = props.getProperty("remote-version-url");
                         Logger.getLogger(this.getClass().getName()).info(remoteVersionUrl);
                         bw.write(remoteVersionUrl + "\n");
+                        bw.flush();
                     } else if (type.startsWith(Protocol.REMOTE_TARGET_FILE_URL)) {
                         String remoteTargetFileUrl = props.getProperty("remote-target-file-url");
                         Logger.getLogger(this.getClass().getName()).info(remoteTargetFileUrl);
                         bw.write(remoteTargetFileUrl + "\n");
+                        bw.flush();
                     }
-                    bw.flush();
-                    type = br.readLine().split("\n")[0];
-                    Logger.getLogger(this.getClass().getName()).info(type);
-                }
+                } while (!type.equals(Protocol.END));
             } catch (IOException e) {
                 Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
             } finally {

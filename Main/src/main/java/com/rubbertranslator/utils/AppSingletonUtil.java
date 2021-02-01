@@ -1,10 +1,8 @@
 package com.rubbertranslator.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
-import java.util.logging.Logger;
+
+import it.sauronsoftware.junique.AlreadyLockedException;
+import it.sauronsoftware.junique.JUnique;
 
 /**
  * @author Raven
@@ -13,38 +11,19 @@ import java.util.logging.Logger;
  */
 public class AppSingletonUtil {
 
-    private static String localFileName;
-
-    static{
-        if(OSTypeUtil.isMac()){
-           localFileName = System.getProperty("user.home") + "/RubberTranslator/rt.lock";
-        }else {
-            localFileName = System.getProperty("user.dir") + "/RubberTranslator/rt.lock";
-        }
-    }
-
     /**
      * 通过检测文件锁，来判别是否有程序已经启动，释放资源由操作系统来做
+     *
      * @return
      */
     public static boolean isAppRunning() {
-        RandomAccessFile randomFile = null;
-        FileChannel channel = null;
+        boolean alreadyRunning;
         try {
-            // create lock file
-            File fileLock = new File(localFileName);
-            if (!fileLock.exists()) {
-                fileLock.createNewFile();
-            }
-            // get lock
-            randomFile =
-                    new RandomAccessFile(localFileName, "rw");
-            channel = randomFile.getChannel();
-            if (channel.tryLock() == null)
-                return true;
-        } catch (Exception e) {
-            Logger.getLogger(AppSingletonUtil.class.getName()).severe(e.getLocalizedMessage());
+            JUnique.acquireLock("RubberTranslator");
+            alreadyRunning = false;
+        } catch (AlreadyLockedException e) {
+            alreadyRunning = true;
         }
-        return false;
+        return alreadyRunning;
     }
 }

@@ -52,7 +52,7 @@ public class BaiduTranslator extends AbstractTranslator {
     public String translate(Language source, Language dest, String text) {
         if (appKey == null || secretKey == null) return null;
         // 百度中文特殊处理
-        String translatedText = "百度翻译失败,请检查api设置";
+        String translatedText  = null;
         BaiduTranslationResult baiduTranslateResult = doTranslate(
                 langMap.get(source), langMap.get(dest), text);
         if (baiduTranslateResult != null) {
