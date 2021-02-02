@@ -19,23 +19,34 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 ## 1. Features
 
 1. 手动翻译
+
 2. 有道翻译、谷歌翻译、百度翻译
+
 3. **文本格式化，解决pdf复制的分段问题**
+
 4. 监听剪切板翻译，选中任意文本，执行【复制】操作，自动翻译文本
+
 5. **拖拽复制，选中任意文本，自动执行[Ctrl+C]行为，结合【监听剪切板翻译】功能，可自动翻译选中文本。**
+
 6. 自动复制，翻译文本后，自动将【译文】放置到系统剪切板，后续只用【Ctrl+V】即可粘贴译文
+
 7. 自动粘贴，选中任意文本，自动替换为译文。
+
 8. **增量翻译，阅读文献时，经常会遇到一段文本分置在两页，增量问题可以自动将这段文本合并翻译**
+
 9. **OCR翻译**
+
 10. 翻译历史
+
 11. **专注模式**
+
+    <img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20201224112341042.png" alt="image-20201224112341042" height="400;" />
+
 12. **热更新**
 
-<img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/image-20201224112341042.png" alt="image-20201224112341042" height="400;" />
+13. **多翻译引擎对照模式**
 
-12. **多翻译引擎对照模式**
-
-![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/compare.gif)
+    ![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/compare.gif)
 
 13. 过滤器，设定【拖拽复制】的过滤程序，避免在所有程序中均触发【拖拽复制】
 14. **翻译文本替换，部分专业词汇如果由翻译引擎来翻译，将显得十分晦涩难懂，使用本功能，可自定义将【晦涩的翻译词组】替换为【自己想要的词组】**
@@ -78,8 +89,6 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
     </tr>      
     <tr>         
 </table>
-
-
 
 ## 开源许可
 
