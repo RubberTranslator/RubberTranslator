@@ -9,6 +9,10 @@ Win:
 
 Mac:
 [首次安装]
+一定要开启允许任意安装来源！！！否则会提示"安装包已损坏"
+开启方法：打开终端，执行 sudo spctl --master-disable
+打开设置：安全性与隐私-->通用-->任意来源
+然后：
 点击dmg镜像，将RubberTranslator拖入到Application文件夹即可。
 
 [更新软件]
