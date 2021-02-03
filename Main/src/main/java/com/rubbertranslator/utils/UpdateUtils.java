@@ -1,3 +1,9 @@
+package com.rubbertranslator.utils;
+
+import com.rubbertranslator.listener.GenericCallback;
+
+import java.util.logging.Logger;
+
 /**
  * @author Raven
  * @version 1.0
@@ -21,6 +27,7 @@ public class UpdateUtils {
             return;
         }
         remoteVersion = remoteVersion.split("\n")[0];
+        Logger.getLogger(UpdateUtils.class.getName()).info("remote version: " + remoteVersion);
         if(remoteVersion.endsWith("beta")){
             callback.callBack(false);
         }else{

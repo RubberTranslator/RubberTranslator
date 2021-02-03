@@ -15,6 +15,7 @@ import com.rubbertranslator.mvp.modules.textprocessor.pre.TextPreProcessor;
 import com.rubbertranslator.mvp.modules.translate.TranslatorFactory;
 import com.rubbertranslator.mvp.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.mvp.modules.translate.youdao.YoudaoTranslator;
+import com.rubbertranslator.mvp.modules.update.UpdateTask;
 import com.rubbertranslator.mvp.presenter.BasePresenter;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
 
@@ -58,7 +59,11 @@ public class SystemResourceManager {
      * false 初始化失败
      */
     public static SystemConfiguration init() {
-        LoggerManager.configLog();
+        // log 模块
+        logModuleInit();
+        // 热更新模块
+        updateModuleInit();
+        // 其余
         facade = new TranslatorFacade();
         configManager = new SystemConfigurationManager();
         if (!configManager.init()) return null;
@@ -72,6 +77,14 @@ public class SystemResourceManager {
         historyInit(configuration);
         afterProcessorInit(configuration);
         return configuration;
+    }
+
+    private static void logModuleInit() {
+        LoggerManager.configLog();
+    }
+
+    private static void updateModuleInit() {
+        executor.execute(new UpdateTask());
     }
 
 

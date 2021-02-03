@@ -16,9 +16,7 @@ rm -rf out/RubberTranslator
 %jpackage% --name Launcher --input out/artifacts/Launcher_jar  --main-jar Launcher.jar  ^
   --dest out ^
   --type app-image ^
-  --module-path %jfxmods% ^
   --main-class Launcher ^
-  --add-modules javafx.controls,javafx.graphics,javafx.fxml ^
   --vendor raven
 
 :: Main package

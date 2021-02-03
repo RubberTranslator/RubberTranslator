@@ -2,6 +2,7 @@ package com.rubbertranslator.mvp.modules.translate.google;
 
 import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.mvp.modules.translate.AbstractTranslator;
+import com.rubbertranslator.system.SystemResourceManager;
 import com.rubbertranslator.utils.OkHttpUtil;
 
 import java.io.IOException;
@@ -47,18 +48,21 @@ public class GoogleTranslator extends AbstractTranslator {
      * 更新Google翻译结果html的正则提取模式
      */
     private void updatePattern() {
-        new Thread(() -> {
-            String tempPatternStr = OkHttpUtil.get(patternUrl, null);
-            if (tempPatternStr == null) return;
-            Logger.getLogger(this.getClass().getName()).info("remote pattern:" + tempPatternStr);
-            if (!patternStr.equals(tempPatternStr)) {
-                Logger.getLogger(this.getClass().getName()).info("remote pattern有更新，正在更新Pattern");
-                patternStr = tempPatternStr;
-                translationPattern = Pattern.compile(patternStr);
-            } else {
-                Logger.getLogger(this.getClass().getName()).info("远端和本地端Google Pattern相同，无需更新");
+        SystemResourceManager.getExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                String tempPatternStr = OkHttpUtil.get(patternUrl, null);
+                if (tempPatternStr == null) return;
+                Logger.getLogger(this.getClass().getName()).info("remote pattern:" + tempPatternStr);
+                if (!patternStr.equals(tempPatternStr)) {
+                    Logger.getLogger(this.getClass().getName()).info("remote pattern有更新，正在更新Pattern");
+                    patternStr = tempPatternStr;
+                    translationPattern = Pattern.compile(patternStr);
+                } else {
+                    Logger.getLogger(this.getClass().getName()).info("远端和本地端Google Pattern相同，无需更新");
+                }
             }
-        }).start();
+        });
     }
 
     //https://translate.google.com/m?sl=auto&tl=zh-TW&hl=en&mui=tl

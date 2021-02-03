@@ -1,3 +1,5 @@
+package com.rubbertranslator.utils;
+
 import okhttp3.*;
 
 import java.io.File;
@@ -8,7 +10,7 @@ import java.io.InputStream;
 public class DownloadUtil {
 
     private static DownloadUtil downloadUtil;
-    private final OkHttpClient okHttpClient = OkHttpUtil.okHttpClient;
+    private final OkHttpClient okHttpClient = OkHttpConfiguration.getInstance();;
 
     public static DownloadUtil get() {
         if (downloadUtil == null) {
