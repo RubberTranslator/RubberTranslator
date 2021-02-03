@@ -1,9 +1,6 @@
 package com.rubbertranslator.utils;
 
 
-import it.sauronsoftware.junique.AlreadyLockedException;
-import it.sauronsoftware.junique.JUnique;
-
 /**
  * @author Raven
  * @version 1.0
@@ -17,13 +14,13 @@ public class AppSingletonUtil {
      * @return
      */
     public static boolean isAppRunning() {
-        boolean alreadyRunning;
-        try {
-            JUnique.acquireLock("RubberTranslator");
-            alreadyRunning = false;
-        } catch (AlreadyLockedException e) {
-            alreadyRunning = true;
-        }
-        return alreadyRunning;
+//        boolean alreadyRunning;
+//        try {
+//            JUnique.acquireLock("RubberTranslator");
+//            alreadyRunning = false;
+//        } catch (AlreadyLockedException e) {
+//            alreadyRunning = true;
+//        }
+        return false;
     }
 }

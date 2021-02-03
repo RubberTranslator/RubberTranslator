@@ -621,13 +621,13 @@ public class MainController implements ISingleTranslateView {
         {
             // 这里用new Thread有点蠢，不过为了避免为卡死，暂时这样吧
             if (Desktop.isDesktopSupported()) {
-                new Thread(() -> {
+                SystemResourceManager.getExecutor().execute(() -> {
                     try {
                         Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator"));
                     } catch (IOException | URISyntaxException e) {
                         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "项目主页打开失败", e);
                     }
-                }).start();
+                });
             } else {
                 originTextArea.setText("当前平台不支持打开该页面");
             }
@@ -636,14 +636,13 @@ public class MainController implements ISingleTranslateView {
         // wiki
         useAge.setOnAction((actionEvent) -> {
             if (Desktop.isDesktopSupported()) {
-                new Thread(() -> {
+                SystemResourceManager.getExecutor().execute(() -> {
                     try {
                         Desktop.getDesktop().browse(new URI("https://www.ravenxrz.ink/archives/a79932ef.html"));
                     } catch (IOException | URISyntaxException e) {
                         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "使用帮助打开失败", e);
                     }
-                }
-                ).start();
+                });
             } else {
                 originTextArea.setText("当前平台不支持打开该页面");
             }
@@ -651,14 +650,14 @@ public class MainController implements ISingleTranslateView {
         // issue
         issues.setOnAction((actionEvent -> {
             if (Desktop.isDesktopSupported()) {
-                new Thread(() -> {
-                    try {
-                        Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/issues"));
-                    } catch (IOException | URISyntaxException e) {
-                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "issues打开失败", e);
-                    }
-                }
-                ).start();
+                SystemResourceManager.getExecutor().execute(() -> {
+                            try {
+                                Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/issues"));
+                            } catch (IOException | URISyntaxException e) {
+                                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "issues打开失败", e);
+                            }
+                        }
+                );
             } else {
                 originTextArea.setText("当前平台不支持打开该页面");
             }

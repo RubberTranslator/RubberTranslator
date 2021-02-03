@@ -2,7 +2,6 @@ package com.rubbertranslator.mvp.view.stage.impl;
 
 import com.rubbertranslator.App;
 import com.rubbertranslator.entity.ControllerFxmlPath;
-import com.rubbertranslator.entity.Protocol;
 import com.rubbertranslator.entity.WindowSize;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
@@ -19,9 +18,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.awt.*;
-import java.io.*;
-import java.net.Socket;
-import java.util.Properties;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,56 +44,8 @@ public class AppStage {
         initSysConfig();
         initViews();
         registerEvent();
-        sendNecessaryInfosToLauncher();
     }
 
-    private void sendNecessaryInfosToLauncher() {
-        new Thread(() -> {
-            BufferedWriter bw = null;
-            BufferedReader br = null;
-            Socket server = null;
-            try {
-                server = new Socket("127.0.0.1", 21453);
-                // send
-                bw = new BufferedWriter(new OutputStreamWriter(new DataOutputStream(server.getOutputStream())));
-                br = new BufferedReader(new InputStreamReader(new DataInputStream(server.getInputStream())));
-
-                String type;
-                Properties props = new Properties();
-                props.load(this.getClass().getResourceAsStream("/config/misc.properties"));
-                do {
-                    type = br.readLine().split("\n")[0];
-                    Logger.getLogger(this.getClass().getName()).info(type);
-                    if (type.startsWith(Protocol.LOCAL_VERSION)) {
-                        String localVersion = props.getProperty("local-version");
-                        Logger.getLogger(this.getClass().getName()).info(localVersion);
-                        bw.write(localVersion + "\n");
-                        bw.flush();
-                    } else if (type.startsWith(Protocol.REMOTE_VERSION_URL)) {
-                        String remoteVersionUrl = props.getProperty("remote-version-url");
-                        Logger.getLogger(this.getClass().getName()).info(remoteVersionUrl);
-                        bw.write(remoteVersionUrl + "\n");
-                        bw.flush();
-                    } else if (type.startsWith(Protocol.REMOTE_TARGET_FILE_URL)) {
-                        String remoteTargetFileUrl = props.getProperty("remote-target-file-url");
-                        Logger.getLogger(this.getClass().getName()).info(remoteTargetFileUrl);
-                        bw.write(remoteTargetFileUrl + "\n");
-                        bw.flush();
-                    }
-                } while (!type.equals(Protocol.END));
-            } catch (IOException e) {
-                Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
-            } finally {
-                try {
-                    if (bw != null) bw.close();
-                    if (br != null) br.close();
-                    if (server != null) server.close();
-                } catch (IOException e) {
-                    Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
-                }
-            }
-        }).start();
-    }
 
     /**
      * 初始化系统配置，同时得到系统配置类引用，方便后续的其它初始化
