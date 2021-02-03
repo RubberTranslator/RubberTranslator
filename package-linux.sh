@@ -10,8 +10,8 @@ rm -rf out/Main
 rm -rf out/RubberTranslator
 
 # set jpackage and jfxmod path
-jpackage=/home/raven/Downloads/jdk-14.0.2/bin/jpackage
-jfxmods_path=/home/raven/Downloads/javafx-jmods-11.0.2
+jpackage=/home/raven/Software/jdk-14.0.2/bin/jpackage
+jfxmods_path=/home/raven/Software/javafx-jmods-11.0.2
 
 # Launcher package
 ${jpackage} --name Launcher --input out/artifacts/Launcher_jar  --main-jar Launcher.jar \
