@@ -18,9 +18,7 @@ ${jpackage} --name Launcher --input out/artifacts/Launcher_jar  --main-jar Launc
  --java-options "-Dprism.verbose=true" \
   --dest out \
   --type app-image \
-  --module-path ${jfxmods_path} \
   --main-class Launcher \
-  --add-modules javafx.controls,javafx.graphics,javafx.fxml \
   --vendor raven
 
 # Main package
