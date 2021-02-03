@@ -72,7 +72,11 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 1. 欢迎提issue
 2. QQ群：118149802
 
-## 4. 请我喝杯咖啡
+## 4. 打包说明
+
+打包请参见: [这里](./RubberTranslator说明.md)
+
+## 5. 请我喝杯咖啡
 
 制作不易，如果您觉得本软件好用，也可以请我喝杯咖啡：
 
