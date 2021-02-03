@@ -114,3 +114,4 @@ out/
 RubberTranslator/export/words.txt
 !Main/libs/*.jar
 .DS_Store
+app/
