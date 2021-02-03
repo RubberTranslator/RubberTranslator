@@ -74,7 +74,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 ## 4. 打包说明
 
-打包请参见: [这里](./RubberTranslator说明.md)
+打包请参见: [这里](https://github.com/ravenxrz/RubberTranslator/blob/master/RubberTranslator%E6%89%93%E5%8C%85%E8%AF%B4%E6%98%8E.md)
 
 ## 5. 请我喝杯咖啡
 
