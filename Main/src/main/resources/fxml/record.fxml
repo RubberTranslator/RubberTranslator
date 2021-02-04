@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox id="record" fx:id="rootPane" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.mvp.view.controller.impl.RecordModeController">
+    <children>
+      <TextArea id="translationArea" fx:id="originTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="原文" wrapText="true" VBox.vgrow="ALWAYS">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextArea>
+        <TextArea id="translationArea" fx:id="translateTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="译文" wrapText="true" VBox.vgrow="ALWAYS">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </TextArea>
+        <FlowPane columnHalignment="CENTER" hgap="5.0" vgap="5.0">
+            <children>
+                <Button fx:id="backBt" mnemonicParsing="false" text="返回" />
+                <Button fx:id="translateBt" mnemonicParsing="false" text="翻译" />
+                <ToggleButton fx:id="googleTranslator" mnemonicParsing="false" text="谷歌" textAlignment="CENTER">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="translatorGroup" />
+                    </toggleGroup>
+                </ToggleButton>
+                <ToggleButton fx:id="baiduTranslator" mnemonicParsing="false" text="百度" toggleGroup="$translatorGroup" />
+                <ToggleButton fx:id="youdaoTranslator" mnemonicParsing="false" text="有道" toggleGroup="$translatorGroup" />
+            <ToggleButton fx:id="originRecordMode" mnemonicParsing="false" text="原文模式">
+               <toggleGroup>
+                  <ToggleGroup fx:id="recordModeGroup" />
+               </toggleGroup></ToggleButton>
+            <ToggleButton fx:id="translateRecordMode" mnemonicParsing="false" text="译文模式" toggleGroup="$recordModeGroup" />
+            <ToggleButton fx:id="bilingualRecordMode" mnemonicParsing="false" text="双语模式" toggleGroup="$recordModeGroup" />
+                <ToggleButton fx:id="keepStageTopMenu" mnemonicParsing="false" text="置顶" />
+                <ToggleButton fx:id="textFormatMenu" mnemonicParsing="false" text="文本格式化" />
+                <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="剪切板" />
+                <ToggleButton fx:id="dragCopyMenu" mnemonicParsing="false" text="拖拽" />
+            <Button fx:id="correctEntryMenu" mnemonicParsing="false" text="修正本条目" />
+            <ToggleButton fx:id="startEndMenu" mnemonicParsing="false" text="开始" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="当前条目数：" />
+            <Text fx:id="historyNumText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+            </children>
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </FlowPane>
+    </children>
+</VBox>

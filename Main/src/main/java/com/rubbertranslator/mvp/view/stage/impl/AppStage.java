@@ -162,6 +162,9 @@ public class AppStage {
                 case COMPARE_SCENE:
                     loadScene(ControllerFxmlPath.COMPARE_CONTROLLER_FXML);
                     break;
+                case RECORD_SCENE:
+                    loadScene(ControllerFxmlPath.RECORD_CONTROLLER_FXML);
+                    break;
                 case FILTER_SCENE:
                     loadScene(ControllerFxmlPath.FILTER_CONTROLLER_FXML);
                     break;
@@ -169,11 +172,13 @@ public class AppStage {
                     loadScene(ControllerFxmlPath.WORDS_REPLACER_CONTROLLER_FXML);
                     break;
                 default:
-                    Logger.getLogger(this.getClass().getName()).log(Level.FINE, "未识别的场景");
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "未识别的场景");
                     break;
             }
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "切换scene失败");
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage());
+            e.printStackTrace();
         }
     }
 

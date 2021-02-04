@@ -1,6 +1,6 @@
 package com.rubbertranslator.mvp.modules.log;
+
 import com.rubbertranslator.utils.OSTypeUtil;
-import sun.awt.OSInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,12 +16,12 @@ import java.util.logging.SimpleFormatter;
  * date 2020/5/8 10:49
  */
 public class LoggerManager {
-    private static final String logFilePath ;
+    private static final String logFilePath;
 
-    static{
-        if(OSTypeUtil.isMac()){
+    static {
+        if (OSTypeUtil.isMac()) {
             logFilePath = System.getProperty("user.home") + "/RubberTranslator/log";
-        }else{
+        } else {
             logFilePath = System.getProperty("user.dir") + "/RubberTranslator/log";
         }
     }
@@ -30,8 +30,7 @@ public class LoggerManager {
     private static Logger fileLogger = Logger.getLogger("com.rubbertranslator");
 
     // 修改simpleformater格式
-    static
-    {
+    static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%2$s] [%4$s] %5$s %6$s %n");
     }
 
@@ -44,13 +43,13 @@ public class LoggerManager {
         //设置保存路径
         logPath.append(logFilePath).append("/").append(sdf.format(new Date())).append(".log");
         File dir = new File(logPath.toString());
-        if(!dir.getParentFile().exists()){
+        if (!dir.getParentFile().exists()) {
             dir.getParentFile().mkdirs();
-        }else{
+        } else {
             File[] logs = dir.getParentFile().listFiles();
-            if(logs != null){
-                for(File log: logs){
-                    if(log.exists()) log.delete();
+            if (logs != null) {
+                for (File log : logs) {
+                    if (log.exists()) log.delete();
                 }
             }
         }

@@ -11,7 +11,7 @@ public interface ISingleTranslateView extends ITranslateView {
      * @param originText 原文
      * @param translatedText 译文
      */
-    default void setText(String originText, String translatedText){}
+    void setText(String originText, String translatedText);
 
 
     /**

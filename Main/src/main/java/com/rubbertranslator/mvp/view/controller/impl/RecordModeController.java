@@ -1,16 +1,13 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
-import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
-import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
-import com.rubbertranslator.mvp.presenter.impl.FocusViewPresenter;
-import com.rubbertranslator.mvp.view.controller.IFocusView;
+import com.rubbertranslator.mvp.presenter.impl.RecordViewPresenter;
+import com.rubbertranslator.mvp.view.IRecordView;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
@@ -24,6 +21,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -38,14 +36,17 @@ import java.util.logging.Logger;
 /**
  * @author Raven
  * @version 1.0
- * date 2020/5/9 21:51
+ * date  2021/2/4 9:04
  */
-public class FocusModeController implements Initializable, IFocusView {
+public class RecordModeController implements Initializable, IRecordView {
     @FXML
     private VBox rootPane;
 
     @FXML
-    private TextArea textArea;
+    private TextArea originTextArea;
+
+    @FXML
+    private TextArea translateTextArea;
 
     @FXML // 退回到主界面
     private Button backBt;
@@ -61,13 +62,17 @@ public class FocusModeController implements Initializable, IFocusView {
     @FXML
     private ToggleButton youdaoTranslator;
 
-    @FXML // 增量复制
-    private ToggleButton incrementalCopyMenu;
+    @FXML // 记录模式组
+    private ToggleGroup recordModeGroup;
+    @FXML
+    private ToggleButton originRecordMode;
+    @FXML
+    private ToggleButton translateRecordMode;
+    @FXML
+    private ToggleButton bilingualRecordMode;
 
-    @FXML   // 自动复制
-    private ToggleButton autoCopyMenu;
-    @FXML   // 自动粘贴
-    private ToggleButton autoPasteMenu;
+    @FXML   // 保持置顶
+    private ToggleButton keepStageTopMenu;
 
     @FXML // 文本格式化
     private ToggleButton textFormatMenu;
@@ -77,32 +82,20 @@ public class FocusModeController implements Initializable, IFocusView {
     @FXML
     private ToggleButton dragCopyMenu;
 
-    @FXML // 历史记录
-    private Button preHistoryBt;
     @FXML
-    private Button nextHistoryBt;
+    private Button correctEntryMenu;
 
-    @FXML   // 保持置顶
-    private ToggleButton keepStageTopMenu;
+    @FXML
+    private ToggleButton startEndMenu;
 
-    @FXML   // 清空
-    private Button clearBt;
-
-    @FXML   // 显示文本： 显示原文或者显示译文
-    private Button displayTextBt;
-
-    @FXML   // 复制原文
-    private Button copyOriginBt;
-    @FXML   // 复制译文
-    private Button copyTranslationBt;
-
-    private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
+    @FXML
+    private Text historyNumText;
 
     // 是否继续接受来自clipboard的文本
     private boolean keepGetTextFromClipboard = true;
 
     // presenter
-    private FocusViewPresenter presenter;
+    private RecordViewPresenter presenter;
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -122,6 +115,7 @@ public class FocusModeController implements Initializable, IFocusView {
     @Override
     public void destroy() {
         EventBus.getDefault().unregister(this);
+        presenter.restoreAutoCopyPasteConfig();
     }
 
     /**
@@ -148,9 +142,6 @@ public class FocusModeController implements Initializable, IFocusView {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
         }
 
-        // 置顶
-        keepStageTopMenu.setSelected(configuration.isKeepTop());
-
         // 翻译引擎
         switch (configuration.getCurrentTranslator()) {
             case GOOGLE:
@@ -163,20 +154,16 @@ public class FocusModeController implements Initializable, IFocusView {
                 youdaoTranslator.setSelected(true);
                 break;
         }
-        // 增量
-        incrementalCopyMenu.setSelected(configuration.isIncrementalCopy());
-        // 自动复制
-        autoCopyMenu.setSelected(configuration.isAutoCopy());
-        // 自动粘贴
-        autoPasteMenu.setSelected(configuration.isAutoPaste());
+        // 记录模式--默认为译文
+        translateRecordMode.setSelected(true);
+        // 置顶
+        keepStageTopMenu.setSelected(configuration.isKeepTop());
+        // 文本格式化
+        textFormatMenu.setSelected(configuration.isTryFormat());
         // 监听版
         clipboardListenerMenu.setSelected(configuration.isOpenClipboardListener());
         // 拖拽
         dragCopyMenu.setSelected(configuration.isDragCopy());
-        // 文本格式化
-        textFormatMenu.setSelected(configuration.isTryFormat());
-        // 翻译后位置
-        cursorPos = configuration.getTextAreaCursorPos();
     }
 
     @Override
@@ -188,6 +175,10 @@ public class FocusModeController implements Initializable, IFocusView {
 
             public void handle(KeyEvent ke) {
                 if (keyComb.match(ke)) {
+                    if (!startEndMenu.isSelected()) {
+                        originTextArea.setText("请先点击【开始】记录");
+                        return;
+                    }
                     translateBt.fire();
                     ke.consume(); // <-- stops passing the event to next node
                 }
@@ -199,11 +190,13 @@ public class FocusModeController implements Initializable, IFocusView {
      * 初始化参数
      */
     private void initParams() {
-        presenter = PresenterFactory.getPresenter(SceneType.FOCUS_SCENE);
+        presenter = PresenterFactory.getPresenter(SceneType.RECORD_SCENE);
         // 拿到presenter，首先注入mode模块，所有mode由systemresource持有
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
         presenter.initView();
+        // close auto paste and copy
+        presenter.closeAndSaveAutoCopyPaste();
     }
 
     /**
@@ -220,21 +213,15 @@ public class FocusModeController implements Initializable, IFocusView {
      */
     private void initClickEvents() {
         backBt.setOnAction((event -> presenter.switchScene(SceneType.MAIN_SCENE)));
+        translateBt.setOnAction((event -> presenter.translate(originTextArea.getText())));
         translatorGroup.selectedToggleProperty().addListener(this::onTranslatorTypeChanged);
-        incrementalCopyMenu.setOnAction((event -> presenter.incrementalCopySwitch(incrementalCopyMenu.isSelected())));
-        preHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.PRE_HISTORY)));
-        nextHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.NEXT_HISTORY)));
-        clearBt.setOnAction((event -> presenter.clearText()));
+        recordModeGroup.selectedToggleProperty().addListener(this::onRecordModeChanged);
         keepStageTopMenu.setOnAction((event -> presenter.setKeepTop(keepStageTopMenu.isSelected())));
-        autoCopyMenu.setOnAction((event -> presenter.autoCopySwitch(autoCopyMenu.isSelected())));
-        autoPasteMenu.setOnAction((event -> presenter.autoPasteSwitch(autoPasteMenu.isSelected())));
-        copyOriginBt.setOnAction((event -> presenter.copyOriginText()));
-        copyTranslationBt.setOnAction((event -> presenter.copyTranslatedText()));
+        textFormatMenu.setOnAction((event -> presenter.textFormatSwitch(textFormatMenu.isSelected())));
         clipboardListenerMenu.setOnAction((event -> presenter.clipboardSwitch(clipboardListenerMenu.isSelected())));
         dragCopyMenu.setOnAction((event -> presenter.dragCopySwitch(dragCopyMenu.isSelected())));
-        textFormatMenu.setOnAction((event -> presenter.textFormatSwitch(textFormatMenu.isSelected())));
-        translateBt.setOnAction((event -> presenter.translate(textArea.getText())));
-        displayTextBt.setOnAction((event -> presenter.switchBetweenOriginAndTranslatedText()));
+        correctEntryMenu.setOnAction((event -> presenter.correctCurrentEntry(originTextArea.getText(), translateTextArea.getText())));
+        startEndMenu.setOnAction((event -> presenter.record(startEndMenu.isSelected())));
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
@@ -244,6 +231,19 @@ public class FocusModeController implements Initializable, IFocusView {
             presenter.setTranslatorType(TranslatorType.BAIDU);
         } else if (newValue == youdaoTranslator) {
             presenter.setTranslatorType(TranslatorType.YOUDAO);
+        } else {
+            // 走到这个分支，说明用户点击了当前已经选中的按钮
+            oldValue.setSelected(true);
+        }
+    }
+
+    private void onRecordModeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
+        if (newValue == originRecordMode) {
+//            presenter.setTranslatorType(TranslatorType.GOOGLE);
+        } else if (newValue == translateRecordMode) {
+//            presenter.setTranslatorType(TranslatorType.BAIDU);
+        } else if (newValue == bilingualRecordMode) {
+//            presenter.setTranslatorType(TranslatorType.YOUDAO);
         } else {
             // 走到这个分支，说明用户点击了当前已经选中的按钮
             oldValue.setSelected(true);
@@ -260,42 +260,14 @@ public class FocusModeController implements Initializable, IFocusView {
         EventBus.getDefault().post(new SwitchSceneEvent(type));
     }
 
-    @Override
-    public void autoCopy(boolean open) {
-        if (!open) {
-            autoPasteMenu.setSelected(false);
-        }
-    }
-
-    @Override
-    public void autoPaste(boolean open) {
-        // 自动粘贴依赖于自动复制
-        if (open) {
-            autoCopyMenu.setSelected(true);
-        }
-    }
-
-    @Override
-    public void switchBetweenOriginAndTranslatedText(HistoryEntry entry) {
-        final String showOrigin = "显示原文";
-        final String showTranslation = "显示译文";
-        final String currentState = displayTextBt.getText();
-
-        if (showOrigin.equals(currentState)) { // 需要显示原文
-            textArea.setText(entry.getOrigin());
-            // 下一个状态：显示译文
-            displayTextBt.setText(showTranslation);
-        } else if (showTranslation.equals(currentState)) {
-            textArea.setText(entry.getTranslation());
-            // 下一个状态：显示原文
-            displayTextBt.setText(showOrigin);
-        }
-    }
-
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null || !keepGetTextFromClipboard) return;
+        if (!startEndMenu.isSelected()) {
+            originTextArea.setText("请先点击【开始】记录");
+            return;
+        }
         if (event.isTextType()) { // 文字类型
             presenter.translate(event.getText());
         } else {                // 图片类型
@@ -308,27 +280,40 @@ public class FocusModeController implements Initializable, IFocusView {
         Platform.runLater(() -> {
             keepGetTextFromClipboard = false;
             translateBt.setDisable(true);
-            displayTextBt.setDisable(true);
         });
     }
 
     @Override
     public void translateEnd() {
-        final String showOrigin = "显示原文";
         Platform.runLater(() -> {
             keepGetTextFromClipboard = true;
             translateBt.setDisable(false);
-            // displayBt reinitialize
-            displayTextBt.setText(showOrigin);
-            displayTextBt.setDisable(false);
-            if (cursorPos == TextAreaCursorPos.END) {
-                textArea.end();
+            if (startEndMenu.isSelected()) {  // 真实记录下
+                // get num
+                int num = Integer.parseInt(historyNumText.getText()) + 1;
+                historyNumText.setText(num + "");
             }
         });
     }
 
     @Override
     public void setText(String originText, String translatedText) {
-        textArea.setText(translatedText);
+        originTextArea.setText(originText);
+        translateTextArea.setText(translatedText);
+    }
+
+    @Override
+    public void recordStart(String recordPath) {
+        // 初始化--清空
+        historyNumText.setText(0 + "");
+        originTextArea.setText("");
+        translateTextArea.setText("");
+    }
+
+    @Override
+    public void recordEnd(String recordPath) {
+        historyNumText.setText(0 + "");
+        originTextArea.setText("已导出至:" + recordPath);
+        translateTextArea.setText("");
     }
 }

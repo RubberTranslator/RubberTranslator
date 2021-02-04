@@ -106,6 +106,7 @@
                 </Menu>
                   <Menu fx:id="focusModeMenu" mnemonicParsing="false" text="专注模式" />
                   <Menu fx:id="compareModeMenu" mnemonicParsing="false" text="对比模式" />
+                  <Menu fx:id="recordModeMenu" mnemonicParsing="false" text="记录模式" />
                   <Menu fx:id="preHistoryMenu" mnemonicParsing="false" text="上一条" />
                   <Menu fx:id="nextHistoryMenu" mnemonicParsing="false" text="下一条" />
                   <Menu fx:id="clearMenu" mnemonicParsing="false" text="清空" />

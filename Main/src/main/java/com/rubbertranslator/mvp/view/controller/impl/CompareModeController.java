@@ -23,7 +23,6 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -64,9 +63,6 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     @FXML
     private ToggleButton dragCopyMenu;
 
-    // window stage 引用
-    private Stage appStage;
-
     // 当前翻译后文本区cursor position
     private TextAreaCursorPos cursorPos = TextAreaCursorPos.START;
 
@@ -85,8 +81,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         initParams();
         initClickEvents();
         initListeners();
-        // close auto paste and copy
-        presenter.closeAndSaveAutoCopyPaste();
+
     }
 
     @Override
@@ -102,6 +97,8 @@ public class CompareModeController implements Initializable, IMultiTranslateView
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
         presenter.initView();
+        // close auto paste and copy
+        presenter.closeAndSaveAutoCopyPaste();
     }
 
     private void initClickEvents() {
@@ -168,8 +165,6 @@ public class CompareModeController implements Initializable, IMultiTranslateView
 
     @Override
     public void delayInitViews() {
-        appStage = (Stage) rootPane.getScene().getWindow();
-
         // bind translate shortcut
         rootPane.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             final KeyCombination keyComb = new KeyCodeCombination(KeyCode.T,

@@ -6,8 +6,9 @@ import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.modules.translate.AbstractTranslator;
+import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 
-public class MainViewPresenter extends SingleTranslatePresenter {
+public class MainViewPresenter extends SingleTranslatePresenter<ISingleTranslateView> {
 
     @Override
     public void setTranslatorLanguage(boolean isSrc, Language language) {

@@ -137,6 +137,9 @@ public class MainController implements ISingleTranslateView {
     // 对比模式
     @FXML
     private Menu compareModeMenu;
+    // 记录模式
+    @FXML
+    private Menu recordModeMenu;
 
     // 历史记录
     @FXML
@@ -281,11 +284,12 @@ public class MainController implements ISingleTranslateView {
         initFocusModeMenu();
         // 对比模式
         initCompareModeMenu();
+        // 记录模式
+        initRecordModeMenu();
         // 历史
         initHistoryMenu();
         // 清空
         initClearMenu();
-        // window preSize
     }
 
     @Override
@@ -678,6 +682,13 @@ public class MainController implements ISingleTranslateView {
         label.setOnMouseClicked((event -> presenter.switchScene(SceneType.COMPARE_SCENE)));
         compareModeMenu.setText("");
         compareModeMenu.setGraphic(label);
+    }
+
+    private void initRecordModeMenu(){
+        Label label = new Label("记录模式");
+        label.setOnMouseClicked((event -> presenter.switchScene(SceneType.RECORD_SCENE)));
+        recordModeMenu.setText("");
+        recordModeMenu.setGraphic(label);
     }
 
     private void initHistoryMenu() {

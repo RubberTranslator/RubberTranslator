@@ -10,29 +10,33 @@ public class PresenterFactory {
 
     private static final Map<SceneType, BasePresenter> presenterMap = new HashMap<>();
 
-    public static <T extends BasePresenter> T getPresenter(SceneType type){
-        T presenter;
-        if(!presenterMap.containsKey(type)){
-            switch(type){
+    public static <T extends BasePresenter> T getPresenter(SceneType type) {
+        BasePresenter presenter;
+        if (!presenterMap.containsKey(type)) {
+            switch (type) {
                 case MAIN_SCENE:
-                    presenter = (T) new MainViewPresenter();
-                    presenterMap.put(SceneType.MAIN_SCENE,presenter);
+                    presenter = new MainViewPresenter();
+                    presenterMap.put(SceneType.MAIN_SCENE, presenter);
                     break;
                 case FOCUS_SCENE:
-                    presenter = (T) new FocusViewPresenter();
-                    presenterMap.put(SceneType.FOCUS_SCENE,presenter);
+                    presenter = new FocusViewPresenter();
+                    presenterMap.put(SceneType.FOCUS_SCENE, presenter);
                     break;
                 case COMPARE_SCENE:
-                    presenter = (T) new MultiTranslatePresenter();
-                    presenterMap.put(SceneType.COMPARE_SCENE,presenter);
+                    presenter = new MultiTranslatePresenter();
+                    presenterMap.put(SceneType.COMPARE_SCENE, presenter);
+                    break;
+                case RECORD_SCENE:
+                    presenter = new RecordViewPresenter();
+                    presenterMap.put(SceneType.RECORD_SCENE, presenter);
                     break;
                 case FILTER_SCENE:
-                    presenter = (T) new FilterViewPresenter();
-                    presenterMap.put(SceneType.FILTER_SCENE,presenter);
+                    presenter = new FilterViewPresenter();
+                    presenterMap.put(SceneType.FILTER_SCENE, presenter);
                     break;
                 case WORDS_REPLACE_SCENE:
-                    presenter = (T) new WordsReplacerPresenter();
-                    presenterMap.put(SceneType.WORDS_REPLACE_SCENE,presenter);
+                    presenter = new WordsReplacerPresenter();
+                    presenterMap.put(SceneType.WORDS_REPLACE_SCENE, presenter);
                     break;
                 default:
                     break;

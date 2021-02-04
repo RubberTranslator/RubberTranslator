@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SingleTranslatePresenter extends ModelPresenter<ISingleTranslateView> {
+public class SingleTranslatePresenter<T extends ISingleTranslateView> extends ModelPresenter<T> {
 
     @Override
     public void setTranslatorType(TranslatorType type) {
