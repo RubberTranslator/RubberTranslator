@@ -91,7 +91,7 @@ public class SingleTranslatePresenter<T extends ISingleTranslateView> extends Mo
     @Override
     public void setHistoryEntry(HistoryEntryIndex index) {
         super.setHistoryEntry(index);
-        HistoryEntry entry;
+        HistoryEntry entry ;
         switch (index) {
             case PRE_HISTORY:
                 entry = translatorFacade.getHistory().previous();

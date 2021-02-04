@@ -94,6 +94,9 @@ public class RecordModeController implements Initializable, IRecordView {
     private Button correctEntryMenu;
 
     @FXML
+    private Button  deleteEntryBt;
+
+    @FXML
     private ToggleButton startEndMenu;
 
     @FXML
@@ -232,6 +235,7 @@ public class RecordModeController implements Initializable, IRecordView {
         preHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.PRE_HISTORY)));
         nextHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.NEXT_HISTORY)));
         correctEntryMenu.setOnAction((event -> presenter.correctCurrentEntry(originTextArea.getText(), translateTextArea.getText())));
+        deleteEntryBt.setOnAction((event -> presenter.deleteCurrentEntry()));
         startEndMenu.setOnAction((event -> presenter.record(startEndMenu.isSelected())));
     }
 
@@ -315,7 +319,7 @@ public class RecordModeController implements Initializable, IRecordView {
     @Override
     public void recordStart(String recordPath) {
         // 初始化--清空
-        historyNumText.setText(0 + "");
+        historyNumText.setText("0/0");
         originTextArea.setText("");
         translateTextArea.setText("");
     }

@@ -37,7 +37,7 @@
         <dependency>
             <groupId>com.1stleg</groupId>
             <artifactId>jnativehook</artifactId>
-            <version>2.0.2</version>
+            <version>2.1.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
@@ -69,11 +69,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/it.sauronsoftware/junique -->
-<!--        <dependency>-->
-<!--            <groupId>it.sauronsoftware</groupId>-->
-<!--            <artifactId>junique</artifactId>-->
-<!--            <version>1.0.4</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>it.sauronsoftware</groupId>
+            <artifactId>junique</artifactId>
+            <version>1.0.4</version>
+        </dependency>
 
     </dependencies>
 

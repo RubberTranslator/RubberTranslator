@@ -79,9 +79,17 @@ public class TranslationHistory {
        return historyList.size();
     }
 
+    public void deleteCurrentEntry(){
+        if(historyCursor >= 0 && historyCursor < historyList.size()){
+            historyList.remove(historyCursor);
+            historyCursor--;
+            isModified = true;
+        }
+    }
+
     public HistoryEntry current() {
         return historyCursor >= 0 && historyCursor < historyList.size() ?
-                historyList.get(historyCursor) : null;
+                historyList.get(historyCursor) : new HistoryEntry("", "");
     }
 
     public HistoryEntry previous() {
@@ -108,6 +116,7 @@ public class TranslationHistory {
 
                         for (HistoryEntry entry : historyList) {
                             String line = combineHistoryEntry(entry);
+                            System.out.println(line);
                             bw.write(line + "\n\n");
                         }
                     } catch (IOException e) {
@@ -126,11 +135,11 @@ public class TranslationHistory {
     private String combineHistoryEntry(HistoryEntry entry) {
         switch (recordModeType) {
             case ORIGIN_RECORD_MODE:
-                return entry.getOrigin().replaceAll("[\t\n]","");
+                return entry.getOrigin().replaceAll("[\r\t\n]","");
             case TRANSLATE_RECORD_MODE:
-                return entry.getTranslation().replaceAll("[\t\n]","");
+                return entry.getTranslation().replaceAll("[\r\t\n]","");
             case BILINGUAL_RECORD_MODE:
-                return entry.getOrigin() .replaceAll("[\t\n]","")+ "\n" + entry.getTranslation().replaceAll("[\t\n]","");
+                return entry.getOrigin() .replaceAll("[\r\t\n]","")+ "\n" + entry.getTranslation().replaceAll("[\r\t\n]","");
             default:
                 return "\n";
         }
