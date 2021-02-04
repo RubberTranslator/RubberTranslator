@@ -48,12 +48,15 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
     ![](https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/compare.gif)
 
-13. 过滤器，设定【拖拽复制】的过滤程序，避免在所有程序中均触发【拖拽复制】
-14. **翻译文本替换，部分专业词汇如果由翻译引擎来翻译，将显得十分晦涩难懂，使用本功能，可自定义将【晦涩的翻译词组】替换为【自己想要的词组】**
+14. 过滤器，设定【拖拽复制】的过滤程序，避免在所有程序中均触发【拖拽复制】
+
+15. **记录模式**，该模式下，会记录所有翻译文本，并导出原文、译文或双语的文档。 用于导出翻译文献非常有用。
+
+    <img src="C:\Users\Raven\AppData\Roaming\Typora\typora-user-images\image-20210204152707436.png" alt="image-20210204152707436" style="zoom: 67%;" />
+
+16. **翻译文本替换，部分专业词汇如果由翻译引擎来翻译，将显得十分晦涩难懂，使用本功能，可自定义将【晦涩的翻译词组】替换为【自己想要的词组】**
 
 举个例子， 在数据结构或算法中，binary search 应该翻译成“二分查找”，但是如果直接使用翻译引擎翻译，将会得到二进制搜索：
-
-<img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/5fe40b683ffa7d37b34a24a1.png" alt="image-20201224112518290" height="400;" />
 
 此时可以添加“替换词组”：
 

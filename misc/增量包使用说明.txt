@@ -1,0 +1,2 @@
+Win用户：复制文件到 RubberTranslator/app目录下替换即可。
+Linux用户：复制文件到RubberTranslator/lib/app目录下替换即可。
