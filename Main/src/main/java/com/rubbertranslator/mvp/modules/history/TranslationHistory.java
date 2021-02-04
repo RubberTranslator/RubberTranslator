@@ -62,7 +62,9 @@ public class TranslationHistory {
     }
 
     public void modifyCurrentEntry(HistoryEntry entry) {
-        historyList.set(historyCursor, entry);
+        if(historyCursor >= 0 && historyCursor < historyList.size()){
+            historyList.set(historyCursor, entry);
+        }
     }
 
     public HistoryEntry current() {
@@ -110,11 +112,11 @@ public class TranslationHistory {
     private String combineHistoryEntry(HistoryEntry entry) {
         switch (recordModeType) {
             case ORIGIN_RECORD_MODE:
-                return entry.getOrigin();
+                return entry.getOrigin().replaceAll("[\t\n]","");
             case TRANSLATE_RECORD_MODE:
-                return entry.getTranslation();
+                return entry.getTranslation().replaceAll("[\t\n]","");
             case BILINGUAL_RECORD_MODE:
-                return entry.getOrigin() + "\n" + entry.getTranslation();
+                return entry.getOrigin() .replaceAll("[\t\n]","")+ "\n" + entry.getTranslation().replaceAll("[\t\n]","");
             default:
                 return "\n";
         }
