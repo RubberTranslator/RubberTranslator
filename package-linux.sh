@@ -37,3 +37,6 @@ mv out/Launcher/lib/app/* out/Main/lib/app
 
 # 改名
 mv out/Main out/RubberTranslator
+
+# copy必读.txt
+cp misc/必读.txt out/
