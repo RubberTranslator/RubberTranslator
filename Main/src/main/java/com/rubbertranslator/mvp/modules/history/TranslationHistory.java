@@ -25,6 +25,8 @@ public class TranslationHistory {
     // 记录模式相关
     private boolean isRecording = false;
 
+    private boolean isModified = false;
+
     private RecordModeType recordModeType = RecordModeType.TRANSLATE_RECORD_MODE;
 
     private String exportPath = null;
@@ -63,6 +65,7 @@ public class TranslationHistory {
 
     public void modifyCurrentEntry(HistoryEntry entry) {
         if(historyCursor >= 0 && historyCursor < historyList.size()){
+            isModified = true;
             historyList.set(historyCursor, entry);
         }
     }
@@ -92,7 +95,8 @@ public class TranslationHistory {
                         File exportFile = new File(exportPath);
                         if (!exportFile.getParentFile().exists()) exportFile.getParentFile().mkdirs();
                         if (!exportFile.exists()) exportFile.createNewFile();
-                        bw = new BufferedWriter(new FileWriter(exportFile));
+                        bw = new BufferedWriter(new FileWriter(exportFile,!isModified));
+
                         for (HistoryEntry entry : historyList) {
                             String line = combineHistoryEntry(entry);
                             bw.write(line + "\n\n");
@@ -104,6 +108,7 @@ public class TranslationHistory {
                             if (bw != null) bw.close();
                         } catch (IOException e) {
                         }
+                        isModified = false;
                     }
                 }
         );
