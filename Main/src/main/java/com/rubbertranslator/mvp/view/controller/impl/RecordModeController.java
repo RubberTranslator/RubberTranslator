@@ -1,5 +1,7 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
+import com.rubbertranslator.enumtype.HistoryEntryIndex;
+import com.rubbertranslator.enumtype.RecordModeType;
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
@@ -82,6 +84,12 @@ public class RecordModeController implements Initializable, IRecordView {
     @FXML
     private ToggleButton dragCopyMenu;
 
+
+    @FXML // 历史记录
+    private Button preHistoryBt;
+    @FXML
+    private Button nextHistoryBt;
+
     @FXML
     private Button correctEntryMenu;
 
@@ -116,6 +124,7 @@ public class RecordModeController implements Initializable, IRecordView {
     public void destroy() {
         EventBus.getDefault().unregister(this);
         presenter.restoreAutoCopyPasteConfig();
+        presenter.clearHistoryConfig();
     }
 
     /**
@@ -220,6 +229,8 @@ public class RecordModeController implements Initializable, IRecordView {
         textFormatMenu.setOnAction((event -> presenter.textFormatSwitch(textFormatMenu.isSelected())));
         clipboardListenerMenu.setOnAction((event -> presenter.clipboardSwitch(clipboardListenerMenu.isSelected())));
         dragCopyMenu.setOnAction((event -> presenter.dragCopySwitch(dragCopyMenu.isSelected())));
+        preHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.PRE_HISTORY)));
+        nextHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.NEXT_HISTORY)));
         correctEntryMenu.setOnAction((event -> presenter.correctCurrentEntry(originTextArea.getText(), translateTextArea.getText())));
         startEndMenu.setOnAction((event -> presenter.record(startEndMenu.isSelected())));
     }
@@ -239,11 +250,11 @@ public class RecordModeController implements Initializable, IRecordView {
 
     private void onRecordModeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
         if (newValue == originRecordMode) {
-//            presenter.setTranslatorType(TranslatorType.GOOGLE);
+            presenter.setRecordModeType(RecordModeType.ORIGIN_RECORD_MODE);
         } else if (newValue == translateRecordMode) {
-//            presenter.setTranslatorType(TranslatorType.BAIDU);
+            presenter.setRecordModeType(RecordModeType.TRANSLATE_RECORD_MODE);
         } else if (newValue == bilingualRecordMode) {
-//            presenter.setTranslatorType(TranslatorType.YOUDAO);
+            presenter.setRecordModeType(RecordModeType.BILINGUAL_RECORD_MODE);
         } else {
             // 走到这个分支，说明用户点击了当前已经选中的按钮
             oldValue.setSelected(true);
@@ -257,7 +268,11 @@ public class RecordModeController implements Initializable, IRecordView {
 
     @Override
     public void switchScene(SceneType type) {
-        EventBus.getDefault().post(new SwitchSceneEvent(type));
+        if (startEndMenu.isSelected()) {
+            originTextArea.setText("请先关闭记录,再返回,否则可能会丢失数据");
+        } else {
+            EventBus.getDefault().post(new SwitchSceneEvent(type));
+        }
     }
 
 

@@ -85,7 +85,6 @@
                   <items>
                     <MenuItem fx:id="filterMenu" mnemonicParsing="false" text="过滤器" />
                         <MenuItem fx:id="translationWordsReplacerMenu" mnemonicParsing="false" text="翻译文本替换" />
-                        <MenuItem fx:id="historyNumMenu" mnemonicParsing="false" text="翻译历史数量" />
                         <MenuItem fx:id="customCssMenu" mnemonicParsing="false" text="自定义样式" />
                         <Menu mnemonicParsing="false" text="Key&amp;Secret设置">
                           <items>

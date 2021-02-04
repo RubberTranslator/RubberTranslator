@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -485,7 +484,6 @@ public class MainController implements ISingleTranslateView {
             initOCR(configuration);
             initProcessFilter();
             initWordsReplacer();
-            initTranslationHistoryNumMenu(configuration);
             initCustomCss(configuration);
             initApiMenu(configuration);
         }
@@ -588,32 +586,6 @@ public class MainController implements ISingleTranslateView {
                 }
             }));
         }
-
-
-        private void initTranslationHistoryNumMenu(SystemConfiguration configuration) {
-            historyNumMenu.setOnAction((actionEvent -> {
-                TextInputDialog dialog = new TextInputDialog("" + configuration.getHistoryNum());
-                dialog.setTitle("设置");
-                dialog.setHeaderText("翻译历史数量设置");
-                dialog.setContentText("输入保存历史数量(不超过100):");
-                dialog.initOwner(appStage);
-                // Traditional way to get the response value.
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(s -> {
-                    try {
-                        int value = Integer.parseInt(s);
-                        if (value < 0) {
-                            throw new NumberFormatException();
-                        }
-                        // 更新设置
-                        configuration.setHistoryNum(value);
-                    } catch (NumberFormatException e) {
-                        originTextArea.setText("翻译历史数仅限数字且大于0");
-                    }
-                });
-            }));
-        }
-
     }
 
     /**
@@ -684,7 +656,7 @@ public class MainController implements ISingleTranslateView {
         compareModeMenu.setGraphic(label);
     }
 
-    private void initRecordModeMenu(){
+    private void initRecordModeMenu() {
         Label label = new Label("记录模式");
         label.setOnMouseClicked((event -> presenter.switchScene(SceneType.RECORD_SCENE)));
         recordModeMenu.setText("");

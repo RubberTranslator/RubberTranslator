@@ -31,14 +31,13 @@ public class TranslatorFacade {
     // 后置文本处理器
     private TextPostProcessor textPostProcessor;
     // 翻译历史记录
-    private final TranslationHistory history;
+    private TranslationHistory history;
     // 后置处理器
     private AfterProcessor afterProcessor;
     // 创建线程池（使用了预定义的配置）
     private final ExecutorService executor;
 
     public TranslatorFacade() {
-        history = new TranslationHistory();
         executor = SystemResourceManager.getExecutor();
     }
 
@@ -76,6 +75,10 @@ public class TranslatorFacade {
 
     public void setTextPostProcessor(TextPostProcessor textPostProcessor) {
         this.textPostProcessor = textPostProcessor;
+    }
+
+    public void setHistory(TranslationHistory history){
+        this.history = history;
     }
 
 

@@ -43,6 +43,8 @@
                 <ToggleButton fx:id="textFormatMenu" mnemonicParsing="false" text="文本格式化" />
                 <ToggleButton fx:id="clipboardListenerMenu" mnemonicParsing="false" text="剪切板" />
                 <ToggleButton fx:id="dragCopyMenu" mnemonicParsing="false" text="拖拽" />
+            <Button fx:id="preHistoryBt" mnemonicParsing="false" text="上一条" />
+            <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条" />
             <Button fx:id="correctEntryMenu" mnemonicParsing="false" text="修正本条目" />
             <ToggleButton fx:id="startEndMenu" mnemonicParsing="false" text="开始" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="当前条目数：" />

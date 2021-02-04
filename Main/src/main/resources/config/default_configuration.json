@@ -6,8 +6,8 @@
     "y": 0
   },
   "last_size": {
-    "x": 600.0,
-    "y": 500.0
+    "x": 800.0,
+    "y": 600.0
   },
   "last_fxml_path": "/fxml/main.fxml",
   "open_clipboard_listener": true,
@@ -28,7 +28,6 @@
   "baidu_translator_secret_key": "",
   "you_dao_translator_api_key": "",
   "you_dao_translator_secret_key": "",
-  "history_num": 10,
   "auto_copy": false,
   "auto_paste": false,
   "textarea_cursor_pos": "START"

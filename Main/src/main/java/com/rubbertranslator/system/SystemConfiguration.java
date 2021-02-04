@@ -111,13 +111,6 @@ public class SystemConfiguration implements Serializable {
     private String youDaoTranslatorSecretKey;
 
     /**
-     * 翻译历史
-     */
-    // 翻译历史记录条数
-    @SerializedName("history_num")
-    private Integer historyNum;
-
-    /**
      * 其它
      */
     @SerializedName("textarea_cursor_pos")
@@ -325,14 +318,6 @@ public class SystemConfiguration implements Serializable {
 
     public void setYouDaoTranslatorSecretKey(String youDaoTranslatorSecretKey) {
         this.youDaoTranslatorSecretKey = youDaoTranslatorSecretKey;
-    }
-
-    public Integer getHistoryNum() {
-        return historyNum;
-    }
-
-    public void setHistoryNum(Integer historyNum) {
-        this.historyNum = historyNum;
     }
 
     public TextAreaCursorPos getTextAreaCursorPos() {

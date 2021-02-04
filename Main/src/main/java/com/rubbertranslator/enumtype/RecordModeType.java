@@ -8,5 +8,5 @@ package com.rubbertranslator.enumtype;
 public enum RecordModeType {
     ORIGIN_RECORD_MODE,
     TRANSLATE_RECORD_MODE,
-    BILINGUAL_RECORD_MODe
+    BILINGUAL_RECORD_MODE
 }

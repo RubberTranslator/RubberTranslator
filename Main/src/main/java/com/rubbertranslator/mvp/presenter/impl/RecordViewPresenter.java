@@ -1,6 +1,7 @@
 package com.rubbertranslator.mvp.presenter.impl;
 
 import com.rubbertranslator.enumtype.RecordModeType;
+import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.view.IRecordView;
 import com.rubbertranslator.utils.OSTypeUtil;
 
@@ -19,9 +20,8 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
 
     private boolean oldAutoCopy = false;
 
-
     // 记录导出相关
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
     private String exportPath;
 
@@ -37,6 +37,9 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
         }
     }
 
+    public void clearHistoryConfig(){
+        translatorFacade.getHistory().endRecord();
+    }
 
     public void closeAndSaveAutoCopyPaste() {
         oldAutoCopy = configManger.getSystemConfiguration().isAutoCopy();
@@ -54,19 +57,21 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
 
 
     public void setRecordModeType(RecordModeType recordMode) {
-
+        translatorFacade.getHistory().setRecordModeType(recordMode);
     }
 
     public void correctCurrentEntry(String originText, String translateText) {
-
+        translatorFacade.getHistory().modifyCurrentEntry(new HistoryEntry(originText, translateText));
     }
 
     public void record(boolean isStart) {
         if (isStart) {
             updateExportPath();
+            translatorFacade.getHistory().startRecord(exportPath);
             view.recordStart(exportPath);
         } else {
             // TODO: 完成导出
+            translatorFacade.getHistory().endRecord();
             view.recordEnd(exportPath);
         }
     }

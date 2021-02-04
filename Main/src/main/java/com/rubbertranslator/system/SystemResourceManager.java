@@ -197,7 +197,7 @@ public class SystemResourceManager {
 
     private static boolean historyInit(SystemConfiguration configuration) {
         TranslationHistory history = new TranslationHistory();
-        history.setHistoryCapacity(configuration.getHistoryNum());
+        facade.setHistory(history);
         return true;
     }
 
