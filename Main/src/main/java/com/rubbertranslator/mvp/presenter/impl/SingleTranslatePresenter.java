@@ -45,7 +45,12 @@ public class SingleTranslatePresenter<T extends ISingleTranslateView> extends Mo
             }
             // end
             view.translateEnd();
+            translateEndHook();
         }));
+    }
+
+    public void translateEndHook(){
+
     }
 
     @Override
@@ -71,6 +76,7 @@ public class SingleTranslatePresenter<T extends ISingleTranslateView> extends Mo
                     }
                     // end
                     view.translateEnd();
+                    translateEndHook();
                 }));
             }
         } catch (IOException e) {

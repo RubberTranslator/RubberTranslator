@@ -1,5 +1,6 @@
 package com.rubbertranslator.mvp.presenter.impl;
 
+import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.RecordModeType;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.view.IRecordView;
@@ -20,6 +21,8 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
 
     private boolean oldAutoCopy = false;
 
+    private boolean oldIncrementCopy = false;
+
     // 记录导出相关
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
@@ -37,22 +40,44 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
         }
     }
 
-    public void clearHistoryConfig(){
+    @Override
+    public void setHistoryEntry(HistoryEntryIndex index) {
+        super.setHistoryEntry(index);
+        updateHistoryNumDisplay();
+    }
+
+    @Override
+    public void translateEndHook() {
+        super.translateEndHook();
+        updateHistoryNumDisplay();
+    }
+
+    private void updateHistoryNumDisplay() {
+        int cur = translatorFacade.getHistory().getCurrentCursor();
+        int total = translatorFacade.getHistory().getHistorySize();
+        view.setHistoryNum(cur, total);
+    }
+
+    public void clearHistoryConfig() {
         translatorFacade.getHistory().endRecord();
     }
 
     public void closeAndSaveAutoCopyPaste() {
         oldAutoCopy = configManger.getSystemConfiguration().isAutoCopy();
         oldAutoPaste = configManger.getSystemConfiguration().isAutoPaste();
+        oldIncrementCopy = configManger.getSystemConfiguration().isIncrementalCopy();
         translatorFacade.getAfterProcessor().setAutoCopy(false);
         translatorFacade.getAfterProcessor().setAutoPaste(false);
+        translatorFacade.getTextPreProcessor().setIncrementalCopy(false);
     }
 
     public void restoreAutoCopyPasteConfig() {
         configManger.getSystemConfiguration().setAutoCopy(oldAutoCopy);
         configManger.getSystemConfiguration().setAutoPaste(oldAutoPaste);
+        configManger.getSystemConfiguration().setIncrementalCopy(oldIncrementCopy);
         translatorFacade.getAfterProcessor().setAutoCopy(oldAutoCopy);
         translatorFacade.getAfterProcessor().setAutoPaste(oldAutoPaste);
+        translatorFacade.getTextPreProcessor().setIncrementalCopy(oldIncrementCopy);
     }
 
 
@@ -62,6 +87,7 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
 
     public void correctCurrentEntry(String originText, String translateText) {
         translatorFacade.getHistory().modifyCurrentEntry(new HistoryEntry(originText, translateText));
+        view.correctCallBack();
     }
 
     public void record(boolean isStart) {

@@ -35,6 +35,7 @@ public class TranslationHistory {
         if (!isRecording) {
             isRecording = true;
             this.exportPath = exportPath;
+            historyList.clear();
         }
     }
 
@@ -68,6 +69,14 @@ public class TranslationHistory {
             isModified = true;
             historyList.set(historyCursor, entry);
         }
+    }
+
+    public int getCurrentCursor(){
+       return historyCursor+1;
+    }
+
+    public int getHistorySize(){
+       return historyList.size();
     }
 
     public HistoryEntry current() {

@@ -11,4 +11,11 @@ public interface IRecordView extends ISingleTranslateView {
     void recordStart(String recordPath);
 
     void recordEnd(String recordPath);
+
+    void setHistoryNum(int current, int total);
+
+    // 修正回掉
+    void correctCallBack();
+
+
 }

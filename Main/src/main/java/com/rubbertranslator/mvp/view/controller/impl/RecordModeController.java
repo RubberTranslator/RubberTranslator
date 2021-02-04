@@ -303,11 +303,6 @@ public class RecordModeController implements Initializable, IRecordView {
         Platform.runLater(() -> {
             keepGetTextFromClipboard = true;
             translateBt.setDisable(false);
-            if (startEndMenu.isSelected()) {  // 真实记录下
-                // get num
-                int num = Integer.parseInt(historyNumText.getText()) + 1;
-                historyNumText.setText(num + "");
-            }
         });
     }
 
@@ -330,5 +325,16 @@ public class RecordModeController implements Initializable, IRecordView {
         historyNumText.setText(0 + "");
         originTextArea.setText("已导出至:" + recordPath);
         translateTextArea.setText("");
+    }
+
+    @Override
+    public void setHistoryNum(int current, int total) {
+        historyNumText.setText(current + "/" + total);
+    }
+
+    @Override
+    public void correctCallBack() {
+        String text =  "修正成功（本行不会包含在历史结果中)\n" + originTextArea.getText();
+        originTextArea.setText(text);
     }
 }
