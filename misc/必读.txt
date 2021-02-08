@@ -33,6 +33,10 @@ Linux:
 2. 讨论群：118149802
 
 [Changelogs]
+2020-2-8
+RubberTranslator-v3.4.1 for mac
+1. 删除jnativehook lib（该库会造成mac卡死)，改用simplenativehook，目前效果良好
+
 2020-2-4
 RubberTranslator-v3.4.0 (与之前版本不兼容）
 1. 重构【热更新】逻辑，更新职责交于Main模块，避免Socket通信造成的端口冲突，读写卡顿
