@@ -53,7 +53,7 @@ public class DragCopyThread extends Thread {
             }
         });
         mouse.startListening();
-        Logger.getLogger(this.getClass().getName()).info("jnativehook 注册成功");
+        Logger.getLogger(this.getClass().getName()).info("nativehook 注册成功");
         Logger.getLogger(NativeHookInitializer.class.getPackage().getName()).setLevel(Level.OFF);
     }
 

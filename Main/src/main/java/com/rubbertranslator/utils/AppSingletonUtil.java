@@ -10,12 +10,6 @@ import it.sauronsoftware.junique.JUnique;
  * date  2020/12/4 10:57
  */
 public class AppSingletonUtil {
-
-    /**
-     * 通过检测文件锁，来判别是否有程序已经启动，释放资源由操作系统来做
-     *
-     * @return
-     */
     public static boolean isAppRunning() {
         boolean alreadyRunning;
         try {

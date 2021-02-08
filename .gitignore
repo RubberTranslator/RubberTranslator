@@ -116,3 +116,4 @@ RubberTranslator/export/words.txt
 .DS_Store
 app/
 export/
+resources/nativehooks/osx/RepeatHook.out

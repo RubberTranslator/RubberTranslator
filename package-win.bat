@@ -34,3 +34,6 @@ mv out/Launcher/Launcher* out/Main
 
 :: 改名
 mv out/Main out/RubberTranslator
+
+:: copy 必读文件
+cp misc/必读.txt out/
