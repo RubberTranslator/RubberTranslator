@@ -36,6 +36,7 @@ Linux:
 2020-2-8
 RubberTranslator-v3.4.1 for mac
 1. 删除jnativehook lib（该库会造成mac卡死)，改用simplenativehook，目前效果良好
+2. mac平台，添加打开任意安装来源脚本
 
 2020-2-4
 RubberTranslator-v3.4.0 (与之前版本不兼容）
