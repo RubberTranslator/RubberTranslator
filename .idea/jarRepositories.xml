@@ -27,6 +27,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="SimpleNativeHooks-maven-export" />
+      <option name="name" value="SimpleNativeHooks-maven-export" />
+      <option name="url" value="https://raw.github.com/repeats/SimpleNativeHooks/maven-export/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
       <option name="url" value="https://repo.spring.io/libs-snapshot/" />

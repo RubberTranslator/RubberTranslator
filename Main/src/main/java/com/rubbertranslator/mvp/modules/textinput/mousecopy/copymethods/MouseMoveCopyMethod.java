@@ -1,6 +1,7 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
-import org.jnativehook.mouse.NativeMouseEvent;
+
+import org.simplenativehooks.events.NativeMouseEvent;
 
 import java.awt.*;
 
@@ -32,47 +33,49 @@ public class MouseMoveCopyMethod extends CopyMethod {
 
     @Override
     public void onPressed(NativeMouseEvent event) {
-        startPoint = event.getPoint();
+        startPoint = new Point(event.getX(), event.getY());
         isProcessed = false;
     }
 
     @Override
     public void onRelease(NativeMouseEvent event) {
-        endPoint = event.getPoint();
-        if(tryCopy()){
+        endPoint = new Point(event.getX(), event.getY());
+        if (tryCopy()) {
             isProcessed = true;
         }
     }
 
     /**
      * try to copy
+     *
      * @return true if copy success
-     *         false if copy failed
+     * false if copy failed
      */
-    private boolean tryCopy(){
+    private boolean tryCopy() {
         double interval = calculateInterval();
-        if(interval > threshold){
+        if (interval > threshold) {
             triggerCopy();
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    private void triggerCopy(){
+    private void triggerCopy() {
         copyerRobot.triggerCopy();
     }
 
     /**
      * 计算鼠标在点按时的移动距离
+     *
      * @return
      */
-    private double calculateInterval(){
+    private double calculateInterval() {
         double sx = startPoint.getX();
         double sy = startPoint.getY();
         double ex = endPoint.getX();
         double ey = endPoint.getY();
-        return Math.sqrt((sx - ex)*(sx - ex) + (sy - ey)*(sy - ey));
+        return Math.sqrt((sx - ex) * (sx - ex) + (sy - ey) * (sy - ey));
     }
 
 }

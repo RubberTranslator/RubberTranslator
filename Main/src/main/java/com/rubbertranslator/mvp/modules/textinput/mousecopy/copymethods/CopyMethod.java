@@ -1,6 +1,7 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
-import org.jnativehook.mouse.NativeMouseEvent;
+
+import org.simplenativehooks.events.NativeMouseEvent;
 
 /**
  * @author Raven

@@ -1,9 +1,13 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy;
 
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.listener.GlobalMouseListener;
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
+import org.simplenativehooks.NativeHookInitializer;
+import org.simplenativehooks.NativeMouseHook;
+import org.simplenativehooks.events.NativeMouseEvent;
+import staticResources.BootStrapResources;
+import utilities.Function;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,32 +26,40 @@ public class DragCopyThread extends Thread {
 
     @Override
     public void run() {
-        // 初始化后就退出，无需做保活
-        /* turn off the console output */
-        // Get the logger for "org.jnativehook" and set the level to off.
-        try {
-            GlobalScreen.registerNativeHook();
-        } catch (NativeHookException ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "There was a problem registering the native hook.", ex);
-        }
-        // Add the appropriate listeners.
-        GlobalScreen.addNativeMouseListener(mouseListener);
-        Logger.getLogger(this.getClass().getName()).info("jnativehook 注册成功");
 
-        // 关闭log
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
-        // Don't forget to disable the parent handlers.
-        logger.setUseParentHandlers(false);
+        /* Extracting resources */
+        try {
+            BootStrapResources.extractResources();
+        } catch (IOException e) {
+            System.out.println("Cannot extract bootstrap resources.");
+            e.printStackTrace();
+        }
+
+        /* Initializing global hooks */
+        NativeHookInitializer.of().start();
+        NativeMouseHook mouse = NativeMouseHook.of();
+        mouse.setMousePressed(new Function<NativeMouseEvent, Boolean>() {
+            @Override
+            public Boolean apply(NativeMouseEvent nativeMouseEvent) {
+                mouseListener.nativeMousePressed(nativeMouseEvent);
+                return true;
+            }
+        });
+        mouse.setMouseReleased(new Function<NativeMouseEvent, Boolean>() {
+            @Override
+            public Boolean apply(NativeMouseEvent nativeMouseEvent) {
+                mouseListener.nativeMouseReleased(nativeMouseEvent);
+                return true;
+            }
+        });
+        mouse.startListening();
+        Logger.getLogger(this.getClass().getName()).info("jnativehook 注册成功");
+        Logger.getLogger(NativeHookInitializer.class.getPackage().getName()).setLevel(Level.OFF);
     }
 
     public void exit() {
-        try {
-            GlobalScreen.unregisterNativeHook();
-            Logger.getLogger(this.getClass().getName()).info("DragCopy exit");
-        } catch (NativeHookException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "There was a problem unregistering the native hook.");
-        }
+        /* Clean up */
+        NativeHookInitializer.of().stop();
     }
 
     public void setRun(boolean run) {
