@@ -71,18 +71,8 @@ Linux：
 
 如前文所说，Mac使用jpackage打包后，【拖拽复制】会出现bug，所以改用了另一种打包方式。
 
-**注意：切换到Mac分支**
-
 给maven的settings.xml添加springio镜像（因为依赖库中有一个库只能在springio镜像中下载）：
 
-```xml
-<mirror>
-	<id>springio</id>
-	<mirrorOf>central</mirrorOf>
-	<name>Human Readable Name for this Mirror.</name>
-	<url>https://repo.spring.io/libs-snapshot/</url>
-</mirror>
-```
 
 使用终端，进入Launcher目录：
 

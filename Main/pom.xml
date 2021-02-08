@@ -14,7 +14,13 @@
     <repositories>
         <repository>
             <id>mylibs</id>
-            <url>file:///${project.basedir}/libs</url>
+            <url>file://${project.basedir}/libs</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 

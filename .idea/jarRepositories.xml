@@ -14,11 +14,6 @@
     <remote-repository>
       <option name="id" value="mylibs" />
       <option name="name" value="mylibs" />
-      <option name="url" value="file://$PROJECT_DIR$/Main/libs" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="mylibs" />
-      <option name="name" value="mylibs" />
       <option name="url" value="file:////home/raven/Projects/RubberTranslator/Main/libs" />
     </remote-repository>
     <remote-repository>
@@ -37,6 +32,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="mylibs" />
+      <option name="name" value="mylibs" />
+      <option name="url" value="file:///D:\Project\RubberTranslator\Main/libs" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="SimpleNativeHooks-maven-export" />
       <option name="name" value="SimpleNativeHooks-maven-export" />
       <option name="url" value="https://raw.github.com/repeats/SimpleNativeHooks/maven-export/" />
@@ -45,6 +45,16 @@
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
       <option name="url" value="https://repo.spring.io/libs-snapshot/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="mylibs" />
+      <option name="name" value="mylibs" />
+      <option name="url" value="file://D:\Project\RubberTranslator\Main/libs" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="mylibs" />
+      <option name="name" value="mylibs" />
+      <option name="url" value="file://$PROJECT_DIR$/Main/libs" />
     </remote-repository>
   </component>
 </project>
