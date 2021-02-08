@@ -1,0 +1,2 @@
+mvn deploy:deploy-file -DgroupId=org.repeats.simplenativehooks -DartifactId=simplenativehooks -Dversion=0.0.3 -Durl=file:./libs -DrepositoryId=mylibs -DupdateReleaseInfo=true -Dfile=/home/raven/Projects/RubberTranslator/Main/libs/simplenativehooks-0.0.3.jar
+mvn deploy:deploy-file -DgroupId=it.sauronsoftware -DartifactId=junique -Dversion=1.0.4 -Durl=file:./libs -DrepositoryId=mylibs -DupdateReleaseInfo=true -Dfile=/home/raven/Projects/RubberTranslator/Main/libs/junique-1.0.4.jar

@@ -13,28 +13,23 @@
 
     <repositories>
         <repository>
-            <id>SimpleNativeHooks-maven-export</id>
-            <url>https://raw.github.com/repeats/SimpleNativeHooks/maven-export/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
+            <id>mylibs</id>
+            <url>file:///${project.basedir}/libs</url>
         </repository>
     </repositories>
 
 
-
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-controls</artifactId>-->
-<!--            <version>11</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-fxml</artifactId>-->
-<!--            <version>11</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.openjfx</groupId>-->
+        <!--            <artifactId>javafx-controls</artifactId>-->
+        <!--            <version>11</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.openjfx</groupId>-->
+        <!--            <artifactId>javafx-fxml</artifactId>-->
+        <!--            <version>11</version>-->
+        <!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -51,10 +46,10 @@
         <dependency>
             <groupId>org.repeats.simplenativehooks</groupId>
             <artifactId>simplenativehooks</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.3</version>
         </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+        <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
@@ -165,7 +160,6 @@
     </profiles>
 
 
-
     <build>
         <plugins>
             <plugin>
@@ -199,7 +193,6 @@
             </plugin>
 
 
-
             <plugin>
                 <groupId>com.zenjava</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -213,43 +206,43 @@
             </plugin>
 
 
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <version>3.8.0</version>-->
-<!--                <configuration>-->
-<!--                    <release>11</release>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.openjfx</groupId>-->
-<!--                <artifactId>javafx-maven-plugin</artifactId>-->
-<!--                <version>0.0.3</version>-->
-<!--                <configuration>-->
-<!--                    <source>8</source>-->
-<!--                    <target>8</target>-->
-<!--                    <release>8</release>-->
-<!--                    &lt;!&ndash; runtime options&ndash;&gt;-->
-<!--&lt;!&ndash;                    <options>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <option>&#45;&#45;add-opens</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <option>java.base/java.lang=cglib</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </options>&ndash;&gt;-->
-<!--                    &lt;!&ndash;jlink&ndash;&gt;-->
-<!--                    <stripDebug>true</stripDebug>-->
-<!--                    <compress>2</compress>-->
-<!--                    <noHeaderFiles>true</noHeaderFiles>-->
-<!--                    <noManPages>true</noManPages>-->
-<!--                    <launcher>Launcher</launcher>-->
-<!--                    <jlinkImageName>Launcher</jlinkImageName>-->
-<!--                    <jlinkZipName>RubberTranslator</jlinkZipName>-->
-<!--                    <mainClass>com.rubbertranslator.App</mainClass>-->
-<!--                    <launcher>start</launcher>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-compiler-plugin</artifactId>-->
+            <!--                <version>3.8.0</version>-->
+            <!--                <configuration>-->
+            <!--                    <release>11</release>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.openjfx</groupId>-->
+            <!--                <artifactId>javafx-maven-plugin</artifactId>-->
+            <!--                <version>0.0.3</version>-->
+            <!--                <configuration>-->
+            <!--                    <source>8</source>-->
+            <!--                    <target>8</target>-->
+            <!--                    <release>8</release>-->
+            <!--                    &lt;!&ndash; runtime options&ndash;&gt;-->
+            <!--&lt;!&ndash;                    <options>&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <option>&#45;&#45;add-opens</option>&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <option>java.base/java.lang=cglib</option>&ndash;&gt;-->
+            <!--&lt;!&ndash;                    </options>&ndash;&gt;-->
+            <!--                    &lt;!&ndash;jlink&ndash;&gt;-->
+            <!--                    <stripDebug>true</stripDebug>-->
+            <!--                    <compress>2</compress>-->
+            <!--                    <noHeaderFiles>true</noHeaderFiles>-->
+            <!--                    <noManPages>true</noManPages>-->
+            <!--                    <launcher>Launcher</launcher>-->
+            <!--                    <jlinkImageName>Launcher</jlinkImageName>-->
+            <!--                    <jlinkZipName>RubberTranslator</jlinkZipName>-->
+            <!--                    <mainClass>com.rubbertranslator.App</mainClass>-->
+            <!--                    <launcher>start</launcher>-->
 
-<!--                    &lt;!&ndash; extra args &ndash;&gt;-->
-<!--&lt;!&ndash;                    <commandlineArgs>-XX:+UseG1GC</commandlineArgs>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <commandlineArgs>-Xms60M</commandlineArgs>&ndash;&gt;-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--                    &lt;!&ndash; extra args &ndash;&gt;-->
+            <!--&lt;!&ndash;                    <commandlineArgs>-XX:+UseG1GC</commandlineArgs>&ndash;&gt;-->
+            <!--&lt;!&ndash;                    <commandlineArgs>-Xms60M</commandlineArgs>&ndash;&gt;-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 </project>
