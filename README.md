@@ -52,7 +52,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 15. **记录模式**，该模式下，会记录所有翻译文本，并导出原文、译文或双语的文档。 用于导出翻译文献非常有用。
 
-    <img src="C:\Users\Raven\AppData\Roaming\Typora\typora-user-images\image-20210204152707436.png" alt="image-20210204152707436" style="zoom: 67%;" />
+    <img src="https://img.imgdb.cn/item/602126523ffa7d37b3abe8aa.jpg" alt="image-20210204152707436" style="zoom: 67%;" />
 
 16. **翻译文本替换，部分专业词汇如果由翻译引擎来翻译，将显得十分晦涩难懂，使用本功能，可自定义将【晦涩的翻译词组】替换为【自己想要的词组】**
 

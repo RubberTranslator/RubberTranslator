@@ -48,7 +48,7 @@ public class FilterController implements IFilterView {
 
     @FXML
     public void initialize() {
-        presenter = (FilterViewPresenter) PresenterFactory.getPresenter(SceneType.FILTER_SCENE);
+        presenter = PresenterFactory.getPresenter(SceneType.FILTER_SCENE);
         SystemResourceManager.initPresenter(presenter);
         presenter.setView(this);
         presenter.initView();
@@ -60,7 +60,7 @@ public class FilterController implements IFilterView {
         // 进程list初始化
         // 开启多选模式
         processList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        Label label = new Label("当前过滤列表为空，请添加要过滤的进程名");
+        Label label = new Label("当前过滤列表为空，请添加要过滤的进程名(本功能仅限Windows)");
         label.setFont(Font.font(16));
         label.setWrapText(true);
         label.paddingProperty().setValue(new Insets(10));
