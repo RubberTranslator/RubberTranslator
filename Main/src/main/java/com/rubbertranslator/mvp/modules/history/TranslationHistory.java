@@ -7,7 +7,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -27,20 +30,31 @@ public class TranslationHistory {
 
     private boolean isModified = false;
 
-    private RecordModeType recordModeType = RecordModeType.TRANSLATE_RECORD_MODE;
+    private List<RecordModeType> recordModeTypes;
+
+    // 记录导出相关
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
     private String exportPath = null;
 
-    public void startRecord(String exportPath) {
+
+    public TranslationHistory() {
+        historyList = new ArrayList<>();
+    }
+
+    public void startRecord(String exportDir) {
         if (!isRecording) {
             isRecording = true;
-            this.exportPath = exportPath;
             historyList.clear();
+            File exportDirFile = new File(exportDir);
+            // dir/记录-yyyy-MM-dd-HH-mm-ss
+            exportPath = exportDirFile.getAbsoluteFile() + File.separator + "记录-" + sdf.format(new Date());
         }
     }
 
-    public void setRecordModeType(RecordModeType recordModeType) {
-        this.recordModeType = recordModeType;
+    public void setRecordModeTypes(List<RecordModeType> recordModeTypes) {
+        this.recordModeTypes = recordModeTypes;
+        isModified = true;
     }
 
     public void endRecord() {
@@ -50,37 +64,32 @@ public class TranslationHistory {
         }
     }
 
-    public TranslationHistory() {
-        historyList = new ArrayList<>();
-    }
-
-
     public void addHistory(String origin, String translation) {
         if (translation == null) return;
         historyList.add(new HistoryEntry(origin, translation));
         historyCursor = historyList.size() - 1;
-        if (isRecording && historyList.size() % 10 == 0) {        // 每10条写一次
+        if (isRecording && historyList.size() % 5 == 0) {        // 每5条写一次
             saveHistory();
         }
     }
 
     public void modifyCurrentEntry(HistoryEntry entry) {
-        if(historyCursor >= 0 && historyCursor < historyList.size()){
+        if (historyCursor >= 0 && historyCursor < historyList.size()) {
             isModified = true;
             historyList.set(historyCursor, entry);
         }
     }
 
-    public int getCurrentCursor(){
-       return historyCursor+1;
+    public int getCurrentCursor() {
+        return historyCursor + 1;
     }
 
-    public int getHistorySize(){
-       return historyList.size();
+    public int getHistorySize() {
+        return historyList.size();
     }
 
-    public void deleteCurrentEntry(){
-        if(historyCursor >= 0 && historyCursor < historyList.size()){
+    public void deleteCurrentEntry() {
+        if (historyCursor >= 0 && historyCursor < historyList.size()) {
             historyList.remove(historyCursor);
             historyCursor--;
             isModified = true;
@@ -105,41 +114,54 @@ public class TranslationHistory {
     }
 
     private void saveHistory() {
-        System.out.println("save to: " + exportPath);
-        SystemResourceManager.getExecutor().execute(() -> {
-                    BufferedWriter bw = null;
-                    try {
-                        File exportFile = new File(exportPath);
-                        if (!exportFile.getParentFile().exists()) exportFile.getParentFile().mkdirs();
-                        if (!exportFile.exists()) exportFile.createNewFile();
-                        bw = new BufferedWriter(new FileWriter(exportFile,!isModified));
-
-                        for (HistoryEntry entry : historyList) {
-                            String line = combineHistoryEntry(entry);
-                            System.out.println(line);
-                            bw.write(line + "\n\n");
-                        }
-                    } catch (IOException e) {
-                        Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
-                    } finally {
+        if (recordModeTypes == null) return;
+        for (RecordModeType type : recordModeTypes) {
+            SystemResourceManager.getExecutor().execute(() -> {
+                        BufferedWriter bw = null;
                         try {
-                            if (bw != null) bw.close();
+                            String fileNameSuffix = "";
+                            if (type == RecordModeType.ORIGIN_RECORD_MODE) {
+                                fileNameSuffix = "原文";
+                            } else if (type == RecordModeType.TRANSLATE_RECORD_MODE) {
+                                fileNameSuffix = "译文";
+                            } else if (type == RecordModeType.BILINGUAL_RECORD_MODE) {
+                                fileNameSuffix = "双语";
+                            }
+
+                            File exportFile = null;
+                            String filePath = exportPath + "-" + fileNameSuffix + ".txt";
+                            exportFile = new File(filePath);
+
+                            if (!exportFile.getParentFile().exists()) exportFile.getParentFile().mkdirs();
+                            if (!exportFile.exists()) exportFile.createNewFile();
+                            bw = new BufferedWriter(new FileWriter(exportFile, !isModified));
+
+                            for (HistoryEntry entry : historyList) {
+                                String line = combineHistoryEntry(entry, type);
+                                bw.write(line + "\n\n");
+                            }
                         } catch (IOException e) {
+                            Logger.getLogger(this.getClass().getName()).severe(e.getLocalizedMessage());
+                        } finally {
+                            try {
+                                if (bw != null) bw.close();
+                            } catch (IOException e) {
+                            }
+                            isModified = false;
                         }
-                        isModified = false;
                     }
-                }
-        );
+            );
+        }
     }
 
-    private String combineHistoryEntry(HistoryEntry entry) {
-        switch (recordModeType) {
+    private String combineHistoryEntry(HistoryEntry entry, RecordModeType type) {
+        switch (type) {
             case ORIGIN_RECORD_MODE:
-                return entry.getOrigin().replaceAll("[\r\t\n]","");
+                return entry.getOrigin().replaceAll("[\r\t\n]", "");
             case TRANSLATE_RECORD_MODE:
-                return entry.getTranslation().replaceAll("[\r\t\n]","");
+                return entry.getTranslation().replaceAll("[\r\t\n]", "");
             case BILINGUAL_RECORD_MODE:
-                return entry.getOrigin() .replaceAll("[\r\t\n]","")+ "\n" + entry.getTranslation().replaceAll("[\r\t\n]","");
+                return entry.getOrigin().replaceAll("[\r\t\n]", "") + "\n" + entry.getTranslation().replaceAll("[\r\t\n]", "");
             default:
                 return "\n";
         }

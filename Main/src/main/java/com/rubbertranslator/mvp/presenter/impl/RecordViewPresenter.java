@@ -6,8 +6,7 @@ import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.view.IRecordView;
 import com.rubbertranslator.utils.OSTypeUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 /**
  * @author Raven
@@ -23,10 +22,8 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
 
     private boolean oldIncrementCopy = false;
 
-    // 记录导出相关
-    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
-    private String exportPath;
+    private String exportDir;
 
 
     /**
@@ -34,14 +31,12 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
      */
     private void updateExportPath() {
         if(OSTypeUtil.isMac()){
-            exportPath = System.getProperty("user.home") + "/RubberTranslator/export/记录" + sdf.format(new Date()) +
-                    ".txt";
+            exportDir = System.getProperty("user.home") + "/RubberTranslator/export/";
         }else{
-            exportPath = System.getProperty("user.dir") + "/RubberTranslator/export/记录" + sdf.format(new Date()) +
-                    ".txt";
+            exportDir = System.getProperty("user.dir") + "/RubberTranslator/export/";
         }
         if (OSTypeUtil.isWin()) {
-            exportPath = exportPath.replaceAll("\\\\", "/");
+            exportDir = exportDir.replaceAll("\\\\", "/");
         }
     }
 
@@ -86,8 +81,8 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
     }
 
 
-    public void setRecordModeType(RecordModeType recordMode) {
-        translatorFacade.getHistory().setRecordModeType(recordMode);
+    public void setRecordModeType(List<RecordModeType> recordMode) {
+        translatorFacade.getHistory().setRecordModeTypes(recordMode);
     }
 
     public void correctCurrentEntry(String originText, String translateText) {
@@ -108,12 +103,12 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
     public void record(boolean isStart) {
         if (isStart) {
             updateExportPath();
-            translatorFacade.getHistory().startRecord(exportPath);
-            view.recordStart(exportPath);
+            translatorFacade.getHistory().startRecord(exportDir);
+            view.recordStart(exportDir);
         } else {
             // TODO: 完成导出
             translatorFacade.getHistory().endRecord();
-            view.recordEnd(exportPath);
+            view.recordEnd(exportDir);
         }
     }
 }
