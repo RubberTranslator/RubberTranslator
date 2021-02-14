@@ -95,6 +95,13 @@
                         </Menu>
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="模式选择">
+                    <items>
+                        <MenuItem fx:id="focusModeMenu" mnemonicParsing="false" text="专注模式" />
+                        <MenuItem fx:id="compareModeMenu" mnemonicParsing="false" text="对比模式" />
+                        <MenuItem fx:id="recordModeMenu" mnemonicParsing="false" text="记录模式" />
+                    </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="帮助">
                   <items>
                         <MenuItem fx:id="homePage" mnemonicParsing="false" text="项目主页" />
@@ -103,9 +110,6 @@
                         <MenuItem fx:id="versionText" mnemonicParsing="false" text="版本" />
                   </items>
                 </Menu>
-                  <Menu fx:id="focusModeMenu" mnemonicParsing="false" text="专注模式" />
-                  <Menu fx:id="compareModeMenu" mnemonicParsing="false" text="对比模式" />
-                  <Menu fx:id="recordModeMenu" mnemonicParsing="false" text="记录模式" />
                   <Menu fx:id="preHistoryMenu" mnemonicParsing="false" text="上一条" />
                   <Menu fx:id="nextHistoryMenu" mnemonicParsing="false" text="下一条" />
                   <Menu fx:id="clearMenu" mnemonicParsing="false" text="清空" />

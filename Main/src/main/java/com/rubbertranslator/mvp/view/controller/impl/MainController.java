@@ -132,13 +132,13 @@ public class MainController implements ISingleTranslateView {
 
     // 专注模式
     @FXML
-    private Menu focusModeMenu;
+    private MenuItem focusModeMenu;
     // 对比模式
     @FXML
-    private Menu compareModeMenu;
+    private MenuItem compareModeMenu;
     // 记录模式
     @FXML
-    private Menu recordModeMenu;
+    private MenuItem recordModeMenu;
 
     // 历史记录
     @FXML
@@ -643,24 +643,15 @@ public class MainController implements ISingleTranslateView {
     }
 
     private void initFocusModeMenu() {
-        Label label = new Label("专注模式");
-        label.setOnMouseClicked((event -> presenter.switchScene(SceneType.FOCUS_SCENE)));
-        focusModeMenu.setText("");
-        focusModeMenu.setGraphic(label);
+        focusModeMenu.setOnAction((event) -> presenter.switchScene(SceneType.FOCUS_SCENE));
     }
 
     private void initCompareModeMenu() {
-        Label label = new Label("对比模式");
-        label.setOnMouseClicked((event -> presenter.switchScene(SceneType.COMPARE_SCENE)));
-        compareModeMenu.setText("");
-        compareModeMenu.setGraphic(label);
+        compareModeMenu.setOnAction((event -> presenter.switchScene(SceneType.COMPARE_SCENE)));
     }
 
     private void initRecordModeMenu() {
-        Label label = new Label("记录模式");
-        label.setOnMouseClicked((event -> presenter.switchScene(SceneType.RECORD_SCENE)));
-        recordModeMenu.setText("");
-        recordModeMenu.setGraphic(label);
+        recordModeMenu.setOnAction(event -> presenter.switchScene(SceneType.RECORD_SCENE));
     }
 
     private void initHistoryMenu() {
