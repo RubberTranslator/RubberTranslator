@@ -595,11 +595,10 @@ public class MainController implements ISingleTranslateView {
         //
         homePage.setOnAction((actionEvent) ->
         {
-            // 这里用new Thread有点蠢，不过为了避免为卡死，暂时这样吧
             if (Desktop.isDesktopSupported()) {
                 SystemResourceManager.getExecutor().execute(() -> {
                     try {
-                        Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator"));
+                        Desktop.getDesktop().browse(new URI("https://github.com/RubberTranslator/RubberTranslator"));
                     } catch (IOException | URISyntaxException e) {
                         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "项目主页打开失败", e);
                     }
@@ -614,7 +613,7 @@ public class MainController implements ISingleTranslateView {
             if (Desktop.isDesktopSupported()) {
                 SystemResourceManager.getExecutor().execute(() -> {
                     try {
-                        Desktop.getDesktop().browse(new URI("https://www.ravenxrz.ink/archives/a79932ef.html"));
+                        Desktop.getDesktop().browse(new URI("https://rubbertranslator.github.io/docs/index.html"));
                     } catch (IOException | URISyntaxException e) {
                         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "使用帮助打开失败", e);
                     }
