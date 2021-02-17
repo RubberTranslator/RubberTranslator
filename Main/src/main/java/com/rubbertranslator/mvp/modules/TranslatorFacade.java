@@ -35,11 +35,26 @@ public class TranslatorFacade {
     // 后置处理器
     private AfterProcessor afterProcessor;
     // 创建线程池（使用了预定义的配置）
-    private final ExecutorService executor;
+    private ExecutorService executor;
 
-    public TranslatorFacade() {
+    private static TranslatorFacade facade;
+
+
+    private TranslatorFacade() {
         executor = SystemResourceManager.getExecutor();
     }
+
+    public static TranslatorFacade getInstance() {
+        if (facade == null) {
+            synchronized (TranslatorFacade.class) {
+                if (facade == null) {
+                    facade = new TranslatorFacade();
+                }
+            }
+        }
+        return facade;
+    }
+
 
     public AfterProcessor getAfterProcessor() {
         return afterProcessor;
@@ -77,7 +92,7 @@ public class TranslatorFacade {
         this.textPostProcessor = textPostProcessor;
     }
 
-    public void setHistory(TranslationHistory history){
+    public void setHistory(TranslationHistory history) {
         this.history = history;
     }
 
@@ -90,7 +105,7 @@ public class TranslatorFacade {
      */
     public void singleTranslate(String text, GenericCallback<Pair<String, String>> callback) {
         Callable<Pair<String, String>> callable = new RelayTranslateCall(text);
-        FacadeTask task = new FacadeTask(callable, callback);
+        FacadeTask<Pair<String, String>> task = new FacadeTask<>(callable, callback);
         executor.execute(task);
     }
 
@@ -106,9 +121,9 @@ public class TranslatorFacade {
         Callable<Pair<TranslatorType, String>> baiduCall = new SingleTranslateCall(text, TranslatorType.BAIDU);
         Callable<Pair<TranslatorType, String>> youdaoCall = new SingleTranslateCall(text, TranslatorType.YOUDAO);
 
-        FacadeTask googleTask = new FacadeTask(googleCall, callback);
-        FacadeTask baiduTask = new FacadeTask(baiduCall, callback);
-        FacadeTask youdaoTask = new FacadeTask(youdaoCall, callback);
+        FacadeTask<Pair<TranslatorType, String>> googleTask = new FacadeTask<>(googleCall, callback);
+        FacadeTask<Pair<TranslatorType, String>> baiduTask = new FacadeTask<>(baiduCall, callback);
+        FacadeTask<Pair<TranslatorType, String>> youdaoTask = new FacadeTask<>(youdaoCall, callback);
 
         // exec
         executor.execute(baiduTask);
@@ -144,7 +159,7 @@ public class TranslatorFacade {
      */
     private class RelayTranslateCall implements Callable<Pair<String, String>> {
         // 原文
-        private String origin = "";
+        private String origin;
 
         public RelayTranslateCall(String text) {
             this.origin = text;
@@ -179,7 +194,7 @@ public class TranslatorFacade {
      */
     private class SingleTranslateCall implements Callable<Pair<TranslatorType, String>> {
 
-        private String origin = ""; // 原文
+        private String origin; // 原文
 
         TranslatorType type;    // 当前类型
 
