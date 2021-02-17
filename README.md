@@ -68,7 +68,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 ## 2. FAQ
 
-使用过程中遇到问题可参考：https://docs.qq.com/doc/DT2RKQU1vb2JNRlBY
+使用过程中遇到问题可参考：[这里](https://rubbertranslator.github.io/docs/index.html)
 
 ## 3. BUG 反馈或建议
 
