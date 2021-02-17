@@ -14,7 +14,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 [点这里，看视频介绍](https://www.bilibili.com/video/BV1Wy4y1e7HG)
 
-[此页无法查看过多gif，更多文字介绍点这里](https://ravenxrz.gitee.io/archives/a79932ef.html)
+[此页无法查看过多gif，更多文字介绍点这里](https://rubbertranslator.github.io/docs/index.html)
 
 ## 1. Features
 
