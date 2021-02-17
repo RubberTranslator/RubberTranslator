@@ -33,42 +33,42 @@ Linux:
 2. 讨论群：118149802
 
 [Changelogs]
-2020-2-8
+2021-2-8
 RubberTranslator-v3.4.1 for mac
 1. 删除jnativehook lib（该库会造成mac卡死)，改用simplenativehook，目前效果良好
 
-2020-2-4
+2021-2-4
 RubberTranslator-v3.4.0 (与之前版本不兼容）
 1. 重构【热更新】逻辑，更新职责交于Main模块，避免Socket通信造成的端口冲突，读写卡顿
 2. 优化性能
 3. 由于和之前版本不兼容，创建了新的远端version文件
 4. 新增【记录模式】，支持翻译历史导出
 
-2020-2-2
+2021-2-2
 RubberTranslator-v3.3.4
 1. 自实现【单实例】应用有bug（会导致Socket通信阻塞，原因未知），还原到junique库
 2. 保留【接力翻译】, 所有翻译错误采用统一回馈
 
-2020-1-30
+2021-1-30
 RubberTranslator-v3.3.3
 1. 去掉Junique库，采用自实现的【单实例】应用。
 2. 修复对比模式下增量翻译的重复翻译3次的bug
 3. 增加翻译失败时的反馈
 4. 增加Launcher的Socket延迟关闭机制，避免因为引入单实例而造成无法关闭的bug
 
-2020-1-27
+2021-1-27
 RubberTranslator-v3.3.2 for mac
 1. 新增mac版
 
-2020-1-24
+2021-1-24
 RubberTranslator-v3.3.3(待发布)
 1. 重新加入Junique库，避免重复启动多个应用实例，带来bug
 
-2020-1-22
+2021-1-22
 RubberTranslator-v3.3.2
 1. 兼容多个显示器位置记录
 
-2020-1-22
+2021-1-22
 RubberTranslator-v3.3.1(跳过v3.3.0)
 1. 新增窗口大小记录功能
 2. 新增词组批量导入与导出功能
@@ -77,13 +77,13 @@ RubberTranslator-v3.3.1(跳过v3.3.0)
 5. 修复Linux平台下打开FileChooser窗口crash的bug
 6. 热更新通信改用Socket，原因：Linux下采用父子进程输入输出流会有一些扰乱输入。
 
-2020-1-18
+2021-1-18
 RubberTranslator-v3.2.1（Linux版本发布！！）
 1. 去掉冗余代码
 2. 初步测试通
 3. Linux版本发布
 
-2020-1-17
+2021-1-17
 RubberTranslator-v3.2.1-beta
 1. 修复无限递归翻译的bug
 2. 修复重复翻译的bug
