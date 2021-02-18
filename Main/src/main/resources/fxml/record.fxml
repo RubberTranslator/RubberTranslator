@@ -44,6 +44,7 @@
             <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条" />
             <Button fx:id="correctEntryMenu" mnemonicParsing="false" text="修正本条目" />
             <Button fx:id="deleteEntryBt" mnemonicParsing="false" text="删除本条目" />
+            <Button fx:id="openExportDirBt" mnemonicParsing="false" text="打开导出目录" />
             <ToggleButton fx:id="startEndMenu" mnemonicParsing="false" text="开始" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="当前条目数：" />
             <Text fx:id="historyNumText" strokeType="OUTSIDE" strokeWidth="0.0" text="0/0" />

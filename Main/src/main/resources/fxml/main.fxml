@@ -107,6 +107,13 @@
                         <MenuItem fx:id="homePage" mnemonicParsing="false" text="项目主页" />
                     <MenuItem fx:id="useAge" mnemonicParsing="false" text="使用方法" />
                         <MenuItem fx:id="issues" mnemonicParsing="false" text="反馈" />
+                        <Menu mnemonicParsing="false" text="打开路径">
+                          <items>
+                            <MenuItem fx:id="openConfigDirMenu" mnemonicParsing="false" text="配置文件路径" />
+                              <MenuItem fx:id="openLogDirMenu" mnemonicParsing="false" text="日志文件路径" />
+                              <MenuItem fx:id="openRecordDirMenu" mnemonicParsing="false" text="记录文件路径" />
+                          </items>
+                        </Menu>
                         <MenuItem fx:id="versionText" mnemonicParsing="false" text="版本" />
                   </items>
                 </Menu>

@@ -2,7 +2,7 @@ package com.rubbertranslator.mvp.modules.update;
 
 import com.rubbertranslator.utils.DownloadUtil;
 import com.rubbertranslator.utils.OSTypeUtil;
-import com.rubbertranslator.utils.UpdateUtils;
+import com.rubbertranslator.utils.UpdateUtil;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -73,7 +73,7 @@ public class UpdateTask implements Runnable {
         printLocalInfo();
 
         // check update
-        UpdateUtils.checkUpdate(localVersion, remoteVersionUrl, hasUpdate -> {
+        UpdateUtil.checkUpdate(localVersion, remoteVersionUrl, hasUpdate -> {
             if (hasUpdate) {
                 Platform.runLater(this::remindUserToUpdateDialog);
             }

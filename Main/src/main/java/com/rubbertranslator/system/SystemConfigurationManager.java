@@ -17,38 +17,15 @@ import java.util.logging.Logger;
 
 public class SystemConfigurationManager {
     // 新配置文件路径 更改为用户home目录
-    public String configJsonDir;
-    public String configJsonPath = "";
+    public String configJsonDir = ProgramPaths.configFileDir;
+    public String configJsonPath;
     private SystemConfiguration systemConfiguration;
-
-    {
-        configJsonDir = System.getProperty("user.home") + "/RubberTranslator/config";
-    }
 
 
     public SystemConfiguration getSystemConfiguration() {
         return systemConfiguration;
     }
 
-    /**
-     * 持久化配置文件到json
-     * 需要 systemConfiguration 和  configJsonPath 不为空
-     */
-    public void saveConfigFile() {
-        if (systemConfiguration == null || configJsonPath == null) {
-            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "更新设置时出错，" +
-                    "配置类或配置文件路径为空");
-            return;
-        }
-        // 静态代理还原
-        String json = JsonUtil.serialize(systemConfiguration.getConfiguration());
-        // 使用ui线程来写入
-        try {
-            FileUtil.writeStringToFile(new File(configJsonPath), json, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "更新设置时出错", e);
-        }
-    }
 
     /**
      * 加载配置文件
@@ -59,13 +36,14 @@ public class SystemConfigurationManager {
 
         // 初始化configJson文件路径
         configJsonPath = getConfigJsonPath(curVersion);
+        if (configJsonPath == null) return false;
 
         if (isCorrectConfigFileExist(configJsonPath)) {       // 如果当前版本配置文件已经存在
             systemConfiguration = generateConfigFromExistFile(configJsonPath);
         } else {      // 不存在
             SystemConfiguration defaultConfig = generateDefaultConfig();
             // 读取配置文件路径下的最大版本号文件
-            File dir = new File(configJsonPath).getParentFile();
+            File dir = new File(configJsonDir);
             // 不存在则创建
             if (!dir.exists()) dir.mkdirs();
             String maxOldVersion = getMaxVersionFromOldConfigFiles(dir);
@@ -113,6 +91,10 @@ public class SystemConfigurationManager {
      */
     private String getConfigJsonPath(String version) {
         String tmpPath;
+        if (configJsonDir == null) return null;
+        if (configJsonDir.charAt(configJsonDir.length() - 1) == '/') {
+            configJsonDir = configJsonDir.substring(0, configJsonDir.length() - 1);
+        }
         if ("".equals(version)) {
             // v2.0.0-beta3 之前
             tmpPath = configJsonDir + "/configuration.json";
@@ -220,7 +202,7 @@ public class SystemConfigurationManager {
      * @return 最终配置类
      */
     private SystemConfiguration mergeConfig(SystemConfiguration baseConfig, SystemConfiguration oldConfig) {
-        if(baseConfig == null || oldConfig == null) return baseConfig;
+        if (baseConfig == null || oldConfig == null) return baseConfig;
         Class<?> clz = SystemConfiguration.class;
         // 枚举成员函数
         Method[] methods = clz.getMethods();
@@ -269,5 +251,26 @@ public class SystemConfigurationManager {
                                 !methodName.equals("getClass") &&
                                 !methodName.equals("getConfiguration")
                 );
+    }
+
+
+    /**
+     * 持久化配置文件到json
+     * 需要 systemConfiguration 和  configJsonPath 不为空
+     */
+    public void saveConfigFile() {
+        if (systemConfiguration == null || configJsonPath == null) {
+            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "更新设置时出错，" +
+                    "配置类或配置文件路径为空");
+            return;
+        }
+        // 静态代理还原
+        String json = JsonUtil.serialize(systemConfiguration.getConfiguration());
+        // 使用ui线程来写入
+        try {
+            FileUtil.writeStringToFile(new File(configJsonPath), json, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "更新设置时出错", e);
+        }
     }
 }

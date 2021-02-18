@@ -1,5 +1,7 @@
 package com.rubbertranslator.mvp.modules.log;
 
+import com.rubbertranslator.system.ProgramPaths;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -14,12 +16,6 @@ import java.util.logging.SimpleFormatter;
  * date 2020/5/8 10:49
  */
 public class LoggerManager {
-    private static final String logFilePath;
-
-    static {
-        logFilePath = System.getProperty("user.home") + "/RubberTranslator/log";
-    }
-
 
     private static Logger fileLogger = Logger.getLogger("com.rubbertranslator");
 
@@ -35,7 +31,16 @@ public class LoggerManager {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         //设置保存路径
-        logPath.append(logFilePath).append("/").append(sdf.format(new Date())).append(".log");
+        String logFileDir = ProgramPaths.logFileDir;
+        if (logFileDir == null) {
+            return;
+        }
+        if (logFileDir.charAt(logFileDir.length() - 1) == '/') {
+            logPath.append(ProgramPaths.logFileDir).append(sdf.format(new Date())).append(".log");
+        } else {
+            logPath.append(ProgramPaths.logFileDir).append("/").append(sdf.format(new Date())).append(".log");
+        }
+
         File dir = new File(logPath.toString());
         if (!dir.getParentFile().exists()) {
             dir.getParentFile().mkdirs();

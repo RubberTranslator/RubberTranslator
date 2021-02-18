@@ -7,11 +7,14 @@ import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
+import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.RecordViewPresenter;
 import com.rubbertranslator.mvp.view.IRecordView;
+import com.rubbertranslator.system.ProgramPaths;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
+import com.rubbertranslator.utils.ExploreUtil;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -96,6 +99,9 @@ public class RecordModeController implements Initializable, IRecordView {
 
     @FXML
     private Button deleteEntryBt;
+
+    @FXML
+    private Button openExportDirBt;
 
     @FXML
     private ToggleButton startEndMenu;
@@ -246,14 +252,19 @@ public class RecordModeController implements Initializable, IRecordView {
         nextHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.NEXT_HISTORY)));
         correctEntryMenu.setOnAction((event -> presenter.correctCurrentEntry(originTextArea.getText(), translateTextArea.getText())));
         deleteEntryBt.setOnAction((event -> presenter.deleteCurrentEntry()));
+        openExportDirBt.setOnAction((event -> openExportDir()));
         startEndMenu.setOnAction((event -> presenter.record(startEndMenu.isSelected())));
+    }
+
+    private void openExportDir() {
+        ExploreUtil.openExplore(ProgramPaths.exportDir, s -> originTextArea.setText(s));
     }
 
     private void onRecordModeChanged(ActionEvent actionEvent) {
         types.clear();
-        if(originRecordMode.isSelected()) types.add(RecordModeType.ORIGIN_RECORD_MODE);
-        if(translateRecordMode.isSelected()) types.add(RecordModeType.TRANSLATE_RECORD_MODE);
-        if(bilingualRecordMode.isSelected()) types.add(RecordModeType.BILINGUAL_RECORD_MODE);
+        if (originRecordMode.isSelected()) types.add(RecordModeType.ORIGIN_RECORD_MODE);
+        if (translateRecordMode.isSelected()) types.add(RecordModeType.TRANSLATE_RECORD_MODE);
+        if (bilingualRecordMode.isSelected()) types.add(RecordModeType.BILINGUAL_RECORD_MODE);
         presenter.setRecordModeType(types);
     }
 

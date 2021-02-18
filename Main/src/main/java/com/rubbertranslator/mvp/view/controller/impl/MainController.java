@@ -1,7 +1,6 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
 import com.rubbertranslator.entity.ApiInfo;
-import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.*;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
@@ -10,9 +9,8 @@ import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 import com.rubbertranslator.mvp.view.custom.ApiDialog;
-import com.rubbertranslator.system.SystemConfiguration;
-import com.rubbertranslator.system.SystemConfigurationManager;
-import com.rubbertranslator.system.SystemResourceManager;
+import com.rubbertranslator.system.*;
+import com.rubbertranslator.utils.ExploreUtil;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -177,6 +175,12 @@ public class MainController implements ISingleTranslateView {
     private MenuItem useAge;
     @FXML
     private MenuItem issues;
+    @FXML
+    private MenuItem openConfigDirMenu;
+    @FXML
+    private MenuItem openLogDirMenu;
+    @FXML
+    private MenuItem openRecordDirMenu;
     @FXML
     private MenuItem versionText;
 
@@ -637,6 +641,17 @@ public class MainController implements ISingleTranslateView {
                 originTextArea.setText("当前平台不支持打开该页面");
             }
         }));
+        // open dir window
+        openConfigDirMenu.setOnAction((event)->{
+            ExploreUtil.openExplore(ProgramPaths.configFileDir, s -> originTextArea.setText(s));
+        });
+        openLogDirMenu.setOnAction((event)->{
+            ExploreUtil.openExplore(ProgramPaths.logFileDir, s -> originTextArea.setText(s));
+        });
+        openRecordDirMenu.setOnAction((event)->{
+            ExploreUtil.openExplore(ProgramPaths.exportDir, s -> originTextArea.setText(s));
+        });
+
         // versionText
         versionText.setText(SystemConfigurationManager.getCurrentVersion());
     }

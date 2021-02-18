@@ -1,7 +1,7 @@
 package com.rubbertranslator.mvp.view.stage.impl;
 
 import com.rubbertranslator.App;
-import com.rubbertranslator.entity.ControllerFxmlPath;
+import com.rubbertranslator.system.ControllerFxmlPath;
 import com.rubbertranslator.entity.WindowSize;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;

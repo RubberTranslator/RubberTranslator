@@ -4,6 +4,7 @@ import com.rubbertranslator.enumtype.HistoryEntryIndex;
 import com.rubbertranslator.enumtype.RecordModeType;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.view.IRecordView;
+import com.rubbertranslator.system.ProgramPaths;
 import com.rubbertranslator.utils.OSTypeUtil;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
      * 更新记录导出路径
      */
     private void updateExportPath() {
-        exportDir = System.getProperty("user.home") + "/RubberTranslator/export/";
+        exportDir = ProgramPaths.exportDir;
         if (OSTypeUtil.isWin()) {
             exportDir = exportDir.replaceAll("\\\\", "/");
         }
