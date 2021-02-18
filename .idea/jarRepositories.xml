@@ -14,12 +14,12 @@
     <remote-repository>
       <option name="id" value="mylibs" />
       <option name="name" value="mylibs" />
-      <option name="url" value="file:////home/raven/Projects/RubberTranslator/Main/libs" />
+      <option name="url" value="file://$PROJECT_DIR$/Main/libs" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="mylibs" />
       <option name="name" value="mylibs" />
-      <option name="url" value="file://$PROJECT_DIR$/Main/libs" />
+      <option name="url" value="file:////home/raven/Projects/RubberTranslator/Main/libs" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
