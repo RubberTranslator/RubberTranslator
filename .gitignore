@@ -83,7 +83,7 @@ fabric.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
+!*.jar
 *.war
 *.nar
 *.ear
@@ -111,8 +111,6 @@ configuration-*.json
 *.log
 *.lck
 out/
-RubberTranslator/export/words.txt
-!Main/libs/*.jar
 .DS_Store
 app/
 export/
