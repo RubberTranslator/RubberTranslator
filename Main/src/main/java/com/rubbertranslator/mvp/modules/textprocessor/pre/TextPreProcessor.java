@@ -13,6 +13,8 @@ import java.util.Map;
  * 输入给翻译引擎前的文本处理，现在的功能：
  * 1. 处理pdf复制引用的多余换行
  * 2. 给与”尽量保持分段”接口
+ * 3. 增量
+ * 4. 全角转半角
  */
 public class TextPreProcessor {
 
@@ -24,12 +26,11 @@ public class TextPreProcessor {
 
     private final Map<TranslatorType, StringBuffer> lastTextTypeMap = new HashMap<>();
 
-    private final RedundantLineBreakProcessor redundantLineBreakProcessor = new RedundantLineBreakProcessor();
 
     public TextPreProcessor() {
-        lastTextTypeMap.put(TranslatorType.GOOGLE, new StringBuffer());
-        lastTextTypeMap.put(TranslatorType.BAIDU, new StringBuffer());
-        lastTextTypeMap.put(TranslatorType.YOUDAO, new StringBuffer());
+        for (TranslatorType type : TranslatorType.values()) {
+            lastTextTypeMap.put(type, new StringBuffer());
+        }
     }
 
     public void cleanBuffer() {
@@ -58,9 +59,12 @@ public class TextPreProcessor {
     public String process(String text) {
         if (text == null || "".equals(text)) return text;
 
+        // 全角转半角
+        text = SDBCProcessor.sbc2dbcCase(text);
+
         // 格式化
         text = tryToFormat ?
-                redundantLineBreakProcessor.format(text) :
+                RedundantLineBreakProcessor.format(text) :
                 text;
         // 增量复制
         if (incrementalCopy) {
@@ -77,9 +81,12 @@ public class TextPreProcessor {
     public String processWithType(String text, TranslatorType type) {
         if (text == null || "".equals(text)) return text;
 
+        // 全角转半角
+        text = SDBCProcessor.sbc2dbcCase(text);
+
         // 格式化
         text = tryToFormat ?
-                redundantLineBreakProcessor.format(text) :
+                RedundantLineBreakProcessor.format(text) :
                 text;
 
         //  取出对应type的lastText

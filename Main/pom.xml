@@ -118,7 +118,7 @@
             </activation>
             <properties>
                 <!--       执行 mvn jfx:list-bundlers 看支持哪些打包方式    -->
-                <installer.bundler>windows.app</installer.bundler>
+                <installer.bundler>msi</installer.bundler>
             </properties>
         </profile>
         <profile>

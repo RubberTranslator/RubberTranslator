@@ -35,3 +35,15 @@ mv out/Launcher/Launcher* out/Main
 :: 改名
 mv out/Main out/RubberTranslator
 
+
+:: 打包成msi -- 暂时还是不考虑安装包，因为安装包在自动升级时可能会出现错误（配置可能不兼容)
+:: %jpackage% --name RubberTranslator ^
+::   --dest out ^
+::   --type msi ^
+::   --app-image out/RubberTranslator ^
+::   --vendor raven ^
+::   --win-dir-chooser ^
+::   --win-shortcut ^
+::   --win-menu-group "RubberTranslator" ^
+::   --win-menu ^
+::   --app-version "3.4.1"
