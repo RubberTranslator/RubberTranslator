@@ -76,6 +76,7 @@ public class FilterController implements IFilterView {
     @FXML
     public void onAddButtonClick(){
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(vBox.getScene().getWindow());
+        if(selectedFiles == null) return;
         List<String> collect = selectedFiles.stream().map(File::getName).collect(Collectors.toList());
         presenter.addFilterList(collect);
     }

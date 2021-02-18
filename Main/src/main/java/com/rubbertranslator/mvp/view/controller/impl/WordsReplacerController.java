@@ -5,6 +5,7 @@ import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.WordsReplacerPresenter;
 import com.rubbertranslator.mvp.view.controller.IWordsReplacerView;
+import com.rubbertranslator.system.ProgramPaths;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.collections.ObservableList;
@@ -141,9 +142,12 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
         if (set.isEmpty()) {
             alert.setHeaderText("当前词组为空");
         } else {
-            String exportPath = System.getProperty("user.dir") + "/RubberTranslator/export/words.txt";
-            if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
-                exportPath = exportPath.replaceAll("\\\\", "/");
+            String exportPath = ProgramPaths.exportDir;
+            if (exportPath == null) return;
+            if (exportPath.charAt(exportPath.length() - 1) == '/') {
+                exportPath = exportPath + "/RubberTranslator/export/words.txt";
+            } else {
+                exportPath = exportPath + "RubberTranslator/export/words.txt";
             }
             doExport(set, exportPath);
             alert.setHeaderText("已导出至：" + exportPath);

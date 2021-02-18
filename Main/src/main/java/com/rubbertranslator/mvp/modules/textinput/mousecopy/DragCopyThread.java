@@ -4,8 +4,8 @@ import com.rubbertranslator.mvp.modules.textinput.mousecopy.listener.GlobalMouse
 import org.simplenativehooks.NativeHookInitializer;
 import org.simplenativehooks.NativeMouseHook;
 import org.simplenativehooks.events.NativeMouseEvent;
-import staticResources.BootStrapResources;
-import utilities.Function;
+import org.simplenativehooks.staticResources.BootStrapResources;
+import org.simplenativehooks.utilities.Function;
 
 import java.io.IOException;
 import java.util.logging.Level;

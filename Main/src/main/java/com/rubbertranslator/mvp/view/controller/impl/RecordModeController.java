@@ -7,13 +7,17 @@ import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
+import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.RecordViewPresenter;
 import com.rubbertranslator.mvp.view.IRecordView;
+import com.rubbertranslator.system.ProgramPaths;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
+import com.rubbertranslator.utils.ExploreUtil;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,6 +35,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,8 +70,6 @@ public class RecordModeController implements Initializable, IRecordView {
     @FXML
     private ToggleButton youdaoTranslator;
 
-    @FXML // 记录模式组
-    private ToggleGroup recordModeGroup;
     @FXML
     private ToggleButton originRecordMode;
     @FXML
@@ -94,7 +98,10 @@ public class RecordModeController implements Initializable, IRecordView {
     private Button correctEntryMenu;
 
     @FXML
-    private Button  deleteEntryBt;
+    private Button deleteEntryBt;
+
+    @FXML
+    private Button openExportDirBt;
 
     @FXML
     private ToggleButton startEndMenu;
@@ -104,6 +111,10 @@ public class RecordModeController implements Initializable, IRecordView {
 
     // 是否继续接受来自clipboard的文本
     private boolean keepGetTextFromClipboard = true;
+
+    // 导出类型组
+    private List<RecordModeType> types = new ArrayList<>();
+
 
     // presenter
     private RecordViewPresenter presenter;
@@ -168,6 +179,8 @@ public class RecordModeController implements Initializable, IRecordView {
         }
         // 记录模式--默认为译文
         translateRecordMode.setSelected(true);
+        types.add(RecordModeType.TRANSLATE_RECORD_MODE);
+        presenter.setRecordModeType(types);
         // 置顶
         keepStageTopMenu.setSelected(configuration.isKeepTop());
         // 文本格式化
@@ -227,7 +240,10 @@ public class RecordModeController implements Initializable, IRecordView {
         backBt.setOnAction((event -> presenter.switchScene(SceneType.MAIN_SCENE)));
         translateBt.setOnAction((event -> presenter.translate(originTextArea.getText())));
         translatorGroup.selectedToggleProperty().addListener(this::onTranslatorTypeChanged);
-        recordModeGroup.selectedToggleProperty().addListener(this::onRecordModeChanged);
+        // 记录模式
+        originRecordMode.setOnAction(this::onRecordModeChanged);
+        translateRecordMode.setOnAction(this::onRecordModeChanged);
+        bilingualRecordMode.setOnAction(this::onRecordModeChanged);
         keepStageTopMenu.setOnAction((event -> presenter.setKeepTop(keepStageTopMenu.isSelected())));
         textFormatMenu.setOnAction((event -> presenter.textFormatSwitch(textFormatMenu.isSelected())));
         clipboardListenerMenu.setOnAction((event -> presenter.clipboardSwitch(clipboardListenerMenu.isSelected())));
@@ -236,7 +252,20 @@ public class RecordModeController implements Initializable, IRecordView {
         nextHistoryBt.setOnAction((event -> presenter.setHistoryEntry(HistoryEntryIndex.NEXT_HISTORY)));
         correctEntryMenu.setOnAction((event -> presenter.correctCurrentEntry(originTextArea.getText(), translateTextArea.getText())));
         deleteEntryBt.setOnAction((event -> presenter.deleteCurrentEntry()));
+        openExportDirBt.setOnAction((event -> openExportDir()));
         startEndMenu.setOnAction((event -> presenter.record(startEndMenu.isSelected())));
+    }
+
+    private void openExportDir() {
+        ExploreUtil.openExplore(ProgramPaths.exportDir, s -> originTextArea.setText(s));
+    }
+
+    private void onRecordModeChanged(ActionEvent actionEvent) {
+        types.clear();
+        if (originRecordMode.isSelected()) types.add(RecordModeType.ORIGIN_RECORD_MODE);
+        if (translateRecordMode.isSelected()) types.add(RecordModeType.TRANSLATE_RECORD_MODE);
+        if (bilingualRecordMode.isSelected()) types.add(RecordModeType.BILINGUAL_RECORD_MODE);
+        presenter.setRecordModeType(types);
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
@@ -246,19 +275,6 @@ public class RecordModeController implements Initializable, IRecordView {
             presenter.setTranslatorType(TranslatorType.BAIDU);
         } else if (newValue == youdaoTranslator) {
             presenter.setTranslatorType(TranslatorType.YOUDAO);
-        } else {
-            // 走到这个分支，说明用户点击了当前已经选中的按钮
-            oldValue.setSelected(true);
-        }
-    }
-
-    private void onRecordModeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
-        if (newValue == originRecordMode) {
-            presenter.setRecordModeType(RecordModeType.ORIGIN_RECORD_MODE);
-        } else if (newValue == translateRecordMode) {
-            presenter.setRecordModeType(RecordModeType.TRANSLATE_RECORD_MODE);
-        } else if (newValue == bilingualRecordMode) {
-            presenter.setRecordModeType(RecordModeType.BILINGUAL_RECORD_MODE);
         } else {
             // 走到这个分支，说明用户点击了当前已经选中的按钮
             oldValue.setSelected(true);
@@ -278,7 +294,6 @@ public class RecordModeController implements Initializable, IRecordView {
             EventBus.getDefault().post(new SwitchSceneEvent(type));
         }
     }
-
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
@@ -338,7 +353,7 @@ public class RecordModeController implements Initializable, IRecordView {
 
     @Override
     public void correctCallBack() {
-        String text =  "修正成功（本行不会包含在历史结果中)\n" + originTextArea.getText();
+        String text = "修正成功（本行不会包含在历史结果中)\n" + originTextArea.getText();
         originTextArea.setText(text);
     }
 }

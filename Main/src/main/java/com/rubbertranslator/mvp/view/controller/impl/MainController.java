@@ -1,7 +1,6 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
 import com.rubbertranslator.entity.ApiInfo;
-import com.rubbertranslator.entity.ControllerFxmlPath;
 import com.rubbertranslator.enumtype.*;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
@@ -10,9 +9,8 @@ import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 import com.rubbertranslator.mvp.view.custom.ApiDialog;
-import com.rubbertranslator.system.SystemConfiguration;
-import com.rubbertranslator.system.SystemConfigurationManager;
-import com.rubbertranslator.system.SystemResourceManager;
+import com.rubbertranslator.system.*;
+import com.rubbertranslator.utils.ExploreUtil;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -132,13 +130,13 @@ public class MainController implements ISingleTranslateView {
 
     // 专注模式
     @FXML
-    private Menu focusModeMenu;
+    private MenuItem focusModeMenu;
     // 对比模式
     @FXML
-    private Menu compareModeMenu;
+    private MenuItem compareModeMenu;
     // 记录模式
     @FXML
-    private Menu recordModeMenu;
+    private MenuItem recordModeMenu;
 
     // 历史记录
     @FXML
@@ -177,6 +175,12 @@ public class MainController implements ISingleTranslateView {
     private MenuItem useAge;
     @FXML
     private MenuItem issues;
+    @FXML
+    private MenuItem openConfigDirMenu;
+    @FXML
+    private MenuItem openLogDirMenu;
+    @FXML
+    private MenuItem openRecordDirMenu;
     @FXML
     private MenuItem versionText;
 
@@ -595,11 +599,10 @@ public class MainController implements ISingleTranslateView {
         //
         homePage.setOnAction((actionEvent) ->
         {
-            // 这里用new Thread有点蠢，不过为了避免为卡死，暂时这样吧
             if (Desktop.isDesktopSupported()) {
                 SystemResourceManager.getExecutor().execute(() -> {
                     try {
-                        Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator"));
+                        Desktop.getDesktop().browse(new URI("https://github.com/RubberTranslator/RubberTranslator"));
                     } catch (IOException | URISyntaxException e) {
                         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "项目主页打开失败", e);
                     }
@@ -614,7 +617,7 @@ public class MainController implements ISingleTranslateView {
             if (Desktop.isDesktopSupported()) {
                 SystemResourceManager.getExecutor().execute(() -> {
                     try {
-                        Desktop.getDesktop().browse(new URI("https://www.ravenxrz.ink/archives/a79932ef.html"));
+                        Desktop.getDesktop().browse(new URI("https://rubbertranslator.github.io/docs/index.html"));
                     } catch (IOException | URISyntaxException e) {
                         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "使用帮助打开失败", e);
                     }
@@ -638,29 +641,31 @@ public class MainController implements ISingleTranslateView {
                 originTextArea.setText("当前平台不支持打开该页面");
             }
         }));
+        // open dir window
+        openConfigDirMenu.setOnAction((event)->{
+            ExploreUtil.openExplore(ProgramPaths.configFileDir, s -> originTextArea.setText(s));
+        });
+        openLogDirMenu.setOnAction((event)->{
+            ExploreUtil.openExplore(ProgramPaths.logFileDir, s -> originTextArea.setText(s));
+        });
+        openRecordDirMenu.setOnAction((event)->{
+            ExploreUtil.openExplore(ProgramPaths.exportDir, s -> originTextArea.setText(s));
+        });
+
         // versionText
         versionText.setText(SystemConfigurationManager.getCurrentVersion());
     }
 
     private void initFocusModeMenu() {
-        Label label = new Label("专注模式");
-        label.setOnMouseClicked((event -> presenter.switchScene(SceneType.FOCUS_SCENE)));
-        focusModeMenu.setText("");
-        focusModeMenu.setGraphic(label);
+        focusModeMenu.setOnAction((event) -> presenter.switchScene(SceneType.FOCUS_SCENE));
     }
 
     private void initCompareModeMenu() {
-        Label label = new Label("对比模式");
-        label.setOnMouseClicked((event -> presenter.switchScene(SceneType.COMPARE_SCENE)));
-        compareModeMenu.setText("");
-        compareModeMenu.setGraphic(label);
+        compareModeMenu.setOnAction((event -> presenter.switchScene(SceneType.COMPARE_SCENE)));
     }
 
     private void initRecordModeMenu() {
-        Label label = new Label("记录模式");
-        label.setOnMouseClicked((event -> presenter.switchScene(SceneType.RECORD_SCENE)));
-        recordModeMenu.setText("");
-        recordModeMenu.setGraphic(label);
+        recordModeMenu.setOnAction(event -> presenter.switchScene(SceneType.RECORD_SCENE));
     }
 
     private void initHistoryMenu() {

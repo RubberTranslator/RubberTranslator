@@ -18,6 +18,8 @@ import com.rubbertranslator.mvp.modules.translate.youdao.YoudaoTranslator;
 import com.rubbertranslator.mvp.modules.update.UpdateTask;
 import com.rubbertranslator.mvp.presenter.BasePresenter;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
+import com.rubbertranslator.mvp.view.IView;
+import it.sauronsoftware.junique.JUnique;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -64,7 +66,7 @@ public class SystemResourceManager {
         // 热更新模块
         updateModuleInit();
         // 其余
-        facade = new TranslatorFacade();
+        facade = TranslatorFacade.getInstance();
         configManager = new SystemConfigurationManager();
         if (!configManager.init()) return null;
 
@@ -100,10 +102,10 @@ public class SystemResourceManager {
         try {
             executor.shutdownNow();
             executor.awaitTermination(1, TimeUnit.SECONDS);
+            JUnique.releaseLock("RubberTranslator");
         } catch (InterruptedException e) {
             Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "释放线程池资源失败");
         }
-//            JUnique.releaseLock("RubberTranslator");
         textInputDestroy();
         processFilterDestroy();
         // TODO: 检查资源释放情况
@@ -112,7 +114,7 @@ public class SystemResourceManager {
         //        System.exit(0);
     }
 
-    public static void initPresenter(BasePresenter presenter) {
+    public static <T extends IView> void initPresenter(BasePresenter<T> presenter) {
         if (presenter instanceof ModelPresenter) {
             // 注入facade
             ((ModelPresenter) presenter).setTranslatorFacade(facade);
@@ -125,7 +127,7 @@ public class SystemResourceManager {
     }
 
 
-    private static boolean textInputInit(SystemConfiguration configuration) {
+    private static void textInputInit(SystemConfiguration configuration) {
         clipboardListenerThread = new ClipboardListenerThread();
         clipboardListenerThread.setRun(configuration.isOpenClipboardListener());
         dragCopyThread = new DragCopyThread();
@@ -135,7 +137,6 @@ public class SystemResourceManager {
 
         clipboardListenerThread.start();
         dragCopyThread.start();
-        return true;
     }
 
     private static void textInputDestroy() {
@@ -147,7 +148,7 @@ public class SystemResourceManager {
         activeWindowListenerThread.exit();
     }
 
-    private static boolean filterInit(SystemConfiguration configuration) {
+    private static void filterInit(SystemConfiguration configuration) {
         ProcessFilter processFilter = new ProcessFilter();
         processFilter.setOpen(configuration.isOpenProcessFilter());
         processFilter.addFilterList(configuration.getProcessList());
@@ -155,26 +156,23 @@ public class SystemResourceManager {
         clipboardListenerThread.setProcessFilter(processFilter);
         activeWindowListenerThread = new WindowsPlatformActiveWindowListenerThread();
         activeWindowListenerThread.start();
-        return true;
     }
 
-    private static boolean preTextProcessInit(SystemConfiguration preProcessConfig) {
+    private static void preTextProcessInit(SystemConfiguration preProcessConfig) {
         TextPreProcessor textPreProcessor = new TextPreProcessor();
         textPreProcessor.setTryToFormat(preProcessConfig.isTryFormat());
         textPreProcessor.setIncrementalCopy(preProcessConfig.isIncrementalCopy());
         facade.setTextPreProcessor(textPreProcessor);
-        return true;
     }
 
-    private static boolean postTextProcessInit(SystemConfiguration postProcessConfig) {
+    private static void postTextProcessInit(SystemConfiguration postProcessConfig) {
         TextPostProcessor textPostProcessor = new TextPostProcessor();
         textPostProcessor.getReplacer().setCaseInsensitive(postProcessConfig.isCaseInsensitive());
         textPostProcessor.getReplacer().addWords(postProcessConfig.getWordsPairs());
         facade.setTextPostProcessor(textPostProcessor);
-        return true;
     }
 
-    private static boolean translatorInit(SystemConfiguration configuration) {
+    private static void translatorInit(SystemConfiguration configuration) {
         TranslatorFactory translatorFactory = new TranslatorFactory();
         translatorFactory.setEngineType(configuration.getCurrentTranslator());
         translatorFactory.setSourceLanguage(configuration.getSourceLanguage());
@@ -192,21 +190,18 @@ public class SystemResourceManager {
             translatorFactory.addTranslator(TranslatorType.YOUDAO, youdaoTranslator);
         }
         facade.setTranslatorFactory(translatorFactory);
-        return true;
     }
 
-    private static boolean historyInit(SystemConfiguration configuration) {
+    private static void historyInit(SystemConfiguration configuration) {
         TranslationHistory history = new TranslationHistory();
         facade.setHistory(history);
-        return true;
     }
 
-    private static boolean afterProcessorInit(SystemConfiguration configuration) {
+    private static void afterProcessorInit(SystemConfiguration configuration) {
         AfterProcessor afterProcessor = new AfterProcessor();
         afterProcessor.setAutoCopy(configuration.isAutoCopy());
         afterProcessor.setAutoPaste(configuration.isAutoPaste());
         facade.setAfterProcessor(afterProcessor);
-        return true;
     }
 
 

@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  * date  2020/12/22 22:50
  * 检查更新工具类
  */
-public class UpdateUtils {
+public class UpdateUtil {
 
     public static void checkUpdate(String localVersion, String remoteVersionUrl, GenericCallback<Boolean> callback) {
         // get local version
@@ -27,7 +27,7 @@ public class UpdateUtils {
             return;
         }
         remoteVersion = remoteVersion.split("\n")[0];
-        Logger.getLogger(UpdateUtils.class.getName()).info("remote version: " + remoteVersion);
+        Logger.getLogger(UpdateUtil.class.getName()).info("remote version: " + remoteVersion);
         if(remoteVersion.endsWith("beta")){
             callback.callBack(false);
         }else{

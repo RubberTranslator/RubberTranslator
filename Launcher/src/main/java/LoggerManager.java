@@ -12,21 +12,11 @@ import java.util.logging.SimpleFormatter;
  * date 2020/5/8 10:49
  */
 public class LoggerManager {
-    private static final String logFilePath ;
-
-    static{
-        if(OSTypeUtil.isMac()){
-            logFilePath = System.getProperty("user.home") + "/RubberTranslator/log";
-        }else{
-            logFilePath = System.getProperty("user.dir") + "/RubberTranslator/log";
-        }
-    }
 
     private static Logger fileLogger = Logger.getLogger("");
 
     // 修改simpleformater格式
-    static
-    {
+    static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%2$s] [%4$s] %5$s %6$s %n");
     }
 
@@ -37,15 +27,24 @@ public class LoggerManager {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         //设置保存路径
-        logPath.append(logFilePath).append("/").append(sdf.format(new Date())).append("-launcher.log");
+        //设置保存路径
+        String logFileDir = ProgramPaths.logFileDir;
+        if (logFileDir == null) {
+            return;
+        }
+        if (logFileDir.charAt(logFileDir.length() - 1) == '/') {
+            logPath.append(ProgramPaths.logFileDir).append(sdf.format(new Date())).append("-launcher.log");
+        } else {
+            logPath.append(ProgramPaths.logFileDir).append("/").append(sdf.format(new Date())).append("-launcher.log");
+        }
         File dir = new File(logPath.toString());
-        if(!dir.getParentFile().exists()){
+        if (!dir.getParentFile().exists()) {
             dir.getParentFile().mkdirs();
-        }else{
+        } else {
             File[] logs = dir.getParentFile().listFiles();
-            if(logs != null){
-                for(File log: logs){
-                    if(log.exists()) log.delete();
+            if (logs != null) {
+                for (File log : logs) {
+                    if (log.exists()) log.delete();
                 }
             }
         }

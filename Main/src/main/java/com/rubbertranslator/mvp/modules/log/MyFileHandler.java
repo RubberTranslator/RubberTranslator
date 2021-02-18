@@ -13,7 +13,6 @@ import java.util.logging.LogManager;
  * date  2020/5/19 9:22
  * 自定义FileHandler,java log框架存在bug，如果日志文件目录不存在，会抛出异常，详情参考：
  * https://stackoverflow.com/questions/1263876/configuring-java-filehandler-logging-to-create-directories-if-they-do-not-exist
- *
  */
 public class MyFileHandler extends FileHandler {
 
@@ -21,10 +20,10 @@ public class MyFileHandler extends FileHandler {
         LogManager manager = LogManager.getLogManager();
         String cname = MyFileHandler.class.getName();
         String pattern = manager.getProperty(cname + ".pattern");
-        if(pattern == null) pattern = "%h/java%u.log";
-        File logFile = generate(pattern,1,0,0);
+        if (pattern == null) pattern = "%h/java%u.log";
+        File logFile = generate(pattern, 1, 0, 0);
         File dir = logFile.getParentFile();
-        if(!dir.exists()){
+        if (!dir.exists()) {
             dir.mkdirs();
         }
     }
