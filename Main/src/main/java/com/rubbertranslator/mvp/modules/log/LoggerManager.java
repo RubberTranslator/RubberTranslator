@@ -1,7 +1,5 @@
 package com.rubbertranslator.mvp.modules.log;
 
-import com.rubbertranslator.utils.OSTypeUtil;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -19,11 +17,7 @@ public class LoggerManager {
     private static final String logFilePath;
 
     static {
-        if (OSTypeUtil.isMac()) {
-            logFilePath = System.getProperty("user.home") + "/RubberTranslator/log";
-        } else {
-            logFilePath = System.getProperty("user.dir") + "/RubberTranslator/log";
-        }
+        logFilePath = System.getProperty("user.home") + "/RubberTranslator/log";
     }
 
 

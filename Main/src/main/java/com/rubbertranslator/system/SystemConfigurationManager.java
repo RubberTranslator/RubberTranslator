@@ -3,7 +3,6 @@ package com.rubbertranslator.system;
 import com.google.gson.Gson;
 import com.rubbertranslator.utils.FileUtil;
 import com.rubbertranslator.utils.JsonUtil;
-import com.rubbertranslator.utils.OSTypeUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +22,7 @@ public class SystemConfigurationManager {
     private SystemConfiguration systemConfiguration;
 
     {
-        if (OSTypeUtil.isMac()) {
-            configJsonDir = System.getProperty("user.home") + "/RubberTranslator/config";
-        } else {
-            configJsonDir = System.getProperty("user.dir") + "/RubberTranslator/config";
-        }
+        configJsonDir = System.getProperty("user.home") + "/RubberTranslator/config";
     }
 
 
@@ -225,6 +220,7 @@ public class SystemConfigurationManager {
      * @return 最终配置类
      */
     private SystemConfiguration mergeConfig(SystemConfiguration baseConfig, SystemConfiguration oldConfig) {
+        if(baseConfig == null || oldConfig == null) return baseConfig;
         Class<?> clz = SystemConfiguration.class;
         // 枚举成员函数
         Method[] methods = clz.getMethods();

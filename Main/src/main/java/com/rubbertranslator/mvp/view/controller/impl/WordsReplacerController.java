@@ -141,7 +141,7 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
         if (set.isEmpty()) {
             alert.setHeaderText("当前词组为空");
         } else {
-            String exportPath = System.getProperty("user.dir") + "/RubberTranslator/export/words.txt";
+            String exportPath = System.getProperty("user.home") + "/RubberTranslator/export/words.txt";
             if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
                 exportPath = exportPath.replaceAll("\\\\", "/");
             }

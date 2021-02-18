@@ -30,11 +30,7 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
      * 更新记录导出路径
      */
     private void updateExportPath() {
-        if(OSTypeUtil.isMac()){
-            exportDir = System.getProperty("user.home") + "/RubberTranslator/export/";
-        }else{
-            exportDir = System.getProperty("user.dir") + "/RubberTranslator/export/";
-        }
+        exportDir = System.getProperty("user.home") + "/RubberTranslator/export/";
         if (OSTypeUtil.isWin()) {
             exportDir = exportDir.replaceAll("\\\\", "/");
         }
@@ -91,9 +87,9 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
     }
 
     public void deleteCurrentEntry() {
-        if(translatorFacade.getHistory().getHistorySize() == 0){
-            view.setText("当前历史记录为空","");
-        }else{
+        if (translatorFacade.getHistory().getHistorySize() == 0) {
+            view.setText("当前历史记录为空", "");
+        } else {
             translatorFacade.getHistory().deleteCurrentEntry();
             setHistoryEntry(HistoryEntryIndex.CURRENT_HISTORY);
             updateHistoryNumDisplay();
