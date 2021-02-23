@@ -9,6 +9,7 @@ import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 import com.rubbertranslator.mvp.view.custom.ApiDialog;
+import com.rubbertranslator.mvp.view.custom.SponsorDialog;
 import com.rubbertranslator.system.*;
 import com.rubbertranslator.utils.ExploreUtil;
 import javafx.application.Platform;
@@ -174,6 +175,8 @@ public class MainController implements ISingleTranslateView {
     @FXML
     private MenuItem useAge;
     @FXML
+    private MenuItem downloadUrl;
+    @FXML
     private MenuItem issues;
     @FXML
     private MenuItem openConfigDirMenu;
@@ -181,6 +184,8 @@ public class MainController implements ISingleTranslateView {
     private MenuItem openLogDirMenu;
     @FXML
     private MenuItem openRecordDirMenu;
+    @FXML
+    private MenuItem sponsorMenu;
     @FXML
     private MenuItem versionText;
 
@@ -283,12 +288,6 @@ public class MainController implements ISingleTranslateView {
         new AdvancedSettingMenu().init(configuration);
         // 帮助
         initHelpingMenu();
-        // 专注模式
-        initFocusModeMenu();
-        // 对比模式
-        initCompareModeMenu();
-        // 记录模式
-        initRecordModeMenu();
         // 历史
         initHistoryMenu();
         // 清空
@@ -595,78 +594,71 @@ public class MainController implements ISingleTranslateView {
     /**
      * 帮助设置
      */
+
     private void initHelpingMenu() {
         //
         homePage.setOnAction((actionEvent) ->
         {
-            if (Desktop.isDesktopSupported()) {
-                SystemResourceManager.getExecutor().execute(() -> {
-                    try {
-                        Desktop.getDesktop().browse(new URI("https://github.com/RubberTranslator/RubberTranslator"));
-                    } catch (IOException | URISyntaxException e) {
-                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "项目主页打开失败", e);
-                    }
-                });
-            } else {
-                originTextArea.setText("当前平台不支持打开该页面");
-            }
-
+            openUrl("https://github.com/RubberTranslator/RubberTranslator");
         });
         // wiki
         useAge.setOnAction((actionEvent) -> {
-            if (Desktop.isDesktopSupported()) {
-                SystemResourceManager.getExecutor().execute(() -> {
-                    try {
-                        Desktop.getDesktop().browse(new URI("https://rubbertranslator.github.io/docs/index.html"));
-                    } catch (IOException | URISyntaxException e) {
-                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "使用帮助打开失败", e);
-                    }
-                });
-            } else {
-                originTextArea.setText("当前平台不支持打开该页面");
-            }
+            openUrl("https://rubbertranslator.github.io/docs/index.html");
         });
+        // download url
+        downloadUrl.setOnAction((actionEvent -> {
+            openUrl("https://ravenxrz.lanzous.com/b01bezbcf");
+        }));
         // issue
         issues.setOnAction((actionEvent -> {
-            if (Desktop.isDesktopSupported()) {
-                SystemResourceManager.getExecutor().execute(() -> {
-                            try {
-                                Desktop.getDesktop().browse(new URI("https://jq.qq.com/?_wv=1027&k=8HGTc7h5"));
-                            } catch (IOException | URISyntaxException e) {
-                                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "issues打开失败", e);
-                            }
-                        }
-                );
-            } else {
-                originTextArea.setText("当前平台不支持打开该页面");
-            }
+            openUrl("https://jq.qq.com/?_wv=1027&k=8HGTc7h5");
         }));
         // open dir window
-        openConfigDirMenu.setOnAction((event)->{
+        openConfigDirMenu.setOnAction((event) -> {
             ExploreUtil.openExplore(ProgramPaths.configFileDir, s -> originTextArea.setText(s));
         });
-        openLogDirMenu.setOnAction((event)->{
+        openLogDirMenu.setOnAction((event) -> {
             ExploreUtil.openExplore(ProgramPaths.logFileDir, s -> originTextArea.setText(s));
         });
-        openRecordDirMenu.setOnAction((event)->{
+        openRecordDirMenu.setOnAction((event) -> {
             ExploreUtil.openExplore(ProgramPaths.exportDir, s -> originTextArea.setText(s));
+        });
+
+        sponsorMenu.setOnAction((event) -> {
+            openSponsorDialog();
         });
 
         // versionText
         versionText.setText(SystemConfigurationManager.getCurrentVersion());
-    }
 
-    private void initFocusModeMenu() {
+        // focus
         focusModeMenu.setOnAction((event) -> presenter.switchScene(SceneType.FOCUS_SCENE));
-    }
 
-    private void initCompareModeMenu() {
+        // compare
         compareModeMenu.setOnAction((event -> presenter.switchScene(SceneType.COMPARE_SCENE)));
-    }
 
-    private void initRecordModeMenu() {
+        // record
         recordModeMenu.setOnAction(event -> presenter.switchScene(SceneType.RECORD_SCENE));
     }
+
+    private void openSponsorDialog() {
+        SponsorDialog.show();
+    }
+
+    private void openUrl(String url) {
+        if (Desktop.isDesktopSupported()) {
+            SystemResourceManager.getExecutor().execute(() -> {
+                try {
+                    Desktop.getDesktop().browse(new URI(url));
+                } catch (IOException | URISyntaxException e) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, url + " open failed", e);
+                }
+            });
+        } else {
+            originTextArea.setText("当前平台不支持打开该页面");
+        }
+    }
+
 
     private void initHistoryMenu() {
         Label pre = new Label("上一条");

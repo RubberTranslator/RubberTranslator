@@ -4,7 +4,7 @@ REM 2. 设置jpackage和javafx mods变量到合适路径
 REM 3. 执行本脚本即可
 REM 注：打包后的软件包在 out/RubberTranslator 路径下
 
-set jpackage="C:\Program Files\Java\jdk-14.0.1\bin\jpackage.exe"
+set jpackage="C:\Program Files\Java\jdk-14.0.2\bin\jpackage.exe"
 set jfxmods="C:\Program Files\Java\javafx-sdk-11.0.2\jmods"
 
 :: 清空文件夹

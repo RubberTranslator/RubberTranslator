@@ -2,6 +2,11 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
+      <option name="id" value="mylibs" />
+      <option name="name" value="mylibs" />
+      <option name="url" value="file://$PROJECT_DIR$/Main/libs" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
       <option name="url" value="https://repo.maven.apache.org/maven2" />
@@ -14,7 +19,7 @@
     <remote-repository>
       <option name="id" value="mylibs" />
       <option name="name" value="mylibs" />
-      <option name="url" value="file://$PROJECT_DIR$/Main/libs" />
+      <option name="url" value="file://E:\RubberTranslator\Main/libs" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="mylibs" />
