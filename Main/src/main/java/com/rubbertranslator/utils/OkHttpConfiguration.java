@@ -32,9 +32,9 @@ public class OkHttpConfiguration {
                             .sslSocketFactory(Objects.requireNonNull(sslSocketFactory()), x509TrustManager())
                             .retryOnConnectionFailure(false)
                             .connectionPool(pool())
-                            .connectTimeout(6, TimeUnit.SECONDS)
-                            .readTimeout(6, TimeUnit.SECONDS)
-                            .writeTimeout(6, TimeUnit.SECONDS)
+                            .connectTimeout(5, TimeUnit.SECONDS)
+                            .readTimeout(5, TimeUnit.SECONDS)
+                            .writeTimeout(5, TimeUnit.SECONDS)
                             .build();
                 }
             }

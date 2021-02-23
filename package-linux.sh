@@ -32,11 +32,17 @@ ${jpackage} --name Main --input out/artifacts/Main_jar  --main-jar Main.jar  \
   --vendor raven
 
 # 移动
-mv out/Launcher/bin/* out/Main/bin
-mv out/Launcher/lib/app/* out/Main/lib/app
+cp -r out/Main/* out/Launcher
 
 # 改名
-mv out/Main out/RubberTranslator
+mv out/Launcher out/RubberTranslator
 
-# copy必读.txt
-cp misc/必读.txt out/
+# 打包成deb -- 暂时还是不考虑安装包，因为安装包在自动升级时可能会出现错误（配置可能不兼容)
+#${jpackage} --name RubberTranslator \
+#   --dest out \
+#   --type deb  \
+#   --app-image out/RubberTranslator \
+#   --vendor raven \
+#   --linux-shortcut \
+#   --linux-menu-group "RubberTranslator" \
+#   --app-version "3.5.1"
