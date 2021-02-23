@@ -15,7 +15,7 @@ public interface IRecordView extends ISingleTranslateView {
     void setHistoryNum(int current, int total);
 
     // 修正回掉
-    void correctCallBack();
+    void correctCallBack(String msg);
 
 
 }

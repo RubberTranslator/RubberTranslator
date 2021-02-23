@@ -83,8 +83,12 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
     }
 
     public void correctCurrentEntry(String originText, String translateText) {
-        translatorFacade.getHistory().modifyCurrentEntry(new HistoryEntry(originText, translateText));
-        view.correctCallBack();
+        boolean ret = translatorFacade.getHistory().modifyCurrentEntry(new HistoryEntry(originText, translateText));
+        if (ret) {
+            view.correctCallBack("修正成功");
+        }else{
+            view.correctCallBack("修正失败(检查当前记录是否为空)");
+        }
     }
 
     public void deleteCurrentEntry() {

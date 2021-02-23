@@ -73,11 +73,13 @@ public class TranslationHistory {
         }
     }
 
-    public void modifyCurrentEntry(HistoryEntry entry) {
+    public boolean modifyCurrentEntry(HistoryEntry entry) {
         if (historyCursor >= 0 && historyCursor < historyList.size()) {
             isModified = true;
             historyList.set(historyCursor, entry);
+            return true;
         }
+        return false;
     }
 
     public int getCurrentCursor() {

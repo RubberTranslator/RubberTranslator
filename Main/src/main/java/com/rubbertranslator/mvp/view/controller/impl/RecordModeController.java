@@ -7,7 +7,6 @@ import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
-import com.rubbertranslator.listener.GenericCallback;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.RecordViewPresenter;
 import com.rubbertranslator.mvp.view.IRecordView;
@@ -352,8 +351,8 @@ public class RecordModeController implements Initializable, IRecordView {
     }
 
     @Override
-    public void correctCallBack() {
-        String text = "修正成功（本行不会包含在历史结果中)\n" + originTextArea.getText();
+    public void correctCallBack(String msg) {
+        String text = msg + "\n" + originTextArea.getText();
         originTextArea.setText(text);
     }
 }
