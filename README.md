@@ -90,12 +90,13 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
             </center>
         </td>        
         <td >
-            <center><img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/DXwQCn-1609901526157.png" width="300" ><br>支付宝
+            <center><img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/1385a000232d76ed7d938" width="300" ><br>支付宝
             </center>
         </td>    
     </tr>      
     <tr>         
 </table>
+
 
 ## 开源许可
 
