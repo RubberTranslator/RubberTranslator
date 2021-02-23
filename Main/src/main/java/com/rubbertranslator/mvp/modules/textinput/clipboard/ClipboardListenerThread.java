@@ -46,12 +46,12 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
     private void init() {
         // 注册消息监听
         // 初始化剪切板监听
-        if (OSTypeUtil.isMac()) {     // mac 单独处理
+//        if (OSTypeUtil.isMac()) {     // mac 单独处理
             macOSProcess();
-        } else {          // win, linux 处理
-            Transferable trans = clipboard.getContents(this);
-            clipboard.setContents(trans, this);
-        }
+//        } else {          // win, linux 处理
+//            Transferable trans = clipboard.getContents(this);
+//            clipboard.setContents(trans, this);
+//        }
     }
 
     private void macOSProcess() {
@@ -113,8 +113,9 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                         }
                     }
                 }
-            } catch (HeadlessException | UnsupportedFlavorException | IOException | InterruptedException e) {
+            } catch (HeadlessException | UnsupportedFlavorException | IOException | InterruptedException | IllegalStateException e) {
                 e.printStackTrace();
+                Logger.getLogger(this.getClass().getName()).info(e.getLocalizedMessage());
             }
         }
     }
