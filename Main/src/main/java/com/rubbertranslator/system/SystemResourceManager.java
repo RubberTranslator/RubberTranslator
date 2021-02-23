@@ -128,15 +128,20 @@ public class SystemResourceManager {
 
 
     private static void textInputInit(SystemConfiguration configuration) {
+        // 启动相应线程
         clipboardListenerThread = new ClipboardListenerThread();
-        clipboardListenerThread.setRun(configuration.isOpenClipboardListener());
         dragCopyThread = new DragCopyThread();
+        clipboardListenerThread.start();
+        dragCopyThread.start();
+
+        // 配置线程
+        clipboardListenerThread.setRun(configuration.isOpenClipboardListener());
         dragCopyThread.setRun(configuration.isDragCopy());
+
+        // 配置OCR
         OCRUtils.setApiKey(configuration.getBaiduOcrApiKey());
         OCRUtils.setSecretKey(configuration.getBaiduOcrSecretKey());
 
-        clipboardListenerThread.start();
-        dragCopyThread.start();
     }
 
     private static void textInputDestroy() {

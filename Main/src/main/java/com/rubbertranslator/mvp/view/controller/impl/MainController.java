@@ -631,7 +631,7 @@ public class MainController implements ISingleTranslateView {
             if (Desktop.isDesktopSupported()) {
                 SystemResourceManager.getExecutor().execute(() -> {
                             try {
-                                Desktop.getDesktop().browse(new URI("https://github.com/ravenxrz/RubberTranslator/issues"));
+                                Desktop.getDesktop().browse(new URI("https://jq.qq.com/?_wv=1027&k=8HGTc7h5"));
                             } catch (IOException | URISyntaxException e) {
                                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "issues打开失败", e);
                             }

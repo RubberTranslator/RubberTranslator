@@ -106,7 +106,7 @@
                   <items>
                         <MenuItem fx:id="homePage" mnemonicParsing="false" text="项目主页" />
                     <MenuItem fx:id="useAge" mnemonicParsing="false" text="使用方法" />
-                        <MenuItem fx:id="issues" mnemonicParsing="false" text="反馈" />
+                        <MenuItem fx:id="issues" mnemonicParsing="false" text="加入QQ群" />
                         <Menu mnemonicParsing="false" text="打开路径">
                           <items>
                             <MenuItem fx:id="openConfigDirMenu" mnemonicParsing="false" text="配置文件路径" />

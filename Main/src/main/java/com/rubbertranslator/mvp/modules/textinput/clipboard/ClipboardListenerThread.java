@@ -37,27 +37,30 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
 
     @Override
     public void run() {
-        init();
+        startProcess();
+        running = true;
         blocker.keepAlive();
 //        destroy();
         Logger.getLogger(this.getClass().getName()).info("ClipBoard exit");
     }
 
-    private void init() {
+    private void startProcess() {
         // 注册消息监听
         // 初始化剪切板监听
-//        if (OSTypeUtil.isMac()) {     // mac 单独处理
+        if (OSTypeUtil.isMac()) {     // mac 单独处理
             macOSProcess();
-//        } else {          // win, linux 处理
-//            Transferable trans = clipboard.getContents(this);
-//            clipboard.setContents(trans, this);
-//        }
+        } else {          // win, linux 处理
+            WinAndLinuxProcess();
+        }
     }
 
-    private void macOSProcess() {
-        // mac os 采用 javafx clipboard专用接口来处理
-        javafx.scene.input.Clipboard cb = javafx.scene.input.Clipboard.getSystemClipboard();
+    private void WinAndLinuxProcess() {
+        Transferable trans = clipboard.getContents(this);
+        clipboard.setContents(trans, this);
+    }
 
+
+    private void macOSProcess() {
         String recentTextContent = null;
         Image recentImageContent = null;
         boolean firstIsText = false;
@@ -135,13 +138,12 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
             try {
                 //waiting e.g for loading huge elements like word's etc.
                 Thread.sleep(waitTime);
-                contents = clipboard.getContents(null);
-                clipboard.setContents(contents, this);
-                required = true;
-                // 忽略条件只能在成为剪切板owner后判定，否则无法继续监听剪切板
                 if (!running) {
                     break;
                 }
+                contents = clipboard.getContents(null);
+                clipboard.setContents(contents, this);
+                required = true;
                 dispatchCpContent(contents);
             } catch (Exception e) {
                 if (waitTime < maxWaitTime) {
@@ -189,9 +191,24 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
         return processFilter;
     }
 
+    public void setRun(boolean run){
+        if(run){
+            resumeProcess();
+        }else{
+            pauseProcess();
+        }
+    }
 
-    public void setRun(boolean run) {
-        running = run;
+
+    private void resumeProcess() {
+        if (running) return;
+        startProcess();
+        running = true;
+    }
+
+    private void pauseProcess() {
+        if(!running) return;
+        running = false;
     }
 
     public void ignoreThisTime() {
