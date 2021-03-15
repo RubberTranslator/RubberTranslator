@@ -63,6 +63,9 @@ public class RecordViewPresenter extends SingleTranslatePresenter<IRecordView> {
         oldAutoCopy = configManger.getSystemConfiguration().isAutoCopy();
         oldAutoPaste = configManger.getSystemConfiguration().isAutoPaste();
         oldIncrementCopy = configManger.getSystemConfiguration().isIncrementalCopy();
+        configManger.getSystemConfiguration().setAutoCopy(false);
+        configManger.getSystemConfiguration().setAutoPaste(false);
+        configManger.getSystemConfiguration().setIncrementalCopy(false);
         translatorFacade.getAfterProcessor().setAutoCopy(false);
         translatorFacade.getAfterProcessor().setAutoPaste(false);
         translatorFacade.getTextPreProcessor().setIncrementalCopy(false);

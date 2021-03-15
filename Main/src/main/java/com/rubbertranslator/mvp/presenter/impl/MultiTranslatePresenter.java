@@ -22,13 +22,15 @@ public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView>
     @Override
     public void switchScene(SceneType sceneType) {
         super.switchScene(sceneType);
-        view.switchScene(sceneType);
         view.destroy();
+        view.switchScene(sceneType);
     }
 
     public void closeAndSaveAutoCopyPaste() {
         oldAutoCopy = configManger.getSystemConfiguration().isAutoCopy();
         oldAutoPaste = configManger.getSystemConfiguration().isAutoPaste();
+        configManger.getSystemConfiguration().setAutoCopy(false);
+        configManger.getSystemConfiguration().setAutoPaste(false);
         translatorFacade.getAfterProcessor().setAutoCopy(false);
         translatorFacade.getAfterProcessor().setAutoPaste(false);
     }

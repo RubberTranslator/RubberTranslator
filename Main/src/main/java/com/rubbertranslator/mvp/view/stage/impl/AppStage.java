@@ -66,6 +66,7 @@ public class AppStage {
     public void initViews() {
         // 初始化ui， load scene
         String lastFxml = configuration.getLastFxmlPath();
+        if(lastFxml == null) lastFxml = ControllerFxmlPath.MAIN_CONTROLLER_FXML;
         try {
             loadScene(lastFxml);
         } catch (IOException e) {
