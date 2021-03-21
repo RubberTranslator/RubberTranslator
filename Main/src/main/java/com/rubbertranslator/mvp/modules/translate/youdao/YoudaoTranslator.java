@@ -41,6 +41,12 @@ public class YoudaoTranslator extends AbstractTranslator {
         langMap.put(Language.JAPANESE, "ja");
     }
 
+
+    @Override
+    public boolean isSupportWordTranslate() {
+        return appKey != null && secretKey != null;
+    }
+
     /**
      * @param source 源语言
      * @param dest   目标语言

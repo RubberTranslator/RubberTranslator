@@ -35,6 +35,14 @@ public abstract class AbstractTranslator {
     }
 
     /**
+     * 是否支持单词翻译
+     * @return
+     */
+    public boolean isSupportWordTranslate() {
+        return false;
+    }
+
+    /**
      * 翻译
      *
      * @param source 源语言
