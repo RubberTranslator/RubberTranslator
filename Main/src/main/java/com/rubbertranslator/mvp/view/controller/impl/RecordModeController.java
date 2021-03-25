@@ -6,6 +6,7 @@ import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
+import com.rubbertranslator.event.SetWindowUnTransparentEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.RecordViewPresenter;
@@ -321,6 +322,7 @@ public class RecordModeController implements Initializable, IRecordView {
         Platform.runLater(() -> {
             keepGetTextFromClipboard = true;
             translateBt.setDisable(false);
+            EventBus.getDefault().post(new SetWindowUnTransparentEvent());
         });
     }
 

@@ -5,6 +5,7 @@ import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
+import com.rubbertranslator.event.SetWindowUnTransparentEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MultiTranslatePresenter;
@@ -207,6 +208,7 @@ public class CompareModeController implements Initializable, IMultiTranslateView
                 baiduTextArea.end();
                 youdaoTextArea.end();
             }
+            EventBus.getDefault().post(new SetWindowUnTransparentEvent());
         });
     }
 

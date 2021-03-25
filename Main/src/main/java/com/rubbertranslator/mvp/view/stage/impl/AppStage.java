@@ -1,11 +1,11 @@
 package com.rubbertranslator.mvp.view.stage.impl;
 
 import com.rubbertranslator.App;
-import com.rubbertranslator.event.OpacityValueChangeEvent;
-import com.rubbertranslator.system.ControllerFxmlPath;
 import com.rubbertranslator.entity.WindowSize;
 import com.rubbertranslator.event.SetKeepTopEvent;
+import com.rubbertranslator.event.SetWindowUnTransparentEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
+import com.rubbertranslator.system.ControllerFxmlPath;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
@@ -211,10 +211,8 @@ public class AppStage implements InvalidationListener {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void changeOpacity(OpacityValueChangeEvent event) {
-        if (configuration != null) {
-            configuration.setOpacityValue(event.getValue());
-        }
+    public void windowUnTransparent(SetWindowUnTransparentEvent event) {
+        appStage.requestFocus();
     }
 
     @Override

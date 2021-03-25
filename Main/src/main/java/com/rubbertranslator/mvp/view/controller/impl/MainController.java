@@ -2,10 +2,7 @@ package com.rubbertranslator.mvp.view.controller.impl;
 
 import com.rubbertranslator.entity.ApiInfo;
 import com.rubbertranslator.enumtype.*;
-import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.event.OpacityValueChangeEvent;
-import com.rubbertranslator.event.SetKeepTopEvent;
-import com.rubbertranslator.event.SwitchSceneEvent;
+import com.rubbertranslator.event.*;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
@@ -270,6 +267,7 @@ public class MainController implements ISingleTranslateView {
                 originTextArea.end();
                 translatedTextArea.end();
             }
+            EventBus.getDefault().post(new SetWindowUnTransparentEvent());
         });
     }
 
@@ -602,10 +600,7 @@ public class MainController implements ISingleTranslateView {
         }
 
         private void initOpacitySettings(SystemConfiguration configuration) {
-            opacitySettingMenu.setOnAction((actionEvent) -> new OpacitySettingDialog(appStage, configuration.getOpacityValue(), value -> {
-                // post to app stage
-                EventBus.getDefault().post(new OpacityValueChangeEvent(value));
-            }).showDialog());
+            opacitySettingMenu.setOnAction((actionEvent) -> new OpacitySettingDialog(appStage, configuration.getOpacityValue(), configuration::setOpacityValue).showDialog());
         }
     }
 

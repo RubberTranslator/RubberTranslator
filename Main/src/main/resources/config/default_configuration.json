@@ -1,7 +1,7 @@
 {
   "keep_top": false,
   "loss_focus_transparent": false,
-  "opacity_value": 1.0,
+  "opacity_value": 0.80,
   "custom_css_path": null,
   "last_position": {
     "x": 0,

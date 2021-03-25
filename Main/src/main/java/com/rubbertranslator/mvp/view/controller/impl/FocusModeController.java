@@ -6,6 +6,7 @@ import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
+import com.rubbertranslator.event.SetWindowUnTransparentEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
@@ -324,6 +325,7 @@ public class FocusModeController implements Initializable, IFocusView {
             if (cursorPos == TextAreaCursorPos.END) {
                 textArea.end();
             }
+            EventBus.getDefault().post(new SetWindowUnTransparentEvent());
         });
     }
 
