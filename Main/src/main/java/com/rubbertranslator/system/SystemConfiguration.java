@@ -31,6 +31,10 @@ public class SystemConfiguration implements Serializable {
     private WindowSize lastSize;
     @SerializedName("last_fxml_path")
     private String lastFxmlPath;
+    @SerializedName("loss_focus_transparent")
+    private Boolean isLossFocusTransparent;
+    @SerializedName("opacity_value")
+    private Double opacityValue;
 
     /**
      * 文本输入
@@ -116,7 +120,7 @@ public class SystemConfiguration implements Serializable {
     @SerializedName("textarea_cursor_pos")
     private TextAreaCursorPos textAreaCursorPos;
 
-    public SystemConfiguration getConfiguration(){
+    public SystemConfiguration getConfiguration() {
         return this;
     }
 
@@ -326,5 +330,21 @@ public class SystemConfiguration implements Serializable {
 
     public void setTextAreaCursorPos(TextAreaCursorPos textAreaCursorPos) {
         this.textAreaCursorPos = textAreaCursorPos;
+    }
+
+    public Boolean isLossFocusTransparent() {
+        return isLossFocusTransparent == null ? false : isLossFocusTransparent;
+    }
+
+    public void setLossFocusTransparent(Boolean lossFocusTransparent) {
+        isLossFocusTransparent = lossFocusTransparent;
+    }
+
+    public Double getOpacityValue() {
+        return opacityValue == null ? 1.0f : opacityValue;
+    }
+
+    public void setOpacityValue(Double opacityValue) {
+        this.opacityValue = opacityValue;
     }
 }

@@ -69,6 +69,7 @@
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <RadioMenuItem fx:id="textFormatMenu" mnemonicParsing="false" selected="true" text="文本格式化" />
                         <RadioMenuItem fx:id="keepTopMenu" mnemonicParsing="false" text="置顶" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <Menu mnemonicParsing="false" text="翻译后文本区光标">
                           <items>
                               <RadioMenuItem fx:id="cursorStart" mnemonicParsing="false" text="放置于前">
@@ -79,6 +80,7 @@
                               <RadioMenuItem fx:id="cursorEnd" mnemonicParsing="false" text="放置于后" toggleGroup="$textCursorPosGroup" />
                           </items>
                         </Menu>
+                        <RadioMenuItem fx:id="lossFocusTransparent" mnemonicParsing="false" text="失去光标透明化" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="高级设置">
@@ -93,6 +95,7 @@
                               <MenuItem fx:id="youdaoApiMenu" mnemonicParsing="false" text="有道" />
                           </items>
                         </Menu>
+                        <MenuItem fx:id="opacitySettingMenu" mnemonicParsing="false" text="失去光标透明度设置" />
                   </items>
                 </Menu>
                   <Menu mnemonicParsing="false" text="模式选择">

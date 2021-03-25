@@ -3,12 +3,14 @@ package com.rubbertranslator.mvp.view.controller.impl;
 import com.rubbertranslator.entity.ApiInfo;
 import com.rubbertranslator.enumtype.*;
 import com.rubbertranslator.event.ClipboardContentInputEvent;
+import com.rubbertranslator.event.OpacityValueChangeEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 import com.rubbertranslator.mvp.view.custom.ApiDialog;
+import com.rubbertranslator.mvp.view.custom.OpacitySettingDialog;
 import com.rubbertranslator.mvp.view.custom.SponsorDialog;
 import com.rubbertranslator.system.*;
 import com.rubbertranslator.utils.ExploreUtil;
@@ -124,6 +126,8 @@ public class MainController implements ISingleTranslateView {
     @FXML  // 翻译后文本光标位置
     private ToggleGroup textCursorPosGroup;
     @FXML
+    private RadioMenuItem lossFocusTransparent;
+    @FXML
     private RadioMenuItem cursorStart;
     @FXML
     private RadioMenuItem cursorEnd;
@@ -158,14 +162,15 @@ public class MainController implements ISingleTranslateView {
     private MenuItem filterMenu;
     @FXML // 词组替换
     private MenuItem translationWordsReplacerMenu;
-    @FXML   // 翻译历史数量菜单
-    private MenuItem historyNumMenu;
     @FXML
     private MenuItem customCssMenu;
     @FXML // 百度&有道api 设置
     private MenuItem baiduApiMenu;
     @FXML
     private MenuItem youdaoApiMenu;
+    @FXML
+    private MenuItem opacitySettingMenu;
+
 
     /**
      * -------------------------帮助-----------------------------
@@ -369,6 +374,8 @@ public class MainController implements ISingleTranslateView {
                     presenter.setTextCursorPos(TextAreaCursorPos.END);
                 }
             });
+            lossFocusTransparent.setOnAction((actionEvent) ->
+                    configuration.setLossFocusTransparent(lossFocusTransparent.isSelected()));
 
             // ui回显
             // 监听剪切板
@@ -393,6 +400,8 @@ public class MainController implements ISingleTranslateView {
                 cursorPos = TextAreaCursorPos.END;
                 cursorEnd.setSelected(true);
             }
+            // 失去focus，透明化
+            lossFocusTransparent.setSelected(configuration.isLossFocusTransparent());
         }
 
         private void initTranslatorType(TranslatorType type) {
@@ -489,7 +498,9 @@ public class MainController implements ISingleTranslateView {
             initWordsReplacer();
             initCustomCss(configuration);
             initApiMenu(configuration);
+            initOpacitySettings(configuration);
         }
+
 
         private void initCustomCss(SystemConfiguration configuration) {
             try {
@@ -588,6 +599,13 @@ public class MainController implements ISingleTranslateView {
                     Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "词组替换页面打开失败", e);
                 }
             }));
+        }
+
+        private void initOpacitySettings(SystemConfiguration configuration) {
+            opacitySettingMenu.setOnAction((actionEvent) -> new OpacitySettingDialog(appStage, configuration.getOpacityValue(), value -> {
+                // post to app stage
+                EventBus.getDefault().post(new OpacityValueChangeEvent(value));
+            }).showDialog());
         }
     }
 

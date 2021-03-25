@@ -1,6 +1,7 @@
 package com.rubbertranslator.mvp.view.stage.impl;
 
 import com.rubbertranslator.App;
+import com.rubbertranslator.event.OpacityValueChangeEvent;
 import com.rubbertranslator.system.ControllerFxmlPath;
 import com.rubbertranslator.entity.WindowSize;
 import com.rubbertranslator.event.SetKeepTopEvent;
@@ -8,6 +9,9 @@ import com.rubbertranslator.event.SwitchSceneEvent;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -27,7 +31,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * date  2020/12/4 13:43
  */
-public class AppStage {
+public class AppStage implements InvalidationListener {
     // 主界面
     private Stage appStage;
     // 配置
@@ -43,7 +47,7 @@ public class AppStage {
     public void init() {
         initSysConfig();
         initViews();
-        registerEvent();
+        initListeners();
     }
 
 
@@ -66,7 +70,7 @@ public class AppStage {
     public void initViews() {
         // 初始化ui， load scene
         String lastFxml = configuration.getLastFxmlPath();
-        if(lastFxml == null) lastFxml = ControllerFxmlPath.MAIN_CONTROLLER_FXML;
+        if (lastFxml == null) lastFxml = ControllerFxmlPath.MAIN_CONTROLLER_FXML;
         try {
             loadScene(lastFxml);
         } catch (IOException e) {
@@ -96,8 +100,11 @@ public class AppStage {
     /**
      * 注册事件
      */
-    private void registerEvent() {
+    private void initListeners() {
+        // event bus register
         EventBus.getDefault().register(this);
+        // focus
+        appStage.focusedProperty().addListener(this);
     }
 
     /**
@@ -201,5 +208,31 @@ public class AppStage {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void setKeepTop(SetKeepTopEvent event) {
         appStage.setAlwaysOnTop(event.isKeepTop());
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void changeOpacity(OpacityValueChangeEvent event) {
+        if (configuration != null) {
+            configuration.setOpacityValue(event.getValue());
+        }
+    }
+
+    @Override
+    public void invalidated(Observable observable) {
+        if (configuration == null) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "config obj is null");
+            return;
+        }
+        if (configuration.isLossFocusTransparent()) {
+            if (observable instanceof ReadOnlyBooleanProperty) {
+                boolean focus = ((ReadOnlyBooleanProperty) observable).getValue();
+                if (!focus) {
+                    appStage.setOpacity(configuration.getOpacityValue());
+                } else {
+                    appStage.setOpacity(1.0f);
+                }
+            }
+        }
+
     }
 }
