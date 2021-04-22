@@ -25,6 +25,9 @@ public class GlobalMouseListener {
         } else if (OSTypeUtil.isLinux()) {
             mouseEventDispatcher = new LinuxMouseEventDispatcher();
         } else if(OSTypeUtil.isWin()){
+            // 在idea中可运行，但通过jpackage打包后无法运行。原因未知(只能确定是和jnativehook lib有关)
+//            mouseEventDispatcher = new WinMouseEventDispatcher();
+            // 所以复用Linux下的Dispatcher
             mouseEventDispatcher = new LinuxMouseEventDispatcher();
         }
     }
