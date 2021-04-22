@@ -1,38 +1,48 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.listener;
 
-import com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods.MouseEventDispatcher;
-import org.simplenativehooks.events.NativeMouseEvent;
+import com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods.AbstractMouseEventDispatcher;
+import com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods.LinuxMouseEventDispatcher;
+import com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods.MacMouseEventDispatcher;
+import com.rubbertranslator.utils.OSTypeUtil;
 
 /**
  * @author Raven
  * @version 1.0
  * date 2020/4/27 15:43
  * 全局mouse event监听
- * 鼠标复制事件分发，采用责任链分发
+ * 鼠标点击事件分发，采用责任链分发
  */
 public class GlobalMouseListener {
 
-    private final MouseEventDispatcher mouseEventDispatcher = new MouseEventDispatcher();
-    private boolean needDispatch = true;
+    private AbstractMouseEventDispatcher mouseEventDispatcher;
+
+    public GlobalMouseListener() {
+    }
+
+    public void init(){
+        if (OSTypeUtil.isMac()) {
+            mouseEventDispatcher = new MacMouseEventDispatcher();
+        } else if (OSTypeUtil.isLinux()) {
+            mouseEventDispatcher = new LinuxMouseEventDispatcher();
+        } else if(OSTypeUtil.isWin()){
+            mouseEventDispatcher = new LinuxMouseEventDispatcher();
+        }
+    }
+
+    public void stopDispatch(){
+        if(mouseEventDispatcher != null){
+            mouseEventDispatcher.releaseResources();
+        }
+    }
 
     public boolean isNeedDispatch() {
-        return needDispatch;
+        return mouseEventDispatcher != null && mouseEventDispatcher.isNeedDispatch();
     }
 
     public void setNeedDispatch(boolean needDispatch) {
-        this.needDispatch = needDispatch;
-    }
-
-
-    public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-        if (needDispatch) {
-            mouseEventDispatcher.pressEventDispatch(nativeMouseEvent);
+        if(mouseEventDispatcher != null){
+            mouseEventDispatcher.setNeedDispatch(needDispatch);
         }
     }
 
-    public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
-        if (needDispatch) {
-            mouseEventDispatcher.releaseEventDispatch(nativeMouseEvent);
-        }
-    }
 }

@@ -1,7 +1,7 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
 
-import org.simplenativehooks.events.NativeMouseEvent;
+import com.rubbertranslator.entity.MouseEvent;
 
 /**
  * @author Raven
@@ -31,12 +31,12 @@ public class DoubleClickCopyMethod extends CopyMethod {
     }
 
     @Override
-    public void onPressed(NativeMouseEvent event) {
+    public void onPressed(MouseEvent event) {
         isProcessed = false;
     }
 
     @Override
-    public void onRelease(NativeMouseEvent event) {
+    public void onRelease(MouseEvent event) {
         // set time arr to calculate interval for double click
         clickTimeArrIdx = (++clickTimeArrIdx) & 1;
         clickTimeRecord[clickTimeArrIdx] = System.currentTimeMillis();

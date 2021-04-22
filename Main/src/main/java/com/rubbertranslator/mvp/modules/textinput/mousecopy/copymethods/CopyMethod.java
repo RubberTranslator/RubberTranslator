@@ -1,7 +1,7 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
 
-import org.simplenativehooks.events.NativeMouseEvent;
+import com.rubbertranslator.entity.MouseEvent;
 
 /**
  * @author Raven
@@ -21,13 +21,13 @@ public abstract class CopyMethod {
      * 鼠标按下事件
      * @param event
      */
-    public abstract void onPressed(NativeMouseEvent event);
+    public abstract void onPressed(MouseEvent event);
 
     /**
      * 鼠标释放事件
      * @param event
      */
-    public abstract void onRelease(NativeMouseEvent event);
+    public abstract void onRelease(MouseEvent event);
 
 
 }

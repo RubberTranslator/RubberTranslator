@@ -1,65 +1,29 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy;
 
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.listener.GlobalMouseListener;
-import org.simplenativehooks.NativeHookInitializer;
-import org.simplenativehooks.NativeMouseHook;
-import org.simplenativehooks.events.NativeMouseEvent;
-import org.simplenativehooks.staticResources.BootStrapResources;
-import org.simplenativehooks.utilities.Function;
-
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Raven
  * @version 1.0
  * date 2020/5/7 15:01
+ * DragCopyThread 已经不再是线程!!
  */
-public class DragCopyThread extends Thread {
+public class DragCopyThread {
     // Construct the example object.
-    private final GlobalMouseListener mouseListener = new GlobalMouseListener();
+    private GlobalMouseListener mouseListener =  new GlobalMouseListener();
 
     public DragCopyThread() {
-        setName("DragCopy Thread");
     }
 
-    @Override
-    public void run() {
-
-        /* Extracting resources */
-        try {
-            BootStrapResources.extractResources();
-        } catch (IOException e) {
-            System.out.println("Cannot extract bootstrap resources.");
-            e.printStackTrace();
-        }
-
-        /* Initializing global hooks */
-        NativeHookInitializer.of().start();
-        NativeMouseHook mouse = NativeMouseHook.of();
-        mouse.setMousePressed(new Function<NativeMouseEvent, Boolean>() {
-            @Override
-            public Boolean apply(NativeMouseEvent nativeMouseEvent) {
-                mouseListener.nativeMousePressed(nativeMouseEvent);
-                return true;
-            }
-        });
-        mouse.setMouseReleased(new Function<NativeMouseEvent, Boolean>() {
-            @Override
-            public Boolean apply(NativeMouseEvent nativeMouseEvent) {
-                mouseListener.nativeMouseReleased(nativeMouseEvent);
-                return true;
-            }
-        });
-        mouse.startListening();
-        Logger.getLogger(this.getClass().getName()).info("nativehook 注册成功");
-        Logger.getLogger(NativeHookInitializer.class.getPackage().getName()).setLevel(Level.OFF);
+    public void start() {
+        mouseListener.init();
     }
 
     public void exit() {
         /* Clean up */
-        NativeHookInitializer.of().stop();
+        if(mouseListener != null){
+            mouseListener.stopDispatch();
+        }
     }
 
     public void setRun(boolean run) {
@@ -71,11 +35,15 @@ public class DragCopyThread extends Thread {
     }
 
     private void pause() {
-        mouseListener.setNeedDispatch(false);
+       if(mouseListener != null){
+           mouseListener.setNeedDispatch(false);
+       }
     }
 
     private void resumeRun() {
-        mouseListener.setNeedDispatch(true);
+        if(mouseListener != null){
+            mouseListener.setNeedDispatch(true);
+        }
     }
 
 

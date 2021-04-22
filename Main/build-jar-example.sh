@@ -1,2 +1,3 @@
-mvn deploy:deploy-file -DgroupId=org.repeats.simplenativehooks -DartifactId=simplenativehooks -Dversion=0.0.3 -Durl=file:./libs -DrepositoryId=mylibs -DupdateReleaseInfo=true -Dfile=./libs/simplenativehooks-0.0.3.jar -Dpackaging=jar
-mvn deploy:deploy-file -DgroupId=it.sauronsoftware -DartifactId=junique -Dversion=1.0.4 -Durl=file:./libs -DrepositoryId=mylibs -DupdateReleaseInfo=true -Dfile=./libs/junique-1.0.4.jar -Dpackaging=jar
+#mvn deploy:deploy-file -DgroupId=org.repeats.simplenativehooks -DartifactId=simplenativehooks -Dversion=0.0.3 -Durl=file:./libs -DrepositoryId=mylibs -DupdateReleaseInfo=true -Dfile=./libs/simplenativehooks-0.0.3.jar -Dpackaging=jar
+mvn deploy:deploy-file -DgroupId=org.repeats.simplenativehooks -DartifactId=simplenativehooks -Dversion=0.0.4 -Durl=file:./libs -DrepositoryId=mylibs -DupdateReleaseInfo=true -Dfile=./libs/simplenativehooks-0.0.4.jar -Dpackaging=jar
+#mvn deploy:deploy-file -DgroupId=it.sauronsoftware -DartifactId=junique -Dversion=1.0.4 -Durl=file:./libs -DrepositoryId=mylibs -DupdateReleaseInfo=true -Dfile=./libs/junique-1.0.4.jar -Dpackaging=jar

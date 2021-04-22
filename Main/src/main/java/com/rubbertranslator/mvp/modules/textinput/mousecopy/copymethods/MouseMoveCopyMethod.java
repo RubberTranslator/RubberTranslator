@@ -1,7 +1,7 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
 
-import org.simplenativehooks.events.NativeMouseEvent;
+import com.rubbertranslator.entity.MouseEvent;
 
 import java.awt.*;
 
@@ -32,14 +32,14 @@ public class MouseMoveCopyMethod extends CopyMethod {
     }
 
     @Override
-    public void onPressed(NativeMouseEvent event) {
-        startPoint = new Point(event.getX(), event.getY());
+    public void onPressed(MouseEvent event) {
+        startPoint = event.getClickPoint();
         isProcessed = false;
     }
 
     @Override
-    public void onRelease(NativeMouseEvent event) {
-        endPoint = new Point(event.getX(), event.getY());
+    public void onRelease(MouseEvent event) {
+        endPoint = event.getClickPoint();
         if (tryCopy()) {
             isProcessed = true;
         }

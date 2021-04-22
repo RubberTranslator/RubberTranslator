@@ -20,6 +20,7 @@ import com.rubbertranslator.mvp.presenter.BasePresenter;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
 import com.rubbertranslator.mvp.view.IView;
 import it.sauronsoftware.junique.JUnique;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -127,7 +128,7 @@ public class SystemResourceManager {
     }
 
 
-    private static void textInputInit(SystemConfiguration configuration) {
+    private static void textInputInit(@NotNull SystemConfiguration configuration) {
         // 启动相应线程
         clipboardListenerThread = new ClipboardListenerThread();
         dragCopyThread = new DragCopyThread();
