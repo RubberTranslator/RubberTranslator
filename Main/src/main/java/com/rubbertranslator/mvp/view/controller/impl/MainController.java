@@ -123,11 +123,13 @@ public class MainController implements ISingleTranslateView {
     @FXML  // 翻译后文本光标位置
     private ToggleGroup textCursorPosGroup;
     @FXML
-    private RadioMenuItem lossFocusTransparent;
-    @FXML
     private RadioMenuItem cursorStart;
     @FXML
     private RadioMenuItem cursorEnd;
+    @FXML  // 失去焦点
+    private RadioMenuItem lossFocusTransparent;
+    @FXML
+    private RadioMenuItem minimizedWindowCancelListen;
 
 
     // 专注模式
@@ -374,6 +376,8 @@ public class MainController implements ISingleTranslateView {
             });
             lossFocusTransparent.setOnAction((actionEvent) ->
                     configuration.setLossFocusTransparent(lossFocusTransparent.isSelected()));
+            minimizedWindowCancelListen.setOnAction((actionEvent)->
+                    configuration.setMinimizedCancelListen(minimizedWindowCancelListen.isSelected()));
 
             // ui回显
             // 监听剪切板
@@ -400,6 +404,8 @@ public class MainController implements ISingleTranslateView {
             }
             // 失去focus，透明化
             lossFocusTransparent.setSelected(configuration.isLossFocusTransparent());
+            // 窗口最小化，取消监听
+            minimizedWindowCancelListen.setSelected(configuration.isMinimizedCancelListen());
         }
 
         private void initTranslatorType(TranslatorType type) {

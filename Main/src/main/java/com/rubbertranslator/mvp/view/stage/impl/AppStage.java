@@ -105,6 +105,7 @@ public class AppStage implements InvalidationListener {
         EventBus.getDefault().register(this);
         // focus
         appStage.focusedProperty().addListener(this);
+        appStage.iconifiedProperty().addListener(this);
     }
 
     /**
@@ -215,22 +216,43 @@ public class AppStage implements InvalidationListener {
         appStage.requestFocus();
     }
 
+    /**
+     * 窗口失去焦点
+     *
+     * @param observable
+     */
     @Override
     public void invalidated(Observable observable) {
         if (configuration == null) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "config obj is null");
             return;
         }
-        if (configuration.isLossFocusTransparent()) {
-            if (observable instanceof ReadOnlyBooleanProperty) {
-                boolean focus = ((ReadOnlyBooleanProperty) observable).getValue();
-                if (!focus) {
-                    appStage.setOpacity(configuration.getOpacityValue());
-                } else {
-                    appStage.setOpacity(1.0f);
-                }
+        if (observable instanceof ReadOnlyBooleanProperty) {
+            ReadOnlyBooleanProperty property = ((ReadOnlyBooleanProperty) observable);
+            System.out.println(property);
+            if ("focused".equals(property.getName())) {
+                focusHandler(property.getValue());
+            }
+            if ("iconified".equals(property.getName())) {
+                minimizedHandler(property.getValue());
             }
         }
+    }
 
+    void focusHandler(boolean focus) {
+        if (configuration.isLossFocusTransparent()) {
+            if (!focus) {
+                appStage.setOpacity(configuration.getOpacityValue());
+            } else {
+                appStage.setOpacity(1.0f);
+            }
+        }
+    }
+
+    void minimizedHandler(boolean minimized){
+        if(configuration.isMinimizedCancelListen()){
+            System.out.println(!minimized);
+            SystemResourceManager.setDragCopyAndCpListenState(!minimized);
+        }
     }
 }

@@ -35,6 +35,8 @@ public class SystemConfiguration implements Serializable {
     private Boolean isLossFocusTransparent;
     @SerializedName("opacity_value")
     private Double opacityValue;
+    @SerializedName("minimized_cancel_listen")
+    private Boolean minimizedCancelListen;
 
     /**
      * 文本输入
@@ -346,5 +348,13 @@ public class SystemConfiguration implements Serializable {
 
     public void setOpacityValue(Double opacityValue) {
         this.opacityValue = opacityValue;
+    }
+
+    public Boolean isMinimizedCancelListen() {
+        return minimizedCancelListen != null;
+    }
+
+    public void setMinimizedCancelListen(Boolean minimizedCancelListen) {
+        this.minimizedCancelListen = minimizedCancelListen;
     }
 }

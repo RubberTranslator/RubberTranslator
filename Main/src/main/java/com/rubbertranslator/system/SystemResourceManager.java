@@ -55,6 +55,16 @@ public class SystemResourceManager {
     }
 
 
+    public static void setDragCopyAndCpListenState(boolean run){
+        if(clipboardListenerThread != null){
+            clipboardListenerThread.setRun(run);
+        }
+        if(dragCopyThread != null){
+            dragCopyThread.setRun(run);
+        }
+    }
+
+
     /**
      * 初始化系统资源, 并返回系统配置类
      *

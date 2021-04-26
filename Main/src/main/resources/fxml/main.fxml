@@ -81,6 +81,7 @@
                           </items>
                         </Menu>
                         <RadioMenuItem fx:id="lossFocusTransparent" mnemonicParsing="false" text="失去光标透明化" />
+                        <RadioMenuItem fx:id="minimizedWindowCancelListen" mnemonicParsing="false" text="最小化窗口时关闭监听" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="高级设置">
