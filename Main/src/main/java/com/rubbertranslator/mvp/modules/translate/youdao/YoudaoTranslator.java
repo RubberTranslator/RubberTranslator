@@ -44,7 +44,7 @@ public class YoudaoTranslator extends AbstractTranslator {
 
     @Override
     public boolean isSupportWordTranslate() {
-        return appKey != null && secretKey != null;
+        return appKey != null && secretKey != null && !appKey.isEmpty() && !secretKey.isEmpty();
     }
 
     /**

@@ -86,10 +86,12 @@ public class AppStage implements InvalidationListener {
         appStage.setAlwaysOnTop(configuration.isKeepTop());
 
         // 防止最后一个界面dismiss时，整个程序退出
-        Platform.setImplicitExit(false);
+//        Platform.setImplicitExit(false);
         appStage.setOnCloseRequest(windowEvent -> {
             updateConfig();
             Platform.exit();
+            // fore to quit
+            System.exit(0);
         });
 
         // 显示
@@ -117,7 +119,6 @@ public class AppStage implements InvalidationListener {
         Logger.getLogger(this.getClass().getName()).info("系统资源已销毁");
         // 释放EventBus
         EventBus.getDefault().unregister(this);
-        System.exit(0);
     }
 
     /**
@@ -229,7 +230,6 @@ public class AppStage implements InvalidationListener {
         }
         if (observable instanceof ReadOnlyBooleanProperty) {
             ReadOnlyBooleanProperty property = ((ReadOnlyBooleanProperty) observable);
-            System.out.println(property);
             if ("focused".equals(property.getName())) {
                 focusHandler(property.getValue());
             }
@@ -251,7 +251,6 @@ public class AppStage implements InvalidationListener {
 
     void minimizedHandler(boolean minimized){
         if(configuration.isMinimizedCancelListen()){
-            System.out.println(!minimized);
             SystemResourceManager.setDragCopyAndCpListenState(!minimized);
         }
     }

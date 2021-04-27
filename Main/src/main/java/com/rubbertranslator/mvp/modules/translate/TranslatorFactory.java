@@ -54,6 +54,7 @@ public class TranslatorFactory {
         String result = null;
         for (AbstractTranslator translator : translatorEngineMap.values()) {
             if (translator.isSupportWordTranslate()) {
+                System.out.println(translator);
                 result = translator.translate(sourceLanguage, destLanguage, text);
                 if (result != null) break;
             }

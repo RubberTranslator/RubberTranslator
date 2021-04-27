@@ -28,15 +28,12 @@ public class TranslationHistory {
     // 记录模式相关
     private boolean isRecording = false;
 
-    private boolean isModified = false;
-
     private List<RecordModeType> recordModeTypes;
 
     // 记录导出相关
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
     private String exportPath = null;
-
 
     public TranslationHistory() {
         historyList = new ArrayList<>();
@@ -54,7 +51,6 @@ public class TranslationHistory {
 
     public void setRecordModeTypes(List<RecordModeType> recordModeTypes) {
         this.recordModeTypes = recordModeTypes;
-        isModified = true;
     }
 
     public void endRecord() {
@@ -75,7 +71,6 @@ public class TranslationHistory {
 
     public boolean modifyCurrentEntry(HistoryEntry entry) {
         if (historyCursor >= 0 && historyCursor < historyList.size()) {
-            isModified = true;
             historyList.set(historyCursor, entry);
             return true;
         }
@@ -94,7 +89,6 @@ public class TranslationHistory {
         if (historyCursor >= 0 && historyCursor < historyList.size()) {
             historyList.remove(historyCursor);
             historyCursor--;
-            isModified = true;
         }
     }
 
@@ -136,7 +130,7 @@ public class TranslationHistory {
 
                             if (!exportFile.getParentFile().exists()) exportFile.getParentFile().mkdirs();
                             if (!exportFile.exists()) exportFile.createNewFile();
-                            bw = new BufferedWriter(new FileWriter(exportFile, !isModified));
+                            bw = new BufferedWriter(new FileWriter(exportFile));
 
                             for (HistoryEntry entry : historyList) {
                                 String line = combineHistoryEntry(entry, type);
@@ -147,9 +141,8 @@ public class TranslationHistory {
                         } finally {
                             try {
                                 if (bw != null) bw.close();
-                            } catch (IOException e) {
+                            } catch (IOException ignored) {
                             }
-                            isModified = false;
                         }
                     }
             );
