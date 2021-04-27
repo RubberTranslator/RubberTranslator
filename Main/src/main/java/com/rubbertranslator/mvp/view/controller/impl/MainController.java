@@ -376,8 +376,10 @@ public class MainController implements ISingleTranslateView {
             });
             lossFocusTransparent.setOnAction((actionEvent) ->
                     configuration.setLossFocusTransparent(lossFocusTransparent.isSelected()));
-            minimizedWindowCancelListen.setOnAction((actionEvent)->
-                    configuration.setMinimizedCancelListen(minimizedWindowCancelListen.isSelected()));
+            minimizedWindowCancelListen.setOnAction((actionEvent) ->
+            {
+                configuration.setMinimizedCancelListen(minimizedWindowCancelListen.isSelected());
+            });
 
             // ui回显
             // 监听剪切板

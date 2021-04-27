@@ -1,6 +1,7 @@
 {
   "keep_top": false,
   "loss_focus_transparent": false,
+  "minimized_cancel_listen": true,
   "opacity_value": 0.80,
   "custom_css_path": null,
   "last_position": {

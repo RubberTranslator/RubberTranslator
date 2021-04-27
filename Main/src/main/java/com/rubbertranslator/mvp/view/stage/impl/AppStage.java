@@ -2,6 +2,7 @@ package com.rubbertranslator.mvp.view.stage.impl;
 
 import com.rubbertranslator.App;
 import com.rubbertranslator.entity.WindowSize;
+import com.rubbertranslator.event.ClipboardContentInputEvent;
 import com.rubbertranslator.event.SetKeepTopEvent;
 import com.rubbertranslator.event.SetWindowUnTransparentEvent;
 import com.rubbertranslator.event.SwitchSceneEvent;
@@ -90,8 +91,6 @@ public class AppStage implements InvalidationListener {
         appStage.setOnCloseRequest(windowEvent -> {
             updateConfig();
             Platform.exit();
-            // fore to quit
-            System.exit(0);
         });
 
         // 显示
@@ -217,6 +216,17 @@ public class AppStage implements InvalidationListener {
         appStage.requestFocus();
     }
 
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onClipboardContentInput(ClipboardContentInputEvent event) {
+        mayAutoShowStage();
+    }
+
+    private void mayAutoShowStage(){
+        if(!configuration.isMinimizedCancelListen() && !appStage.isFocused()){
+            Platform.runLater(()->appStage.setIconified(false));
+        }
+    }
+
     /**
      * 窗口失去焦点
      *
@@ -254,4 +264,6 @@ public class AppStage implements InvalidationListener {
             SystemResourceManager.setDragCopyAndCpListenState(!minimized);
         }
     }
+
+
 }

@@ -351,7 +351,7 @@ public class SystemConfiguration implements Serializable {
     }
 
     public Boolean isMinimizedCancelListen() {
-        return minimizedCancelListen != null;
+        return minimizedCancelListen != null && minimizedCancelListen;
     }
 
     public void setMinimizedCancelListen(Boolean minimizedCancelListen) {

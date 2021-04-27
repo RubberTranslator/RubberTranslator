@@ -30,5 +30,6 @@
     <orderEntry type="library" name="Maven: org.ow2.asm:asm:8.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.greenrobot:eventbus:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: it.sauronsoftware:junique:1.0.4" level="project" />
+    <orderEntry type="library" name="Maven: com.dustinredmond.fxtrayicon:FXTrayIcon:2.4.5" level="project" />
   </component>
 </module>
