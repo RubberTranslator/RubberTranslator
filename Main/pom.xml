@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.repeats.simplenativehooks</groupId>
             <artifactId>simplenativehooks</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.3</version>
         </dependency>
 
 <!--        <dependency>-->
@@ -60,8 +60,6 @@
 <!--            <artifactId>jnativehook</artifactId>-->
 <!--            <version>2.0.2</version>-->
 <!--        </dependency>-->
-
-
 
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
@@ -96,13 +94,6 @@
             <groupId>it.sauronsoftware</groupId>
             <artifactId>junique</artifactId>
             <version>1.0.4</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.dustinredmond.fxtrayicon/FXTrayIcon -->
-        <dependency>
-            <groupId>com.dustinredmond.fxtrayicon</groupId>
-            <artifactId>FXTrayIcon</artifactId>
-            <version>2.4.5</version>
         </dependency>
 
     </dependencies>
