@@ -4,6 +4,7 @@ import com.rubbertranslator.entity.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class AbstractMouseEventDispatcher {
 
@@ -64,6 +65,7 @@ public abstract class AbstractMouseEventDispatcher {
             for (CopyMethod copyMethod : copyMethods) {
                 copyMethod.onRelease(event);
                 if (copyMethod.isProcessed()) {
+                    Logger.getLogger(this.getClass().getName()).info("handle by " + copyMethod.getClass().getSimpleName());
                     // 处理链终止
                     break;
                 }

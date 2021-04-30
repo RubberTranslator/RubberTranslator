@@ -26,6 +26,7 @@ public class App extends Application {
         super.stop();
         // TODO: destroy
         appStage.destroy();
+        System.exit(0);
     }
 
     public static void main(String[] args) {

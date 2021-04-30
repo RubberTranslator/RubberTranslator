@@ -15,14 +15,6 @@ public class LinuxMouseEventDispatcher extends AbstractMouseEventDispatcher {
     @Override
     protected void initHookLibResources() {
         new Thread(() -> {
-            /* Extracting resources */
-//            try {
-//                BootStrapResources.extractResources();
-//            } catch (IOException e) {
-//                System.out.println("Cannot extract bootstrap resources.");
-//                e.printStackTrace();
-//            }
-
             /* Initializing global hooks */
             NativeHookInitializer.of().start();
             NativeMouseHook mouse = NativeMouseHook.of();

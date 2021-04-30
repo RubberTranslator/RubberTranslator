@@ -124,6 +124,7 @@ public class SystemResourceManager {
         } catch (InterruptedException e) {
             Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "释放线程池资源失败");
         }
+        HotKeyDispatcher.destroy();
         textInputDestroy();
         processFilterDestroy();
         // TODO: 检查资源释放情况

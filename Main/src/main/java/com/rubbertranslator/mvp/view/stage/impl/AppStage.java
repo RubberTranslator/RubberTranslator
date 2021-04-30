@@ -2,10 +2,8 @@ package com.rubbertranslator.mvp.view.stage.impl;
 
 import com.rubbertranslator.App;
 import com.rubbertranslator.entity.WindowSize;
-import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.event.SetKeepTopEvent;
-import com.rubbertranslator.event.SetWindowUnTransparentEvent;
-import com.rubbertranslator.event.SwitchSceneEvent;
+import com.rubbertranslator.event.*;
+import com.rubbertranslator.mvp.view.custom.SystemTrayInitiator;
 import com.rubbertranslator.system.ControllerFxmlPath;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
@@ -59,7 +57,7 @@ public class AppStage implements InvalidationListener {
         configuration = SystemResourceManager.init();
         if (configuration == null) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "系统配置失败");
-            System.exit(-1);
+            Platform.exit();
         } else {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "系统配置成功");
         }
@@ -69,6 +67,9 @@ public class AppStage implements InvalidationListener {
      * 初始化界面
      */
     public void initViews() {
+        // 系统托盘
+        SystemTrayInitiator.initialize();
+
         // 初始化ui， load scene
         String lastFxml = configuration.getLastFxmlPath();
         if (lastFxml == null) lastFxml = ControllerFxmlPath.MAIN_CONTROLLER_FXML;
@@ -87,11 +88,8 @@ public class AppStage implements InvalidationListener {
         appStage.setAlwaysOnTop(configuration.isKeepTop());
 
         // 防止最后一个界面dismiss时，整个程序退出
-//        Platform.setImplicitExit(false);
-        appStage.setOnCloseRequest(windowEvent -> {
-            updateConfig();
-            Platform.exit();
-        });
+        Platform.setImplicitExit(false);
+
 
         // 显示
         appStage.show();
@@ -108,6 +106,16 @@ public class AppStage implements InvalidationListener {
         appStage.focusedProperty().addListener(this);
         // iconified
         appStage.iconifiedProperty().addListener(this);
+        // Close
+        appStage.setOnCloseRequest(windowEvent -> {
+            appStage.hide();
+        });
+        appStage.setOnHidden((e) -> {
+            minimizedHandler(true);
+        });
+        appStage.setOnShown((e) -> {
+            minimizedHandler(false);
+        });
     }
 
     /**
@@ -222,9 +230,34 @@ public class AppStage implements InvalidationListener {
         mayAutoShowStage();
     }
 
-    private void mayAutoShowStage(){
-        if(!configuration.isMinimizedCancelListen() && !appStage.isFocused()){
-            Platform.runLater(()->appStage.setIconified(false));
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onSystemExit(SystemTrayClickEvent event) {
+        Platform.runLater(() -> {
+            switch (event.eventType) {
+                case SystemTrayClickEvent.SHOW_MAIN_WINDOW:
+                    appStage.show();
+                    appStage.setIconified(false);
+                    break;
+                case SystemTrayClickEvent.EXIT:
+                    appStage.hide();
+                    updateConfig();
+                    Platform.exit();
+                    break;
+                default:
+                    Logger.getLogger(this.getClass().getName()).severe("不支持的托盘点击事件");
+            }
+        });
+    }
+
+    private void mayAutoShowStage() {
+        if (!configuration.isMinimizedCancelListen() && !appStage.isFocused()) {
+            Platform.runLater(() ->
+                    {
+                        appStage.show();
+                        appStage.setIconified(false);
+                    }
+            );
+
         }
     }
 
@@ -260,8 +293,9 @@ public class AppStage implements InvalidationListener {
         }
     }
 
-    void minimizedHandler(boolean minimized){
-        if(configuration.isMinimizedCancelListen()){
+    void minimizedHandler(boolean minimized) {
+        if (configuration.isMinimizedCancelListen()) {
+            Logger.getLogger(this.getClass().getName()).info("set dragcopy and cp listener to " + !minimized);
             SystemResourceManager.setDragCopyAndCpListenState(!minimized);
         }
     }
