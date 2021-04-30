@@ -106,6 +106,7 @@ public class AppStage implements InvalidationListener {
         EventBus.getDefault().register(this);
         // focus
         appStage.focusedProperty().addListener(this);
+        // iconified
         appStage.iconifiedProperty().addListener(this);
     }
 
@@ -161,7 +162,7 @@ public class AppStage implements InvalidationListener {
         updateConfig();
         // 执行切换
         try {
-            switch (switchSceneEvent.getType()) {
+            switch (switchSceneEvent.type) {
                 case MAIN_SCENE:
                     loadScene(ControllerFxmlPath.MAIN_CONTROLLER_FXML);
                     break;
@@ -208,7 +209,7 @@ public class AppStage implements InvalidationListener {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void setKeepTop(SetKeepTopEvent event) {
-        appStage.setAlwaysOnTop(event.isKeepTop());
+        appStage.setAlwaysOnTop(event.isKeepTop);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

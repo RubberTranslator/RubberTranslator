@@ -1,13 +1,7 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
-import com.rubbertranslator.enumtype.HistoryEntryIndex;
-import com.rubbertranslator.enumtype.RecordModeType;
-import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.enumtype.TranslatorType;
-import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.event.SetKeepTopEvent;
-import com.rubbertranslator.event.SetWindowUnTransparentEvent;
-import com.rubbertranslator.event.SwitchSceneEvent;
+import com.rubbertranslator.enumtype.*;
+import com.rubbertranslator.event.*;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.RecordViewPresenter;
 import com.rubbertranslator.mvp.view.IRecordView;
@@ -295,20 +289,6 @@ public class RecordModeController implements Initializable, IRecordView {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onClipboardContentInput(ClipboardContentInputEvent event) {
-        if (event == null || !keepGetTextFromClipboard) return;
-        if (!startEndMenu.isSelected()) {
-            originTextArea.setText("请先点击【开始】记录");
-            return;
-        }
-        if (event.isTextType()) { // 文字类型
-            presenter.translate(event.getText());
-        } else {                // 图片类型
-            presenter.translate(event.getImage());
-        }
-    }
-
     @Override
     public void translateStart() {
         Platform.runLater(() -> {
@@ -347,6 +327,8 @@ public class RecordModeController implements Initializable, IRecordView {
         translateTextArea.setText("");
     }
 
+
+
     @Override
     public void setHistoryNum(int current, int total) {
         historyNumText.setText(current + "/" + total);
@@ -357,4 +339,35 @@ public class RecordModeController implements Initializable, IRecordView {
         String text = msg + "\n" + originTextArea.getText();
         originTextArea.setText(text);
     }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onClipboardContentInput(ClipboardContentInputEvent event) {
+        if (event == null || !keepGetTextFromClipboard) return;
+        if (!startEndMenu.isSelected()) {
+            originTextArea.setText("请先点击【开始】记录");
+            return;
+        }
+        if (event.isTextType) {
+            presenter.translate(event.text);
+        } else {
+            presenter.translate(event.image);
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onHotKeyInput(HotKeyEvent event) {
+        if (event == null) return;
+        Platform.runLater(() -> {
+            switch (event.hotKeyValue) {
+                case HotKey.F5:
+                    clipboardListenerMenu.fire();
+                    break;
+                case HotKey.F6:
+                    dragCopyMenu.fire();
+                default:
+            }
+        });
+    }
+
 }

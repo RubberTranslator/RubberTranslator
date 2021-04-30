@@ -6,6 +6,7 @@ import com.rubbertranslator.mvp.modules.afterprocess.AfterProcessor;
 import com.rubbertranslator.mvp.modules.filter.ProcessFilter;
 import com.rubbertranslator.mvp.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.mvp.modules.history.TranslationHistory;
+import com.rubbertranslator.mvp.modules.hotkey.HotKeyDispatcher;
 import com.rubbertranslator.mvp.modules.log.LoggerManager;
 import com.rubbertranslator.mvp.modules.textinput.clipboard.ClipboardListenerThread;
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.DragCopyThread;
@@ -76,6 +77,8 @@ public class SystemResourceManager {
         logModuleInit();
         // 热更新模块
         updateModuleInit();
+        // hotKey
+        hotKeyModuleInit();
         // 其余
         facade = TranslatorFacade.getInstance();
         configManager = new SystemConfigurationManager();
@@ -98,6 +101,10 @@ public class SystemResourceManager {
 
     private static void updateModuleInit() {
         executor.execute(new UpdateTask());
+    }
+
+    private static void hotKeyModuleInit(){
+        HotKeyDispatcher.initHotKeyDispatcher();
     }
 
 
@@ -125,6 +132,7 @@ public class SystemResourceManager {
         //        System.exit(0);
     }
 
+    // TODO: Presenter继承关系混乱，这样写不太好，有机会再重构吧
     public static <T extends IView> void initPresenter(BasePresenter<T> presenter) {
         if (presenter instanceof ModelPresenter) {
             // 注入facade

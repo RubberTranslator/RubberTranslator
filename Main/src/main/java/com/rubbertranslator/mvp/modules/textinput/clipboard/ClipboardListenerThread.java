@@ -89,7 +89,8 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                             continue;
                         }
                         if (processFilter != null && !processFilter.check()) {
-                            textInputEvent.setText(paste);
+                            textInputEvent.text = paste;
+                            textInputEvent.isTextType = true;
                             Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + paste);
                             EventBus.getDefault().post(textInputEvent);
                         }
@@ -110,7 +111,8 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
                                 ignoreThisTime = false;
                                 continue;
                             }
-                            textInputEvent.setImage(paste);
+                            textInputEvent.image = paste;
+                            textInputEvent.isTextType = false;
                             Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + "图片输入");
                             EventBus.getDefault().post(textInputEvent);
                         }
@@ -169,14 +171,16 @@ public class ClipboardListenerThread extends Thread implements ClipboardOwner {
         if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
             String paste = (String) t.getTransferData(DataFlavor.stringFlavor);
             if (processFilter != null && !processFilter.check()) {
-                textInputEvent.setText(paste);
+                textInputEvent.text = paste;
+                textInputEvent.isTextType = true;
                 Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + paste);
                 EventBus.getDefault().post(textInputEvent);
             }
         } else if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
             Image paste = (Image) t.getTransferData(DataFlavor.imageFlavor);
             if (processFilter != null && !processFilter.check()) {
-                textInputEvent.setImage(paste);
+                textInputEvent.image = paste;
+                textInputEvent.isTextType = false;
                 Logger.getLogger(this.getClass().getName()).info("剪切板有新内容:" + "图片输入");
                 EventBus.getDefault().post(textInputEvent);
             }

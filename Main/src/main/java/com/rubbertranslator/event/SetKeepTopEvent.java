@@ -6,13 +6,9 @@ package com.rubbertranslator.event;
  * date  2020/12/4 15:13
  */
 public class SetKeepTopEvent {
-    boolean isKeepTop;
+    public boolean isKeepTop;
 
     public SetKeepTopEvent(boolean isKeepTop) {
         this.isKeepTop = isKeepTop;
-    }
-
-    public boolean isKeepTop() {
-        return isKeepTop;
     }
 }

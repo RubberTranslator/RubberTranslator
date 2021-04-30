@@ -4,11 +4,9 @@ import com.rubbertranslator.entity.MouseEvent;
 import org.simplenativehooks.NativeHookInitializer;
 import org.simplenativehooks.NativeMouseHook;
 import org.simplenativehooks.events.NativeMouseEvent;
-import org.simplenativehooks.staticResources.BootStrapResources;
 import org.simplenativehooks.utilities.Function;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,12 +16,12 @@ public class LinuxMouseEventDispatcher extends AbstractMouseEventDispatcher {
     protected void initHookLibResources() {
         new Thread(() -> {
             /* Extracting resources */
-            try {
-                BootStrapResources.extractResources();
-            } catch (IOException e) {
-                System.out.println("Cannot extract bootstrap resources.");
-                e.printStackTrace();
-            }
+//            try {
+//                BootStrapResources.extractResources();
+//            } catch (IOException e) {
+//                System.out.println("Cannot extract bootstrap resources.");
+//                e.printStackTrace();
+//            }
 
             /* Initializing global hooks */
             NativeHookInitializer.of().start();

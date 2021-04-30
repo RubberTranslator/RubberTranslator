@@ -1,12 +1,10 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
+import com.rubbertranslator.enumtype.HotKey;
 import com.rubbertranslator.enumtype.SceneType;
 import com.rubbertranslator.enumtype.TextAreaCursorPos;
 import com.rubbertranslator.enumtype.TranslatorType;
-import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.event.SetKeepTopEvent;
-import com.rubbertranslator.event.SetWindowUnTransparentEvent;
-import com.rubbertranslator.event.SwitchSceneEvent;
+import com.rubbertranslator.event.*;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MultiTranslatePresenter;
 import com.rubbertranslator.mvp.view.controller.IMultiTranslateView;
@@ -241,10 +239,25 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null ||
                 !keepGetTextFromClipboard) return;
-        if (event.isTextType()) { // 文字类型
-            presenter.translate(event.getText());
+        if (event.isTextType) { // 文字类型
+            presenter.translate(event.text);
         } else {                // 图片类型
-            presenter.translate(event.getImage());
+            presenter.translate(event.image);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onHotKeyInput(HotKeyEvent event) {
+        if (event == null) return;
+        Platform.runLater(() -> {
+            switch (event.hotKeyValue) {
+                case HotKey.F5:
+                    clipboardListenerMenu.fire();
+                    break;
+                case HotKey.F6:
+                    dragCopyMenu.fire();
+                default:
+            }
+        });
     }
 }

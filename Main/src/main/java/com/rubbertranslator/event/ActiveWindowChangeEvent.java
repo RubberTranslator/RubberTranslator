@@ -7,14 +7,5 @@ package com.rubbertranslator.event;
  * 活动窗口变化事件
  */
 public class ActiveWindowChangeEvent {
-    private String currentProcessName;
-
-    public void setCurrentProcessName(String currentProcessName) {
-        this.currentProcessName = currentProcessName;
-    }
-
-    public String getCurrentProcessName() {
-        return currentProcessName;
-    }
-
+    public String currentProcessName;
 }

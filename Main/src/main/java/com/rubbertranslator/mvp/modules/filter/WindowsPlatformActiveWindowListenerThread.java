@@ -34,7 +34,7 @@ public class WindowsPlatformActiveWindowListenerThread extends Thread {
             if (!lastProcess.equals(currentProcess)) {
                 lastProcess = currentProcess;
                 // 推送active windows变化消息
-                activeWindowChangeEvent.setCurrentProcessName(lastProcess);
+                activeWindowChangeEvent.currentProcessName = lastProcess;
                 EventBus.getDefault().post(activeWindowChangeEvent);
             }
             try {

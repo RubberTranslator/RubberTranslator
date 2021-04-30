@@ -88,6 +88,6 @@ public class ProcessFilter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onActiveWindowChanged(ActiveWindowChangeEvent event) {
         if(event == null) return;
-        currentProcess = event.getCurrentProcessName();
+        currentProcess = event.currentProcessName;
     }
 }

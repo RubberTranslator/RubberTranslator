@@ -9,29 +9,8 @@ import java.awt.*;
  * 剪切板内容输入监听
  */
 public class ClipboardContentInputEvent {
-    private boolean isTextType;
-    private String text;
-    private Image image;
+    public boolean isTextType;
+    public String text;
+    public Image image;
 
-    public boolean isTextType() {
-        return isTextType;
-    }
-
-    public void setText(String text){
-        isTextType = true;
-        this.text = text;
-    }
-
-    public void setImage(Image image) {
-        isTextType = false;
-        this.image = image;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public Image getImage() {
-        return image;
-    }
 }

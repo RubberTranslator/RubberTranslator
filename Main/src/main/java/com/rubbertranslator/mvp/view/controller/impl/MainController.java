@@ -710,11 +710,29 @@ public class MainController implements ISingleTranslateView {
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
         if (event == null ||
                 !keepGetTextFromClipboard) return;
-        if (event.isTextType()) {
-            presenter.translate(event.getText());
+        if (event.isTextType) {
+            presenter.translate(event.text);
         } else {
-            presenter.translate(event.getImage());
+            presenter.translate(event.image);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onHotKeyInput(HotKeyEvent event){
+        if(event== null) return;
+        Platform.runLater(()->{
+            switch(event.hotKeyValue){
+                case HotKey.F5:
+                    clipboardListenerMenu.setSelected(!clipboardListenerMenu.isSelected());
+                    clipboardListenerMenu.fire();
+                    break;
+                case HotKey.F6:
+                    dragCopyMenu.setSelected(!dragCopyMenu.isSelected());
+                    dragCopyMenu.fire();
+                default:
+            }
+        });
+
     }
 
 }

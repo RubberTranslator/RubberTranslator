@@ -60,8 +60,8 @@
                            </items>
                         </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <RadioMenuItem fx:id="clipboardListenerMenu" mnemonicParsing="false" selected="true" text="监听剪切板" />
-                        <RadioMenuItem fx:id="dragCopyMenu" mnemonicParsing="false" selected="true" text="拖拽复制" />
+                        <RadioMenuItem fx:id="clipboardListenerMenu" mnemonicParsing="false" selected="true" text="监听剪切板(F5)" />
+                        <RadioMenuItem fx:id="dragCopyMenu" mnemonicParsing="false" selected="true" text="拖拽复制(F6)" />
                         <RadioMenuItem fx:id="incrementalCopyMenu" mnemonicParsing="false" selected="true" text="增量复制" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <RadioMenuItem fx:id="autoCopyMenu" mnemonicParsing="false" text="自动复制" />
@@ -80,7 +80,7 @@
                               <RadioMenuItem fx:id="cursorEnd" mnemonicParsing="false" text="放置于后" toggleGroup="$textCursorPosGroup" />
                           </items>
                         </Menu>
-                        <RadioMenuItem fx:id="lossFocusTransparent" mnemonicParsing="false" text="失去光标透明化" />
+                        <RadioMenuItem fx:id="lossFocusTransparent" mnemonicParsing="false" text="失去焦点透明化" />
                         <RadioMenuItem fx:id="minimizedWindowCancelListen" mnemonicParsing="false" text="最小化窗口时关闭监听" />
                   </items>
                 </Menu>
@@ -96,7 +96,7 @@
                               <MenuItem fx:id="youdaoApiMenu" mnemonicParsing="false" text="有道" />
                           </items>
                         </Menu>
-                        <MenuItem fx:id="opacitySettingMenu" mnemonicParsing="false" text="失去光标透明度设置" />
+                        <MenuItem fx:id="opacitySettingMenu" mnemonicParsing="false" text="失去焦点透明度设置" />
                   </items>
                 </Menu>
                   <Menu mnemonicParsing="false" text="模式选择">

@@ -1,13 +1,7 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
-import com.rubbertranslator.enumtype.HistoryEntryIndex;
-import com.rubbertranslator.enumtype.SceneType;
-import com.rubbertranslator.enumtype.TextAreaCursorPos;
-import com.rubbertranslator.enumtype.TranslatorType;
-import com.rubbertranslator.event.ClipboardContentInputEvent;
-import com.rubbertranslator.event.SetKeepTopEvent;
-import com.rubbertranslator.event.SetWindowUnTransparentEvent;
-import com.rubbertranslator.event.SwitchSceneEvent;
+import com.rubbertranslator.enumtype.*;
+import com.rubbertranslator.event.*;
 import com.rubbertranslator.mvp.modules.history.HistoryEntry;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.FocusViewPresenter;
@@ -296,11 +290,12 @@ public class FocusModeController implements Initializable, IFocusView {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
+        System.out.println("FocusMode");
         if (event == null || !keepGetTextFromClipboard) return;
-        if (event.isTextType()) { // 文字类型
-            presenter.translate(event.getText());
+        if (event.isTextType) { // 文字类型
+            presenter.translate(event.text);
         } else {                // 图片类型
-            presenter.translate(event.getImage());
+            presenter.translate(event.image);
         }
     }
 
@@ -328,6 +323,22 @@ public class FocusModeController implements Initializable, IFocusView {
             EventBus.getDefault().post(new SetWindowUnTransparentEvent());
         });
     }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onHotKeyInput(HotKeyEvent event) {
+        if (event == null) return;
+        Platform.runLater(() -> {
+            switch (event.hotKeyValue) {
+                case HotKey.F5:
+                    clipboardListenerMenu.fire();
+                    break;
+                case HotKey.F6:
+                    dragCopyMenu.fire();
+                default:
+            }
+        });
+    }
+
 
     @Override
     public void setText(String originText, String translatedText) {
