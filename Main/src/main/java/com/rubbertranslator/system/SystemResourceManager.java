@@ -6,7 +6,7 @@ import com.rubbertranslator.mvp.modules.afterprocess.AfterProcessor;
 import com.rubbertranslator.mvp.modules.filter.ProcessFilter;
 import com.rubbertranslator.mvp.modules.filter.WindowsPlatformActiveWindowListenerThread;
 import com.rubbertranslator.mvp.modules.history.TranslationHistory;
-import com.rubbertranslator.mvp.modules.hotkey.HotKeyDispatcher;
+import com.rubbertranslator.mvp.modules.hotkey.GlobalHotKeyListener;
 import com.rubbertranslator.mvp.modules.log.LoggerManager;
 import com.rubbertranslator.mvp.modules.textinput.clipboard.ClipboardListenerThread;
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.DragCopyThread;
@@ -104,7 +104,7 @@ public class SystemResourceManager {
     }
 
     private static void hotKeyModuleInit(){
-        HotKeyDispatcher.initHotKeyDispatcher();
+        GlobalHotKeyListener.initHotKeyDispatcher();
     }
 
 
@@ -124,7 +124,7 @@ public class SystemResourceManager {
         } catch (InterruptedException e) {
             Logger.getLogger(SystemResourceManager.class.getName()).log(Level.SEVERE, "释放线程池资源失败");
         }
-        HotKeyDispatcher.destroy();
+        GlobalHotKeyListener.destroy();
         textInputDestroy();
         processFilterDestroy();
         // TODO: 检查资源释放情况

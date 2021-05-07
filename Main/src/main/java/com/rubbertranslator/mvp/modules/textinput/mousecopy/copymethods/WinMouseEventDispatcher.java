@@ -16,41 +16,43 @@ public class WinMouseEventDispatcher extends AbstractMouseEventDispatcher {
         /* turn off the console output */
         // Get the logger for "org.jnativehook" and set the level to off.
         new Thread(() -> {
-            try {
-                GlobalScreen.registerNativeHook();
-            } catch (NativeHookException ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "There was a problem registering the native hook.", ex);
-            }
-            // Add the appropriate listeners.
-            Logger.getLogger(this.getClass().getName()).info("mouse hook register");
-            GlobalScreen.addNativeMouseListener(new NativeMouseListener() {
-                @Override
-                public void nativeMouseClicked(NativeMouseEvent nativeMouseEvent) {
-
+            synchronized (GlobalScreen.class){
+                try {
+                    GlobalScreen.registerNativeHook();
+                } catch (NativeHookException ex) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "There was a problem registering the native hook.", ex);
                 }
+                // Add the appropriate listeners.
+                Logger.getLogger(this.getClass().getName()).info("mouse hook register");
+                GlobalScreen.addNativeMouseListener(new NativeMouseListener() {
+                    @Override
+                    public void nativeMouseClicked(NativeMouseEvent nativeMouseEvent) {
 
-                @Override
-                public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-                    MouseEvent event = new MouseEvent();
-                    event.setClickPoint(nativeMouseEvent.getPoint());
-                    WinMouseEventDispatcher.this.pressEventDispatch(event);
-                }
+                    }
 
-                @Override
-                public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
-                    MouseEvent event = new MouseEvent();
-                    event.setClickPoint(nativeMouseEvent.getPoint());
-                    WinMouseEventDispatcher.this.releaseEventDispatch(event);
-                }
-            });
+                    @Override
+                    public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
+                        MouseEvent event = new MouseEvent();
+                        event.setClickPoint(nativeMouseEvent.getPoint());
+                        WinMouseEventDispatcher.this.pressEventDispatch(event);
+                    }
 
-            Logger.getLogger(this.getClass().getName()).info("jnativehook 注册成功");
+                    @Override
+                    public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
+                        MouseEvent event = new MouseEvent();
+                        event.setClickPoint(nativeMouseEvent.getPoint());
+                        WinMouseEventDispatcher.this.releaseEventDispatch(event);
+                    }
+                });
 
-            // 关闭log
-            Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-            logger.setLevel(Level.OFF);
+                Logger.getLogger(this.getClass().getName()).info("jnativehook 注册成功");
+
+                // 关闭log
+                Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+                logger.setLevel(Level.OFF);
 //            Don 't forget to disable the parent handlers.
-            logger.setUseParentHandlers(false);
+                logger.setUseParentHandlers(false);
+            }
         }).start();
 
     }

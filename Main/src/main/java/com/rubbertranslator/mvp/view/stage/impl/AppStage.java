@@ -32,9 +32,11 @@ import java.util.logging.Logger;
  */
 public class AppStage implements InvalidationListener {
     // 主界面
-    private Stage appStage;
+    private final Stage appStage;
     // 配置
     private SystemConfiguration configuration;
+    // Temporary width and height for the stage
+    private double tmpWidth, tmpHeight;
 
     public AppStage(Stage stage) {
         appStage = stage;
@@ -90,7 +92,6 @@ public class AppStage implements InvalidationListener {
         // 防止最后一个界面dismiss时，整个程序退出
         Platform.setImplicitExit(false);
 
-
         // 显示
         appStage.show();
     }
@@ -111,11 +112,23 @@ public class AppStage implements InvalidationListener {
             appStage.hide();
         });
         appStage.setOnHidden((e) -> {
+            saveStageSize();
             minimizedHandler(true);
         });
         appStage.setOnShown((e) -> {
+            restoreStageSized();
             minimizedHandler(false);
         });
+    }
+
+    private void saveStageSize(){
+        tmpWidth = appStage.getWidth();
+        tmpHeight = appStage.getHeight();
+    }
+
+    private void restoreStageSized(){
+        appStage.setWidth(tmpWidth);
+        appStage.setHeight(tmpHeight);
     }
 
     /**
@@ -231,7 +244,7 @@ public class AppStage implements InvalidationListener {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onSystemExit(SystemTrayClickEvent event) {
+    public void systemTrayEventListener(SystemTrayClickEvent event) {
         Platform.runLater(() -> {
             switch (event.eventType) {
                 case SystemTrayClickEvent.SHOW_MAIN_WINDOW:
@@ -284,7 +297,7 @@ public class AppStage implements InvalidationListener {
     }
 
     void focusHandler(boolean focus) {
-        if (configuration.isLossFocusTransparent()) {
+        if (configuration.isLossFocusTransparent()) {       // 透明度修改
             if (!focus) {
                 appStage.setOpacity(configuration.getOpacityValue());
             } else {
@@ -294,7 +307,7 @@ public class AppStage implements InvalidationListener {
     }
 
     void minimizedHandler(boolean minimized) {
-        if (configuration.isMinimizedCancelListen()) {
+        if (configuration.isMinimizedCancelListen()) {      // 最小化时关闭监听
             Logger.getLogger(this.getClass().getName()).info("set dragcopy and cp listener to " + !minimized);
             SystemResourceManager.setDragCopyAndCpListenState(!minimized);
         }

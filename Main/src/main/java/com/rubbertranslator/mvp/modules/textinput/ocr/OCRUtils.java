@@ -6,15 +6,11 @@ import com.rubbertranslator.utils.OkHttpUtil;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Raven
@@ -112,7 +108,7 @@ public class OCRUtils {
         if(image instanceof BufferedImage) return (BufferedImage)image;
         BufferedImage newImage = new BufferedImage(
                 image.getWidth(null), image.getHeight(null),
-                BufferedImage.TYPE_INT_ARGB);
+                BufferedImage.TYPE_INT_RGB);
         Graphics2D g = newImage.createGraphics();
         g.drawImage(image, 0, 0, null);
         g.dispose();
