@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox id="record" fx:id="rootPane" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.mvp.view.controller.impl.RecordModeController">
+<VBox id="record" fx:id="rootPane" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"  xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.mvp.view.controller.impl.RecordModeController">
     <children>
       <TextArea id="translationArea" fx:id="originTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="原文" wrapText="true" VBox.vgrow="ALWAYS">
          <font>

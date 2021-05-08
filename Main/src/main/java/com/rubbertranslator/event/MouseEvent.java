@@ -1,4 +1,4 @@
-package com.rubbertranslator.entity;
+package com.rubbertranslator.event;
 
 import java.awt.*;
 

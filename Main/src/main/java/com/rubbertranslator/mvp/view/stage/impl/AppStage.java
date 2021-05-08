@@ -1,12 +1,15 @@
 package com.rubbertranslator.mvp.view.stage.impl;
 
 import com.rubbertranslator.App;
+import com.rubbertranslator.entity.AppearanceSetting;
 import com.rubbertranslator.entity.WindowSize;
 import com.rubbertranslator.event.*;
 import com.rubbertranslator.mvp.view.custom.SystemTrayInitiator;
 import com.rubbertranslator.system.ControllerFxmlPath;
 import com.rubbertranslator.system.SystemConfiguration;
 import com.rubbertranslator.system.SystemResourceManager;
+import com.rubbertranslator.utils.AppearanceSettingUtil;
+import com.rubbertranslator.utils.FileUtil;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -21,7 +24,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,7 +56,6 @@ public class AppStage implements InvalidationListener {
         initViews();
         initListeners();
     }
-
 
     /**
      * 初始化系统配置，同时得到系统配置类引用，方便后续的其它初始化
@@ -92,8 +97,39 @@ public class AppStage implements InvalidationListener {
         // 防止最后一个界面dismiss时，整个程序退出
         Platform.setImplicitExit(false);
 
+        // set Appearance
+//        setAppearance();
+
         // 显示
         appStage.show();
+    }
+
+
+    public void setAppearance() {
+        SystemResourceManager.getExecutor().execute(() -> {
+            // Generate css config
+            AppearanceSetting setting = new AppearanceSetting();
+            setting.appFontSize = configuration.getAppFontSize();
+            setting.textFontSize = configuration.getTextFontSize();
+            String cssStr = AppearanceSettingUtil.appearanceSettingCss(setting);
+            Logger.getLogger(this.getClass().getName()).info(cssStr);
+            // Apply css style to the stage
+            File[] tempFile = new File[1];
+            try {
+                tempFile[0] = File.createTempFile("tmp_rt", "css");
+                FileUtil.writeStringToFile(tempFile[0], cssStr, StandardCharsets.UTF_8);
+                // Do update
+                Platform.runLater(() -> {
+                    try {
+                        appStage.getScene().getStylesheets().setAll(tempFile[0].toURI().toURL().toString());
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
@@ -121,12 +157,12 @@ public class AppStage implements InvalidationListener {
         });
     }
 
-    private void saveStageSize(){
+    private void saveStageSize() {
         tmpWidth = appStage.getWidth();
         tmpHeight = appStage.getHeight();
     }
 
-    private void restoreStageSized(){
+    private void restoreStageSized() {
         appStage.setWidth(tmpWidth);
         appStage.setHeight(tmpHeight);
     }
@@ -311,6 +347,11 @@ public class AppStage implements InvalidationListener {
             Logger.getLogger(this.getClass().getName()).info("set dragcopy and cp listener to " + !minimized);
             SystemResourceManager.setDragCopyAndCpListenState(!minimized);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void updateAppearanceSetting(AppearanceSettingUpdateEvent event){
+        setAppearance();
     }
 
 

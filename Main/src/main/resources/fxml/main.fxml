@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="main" fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.mvp.view.controller.impl.MainController">
+<AnchorPane id="main" fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rubbertranslator.mvp.view.controller.impl.MainController">
    <children>
       <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -88,7 +88,7 @@
                   <items>
                     <MenuItem fx:id="filterMenu" mnemonicParsing="false" text="过滤器" />
                         <MenuItem fx:id="translationWordsReplacerMenu" mnemonicParsing="false" text="翻译文本替换" />
-                        <MenuItem fx:id="customCssMenu" mnemonicParsing="false" text="自定义样式" />
+                        <MenuItem fx:id="appSettings" mnemonicParsing="false" text="界面设置" />
                         <Menu mnemonicParsing="false" text="Key&amp;Secret设置">
                           <items>
                               <MenuItem fx:id="ocrMenu" mnemonicParsing="false" text="OCR" />

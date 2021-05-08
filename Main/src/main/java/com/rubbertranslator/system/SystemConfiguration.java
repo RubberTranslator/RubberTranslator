@@ -23,8 +23,6 @@ public class SystemConfiguration implements Serializable {
      */
     @SerializedName("keep_top")
     private Boolean isKeepTop;
-    @SerializedName("custom_css_path")
-    private String styleCssPath;
     @SerializedName("last_position")
     private Point lastPos;
     @SerializedName("last_size")
@@ -37,6 +35,12 @@ public class SystemConfiguration implements Serializable {
     private Double opacityValue;
     @SerializedName("minimized_cancel_listen")
     private Boolean minimizedCancelListen;
+    @SerializedName("app_font_size")
+    private Integer appFontSize;
+    @SerializedName("text_font_size")
+    private Integer textFontSize;
+    @SerializedName("textarea_bg_color")
+    private String textAreaBgColor;
 
     /**
      * 文本输入
@@ -132,14 +136,6 @@ public class SystemConfiguration implements Serializable {
 
     public void setKeepTop(Boolean keepTop) {
         isKeepTop = keepTop;
-    }
-
-    public String getStyleCssPath() {
-        return styleCssPath;
-    }
-
-    public void setStyleCssPath(String styleCssPath) {
-        this.styleCssPath = styleCssPath;
     }
 
     public Point getLastPos() {
@@ -356,5 +352,29 @@ public class SystemConfiguration implements Serializable {
 
     public void setMinimizedCancelListen(Boolean minimizedCancelListen) {
         this.minimizedCancelListen = minimizedCancelListen;
+    }
+
+    public Integer getAppFontSize() {
+        return appFontSize;
+    }
+
+    public void setAppFontSize(Integer appFontSize) {
+        this.appFontSize = appFontSize;
+    }
+
+    public Integer getTextFontSize() {
+        return textFontSize;
+    }
+
+    public void setTextFontSize(Integer textFontSize) {
+        this.textFontSize = textFontSize;
+    }
+
+    public String getTextAreaBgColor() {
+        return textAreaBgColor;
+    }
+
+    public void setTextAreaBgColor(String textAreaBgColor) {
+        this.textAreaBgColor = textAreaBgColor;
     }
 }

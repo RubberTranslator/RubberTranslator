@@ -3,7 +3,9 @@
   "loss_focus_transparent": false,
   "minimized_cancel_listen": true,
   "opacity_value": 0.80,
-  "custom_css_path": null,
+  "app_font_size": 10,
+  "text_font_size": 10,
+  "textarea_bg_color": "white",
   "last_position": {
     "x": 0,
     "y": 0

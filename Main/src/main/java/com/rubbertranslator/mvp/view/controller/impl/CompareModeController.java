@@ -26,12 +26,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CompareModeController implements Initializable, IMultiTranslateView {
     @FXML
@@ -122,20 +118,6 @@ public class CompareModeController implements Initializable, IMultiTranslateView
     public void initViews(SystemConfiguration configuration) {
         // set window preSize
         rootPane.setPrefSize(configuration.getLastSize().getX(), configuration.getLastSize().getY());
-
-        // 样式加载
-        try {
-            // 回显
-            String path = configuration.getStyleCssPath();
-            if (path != null) {
-                File file = new File(path);
-                if (file.exists()) {
-                    rootPane.getStylesheets().setAll(file.toURI().toURL().toString());
-                }
-            }
-        } catch (MalformedURLException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
-        }
 
         // 置顶
         keepStageTopMenu.setSelected(configuration.isKeepTop());

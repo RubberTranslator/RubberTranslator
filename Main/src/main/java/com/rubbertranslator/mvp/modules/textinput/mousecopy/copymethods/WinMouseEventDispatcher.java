@@ -1,6 +1,6 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
-import com.rubbertranslator.entity.MouseEvent;
+import com.rubbertranslator.event.MouseEvent;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.mouse.NativeMouseEvent;

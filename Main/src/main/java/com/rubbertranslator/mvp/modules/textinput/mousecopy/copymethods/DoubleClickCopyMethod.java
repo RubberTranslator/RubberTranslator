@@ -1,7 +1,7 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
 
-import com.rubbertranslator.entity.MouseEvent;
+import com.rubbertranslator.event.MouseEvent;
 
 /**
  * @author Raven

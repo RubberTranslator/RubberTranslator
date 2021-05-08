@@ -1,12 +1,14 @@
 package com.rubbertranslator.mvp.view.controller.impl;
 
 import com.rubbertranslator.entity.ApiInfo;
+import com.rubbertranslator.entity.AppearanceSetting;
 import com.rubbertranslator.enumtype.*;
 import com.rubbertranslator.event.*;
 import com.rubbertranslator.mvp.presenter.PresenterFactory;
 import com.rubbertranslator.mvp.presenter.impl.MainViewPresenter;
 import com.rubbertranslator.mvp.view.controller.ISingleTranslateView;
 import com.rubbertranslator.mvp.view.custom.ApiDialog;
+import com.rubbertranslator.mvp.view.custom.AppearanceSettingDialog;
 import com.rubbertranslator.mvp.view.custom.OpacitySettingDialog;
 import com.rubbertranslator.mvp.view.custom.SponsorDialog;
 import com.rubbertranslator.system.*;
@@ -27,16 +29,13 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
@@ -162,7 +161,7 @@ public class MainController implements ISingleTranslateView {
     @FXML // 词组替换
     private MenuItem translationWordsReplacerMenu;
     @FXML
-    private MenuItem customCssMenu;
+    private MenuItem appSettings;
     @FXML // 百度&有道api 设置
     private MenuItem baiduApiMenu;
     @FXML
@@ -502,41 +501,25 @@ public class MainController implements ISingleTranslateView {
             initOCR(configuration);
             initProcessFilter();
             initWordsReplacer();
-            initCustomCss(configuration);
+            initAppearanceSetting(configuration);
             initApiMenu(configuration);
             initOpacitySettings(configuration);
         }
 
 
-        private void initCustomCss(SystemConfiguration configuration) {
-            try {
-                // 回显
-                String path = configuration.getStyleCssPath();
-                if (path != null) {
-                    File file = new File(path);
-                    if (file.exists()) {
-                        rootPane.getStylesheets().setAll(file.toURI().toURL().toString());
-                    }
-                }
-            } catch (MalformedURLException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
-            }
-
+        private void initAppearanceSetting(SystemConfiguration configuration) {
             // 点击事件
-            customCssMenu.setOnAction((actionEvent -> {
-                try {
-                    FileChooser fileChooser = new FileChooser();
-                    fileChooser.getExtensionFilters().add(
-                            new FileChooser.ExtensionFilter("css文件", "*.css"));
-                    File newFile = fileChooser.showOpenDialog(appStage);
-                    if (newFile == null) return;
-                    // 应用
-                    rootPane.getStylesheets().setAll(newFile.toURI().toURL().toString());
-                    // 应用持久化
-                    configuration.setStyleCssPath(newFile.getAbsolutePath());
-                } catch (MalformedURLException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
-                }
+            appSettings.setOnAction((actionEvent -> {
+                AppearanceSetting setting = new AppearanceSetting();
+                setting.appFontSize = configuration.getAppFontSize();
+                setting.textFontSize = configuration.getTextFontSize();
+                new AppearanceSettingDialog(appStage, setting,
+                        newSettings -> {
+                            configuration.setAppFontSize(newSettings.appFontSize);
+                            configuration.setTextFontSize(newSettings.textFontSize);
+                            // Notify appStage to update app settings
+                            EventBus.getDefault().post(new AppearanceSettingUpdateEvent());
+                        }).showDialog();
             }));
         }
 
@@ -718,10 +701,10 @@ public class MainController implements ISingleTranslateView {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onHotKeyInput(HotKeyEvent event){
-        if(event== null) return;
-        Platform.runLater(()->{
-            switch(event.hotKeyValue){
+    public void onHotKeyInput(HotKeyEvent event) {
+        if (event == null) return;
+        Platform.runLater(() -> {
+            switch (event.hotKeyValue) {
                 case HotKey.F5:
                     clipboardListenerMenu.setSelected(!clipboardListenerMenu.isSelected());
                     clipboardListenerMenu.fire();
