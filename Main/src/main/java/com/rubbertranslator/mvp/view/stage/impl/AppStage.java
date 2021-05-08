@@ -191,7 +191,6 @@ public class AppStage implements InvalidationListener {
             minScreenHeight[0] = Math.min(minScreenHeight[0], screen.getBounds().getHeight());
         });
 
-
         double stageWidth = appStage.getWidth();
         double stageHeight = appStage.getHeight();
         double locationX = Math.min(appStage.getX(), minScreenWidth[0] - stageWidth);
@@ -246,6 +245,9 @@ public class AppStage implements InvalidationListener {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "切换scene失败");
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage());
             e.printStackTrace();
+        }finally{
+            // Reapply appearance setting
+            setAppearance();
         }
     }
 

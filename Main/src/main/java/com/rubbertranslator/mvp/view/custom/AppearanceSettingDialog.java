@@ -21,8 +21,9 @@ public class AppearanceSettingDialog {
 
     private final GenericCallback<AppearanceSetting> callback;
 
-    public AppearanceSettingDialog(Stage stage, AppearanceSetting setting, GenericCallback<AppearanceSetting> listener) {
-        if (stage == null) stage = new Stage();
+    public AppearanceSettingDialog(Stage appStage, AppearanceSetting setting, GenericCallback<AppearanceSetting> listener) {
+        if (appStage == null) stage = new Stage();
+        stage = appStage;
         defaultSetting = setting;
         callback = listener;
     }

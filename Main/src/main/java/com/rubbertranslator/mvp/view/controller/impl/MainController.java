@@ -515,6 +515,7 @@ public class MainController implements ISingleTranslateView {
                 setting.textFontSize = configuration.getTextFontSize();
                 new AppearanceSettingDialog(appStage, setting,
                         newSettings -> {
+                            if(newSettings == null) return;
                             configuration.setAppFontSize(newSettings.appFontSize);
                             configuration.setTextFontSize(newSettings.textFontSize);
                             // Notify appStage to update app settings
