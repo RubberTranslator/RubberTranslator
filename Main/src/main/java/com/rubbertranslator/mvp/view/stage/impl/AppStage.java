@@ -108,6 +108,8 @@ public class AppStage implements InvalidationListener {
             AppearanceSetting setting = new AppearanceSetting();
             setting.appFontSize = configuration.getAppFontSize();
             setting.textFontSize = configuration.getTextFontSize();
+            // 0 代表采用默认设置
+            if(setting.appFontSize == 0 || setting.textFontSize == 0) return;
             String cssStr = AppearanceSettingUtil.appearanceSettingCss(setting);
             Logger.getLogger(this.getClass().getName()).info(cssStr);
             // Apply css style to the stage
