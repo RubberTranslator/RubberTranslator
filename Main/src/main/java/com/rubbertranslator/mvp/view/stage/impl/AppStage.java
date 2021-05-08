@@ -93,13 +93,10 @@ public class AppStage implements InvalidationListener {
         }
         // set keepTop or not
         appStage.setAlwaysOnTop(configuration.isKeepTop());
-
         // 防止最后一个界面dismiss时，整个程序退出
         Platform.setImplicitExit(false);
-
         // set Appearance
-//        setAppearance();
-
+        setAppearance();
         // 显示
         appStage.show();
     }
