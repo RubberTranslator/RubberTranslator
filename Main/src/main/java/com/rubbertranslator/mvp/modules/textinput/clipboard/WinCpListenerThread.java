@@ -1,6 +1,5 @@
 package com.rubbertranslator.mvp.modules.textinput.clipboard;
 
-import com.rubbertranslator.thread.CondVar;
 import com.rubbertranslator.utils.OSTypeUtil;
 import org.greenrobot.eventbus.EventBus;
 
@@ -18,8 +17,6 @@ public class WinCpListenerThread extends ClipboardListenerThread implements Clip
     private long waitTime = 50;
     // 跳过本次变化监听
     private final AtomicBoolean ignoreThisTime = new AtomicBoolean();
-    // Thread Blocker
-    private final CondVar blocker = new CondVar();
 
     public WinCpListenerThread() {
         setName("WinClipboard Thread");
@@ -29,17 +26,15 @@ public class WinCpListenerThread extends ClipboardListenerThread implements Clip
     protected void startProcess() {
         Transferable trans = clipboard.getContents(this);
         clipboard.setContents(trans, this);
-        try {
-            // To prevent this thread dead
-            blocker.wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void lostOwnership(Clipboard c, Transferable t) {
         assert (!OSTypeUtil.isMac());
+        if (!running) {
+            return;
+        }
+
         Transferable contents;
         // 循环require clipboard owner
         boolean required = false;
@@ -50,9 +45,6 @@ public class WinCpListenerThread extends ClipboardListenerThread implements Clip
             try {
                 //waiting e.g for loading huge elements like word's etc.
                 Thread.sleep(waitTime);
-                if (!running) {
-                    break;
-                }
                 contents = clipboard.getContents(null);
                 clipboard.setContents(contents, this);
                 required = true;
@@ -100,6 +92,9 @@ public class WinCpListenerThread extends ClipboardListenerThread implements Clip
     @Override
     protected void resumeProcess() {
         running = true;
+        // Register clipboard ownership
+        Transferable trans = clipboard.getContents(this);
+        clipboard.setContents(trans, this);
     }
 
     @Override
@@ -114,8 +109,5 @@ public class WinCpListenerThread extends ClipboardListenerThread implements Clip
     }
 
     public void exit() {
-        synchronized (blocker){
-            blocker.notifyAll();
-        }
     }
 }
