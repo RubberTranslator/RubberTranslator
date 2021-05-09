@@ -10,7 +10,7 @@ import com.rubbertranslator.mvp.modules.textinput.mousecopy.listener.GlobalMouse
  */
 public class DragCopyThread {
     // Construct the example object.
-    private GlobalMouseListener mouseListener =  new GlobalMouseListener();
+    private final GlobalMouseListener mouseListener =  new GlobalMouseListener();
 
     public DragCopyThread() {
     }
@@ -21,9 +21,7 @@ public class DragCopyThread {
 
     public void exit() {
         /* Clean up */
-        if(mouseListener != null){
-            mouseListener.stopDispatch();
-        }
+        mouseListener.stopDispatch();
     }
 
     public void setRun(boolean run) {
@@ -35,15 +33,11 @@ public class DragCopyThread {
     }
 
     private void pause() {
-       if(mouseListener != null){
-           mouseListener.setNeedDispatch(false);
-       }
+        mouseListener.setNeedDispatch(false);
     }
 
     private void resumeRun() {
-        if(mouseListener != null){
-            mouseListener.setNeedDispatch(true);
-        }
+        mouseListener.setNeedDispatch(true);
     }
 
 

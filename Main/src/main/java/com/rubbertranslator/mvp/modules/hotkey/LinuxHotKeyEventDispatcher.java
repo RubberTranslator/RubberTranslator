@@ -49,5 +49,12 @@ public class LinuxHotKeyEventDispatcher extends AbstractHotKeyEventDispatcher{
     @Override
     public void stopListen() {
         NativeKeyHook.of().stopListening();
+        try{
+            // 由于Nativehook没有提供是否已经stop的接口，如果重复stop，会引起空指针
+            // 这里忽略这种异常
+            NativeHookInitializer.of().stop();
+        }catch(NullPointerException ignored){
+
+        }
     }
 }
