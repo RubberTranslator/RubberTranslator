@@ -9,6 +9,9 @@ import com.rubbertranslator.mvp.modules.history.TranslationHistory;
 import com.rubbertranslator.mvp.modules.hotkey.GlobalHotKeyListener;
 import com.rubbertranslator.mvp.modules.log.LoggerManager;
 import com.rubbertranslator.mvp.modules.textinput.clipboard.ClipboardListenerThread;
+import com.rubbertranslator.mvp.modules.textinput.clipboard.LinuxCpListenerThread;
+import com.rubbertranslator.mvp.modules.textinput.clipboard.MacCpListenerThread;
+import com.rubbertranslator.mvp.modules.textinput.clipboard.WinCpListenerThread;
 import com.rubbertranslator.mvp.modules.textinput.mousecopy.DragCopyThread;
 import com.rubbertranslator.mvp.modules.textinput.ocr.OCRUtils;
 import com.rubbertranslator.mvp.modules.textprocessor.post.TextPostProcessor;
@@ -20,6 +23,7 @@ import com.rubbertranslator.mvp.modules.update.UpdateTask;
 import com.rubbertranslator.mvp.presenter.BasePresenter;
 import com.rubbertranslator.mvp.presenter.ModelPresenter;
 import com.rubbertranslator.mvp.view.IView;
+import com.rubbertranslator.utils.OSTypeUtil;
 import it.sauronsoftware.junique.JUnique;
 import org.jetbrains.annotations.NotNull;
 
@@ -149,7 +153,13 @@ public class SystemResourceManager {
 
     private static void textInputInit(@NotNull SystemConfiguration configuration) {
         // 启动相应线程
-        clipboardListenerThread = new ClipboardListenerThread();
+        if(OSTypeUtil.isMac()){
+            clipboardListenerThread = new MacCpListenerThread();
+        }else if(OSTypeUtil.isLinux()){
+           clipboardListenerThread = new LinuxCpListenerThread();
+        }else if(OSTypeUtil.isWin()){
+           clipboardListenerThread = new WinCpListenerThread();
+        }
         dragCopyThread = new DragCopyThread();
         clipboardListenerThread.start();
         dragCopyThread.start();
