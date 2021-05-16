@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class FilterController implements IFilterView {
     @FXML
-    private VBox vBox;
+    private VBox rootPane;
     @FXML   // processList
     private ListView<String> processList;
     @FXML
@@ -75,7 +75,7 @@ public class FilterController implements IFilterView {
 
     @FXML
     public void onAddButtonClick(){
-        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(vBox.getScene().getWindow());
+        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(rootPane.getScene().getWindow());
         if(selectedFiles == null) return;
         List<String> collect = selectedFiles.stream().map(File::getName).collect(Collectors.toList());
         presenter.addFilterList(collect);

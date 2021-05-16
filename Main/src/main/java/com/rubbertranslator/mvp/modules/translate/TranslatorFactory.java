@@ -86,7 +86,7 @@ public class TranslatorFactory {
                 }
             }
         }
-        return "翻译失败，请检查网络或相关API设置";
+        return null;
     }
 
     /**

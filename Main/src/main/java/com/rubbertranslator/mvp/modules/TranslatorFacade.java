@@ -183,7 +183,7 @@ public class TranslatorFacade {
             } catch (Exception e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
             }
-            return new Pair<>(origin, translation == null ? "" : translation);
+            return new Pair<>(origin, translation == null ? "翻译失败，请检查网络或相关API设置" : translation);
         }
     }
 
@@ -221,7 +221,7 @@ public class TranslatorFacade {
             } catch (Exception e) {
                 Logger.getLogger(this.getClass().getName()).warning(e.getLocalizedMessage());
             }
-            return new Pair<>(type, translation == null ? "" : translation);
+            return new Pair<>(type, translation == null ? "翻译失败，请检查网络或相关API设置" : translation);
         }
     }
 }

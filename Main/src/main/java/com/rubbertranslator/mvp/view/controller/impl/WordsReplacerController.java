@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  */
 public class WordsReplacerController implements Initializable, IWordsReplacerView {
     @FXML
-    private VBox vBox;
+    private VBox rootPane;
     @FXML   //
     private TableView<WordsPair> wordsPairTableView;
     @FXML
@@ -77,7 +77,7 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
                         alert.setTitle("提示");
                         alert.setHeaderText("重复元素");
                         alert.setContentText("<<" + newValue + ">>条目已存在");
-                        alert.initOwner(vBox.getScene().getWindow());
+                        alert.initOwner(rootPane.getScene().getWindow());
                         alert.showAndWait();
                     } else {
                         t.getTableView().getItems().get(
@@ -125,7 +125,7 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt")
         );
-        File selectedFile = fileChooser.showOpenDialog(vBox.getScene().getWindow());
+        File selectedFile = fileChooser.showOpenDialog(rootPane.getScene().getWindow());
         if (selectedFile == null) return;
 
         List<WordsPair> wordsPairs = parseWordTxt(selectedFile);
@@ -143,16 +143,15 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
             alert.setHeaderText("当前词组为空");
         } else {
             String exportPath = ProgramPaths.exportDir;
-            if (exportPath == null) return;
             if (exportPath.charAt(exportPath.length() - 1) == '/') {
-                exportPath = exportPath + "/RubberTranslator/export/words.txt";
+                exportPath = exportPath + "words.txt";
             } else {
-                exportPath = exportPath + "RubberTranslator/export/words.txt";
+                exportPath = exportPath + "/words.txt";
             }
             doExport(set, exportPath);
             alert.setHeaderText("已导出至：" + exportPath);
         }
-        alert.initOwner(vBox.getScene().getWindow());
+        alert.initOwner(rootPane.getScene().getWindow());
         alert.showAndWait();
     }
 
@@ -240,6 +239,6 @@ public class WordsReplacerController implements Initializable, IWordsReplacerVie
 
     @Override
     public void apply() {
-        ((Stage) (vBox.getScene().getWindow())).close();
+        ((Stage) (rootPane.getScene().getWindow())).close();
     }
 }
