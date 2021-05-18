@@ -8,7 +8,7 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 本项目目前支持**Windows, Linux, Mac**平台。
 
 1. 点击[Releases](https://github.com/ravenxrz/RubberTranslator/releases)界面下载对应平台安装包即可。
-2. 考虑到github国内下载速度较慢，可从[这里下载](https://ravenxrz.lanzous.com/b01bezbcf)
+2. 考虑到github国内下载速度较慢，可从[这里下载](https://ravenxrz.lanzoui.com/b01bezbcf)
 
 *注：请勿安装在有中文路径的目录下*
 
