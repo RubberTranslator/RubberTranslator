@@ -51,6 +51,8 @@ public class FocusModeController implements Initializable, IFocusView {
     private ToggleButton baiduTranslator;
     @FXML
     private ToggleButton youdaoTranslator;
+    @FXML
+    private ToggleButton noneTranslator;
 
     @FXML // 增量复制
     private ToggleButton incrementalCopyMenu;
@@ -139,6 +141,9 @@ public class FocusModeController implements Initializable, IFocusView {
             case YOUDAO:
                 youdaoTranslator.setSelected(true);
                 break;
+            case NONE:
+                noneTranslator.setSelected(true);
+                break;
         }
         // 增量
         incrementalCopyMenu.setSelected(configuration.isIncrementalCopy());
@@ -221,6 +226,8 @@ public class FocusModeController implements Initializable, IFocusView {
             presenter.setTranslatorType(TranslatorType.BAIDU);
         } else if (newValue == youdaoTranslator) {
             presenter.setTranslatorType(TranslatorType.YOUDAO);
+        } else if (newValue == noneTranslator) {
+            presenter.setTranslatorType(TranslatorType.YOUDAO);
         } else {
             // 走到这个分支，说明用户点击了当前已经选中的按钮
             oldValue.setSelected(true);
@@ -272,7 +279,7 @@ public class FocusModeController implements Initializable, IFocusView {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onClipboardContentInput(ClipboardContentInputEvent event) {
-       if (event == null || !keepGetTextFromClipboard) return;
+        if (event == null || !keepGetTextFromClipboard) return;
         if (event.isTextType) { // 文字类型
             presenter.translate(event.text);
         } else {                // 图片类型

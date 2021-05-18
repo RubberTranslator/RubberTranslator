@@ -115,7 +115,7 @@ public class GoogleTranslator extends AbstractTranslator {
         param.put("sl", source);
         param.put("tl", dest);
         param.put("q", URLEncoder.encode(text, "UTF-8"));
-        result = OkHttpUtil.post(pageUrl, param);
+        result = OkHttpUtil.get(pageUrl, param);
         return result;
     }
 

@@ -30,6 +30,7 @@
                               </RadioMenuItem>
                               <RadioMenuItem id="baidu_translator" fx:id="baiduTranslator" mnemonicParsing="false" text="百度翻译" toggleGroup="$translatorGroup" />
                               <RadioMenuItem id="youdao_translator" fx:id="youdaoTranslator" mnemonicParsing="false" text="有道翻译" toggleGroup="$translatorGroup" />
+                              <RadioMenuItem id="youdao_translator" fx:id="noneTranslator" mnemonicParsing="false" text="特殊翻译-OCR复制" toggleGroup="$translatorGroup" />
                           </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="源语言">

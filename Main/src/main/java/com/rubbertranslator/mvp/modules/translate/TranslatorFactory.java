@@ -4,6 +4,7 @@ import com.rubbertranslator.enumtype.Language;
 import com.rubbertranslator.enumtype.TranslatorType;
 import com.rubbertranslator.mvp.modules.translate.baidu.BaiduTranslator;
 import com.rubbertranslator.mvp.modules.translate.google.GoogleTranslator;
+import com.rubbertranslator.mvp.modules.translate.none.NoneTranslator;
 import com.rubbertranslator.mvp.modules.translate.youdao.YoudaoTranslator;
 
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public class TranslatorFactory {
         instanceTranslatorEngine(TranslatorType.GOOGLE);
         instanceTranslatorEngine(TranslatorType.BAIDU);
         instanceTranslatorEngine(TranslatorType.YOUDAO);
+        instanceTranslatorEngine(TranslatorType.NONE);
     }
 
     public void setSourceLanguage(Language sourceLanguage) {
@@ -129,6 +131,8 @@ public class TranslatorFactory {
             case YOUDAO:
                 translatorEngineMap.put(TranslatorType.YOUDAO, new YoudaoTranslator());
                 break;
+            case NONE:
+                translatorEngineMap.put(TranslatorType.NONE,new NoneTranslator());
         }
     }
 

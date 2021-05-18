@@ -120,15 +120,18 @@ public class TranslatorFacade {
         Callable<Pair<TranslatorType, String>> googleCall = new SingleTranslateCall(text, TranslatorType.GOOGLE);
         Callable<Pair<TranslatorType, String>> baiduCall = new SingleTranslateCall(text, TranslatorType.BAIDU);
         Callable<Pair<TranslatorType, String>> youdaoCall = new SingleTranslateCall(text, TranslatorType.YOUDAO);
+        Callable<Pair<TranslatorType,String>> noneCall = new SingleTranslateCall(text,TranslatorType.NONE);
 
         FacadeTask<Pair<TranslatorType, String>> googleTask = new FacadeTask<>(googleCall, callback);
         FacadeTask<Pair<TranslatorType, String>> baiduTask = new FacadeTask<>(baiduCall, callback);
         FacadeTask<Pair<TranslatorType, String>> youdaoTask = new FacadeTask<>(youdaoCall, callback);
+        FacadeTask<Pair<TranslatorType, String>> noneTask = new FacadeTask<>(noneCall, callback);
 
         // exec
         executor.execute(baiduTask);
         executor.execute(youdaoTask);
         executor.execute(googleTask);
+        executor.execute(noneTask);
     }
 
 

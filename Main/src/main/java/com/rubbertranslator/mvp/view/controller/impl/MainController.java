@@ -72,6 +72,8 @@ public class MainController implements ISingleTranslateView {
     private RadioMenuItem baiduTranslator;
     @FXML
     private RadioMenuItem youdaoTranslator;
+    @FXML
+    private RadioMenuItem noneTranslator;
 
     @FXML // 源语言类型
     private ToggleGroup sourceLanguageGroup;
@@ -421,6 +423,8 @@ public class MainController implements ISingleTranslateView {
                 case YOUDAO:
                     youdaoTranslator.setSelected(true);
                     break;
+                case NONE:
+                    noneTranslator.setSelected(true);
             }
             // 监听
             translatorGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
@@ -430,6 +434,8 @@ public class MainController implements ISingleTranslateView {
                     presenter.setTranslatorType(TranslatorType.BAIDU);
                 } else if (newValue == youdaoTranslator) {
                     presenter.setTranslatorType(TranslatorType.YOUDAO);
+                } else if (newValue == noneTranslator) {
+                    presenter.setTranslatorType(TranslatorType.NONE);
                 } else {
                     oldValue.setSelected(true);
                 }
@@ -515,7 +521,7 @@ public class MainController implements ISingleTranslateView {
                 setting.textFontSize = configuration.getTextFontSize();
                 new AppearanceSettingDialog(appStage, setting,
                         newSettings -> {
-                            if(newSettings == null) return;
+                            if (newSettings == null) return;
                             configuration.setAppFontSize(newSettings.appFontSize);
                             configuration.setTextFontSize(newSettings.textFontSize);
                             // Notify appStage to update app settings

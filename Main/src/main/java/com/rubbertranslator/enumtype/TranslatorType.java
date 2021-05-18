@@ -9,5 +9,6 @@ package com.rubbertranslator.enumtype;
 public enum TranslatorType {
     BAIDU,
     GOOGLE,
-    YOUDAO
+    YOUDAO,
+    NONE
 }

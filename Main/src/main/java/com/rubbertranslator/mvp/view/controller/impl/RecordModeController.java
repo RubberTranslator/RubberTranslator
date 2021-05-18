@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -152,6 +153,9 @@ public class RecordModeController implements Initializable, IRecordView {
             case YOUDAO:
                 youdaoTranslator.setSelected(true);
                 break;
+            case NONE:
+                Logger.getLogger(this.getClass().getName()).info("未选择有效翻译引擎");
+                break;
         }
         // 记录模式--默认为译文
         translateRecordMode.setSelected(true);
@@ -214,7 +218,13 @@ public class RecordModeController implements Initializable, IRecordView {
      */
     private void initClickEvents() {
         backBt.setOnAction((event -> presenter.switchScene(SceneType.MAIN_SCENE)));
-        translateBt.setOnAction((event -> presenter.translate(originTextArea.getText())));
+        translateBt.setOnAction((event -> {
+            if (!startEndMenu.isSelected()) {
+                originTextArea.setText("请先点击【开始】记录");
+                return;
+            }
+            presenter.translate(originTextArea.getText());
+        }));
         translatorGroup.selectedToggleProperty().addListener(this::onTranslatorTypeChanged);
         // 记录模式
         originRecordMode.setOnAction(this::onRecordModeChanged);
@@ -308,7 +318,6 @@ public class RecordModeController implements Initializable, IRecordView {
         originTextArea.setText("已导出至:" + recordPath);
         translateTextArea.setText("");
     }
-
 
 
     @Override
