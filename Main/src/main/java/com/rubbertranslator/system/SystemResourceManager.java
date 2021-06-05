@@ -204,6 +204,7 @@ public class SystemResourceManager {
         TextPostProcessor textPostProcessor = new TextPostProcessor();
         textPostProcessor.getReplacer().setCaseInsensitive(postProcessConfig.isCaseInsensitive());
         textPostProcessor.getReplacer().addWords(postProcessConfig.getWordsPairs());
+        textPostProcessor.getIndentProcessor().setAutoIndent(postProcessConfig.isTryFormat());
         facade.setTextPostProcessor(textPostProcessor);
     }
 

@@ -1,11 +1,10 @@
 package com.rubbertranslator.mvp.modules.textinput.mousecopy.copymethods;
 
 import com.rubbertranslator.utils.OSTypeUtil;
-import javafx.application.Platform;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,12 +16,12 @@ public class CopyRobot {
     private static CopyRobot copyRobot;
     private Robot robot;
     private Clipboard clipboard;
-    private long waitTime = 100;
+    private long waitTime = 1000;
 
     private CopyRobot() {
         try {
             robot = new Robot();
-            clipboard = Clipboard.getSystemClipboard();
+            clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         } catch (AWTException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
@@ -40,33 +39,28 @@ public class CopyRobot {
         return copyRobot;
     }
 
-
     public synchronized void copyText(String text) {
         if (text == null || "".equals(text)) return;
-        Platform.runLater(() -> {
-            boolean required = false;
-            final long minWaitTime = 50;
-            final long maxWaitTime = 3000;
-            ClipboardContent cpContent = new ClipboardContent();
-            cpContent.putString(text);
-            while (!required) {
-                try {
-                    //waiting e.g for loading huge elements like word's etc.
-                    Thread.sleep(waitTime);
-                    clipboard.setContent(cpContent);
-                    required = true;
-                } catch (InterruptedException | IllegalStateException e) {
-                    if (waitTime < maxWaitTime) {
-                        waitTime += 100;  // 增加100ms等待时间
-                    }
-                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
-                } finally {
-                    if (waitTime > minWaitTime) {
-                        waitTime -= 10;   // 减少10ms等待时间
-                    }
+        boolean required = false;
+        final long minWaitTime = 50;
+        final long maxWaitTime = 3000;
+        while (!required) {
+            try {
+                //waiting e.g for loading huge elements like word's etc.
+                Thread.sleep(waitTime);
+                clipboard.setContents(new StringSelection(text), null);
+                required = true;
+            } catch (InterruptedException | IllegalStateException e) {
+                if (waitTime < maxWaitTime) {
+                    waitTime += 100;  // 增加100ms等待时间
+                }
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getLocalizedMessage(), e);
+            } finally {
+                if (waitTime > minWaitTime) {
+                    waitTime -= 10;   // 减少10ms等待时间
                 }
             }
-        });
+        }
     }
 
 

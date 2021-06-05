@@ -123,6 +123,7 @@ public class MultiTranslatePresenter extends ModelPresenter<IMultiTranslateView>
     public void textFormatSwitch(boolean isOpen) {
         super.textFormatSwitch(isOpen);
         translatorFacade.getTextPreProcessor().setTryToFormat(isOpen);
+        translatorFacade.getTextPostProcessor().getIndentProcessor().setAutoIndent(isOpen);
         configManger.getSystemConfiguration().setTryFormat(isOpen);
     }
 

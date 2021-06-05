@@ -49,7 +49,7 @@ public class SingleTranslatePresenter<T extends ISingleTranslateView> extends Mo
         }));
     }
 
-    public void translateEndHook(){
+    public void translateEndHook() {
 
     }
 
@@ -91,7 +91,7 @@ public class SingleTranslatePresenter<T extends ISingleTranslateView> extends Mo
     @Override
     public void setHistoryEntry(HistoryEntryIndex index) {
         super.setHistoryEntry(index);
-        HistoryEntry entry ;
+        HistoryEntry entry;
         switch (index) {
             case PRE_HISTORY:
                 entry = translatorFacade.getHistory().previous();
@@ -149,6 +149,7 @@ public class SingleTranslatePresenter<T extends ISingleTranslateView> extends Mo
     public void textFormatSwitch(boolean isOpen) {
         super.textFormatSwitch(isOpen);
         translatorFacade.getTextPreProcessor().setTryToFormat(isOpen);
+        translatorFacade.getTextPostProcessor().getIndentProcessor().setAutoIndent(isOpen);
         configManger.getSystemConfiguration().setTryFormat(isOpen);
     }
 
