@@ -26,7 +26,7 @@
             </ToggleButton>
             <ToggleButton fx:id="baiduTranslator" mnemonicParsing="false" text="百度" toggleGroup="$translatorGroup" />
             <ToggleButton fx:id="youdaoTranslator" mnemonicParsing="false" text="有道" toggleGroup="$translatorGroup" />
-            <ToggleButton fx:id="noneTranslator" mnemonicParsing="false" text="OCR复制" toggleGroup="$translatorGroup" />
+            <ToggleButton fx:id="noneTranslator" mnemonicParsing="false" text="None" toggleGroup="$translatorGroup" />
             <ToggleButton fx:id="incrementalCopyMenu" mnemonicParsing="false" text="增量" />
             <Button fx:id="preHistoryBt" mnemonicParsing="false" text="上一条" />
             <Button fx:id="nextHistoryBt" mnemonicParsing="false" text="下一条" />

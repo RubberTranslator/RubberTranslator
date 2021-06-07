@@ -179,8 +179,8 @@ public class MainController implements ISingleTranslateView {
     private MenuItem homePage;
     @FXML
     private MenuItem useAge;
-    @FXML
-    private MenuItem downloadUrl;
+    //    @FXML
+//    private MenuItem downloadUrl;
     @FXML
     private MenuItem issues;
     @FXML
@@ -617,9 +617,9 @@ public class MainController implements ISingleTranslateView {
             openUrl("https://rubbertranslator.github.io/docs/index.html");
         });
         // download url
-        downloadUrl.setOnAction((actionEvent -> {
-            openUrl("https://ravenxrz.lanzous.com/b01bezbcf");
-        }));
+//        downloadUrl.setOnAction((actionEvent -> {
+//            openUrl("https://ravenxrz.lanzous.com/b01bezbcf");
+//        }));
         // issue
         issues.setOnAction((actionEvent -> {
             openUrl("https://jq.qq.com/?_wv=1027&k=8HGTc7h5");
