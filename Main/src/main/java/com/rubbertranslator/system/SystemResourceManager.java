@@ -59,16 +59,6 @@ public class SystemResourceManager {
         return executor;
     }
 
-
-    public static void setDragCopyAndCpListenState(boolean run) {
-        if (clipboardListenerThread != null) {
-            clipboardListenerThread.setRun(run);
-        }
-        if (dragCopyThread != null) {
-            dragCopyThread.setRun(run);
-        }
-    }
-
     public static void setDragCopyAndCpListenState(boolean cpRun, boolean dragRun) {
         if (clipboardListenerThread != null) {
             clipboardListenerThread.setRun(cpRun);

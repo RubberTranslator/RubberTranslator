@@ -316,7 +316,9 @@ public class AppStage implements InvalidationListener {
     void minimizedHandler(boolean minimized) {
         if (minimized) {
             boolean isOpenListen = !configuration.isMinimizedCancelListen();
-            SystemResourceManager.setDragCopyAndCpListenState(isOpenListen);
+            SystemResourceManager.setDragCopyAndCpListenState(
+                    configuration.isOpenClipboardListener() && isOpenListen,
+                    configuration.isDragCopy() && isOpenListen);
         } else {
             // 最大化时，按照config配置
             SystemResourceManager.setDragCopyAndCpListenState(configuration.isOpenClipboardListener(),
