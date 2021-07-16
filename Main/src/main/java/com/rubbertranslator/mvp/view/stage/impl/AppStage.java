@@ -102,34 +102,6 @@ public class AppStage implements InvalidationListener {
     }
 
 
-    public void setAppearance() {
-        SystemResourceManager.getExecutor().execute(() -> {
-            // Generate css config
-            AppearanceSetting setting = new AppearanceSetting();
-            setting.appFontSize = configuration.getAppFontSize();
-            setting.textFontSize = configuration.getTextFontSize();
-            String cssStr = AppearanceSettingUtil.appearanceSettingCss(setting);
-            Logger.getLogger(this.getClass().getName()).info(cssStr);
-            // Apply css style to the stage
-            File[] tempFile = new File[1];
-            try {
-                tempFile[0] = File.createTempFile("tmp_rt", "css");
-                FileUtil.writeStringToFile(tempFile[0], cssStr, StandardCharsets.UTF_8);
-                // Do update
-                Platform.runLater(() -> {
-                    try {
-                        appStage.getScene().getStylesheets().setAll(tempFile[0].toURI().toURL().toString());
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-
     /**
      * 注册事件
      */
@@ -242,7 +214,7 @@ public class AppStage implements InvalidationListener {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "切换scene失败");
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e.getLocalizedMessage());
             e.printStackTrace();
-        }finally{
+        } finally {
             // Reapply appearance setting
             setAppearance();
         }
@@ -342,16 +314,47 @@ public class AppStage implements InvalidationListener {
     }
 
     void minimizedHandler(boolean minimized) {
-        if (configuration.isMinimizedCancelListen()) {      // 最小化时关闭监听
-            Logger.getLogger(this.getClass().getName()).info("set dragcopy and cp listener to " + !minimized);
-            SystemResourceManager.setDragCopyAndCpListenState(!minimized);
+        if (minimized) {
+            boolean isOpenListen = !configuration.isMinimizedCancelListen();
+            SystemResourceManager.setDragCopyAndCpListenState(isOpenListen);
+        } else {
+            // 最大化时，按照config配置
+            SystemResourceManager.setDragCopyAndCpListenState(configuration.isOpenClipboardListener(),
+                    configuration.isDragCopy());
         }
+
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void updateAppearanceSetting(AppearanceSettingUpdateEvent event){
+    public void updateAppearanceSetting(AppearanceSettingUpdateEvent event) {
         setAppearance();
     }
 
 
+    public void setAppearance() {
+        SystemResourceManager.getExecutor().execute(() -> {
+            // Generate css config
+            AppearanceSetting setting = new AppearanceSetting();
+            setting.appFontSize = configuration.getAppFontSize();
+            setting.textFontSize = configuration.getTextFontSize();
+            String cssStr = AppearanceSettingUtil.appearanceSettingCss(setting);
+            Logger.getLogger(this.getClass().getName()).info(cssStr);
+            // Apply css style to the stage
+            File[] tempFile = new File[1];
+            try {
+                tempFile[0] = File.createTempFile("tmp_rt", "css");
+                FileUtil.writeStringToFile(tempFile[0], cssStr, StandardCharsets.UTF_8);
+                // Do update
+                Platform.runLater(() -> {
+                    try {
+                        appStage.getScene().getStylesheets().setAll(tempFile[0].toURI().toURL().toString());
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }

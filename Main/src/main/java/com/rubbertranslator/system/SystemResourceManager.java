@@ -60,15 +60,23 @@ public class SystemResourceManager {
     }
 
 
-    public static void setDragCopyAndCpListenState(boolean run){
-        if(clipboardListenerThread != null){
+    public static void setDragCopyAndCpListenState(boolean run) {
+        if (clipboardListenerThread != null) {
             clipboardListenerThread.setRun(run);
         }
-        if(dragCopyThread != null){
+        if (dragCopyThread != null) {
             dragCopyThread.setRun(run);
         }
     }
 
+    public static void setDragCopyAndCpListenState(boolean cpRun, boolean dragRun) {
+        if (clipboardListenerThread != null) {
+            clipboardListenerThread.setRun(cpRun);
+        }
+        if (dragCopyThread != null) {
+            dragCopyThread.setRun(dragRun);
+        }
+    }
 
     /**
      * 初始化系统资源, 并返回系统配置类
@@ -107,7 +115,7 @@ public class SystemResourceManager {
         executor.execute(new UpdateTask());
     }
 
-    private static void hotKeyModuleInit(){
+    private static void hotKeyModuleInit() {
         GlobalHotKeyListener.initHotKeyDispatcher();
     }
 
@@ -153,12 +161,12 @@ public class SystemResourceManager {
 
     private static void textInputInit(@NotNull SystemConfiguration configuration) {
         // 启动相应线程
-        if(OSTypeUtil.isMac()){
+        if (OSTypeUtil.isMac()) {
             clipboardListenerThread = new MacCpListenerThread();
-        }else if(OSTypeUtil.isLinux()){
-           clipboardListenerThread = new LinuxCpListenerThread();
-        }else if(OSTypeUtil.isWin()){
-           clipboardListenerThread = new WinCpListenerThread();
+        } else if (OSTypeUtil.isLinux()) {
+            clipboardListenerThread = new LinuxCpListenerThread();
+        } else if (OSTypeUtil.isWin()) {
+            clipboardListenerThread = new WinCpListenerThread();
         }
         dragCopyThread = new DragCopyThread();
         clipboardListenerThread.start();
