@@ -38,6 +38,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,6 +91,28 @@ public class MainController implements ISingleTranslateView {
     private RadioMenuItem srcJapanese;
     @FXML
     private RadioMenuItem srcFrench;
+    @FXML
+    private RadioMenuItem srcPolish;
+    @FXML
+    private RadioMenuItem srcDutch;
+    @FXML
+    private RadioMenuItem srcBulgaria;
+    @FXML
+    private RadioMenuItem srcGreek;
+    @FXML
+    private RadioMenuItem srcPortuguese;
+    @FXML
+    private RadioMenuItem srcRussian;
+    @FXML
+    private RadioMenuItem srcArabic;
+    @FXML
+    private RadioMenuItem srcThai;
+    @FXML
+    private RadioMenuItem srcSpanish;
+    @FXML
+    private RadioMenuItem srcKorean;
+
+    private final Map<Language, RadioMenuItem> srcLang2BtMap = new HashMap<>();
 
 
     @FXML // 目标语言
@@ -103,6 +127,28 @@ public class MainController implements ISingleTranslateView {
     private RadioMenuItem destJapanese;
     @FXML
     private RadioMenuItem destFrench;
+    @FXML
+    private RadioMenuItem destPolish;
+    @FXML
+    private RadioMenuItem destDutch;
+    @FXML
+    private RadioMenuItem destBulgaria;
+    @FXML
+    private RadioMenuItem destGreek;
+    @FXML
+    private RadioMenuItem destPortuguese;
+    @FXML
+    private RadioMenuItem destRussian;
+    @FXML
+    private RadioMenuItem destArabic;
+    @FXML
+    private RadioMenuItem destThai;
+    @FXML
+    private RadioMenuItem destSpanish;
+    @FXML
+    private RadioMenuItem destKorean;
+
+    private final Map<Language, RadioMenuItem> destLang2BtMap = new HashMap<>();
 
 
     @FXML // 监听剪切板
@@ -444,58 +490,58 @@ public class MainController implements ISingleTranslateView {
 
         private void initSrcDestLanguage(Language src, Language dest) {
             // xxx: 源、目标语言的设置方式有些违反单一职责，但是降低了重复代码
+            srcLang2BtMap.put(Language.AUTO, srcAuto);
+            srcLang2BtMap.put(Language.CHINESE_SIMPLIFIED, srcSimpleChinese);
+            srcLang2BtMap.put(Language.CHINESE_TRADITIONAL, srcTraditionalChinese);
+            srcLang2BtMap.put(Language.ENGLISH, srcEnglish);
+            srcLang2BtMap.put(Language.FRENCH, srcFrench);
+            srcLang2BtMap.put(Language.JAPANESE, srcJapanese);
+            srcLang2BtMap.put(Language.KOREAN, srcKorean);
+            srcLang2BtMap.put(Language.SPANISH, srcSpanish);
+            srcLang2BtMap.put(Language.THAI, srcThai);
+            srcLang2BtMap.put(Language.ARABIC, srcArabic);
+            srcLang2BtMap.put(Language.RUSSIAN, srcRussian);
+            srcLang2BtMap.put(Language.PORTUGUESE, srcPortuguese);
+            srcLang2BtMap.put(Language.GREEK, srcGreek);
+            srcLang2BtMap.put(Language.BULGARIA, srcBulgaria);
+            srcLang2BtMap.put(Language.DUTCH, srcDutch);
+            srcLang2BtMap.put(Language.POLISH, srcPolish);
+
+            destLang2BtMap.put(Language.CHINESE_SIMPLIFIED, destSimpleChinese);
+            destLang2BtMap.put(Language.CHINESE_TRADITIONAL, destTraditionalChinese);
+            destLang2BtMap.put(Language.ENGLISH, destEnglish);
+            destLang2BtMap.put(Language.FRENCH, destFrench);
+            destLang2BtMap.put(Language.JAPANESE, destJapanese);
+            destLang2BtMap.put(Language.KOREAN, destKorean);
+            destLang2BtMap.put(Language.SPANISH, destSpanish);
+            destLang2BtMap.put(Language.THAI, destThai);
+            destLang2BtMap.put(Language.ARABIC, destArabic);
+            destLang2BtMap.put(Language.RUSSIAN, destRussian);
+            destLang2BtMap.put(Language.PORTUGUESE, destPortuguese);
+            destLang2BtMap.put(Language.GREEK, destGreek);
+            destLang2BtMap.put(Language.BULGARIA, destBulgaria);
+            destLang2BtMap.put(Language.DUTCH, destDutch);
+            destLang2BtMap.put(Language.POLISH, destPolish);
+
             // src
-            initLanguage(src, srcAuto, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
-            srcDestLanguageChooseEvent(true, sourceLanguageGroup, srcSimpleChinese, srcTraditionalChinese, srcEnglish, srcFrench, srcJapanese);
+            srcLang2BtMap.getOrDefault(src, srcAuto).setSelected(true);
+            srcDestLanguageChooseEvent(true, sourceLanguageGroup, srcLang2BtMap);
             // dest
-            initLanguage(dest, null, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
-            srcDestLanguageChooseEvent(false, destLanguageGroup, destSimpleChinese, destTraditionalChinese, destEnglish, destFrench, destJapanese);
+            destLang2BtMap.getOrDefault(dest, destSimpleChinese).setSelected(true);
+            srcDestLanguageChooseEvent(false, destLanguageGroup, destLang2BtMap);
 
         }
 
-        private void initLanguage(Language type, RadioMenuItem auto, RadioMenuItem simpleChinese, RadioMenuItem traditional,
-                                  RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
-            switch (type) {
-                case AUTO:
-                    auto.setSelected(true);
-                    break;
-                case CHINESE_SIMPLIFIED:
-                    simpleChinese.setSelected(true);
-                    break;
-                case CHINESE_TRADITIONAL:
-                    traditional.setSelected(true);
-                    break;
-                case ENGLISH:
-                    english.setSelected(true);
-                    break;
-                case FRENCH:
-                    french.setSelected(true);
-                    break;
-                case JAPANESE:
-                    japanese.setSelected(true);
-                    break;
-            }
-        }
 
-
-        private void srcDestLanguageChooseEvent(boolean isSrc, ToggleGroup languageGroup, RadioMenuItem simpleChinese, RadioMenuItem traditional,
-                                                RadioMenuItem english, RadioMenuItem french, RadioMenuItem japanese) {
+        private void srcDestLanguageChooseEvent(boolean isSrc, ToggleGroup languageGroup, Map<Language, RadioMenuItem> lang2BtMap) {
             languageGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
                 Language language = Language.AUTO;
-                if (newValue == srcAuto) {    // 此判断多余，但是为了完整性，还是加上
-                    language = Language.AUTO;
-                } else if (newValue == simpleChinese) {
-                    language = Language.CHINESE_SIMPLIFIED;
-                } else if (newValue == traditional) {
-                    language = Language.CHINESE_TRADITIONAL;
-                } else if (newValue == english) {
-                    language = Language.ENGLISH;
-                } else if (newValue == french) {
-                    language = Language.FRENCH;
-                } else if (newValue == japanese) {
-                    language = Language.JAPANESE;
+                for (Map.Entry<Language, RadioMenuItem> entry : lang2BtMap.entrySet()) {
+                    if (entry.getValue() == newValue) {
+                        language = entry.getKey();
+                        break;
+                    }
                 }
-
                 presenter.setTranslatorLanguage(isSrc, language);
             });
         }

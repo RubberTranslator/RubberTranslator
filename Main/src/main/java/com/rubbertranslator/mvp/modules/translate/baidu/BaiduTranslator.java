@@ -37,6 +37,16 @@ public class BaiduTranslator extends AbstractTranslator {
         langMap.put(Language.ENGLISH, "en");
         langMap.put(Language.FRENCH, "fra");
         langMap.put(Language.JAPANESE, "jp");
+        langMap.put(Language.KOREAN, "kor");
+        langMap.put(Language.SPANISH, "spa");
+        langMap.put(Language.THAI, "th");
+        langMap.put(Language.ARABIC, "ara");
+        langMap.put(Language.RUSSIAN, "ru");
+        langMap.put(Language.PORTUGUESE, "pt");
+        langMap.put(Language.GREEK, "el");
+        langMap.put(Language.BULGARIA, "bul");
+        langMap.put(Language.POLISH, "pl");
+        langMap.put(Language.DUTCH, "nl");
     }
 
     /**

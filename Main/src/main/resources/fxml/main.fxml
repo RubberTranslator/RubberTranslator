@@ -35,16 +35,27 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="源语言">
                           <items>
-                              <RadioMenuItem fx:id="srcAuto" mnemonicParsing="false" selected="true" text="自动检测">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="sourceLanguageGroup" />
-                                 </toggleGroup>
+                              <RadioMenuItem fx:id="srcAuto" mnemonicParsing="false" selected="true" text="自动检测" >
+                                  <toggleGroup>
+                                      <ToggleGroup fx:id="sourceLanguageGroup" />
+                                  </toggleGroup>
                               </RadioMenuItem>
                               <RadioMenuItem fx:id="srcSimpleChinese" mnemonicParsing="false" selected="true" text="简体中文" toggleGroup="$sourceLanguageGroup" />
                               <RadioMenuItem fx:id="srcTraditionalChinese" mnemonicParsing="false" text="繁體中文" toggleGroup="$sourceLanguageGroup" />
                               <RadioMenuItem fx:id="srcEnglish" mnemonicParsing="false" text="English" toggleGroup="$sourceLanguageGroup" />
                               <RadioMenuItem fx:id="srcJapanese" mnemonicParsing="false" text="日本語" toggleGroup="$sourceLanguageGroup" />
                               <RadioMenuItem fx:id="srcFrench" mnemonicParsing="false" text="Français" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcKorean" mnemonicParsing="false" text="한국어" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcSpanish" mnemonicParsing="false" text="Español" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcThai" mnemonicParsing="false" text="ภาษาไทย" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcArabic" mnemonicParsing="false" text="阿拉伯语" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcRussian" mnemonicParsing="false" text="ру́сский язы́к" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcPortuguese" mnemonicParsing="false" text="Português" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcGreek" mnemonicParsing="false" text="Ελληνικά" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcBulgaria" mnemonicParsing="false" text="български език" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcDutch" mnemonicParsing="false" text="Nederlands" toggleGroup="$sourceLanguageGroup" />
+                              <RadioMenuItem fx:id="srcPolish" mnemonicParsing="false" text="język polski" toggleGroup="$sourceLanguageGroup">
+                              </RadioMenuItem>
                           </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="目标语言">
@@ -58,6 +69,16 @@
                               <RadioMenuItem fx:id="destEnglish" mnemonicParsing="false" selected="true" text="English" toggleGroup="$destLanguageGroup" />
                               <RadioMenuItem fx:id="destJapanese" mnemonicParsing="false" text="日本語" toggleGroup="$destLanguageGroup" />
                               <RadioMenuItem fx:id="destFrench" mnemonicParsing="false" text="Français" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destKorean" mnemonicParsing="false" text="한국어" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destSpanish" mnemonicParsing="false" text="Español" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destThai" mnemonicParsing="false" text="ภาษาไทย" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destArabic" mnemonicParsing="false" text="阿拉伯语" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destRussian" mnemonicParsing="false" text="ру́сский язы́к" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destPortuguese" mnemonicParsing="false" text="Português" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destGreek" mnemonicParsing="false" text="Ελληνικά" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destBulgaria" mnemonicParsing="false" text="български език" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destDutch" mnemonicParsing="false" text="Nederlands" toggleGroup="$destLanguageGroup" />
+                              <RadioMenuItem fx:id="destPolish" mnemonicParsing="false" text="język polski" toggleGroup="$destLanguageGroup" />
                            </items>
                         </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />

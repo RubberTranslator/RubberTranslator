@@ -39,6 +39,16 @@ public class YoudaoTranslator extends AbstractTranslator {
         langMap.put(Language.ENGLISH, "en");
         langMap.put(Language.FRENCH, "fr");
         langMap.put(Language.JAPANESE, "ja");
+        langMap.put(Language.KOREAN, "ko");
+        langMap.put(Language.SPANISH, "es");
+        langMap.put(Language.THAI, "th");
+        langMap.put(Language.ARABIC, "ar");
+        langMap.put(Language.RUSSIAN, "ru");
+        langMap.put(Language.PORTUGUESE, "pt");
+        langMap.put(Language.GREEK, "el");
+        langMap.put(Language.BULGARIA, "bg");
+        langMap.put(Language.POLISH, "pl");
+        langMap.put(Language.DUTCH, "nl");
     }
 
 
