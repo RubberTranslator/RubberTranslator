@@ -5,9 +5,9 @@ import com.rubbertranslator.mvp.view.controller.IFocusView;
 
 public class FocusViewPresenter extends SingleTranslatePresenter {
 
-    public void switchBetweenOriginAndTranslatedText() {
+    public void switchTranslateMode() {
         if(view == null) throw new NullPointerException();
         HistoryEntry entry = translatorFacade.getHistory().current();
-        ((IFocusView)view).switchBetweenOriginAndTranslatedText(entry);
+        ((IFocusView)view).switchTranslateMode(entry);
     }
 }

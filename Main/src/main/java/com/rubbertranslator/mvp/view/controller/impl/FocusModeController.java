@@ -25,6 +25,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Raven
@@ -81,8 +83,8 @@ public class FocusModeController implements Initializable, IFocusView {
     @FXML   // 清空
     private Button clearBt;
 
-    @FXML   // 显示文本： 显示原文或者显示译文
-    private Button displayTextBt;
+    @FXML
+    private Button translateModeBt;
 
     @FXML   // 复制原文
     private Button copyOriginBt;
@@ -96,6 +98,14 @@ public class FocusModeController implements Initializable, IFocusView {
 
     // presenter
     private FocusViewPresenter presenter;
+
+    enum TranslateMode {
+        ORIGIN,         // 原文
+        TRANSLATED,     // 译文
+        PARA_COMPARE    // 段落对比
+    }
+
+    private TranslateMode translateMode = TranslateMode.TRANSLATED;
 
     /**
      * 组件初始化完成后，会调用这个方法
@@ -129,7 +139,6 @@ public class FocusModeController implements Initializable, IFocusView {
 
         // 置顶
         keepStageTopMenu.setSelected(configuration.isKeepTop());
-
         // 翻译引擎
         switch (configuration.getCurrentTranslator()) {
             case GOOGLE:
@@ -159,6 +168,8 @@ public class FocusModeController implements Initializable, IFocusView {
         textFormatMenu.setSelected(configuration.isTryFormat());
         // 翻译后位置
         cursorPos = configuration.getTextAreaCursorPos();
+        // 翻译模式 [原文|译文|段落对比], 默认为译文
+        translateModeBt.setText("显示译文");
     }
 
     @Override
@@ -216,7 +227,7 @@ public class FocusModeController implements Initializable, IFocusView {
         dragCopyMenu.setOnAction((event -> presenter.dragCopySwitch(dragCopyMenu.isSelected())));
         textFormatMenu.setOnAction((event -> presenter.textFormatSwitch(textFormatMenu.isSelected())));
         translateBt.setOnAction((event -> presenter.translate(textArea.getText())));
-        displayTextBt.setOnAction((event -> presenter.switchBetweenOriginAndTranslatedText()));
+        translateModeBt.setOnAction((event -> presenter.switchTranslateMode()));
     }
 
     private void onTranslatorTypeChanged(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
@@ -260,20 +271,40 @@ public class FocusModeController implements Initializable, IFocusView {
     }
 
     @Override
-    public void switchBetweenOriginAndTranslatedText(HistoryEntry entry) {
-        final String showOrigin = "显示原文";
-        final String showTranslation = "显示译文";
-        final String currentState = displayTextBt.getText();
+    public void switchTranslateMode(HistoryEntry entry) {
+        // TODO: it's better to use a "index" variable, but it's simple enough now
+        final String[] showText = {"显示原文", "显示译文", "段落对比"};
 
-        if (showOrigin.equals(currentState)) { // 需要显示原文
-            textArea.setText(entry.getOrigin());
-            // 下一个状态：显示译文
-            displayTextBt.setText(showTranslation);
-        } else if (showTranslation.equals(currentState)) {
-            textArea.setText(entry.getTranslation());
-            // 下一个状态：显示原文
-            displayTextBt.setText(showOrigin);
+        // 状态转移
+        switch (translateMode) {
+            case ORIGIN:
+                translateModeBt.setText(showText[1]);
+                translateMode = TranslateMode.TRANSLATED;
+                break;
+            case TRANSLATED:
+                translateModeBt.setText(showText[2]);
+                translateMode = TranslateMode.PARA_COMPARE;
+                break;
+            case PARA_COMPARE:
+                translateModeBt.setText(showText[0]);
+                translateMode = TranslateMode.ORIGIN;
+                break;
+            default:
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Unknown translate mode in focus mode");
+                break;
         }
+
+        this.setText(entry.getOrigin(), entry.getTranslation());
+//
+//        if (showOrigin.equals(currentState)) { // 需要显示原文
+//            textArea.setText(entry.getOrigin());
+//            // 下一个状态：显示译文
+//            translateModeBt.setText(showTranslation);
+//        } else if (showTranslation.equals(currentState)) {
+//            textArea.setText(entry.getTranslation());
+//            // 下一个状态：显示原文
+//            translateModeBt.setText(showOrigin);
+//        }
     }
 
 
@@ -292,19 +323,16 @@ public class FocusModeController implements Initializable, IFocusView {
         Platform.runLater(() -> {
             keepGetTextFromClipboard = false;
             translateBt.setDisable(true);
-            displayTextBt.setDisable(true);
+            translateModeBt.setDisable(true);
         });
     }
 
     @Override
     public void translateEnd() {
-        final String showOrigin = "显示原文";
         Platform.runLater(() -> {
             keepGetTextFromClipboard = true;
             translateBt.setDisable(false);
-            // displayBt reinitialize
-            displayTextBt.setText(showOrigin);
-            displayTextBt.setDisable(false);
+            translateModeBt.setDisable(false);
             if (cursorPos == TextAreaCursorPos.END) {
                 textArea.end();
             }
@@ -327,9 +355,40 @@ public class FocusModeController implements Initializable, IFocusView {
         });
     }
 
+    /**
+     * 结合originText和translateText 生成按照"段落“分割的对照翻译结果
+     * @param originText     原文
+     * @param translatedText 译文
+     * @return 段落分割对照文本
+     * @note 分割规则，按照\n分割
+     */
+    private String paraCompareText(String originText, String translatedText) {
+        StringBuilder sb = new StringBuilder();
+        String[] splitOriginText = originText.split("\n");
+        String[] splitTranslateText = translatedText.replaceAll("\t","").split("\n");
+        if (splitOriginText.length != splitTranslateText.length) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, String.format("[paragraph compare translate mode]: 不精确的结果，原文拆分组数和译文拆分组数不相同，原文:%s\n译文:%s", originText, translatedText));
+            sb.append("当前段落对比结果可能不准确：");
+        }
+        for (int i = 0; i < splitOriginText.length && i < splitTranslateText.length; i++) {
+            sb.append(splitOriginText[i]).append('\n').append(splitTranslateText[i]).append("\n\n");
+        }
+        return sb.toString();
+    }
+
 
     @Override
     public void setText(String originText, String translatedText) {
-        textArea.setText(translatedText);
+        switch (translateMode) {
+            case ORIGIN:
+                textArea.setText(originText);
+                break;
+            case TRANSLATED:
+                textArea.setText(translatedText);
+                break;
+            case PARA_COMPARE:
+                textArea.setText(paraCompareText(originText, translatedText));
+                break;
+        }
     }
 }
