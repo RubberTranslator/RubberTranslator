@@ -102,7 +102,8 @@ public class FocusModeController implements Initializable, IFocusView {
     enum TranslateMode {
         ORIGIN,         // 原文
         TRANSLATED,     // 译文
-        PARA_COMPARE    // 段落对比
+        PARA_COMPARE1,  // 段落对比1: 正常
+        PARA_COMPARE2   // 段落对比2: 无译文编号
     }
 
     private TranslateMode translateMode = TranslateMode.TRANSLATED;
@@ -273,7 +274,7 @@ public class FocusModeController implements Initializable, IFocusView {
     @Override
     public void switchTranslateMode(HistoryEntry entry) {
         // TODO: it's better to use a "index" variable, but it's simple enough now
-        final String[] showText = {"显示原文", "显示译文", "段落对比"};
+        final String[] showText = {"显示原文", "显示译文", "段落对比1", "段落对比2",};
 
         // 状态转移
         switch (translateMode) {
@@ -283,9 +284,13 @@ public class FocusModeController implements Initializable, IFocusView {
                 break;
             case TRANSLATED:
                 translateModeBt.setText(showText[2]);
-                translateMode = TranslateMode.PARA_COMPARE;
+                translateMode = TranslateMode.PARA_COMPARE1;
                 break;
-            case PARA_COMPARE:
+            case PARA_COMPARE1:
+                translateModeBt.setText(showText[3]);
+                translateMode = TranslateMode.PARA_COMPARE2;
+                break;
+            case PARA_COMPARE2:
                 translateModeBt.setText(showText[0]);
                 translateMode = TranslateMode.ORIGIN;
                 break;
@@ -295,16 +300,6 @@ public class FocusModeController implements Initializable, IFocusView {
         }
 
         this.setText(entry.getOrigin(), entry.getTranslation());
-//
-//        if (showOrigin.equals(currentState)) { // 需要显示原文
-//            textArea.setText(entry.getOrigin());
-//            // 下一个状态：显示译文
-//            translateModeBt.setText(showTranslation);
-//        } else if (showTranslation.equals(currentState)) {
-//            textArea.setText(entry.getTranslation());
-//            // 下一个状态：显示原文
-//            translateModeBt.setText(showOrigin);
-//        }
     }
 
 
@@ -357,25 +352,30 @@ public class FocusModeController implements Initializable, IFocusView {
 
     /**
      * 结合originText和translateText 生成按照"段落“分割的对照翻译结果
+     *
      * @param originText     原文
      * @param translatedText 译文
+     * @param no_head_number 是否无译文段首编号
      * @return 段落分割对照文本
      * @note 分割规则，按照\n分割
      */
-    private String paraCompareText(String originText, String translatedText) {
+    private String paraCompareText(String originText, String translatedText, boolean no_head_number) {
         StringBuilder sb = new StringBuilder();
         String[] splitOriginText = originText.split("\n");
-        String[] splitTranslateText = translatedText.replaceAll("\t","").split("\n");
+        String[] splitTranslateText = translatedText.replaceAll("\t", "").split("\n");
         if (splitOriginText.length != splitTranslateText.length) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, String.format("[paragraph compare translate mode]: 不精确的结果，原文拆分组数和译文拆分组数不相同，原文:%s\n译文:%s", originText, translatedText));
             sb.append("当前段落对比结果可能不准确：");
         }
         for (int i = 0; i < splitOriginText.length && i < splitTranslateText.length; i++) {
-            sb.append(splitOriginText[i]).append('\n').append(splitTranslateText[i]).append("\n\n");
+            if (!no_head_number) {
+                sb.append(splitOriginText[i]).append('\n').append(splitTranslateText[i]).append("\n\n");
+            } else {
+                sb.append(splitOriginText[i]).append('\n').append(splitTranslateText[i].replaceAll("^[(（]?[\\da-zA-Z]+[)）、.] ?", "")).append("\n\n");
+            }
         }
         return sb.toString();
     }
-
 
     @Override
     public void setText(String originText, String translatedText) {
@@ -386,8 +386,11 @@ public class FocusModeController implements Initializable, IFocusView {
             case TRANSLATED:
                 textArea.setText(translatedText);
                 break;
-            case PARA_COMPARE:
-                textArea.setText(paraCompareText(originText, translatedText));
+            case PARA_COMPARE1:
+                textArea.setText(paraCompareText(originText, translatedText, false));
+                break;
+            case PARA_COMPARE2:
+                textArea.setText(paraCompareText(originText, translatedText, true));
                 break;
         }
     }

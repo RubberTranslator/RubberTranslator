@@ -27,7 +27,8 @@ public class RedundantLineBreakProcessor {
 //    }
 
     /**
-     * 去掉多余的换行符，并且根据句末句号，保持分段格式
+     * 去掉多余的换行符，并且根据句末句号, 冒号，保持分段格式
+     *
      * @param text
      * @return
      */
@@ -38,7 +39,7 @@ public class RedundantLineBreakProcessor {
             // 有些空行
             if (tempStr == null || tempStr.equals("")) continue;
             char lastChar = tempStr.charAt(tempStr.length() - 1);
-            if (lastChar == '.' || lastChar == '。') {  // 最后字符是. 也就是说.后又是换行，大概率是分段
+            if (lastChar == '.' || lastChar == '。' || lastChar == ':' || lastChar == '：') {
                 sb.append(tempStr).append("\n");
             } else if (tempStr.charAt(tempStr.length() - 1) == '-') {  // 英文末尾的连接符
                 sb.append(tempStr, 0, tempStr.length() - 1);

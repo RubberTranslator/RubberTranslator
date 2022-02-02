@@ -49,6 +49,5 @@ public class AfterProcessor {
                 CopyRobot.getInstance().triggerPaste();
             }
         }
-        return;
     }
 }
