@@ -83,24 +83,6 @@ RubberTranslator是我在使用知云文献翻译和CopyTranslator两款软件�
 
 打包请参见: [这里](https://github.com/ravenxrz/RubberTranslator/blob/master/RubberTranslator%E6%89%93%E5%8C%85%E8%AF%B4%E6%98%8E.md)
 
-## 5. 请我喝杯咖啡
-
-制作不易，如果您觉得本软件好用，也可以请我喝杯咖啡：
-
-<table>     
-    <tr>        
-        <td >
-            <center><img src="https://cdn.jsdelivr.net/gh/ravenxrz/PicBed/img/DXwQCn.png" width="300"><br>微信
-            </center>
-        </td>        
-        <td >
-            <center><img src="https://pic.downk.cc/item/5d0641c7451253d178a15376.png" width="300" ><br>支付宝
-            </center>
-        </td>    
-    </tr>      
-    <tr>         
-</table>
-
 
 ## 开源许可
 
